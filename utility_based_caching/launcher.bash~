@@ -5,15 +5,19 @@
 ########### SEE run.m for the new version ##################
 ############################################################
 
-WORKING_FOLDER=~/globecom14_working_folder
+WORKING_FOLDER=/tmp
 OPTIMIZATION_OUTPUT_FOLDER=$WORKING_FOLDER/optimization_output
 SCENARIO_FOLDER=$WORKING_FOLDER/scenarios
 
 CODE_FOLDER=~/software/araldo-phd-code
 THIS_LAUNCHER=$CODE_FOLDER/utility_based_caching/launcher.bash
 GENERATION_CODE=$CODE_FOLDER/utility_based_caching/scenario_generation/build_run.m
+cat $GENERATION_CODE
+exit 1
+
 HIDE_OUTPUT="false" # Use "false" during debug operations. Use "true" if you use screen.
-OPT_PROCESSOR="wishset" # it can be "wishset" or "oplrun"
+OPT_PROCESSOR="oplrun"
+OPTIMIZATION_DIMENSION="utility"
 
 
 for SEED in 1
@@ -24,19 +28,18 @@ do
 		do
 			for MODEL in "model"
 			do
-				for CATALOG_SIZE in 1e5
+				for CATALOG_SIZE in 10
 				do
-					for MAX_CACHE in 0 1e3 #1e2 #1e3 1e4 1e5
+					for MAX_CACHE in 0
 					do
-						for PRICE_RATIO in 1 2 5 10
+						for PRICE_RATIO in 1
 						do
 							# Fixing stuff for scenario generation
 							SCENARIO_IDENTIFIER="ctlg_"$CATALOG_SIZE"-cache_"$MAX_CACHE"-priceratio_"$PRICE_RATIO"-seed_"$SEED"-totaldemand_"$TOTALDEMAND"-alpha_"$ALPHA
 							SCENARIO_PREFIX=$SCENARIO_FOLDER/scenario-$SCENARIO_IDENTIFIER
 							GENERATION_LOG=$SCENARIO_PREFIX.generation.log
 							GENERATION_TIME_LOG=$SCENARIO_PREFIX.generation_time.log
-							SCENARIO_FILE=$SCENARIO_PREFIX.dat
-							SCENARIO_FILE="" # In this way we won't generate the dat file
+							SCENARIO_FILE=$SCENARIO_PREFIX.dat # If it is equal to "" we won't generate the dat file
 							SCENARIO_GENERATION_COMMAND="build_run(\"$SCENARIO_FILE\",$CATALOG_SIZE, $MAX_CACHE, $PRICE_RATIO, $SEED, $TOTALDEMAND, $ALPHA)"
 
 
@@ -57,19 +60,6 @@ do
 								GENERAL_LOG="1"
 							fi
 
-
-							# Fixing stuff for wishset runs
-							OPTIMIZATION_DIMENSION=""
-							if [[ "$MODEL" == "model_ideal_cost" ]]; then
-								OPTIMIZATION_DIMENSION="cost"
-							elif [[ "$MODEL" == "model_ideal_hitratio" ]]; then
-								OPTIMIZATION_DIMENSION="hitratio"
-							else
-								echo "I cannot realize what is the optimization dimension ">& $GENERAL_LOG
-								exit 1
-							fi
-
-							WISHSET_COMMAND="run_wishset_algo(\"$SCENARIO_FILE\",\"$SCENARIO_OPTIMIZATION_OUTPUT_FOLDER\",\"$OPTIMIZATION_DIMENSION\",$SEED)"
 
 
 							if [ -d "$SCENARIO_OPTIMIZATION_OUTPUT_FOLDER" ]; then

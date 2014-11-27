@@ -1,3 +1,5 @@
+error ("THIS IS AN OLD FILE, I GUESS")
+
 % Hello
 %seed = 3;
 %rand('seed',seed);
