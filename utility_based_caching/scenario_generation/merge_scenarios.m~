@@ -14,7 +14,7 @@ function run_ = merge_scenarios(scenarios)
 		end
 		% }Check_scenario_consistency
 
-		run_.ObjectReachabilityMatrix(:,:,i) = scenario.object_reachability_matrix;
+		run_.object_reachability_matrix(:,:,i) = scenario.object_reachability_matrix;
 		run_.TransitPrice(i,:) = scenario.TransitPrice;
 		run_.TrafficDemand(i,:) = scenario.TrafficDemand;
 	end % of for over scenarios

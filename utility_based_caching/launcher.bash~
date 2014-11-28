@@ -5,18 +5,18 @@
 ########### SEE run.m for the new version ##################
 ############################################################
 
-WORKING_FOLDER=/tmp
+WORKING_FOLDER=/tmp/utility_runs
 OPTIMIZATION_OUTPUT_FOLDER=$WORKING_FOLDER/optimization_output
 SCENARIO_FOLDER=$WORKING_FOLDER/scenarios
+mkdir -p $SCENARIO_FOLDER
+mkdir -p $OPTIMIZATION_OUTPUT_FOLDER
 
 CODE_FOLDER=~/software/araldo-phd-code
 THIS_LAUNCHER=$CODE_FOLDER/utility_based_caching/launcher.bash
 GENERATION_CODE=$CODE_FOLDER/utility_based_caching/scenario_generation/build_run.m
-cat $GENERATION_CODE
-exit 1
 
 HIDE_OUTPUT="false" # Use "false" during debug operations. Use "true" if you use screen.
-OPT_PROCESSOR="oplrun"
+OPT_PROCESSOR="oplrun" #must be oplrun
 OPTIMIZATION_DIMENSION="utility"
 
 
@@ -53,11 +53,11 @@ do
 							
 							if [[ "$HIDE_OUTPUT" == "false" ]]; then
 								# All log output must be redirected on the screen
-								GENERATION_LOG="1"
-								GENERATION_TIME_LOG="1"
-								OPTRUN_LOG="1"
-								OPTRUN_TIME_LOG="1"
-								GENERAL_LOG="1"
+								GENERATION_LOG=/dev/stdout
+								GENERATION_TIME_LOG=/dev/stdout
+								OPTRUN_LOG=/dev/stdout
+								OPTRUN_TIME_LOG=/dev/stdout
+								GENERAL_LOG=/dev/stdout
 							fi
 
 
@@ -78,7 +78,7 @@ do
 								echo "Scenario $SCENARIO_FILE already generated. I will reuse it"  >& $GENERAL_LOG
 							else
 								echo "Generating scenario $SCENARIO_IDENTIFIER"
-								{ time octave --quiet --path $CODE_FOLDER/optimization/scenario_generation/ --eval "$SCENARIO_GENERATION_COMMAND" >& $GENERATION_LOG; } 2>& $GENERATION_TIME_LOG
+								{ time octave --quiet --path $CODE_FOLDER/utility_based_caching/scenario_generation/ --eval "$SCENARIO_GENERATION_COMMAND" >& $GENERATION_LOG; } 2> $GENERATION_TIME_LOG
 							fi
 
 
@@ -90,24 +90,21 @@ do
 								echo "Open $GENERATION_LOG to see what happened"
 							fi
 
-
 							# {Launch optimization
-								if [[ "$OPT_PROCESSOR" == "oplrun" ]]; then
-									{ time oplrun $MODELFILE $SCENARIO_FILE >& $OPTRUN_LOG; } 2>& $OPTRUN_TIME_LOG
-
-								elif [[ "$OPT_PROCESSOR" == "wishset" ]]; then
-									{ time octave --quiet --path $CODE_FOLDER/wishset --eval "$WISHSET_COMMAND" >& $OPTRUN_LOG; } 2>& $OPTRUN_TIME_LOG
-
-								else
-									echo "I cannot realize what is the optimization processor "$OPT_PROCESSOR > $GENERAL_LOG
+							if [[ "$OPT_PROCESSOR" == "oplrun" ]]; then
+									echo "Launching oplrun"
+									echo "remove this: oplrun $MODELFILE $SCENARIO_FILE >& $OPTRUN_LOG"
+									{ time oplrun $MODELFILE $SCENARIO_FILE >& $OPTRUN_LOG; } 2> $OPTRUN_TIME_LOG
+							else
+									echo "I cannot realize what the optimization processor "$OPT_PROCESSOR" is" > $GENERAL_LOG
 									exit 1
-								fi
+							fi
 
 								# Check the exit status $?
-								if [[ $? != 0 ]]; then
+							if [[ $? != 0 ]]; then
 									echo "There is an error"
 									exit $?
-								fi
+							fi
 							# }Launch optimization
 							
 

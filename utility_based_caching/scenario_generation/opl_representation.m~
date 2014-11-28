@@ -37,6 +37,7 @@ function opl_representation_ = opl_representation( variable_name, data, purge )
 	%<aa>
 	if purge && isscalar(data)
 		opl_representation_ = sprintf('%s %g;', opl_representation_, data) ;
+		disp "remove this: returning"
 		return;
 	end
 	%</aa>

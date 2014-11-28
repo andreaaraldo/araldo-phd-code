@@ -13,6 +13,8 @@ function opl_string = generate_opl_file(run_, output_file)
 		field_names = {"NumScenarios", "RealizationProbabilities", field_names};
 	endif
 
+	field_names
+
 	%{purge_option = [true, true, true, false, \
 	%				false, false, false, \
 	%				true, true, true, \

@@ -1,4 +1,4 @@
-% called by build_run
+% called by run_numerical_results.m
 % 		as_probability:  as_probability[as] is the probability that a generic object is reachable through external
 %						 link as
 % 		replication:	vector. replication(i) is the ratio of objects that are replicated i times
