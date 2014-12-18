@@ -31,6 +31,7 @@ execute PARAMS {
 * Set cardinalities
 *********************************************************/
 int NumASes      = ...;
+int NumCategories= ...;
 int O_BF_card   = ...;
 int O_OF_card   = ...;
 int O_LQ_card   = ...;
@@ -40,6 +41,7 @@ int O_HQ_card   = ...;
 * Range variables
 *********************************************************/
 setof(int) Q = ...;
+setof(int) Categories = ...;
 
 range ASes      = 1..NumASes;
 range O_BF   = 1..O_BF_card;
@@ -65,10 +67,6 @@ float S									=...;
 int   ObjectReachabilityMatrix[ASes][O]				= ...;
 float d[O][ASes]							= ...;
 float TransitPrice[ASes]									= ...;
-float CachePrice                                         = ...;
-float MaxCachePerBorderRouter                            = ...;
-float MaxCoreCache 							 = ...;
-float MaxTotalCache                                      = ...;
 
 
 /*********************************************************
@@ -93,29 +91,22 @@ execute
 dvar boolean x[O][ASes][Q];
 dvar boolean I[O][ASes][Q];
 dvar float+  y[O][ASes][ASes][ASes];
-dvar float+  y_to_u[O][ASes][Q];
+dvar float+  y_to_u_q_dependent[O][ASes][Q];
+dvar float+  y_to_u[O][ASes];
 dvar float+  y_from_source[O][ASes][Q];
 dvar float+  r[O][ASes];
 
 
-dvar float+  BorderRouterCacheStorage[ASes];
-dvar float+  CoreRouterCacheStorage;
-dvar boolean BorderRouterCachedObjectsFlag[ASes][O];
-dvar boolean CoreRouterCachedObjectsFlag[O];
-dvar float+  CacheTrafficFlow[ASes][O];
-dvar float+  TransitTrafficFlow[ASes][O];
 
 /*********************************************************
 * ILP MODEL: Objective Function
 *********************************************************/
 
 //<aa>
-dexpr float HitRatio = 
-	1 - sum ( i in ASes, o in O )
-		(	TransitTrafficFlow[i][o] * TotalDemandInverse
-		);
+dexpr float u_BF = 
+		piecewise{d[1][1] * 2 -> 2; d[1][1] * 1 -> 3; 0};
 
-maximize HitRatio;
+maximize u_BF;
 //</aa>
 
 /*********************************************************
@@ -151,9 +142,40 @@ subject to {
 		sum(i in ASes) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
 
 
+	forall(i in ASes, j in ASes)
 	ct8:
-		sum( o in O ) (CoreRouterCachedObjectsFlag[o]) <= CoreRouterCacheStorage;
+		sum( o in O ) sum (a in ASes) y[o][a][i][j] <= b[i][j];
+		
+	forall( o in O, q in Q, a_ in ASes)
+	ct9:
+	  	y_to_u_q_dependent[o][a_][q] <= K * I[o][a_][q];
+	  	
 	
+	forall( o in O, a_ in ASes)
+	ct10:
+	  	y_to_u[o][a_] ==sum( q in Q) y_to_u_q_dependent[o][a_][q];
+	  	
+	forall( o in O, a_ in ASes, i in ASes, q in Q )
+	ct11:
+	  	sum( j in ASes ) y[o][a_][i][j] + y_to_u[o][i] == 
+	  	sum( k in ASes ) y[o][a_][k][i] + sum (q in Q) y_from_source[o][i][q];
+	  	
+	forall( i in ASes, o in O, q in Q )
+	ct12:
+	  	y_from_source[o][i][q] <= M * x[o][i][q];
+	
+	forall( o in O, a_ in ASes )
+	ct13:
+	  	r[o][a_] == y_to_u[o][a_] / d[o][a_];
+	  	
+	forall ( o in O, a_ in ASes, q in Q)
+	ct14:
+	  	I[o][a_][q] * hmin[q] <= r[o][a_];
+	  	
+	  	
+	forall ( o in O, a_ in ASes, q in Q)
+	ct15:
+	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 }
 
 execute DISPLAY {
@@ -170,17 +192,12 @@ execute DISPLAY {
     var f_border_router_cache_sizes = new IloOplOutputFile("border_router_cache_sizes.csv");
     f_border_router_cache_sizes.open;
 
-    for (i in ASes)
-    	if (i > 1)
-    		f_border_router_cache_sizes.write(";" + BorderRouterCacheStorage[i]);
-		else
-    		f_border_router_cache_sizes.write(BorderRouterCacheStorage[i]);
+
 
     f_border_router_cache_sizes.close;
 
     var f_core_router_cache_size = new IloOplOutputFile("core_router_cache_size.csv");
     f_core_router_cache_size.open;
-	f_core_router_cache_size.write(CoreRouterCacheStorage);
     f_core_router_cache_size.close;
 
     var f_border_router_cached_objects_in_scenarios = new IloOplOutputFile("cached_objects_border_router_scenarios.csv");
@@ -196,47 +213,11 @@ execute DISPLAY {
     f_core_router_cached_objects_in_scenarios.open;
     f_transit_traffic_in_scenarios.open;
     f_intra_as_traffic_in_scenarios.open;
-	//<aa>
+
 	f_hitratio.open;
 	f_totalcost.open;
-	//</aa>
 
-   	for (i in ASes)
-	{
-    	for (o in O) {
-    			f_border_router_cached_objects_in_scenarios.writeln(  ";" + i + ";" + o + ";" + BorderRouterCachedObjectsFlag[i][o]);
-    			f_transit_traffic_in_scenarios.writeln(  ";" + i + ";" + o + ";" + TransitTrafficFlow[i][o]);
-    			f_intra_as_traffic_in_scenarios.writeln(  ";" + i + ";" + o + ";" + CacheTrafficFlow[i][o]);
-		}
-	}
-	
-	for (o in O)
-		f_core_router_cached_objects_in_scenarios.writeln(o + ";" + CoreRouterCachedObjectsFlag[o]);
-
-
-	//<aa> Compute and print the TotalCost
-	var BorderRouterStorage = 0;
-	for (i in ASes)
-		BorderRouterStorage += BorderRouterCacheStorage[i];
-
-	var TotalCost = 0;
-
-
-	var TotalCost = 0;
-	for (o in O)
-		for (i in ASes)
-			TotalCost += TransitPrice[i] * TransitTrafficFlow[i][o];
-	TotalCost += CachePrice * BorderRouterStorage + 
-						CachePrice * CoreRouterCacheStorage;
-
-
-
-	f_totalcost.writeln(TotalCost );
-	//</aa>
-
-	//<aa>
 	f_hitratio.writeln(HitRatio );
-	//</aa>
 
     f_border_router_cached_objects_in_scenarios.close;
     f_core_router_cached_objects_in_scenarios.close;
@@ -253,35 +234,8 @@ execute DISPLAY {
     ////////////////////////////////////
 
     // Demand should be satisfied
-
-	for (var a_ in ASes)
-   	for (o in O) {
-    		var check = 0;
-
-    		check += d[o][a_] * CoreRouterCachedObjectsFlag[o];
-
-    		for (i in ASes)
-    			check += CacheTrafficFlow[i][o];
-
-    		if (check != d[o] [a_]) {
-    			writeln("ERROR! Demand not satisfied: Expected " + d[o][a_] + ", Actual Value " + check);
-    		}
-
-   	}
+	// ..
 
 	// Transit flow should be zero if object is cached in border router
-
-	for (o in O)
-		for (i in ASes)
-			if (TransitTrafficFlow[i][o] > 0 && BorderRouterCachedObjectsFlag[i][o] == 1) {
-				writeln("ERROR! Even though border router is caching object, there is some outgoing traffic");
-			}
-
-	// Cache flow should be zero if object is cached in core router
-
-	for (o in O)
-		for (i in ASes)
-			if (CacheTrafficFlow[i][o] > 0 && CoreRouterCachedObjectsFlag[o] == 1) {
-				writeln("ERROR! Even though core router is caching object, there is some outgoing traffic");
-			}
+	//..
 }
