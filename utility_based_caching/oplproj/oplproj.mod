@@ -1,3 +1,8 @@
+/*********************************************
+ * OPL 12.5 Model
+ * Author: araldo_local
+ * Creation Date: Dec 18, 2014 at 1:37:10 PM
+ *********************************************/
 /* <aa>
  * This model jointly optimizes cache placement and object placement with the goal of minimizing the total cost
  * </aa>
@@ -25,33 +30,40 @@ execute PARAMS {
 /*********************************************************
 * Set cardinalities
 *********************************************************/
-int NumQualities =...;
-
-
 int NumASes      = ...;
-int NumObjects   = ...;
+int O_BF_card   = ...;
+int O_OF_card   = ...;
+int O_LQ_card   = ...;
+int O_HQ_card   = ...;
 
 /*********************************************************
 * Range variables
 *********************************************************/
-range Qualities = 1..NumQualities;
+setof(int) Q = ...;
 
 range ASes      = 1..NumASes;
-range Objects   = 1..NumObjects;
+range O_BF   = 1..O_BF_card;
+range O_OF   = O_BF_card+1 .. O_BF_card+O_OF_card;
+range O_LQ   = O_BF_card+O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card ;
+range O_HQ   = O_BF_card+ O_LQ_card+ O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card ;
+range O_F	 = 1..O_BF_card+O_OF_card;
+range O = 1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card;
+
 
 /*********************************************************
 * Input Parameters
 *********************************************************/
-int a[Objects][ASes]							=...;
-int s[Qualities]								=...;	
+int a[O][ASes]							=...;
+int s[Q]								=...;	
 float b[ASes][ASes]								=...;
 float K											=...;
 float M											=...;
-float hmin[Qualities]							=...;
-float hmax[Qualities]							=...;
+float hmin[Q]							=...;
+float hmax[Q]							=...;
+float S									=...;
 
-int   ObjectReachabilityMatrix[ASes][Objects]				= ...;
-float d[Objects][ASes]							= ...;
+int   ObjectReachabilityMatrix[ASes][O]				= ...;
+float d[O][ASes]							= ...;
 float TransitPrice[ASes]									= ...;
 float CachePrice                                         = ...;
 float MaxCachePerBorderRouter                            = ...;
@@ -66,9 +78,11 @@ float TotalDemandInverse;
 execute
 {
 		var TotalDemand = 0;
-		for (a in ASes)
-			for (o in Objects)
-				TotalDemand += d[o][a];
+		for (var o in O)
+		{		
+			for (var a_ in ASes)
+				TotalDemand += d[o][a_];
+		}
 		TotalDemandInverse = 1/TotalDemand;
 };
 
@@ -76,20 +90,20 @@ execute
 /*********************************************************
 * Decision variables
 *********************************************************/
-dvar boolean x[Objects][ASes][Qualities];
-dvar boolean I[Objects][ASes][Qualities];
-dvar float+  y[Objects][ASes][ASes][ASes];
-dvar float+  y_to_u[Objects][ASes][Qualities];
-dvar float+  y_from_source[Objects][ASes][Qualities];
-dvar float+  r[Objects][ASes];
+dvar boolean x[O][ASes][Q];
+dvar boolean I[O][ASes][Q];
+dvar float+  y[O][ASes][ASes][ASes];
+dvar float+  y_to_u[O][ASes][Q];
+dvar float+  y_from_source[O][ASes][Q];
+dvar float+  r[O][ASes];
 
 
 dvar float+  BorderRouterCacheStorage[ASes];
 dvar float+  CoreRouterCacheStorage;
-dvar boolean BorderRouterCachedObjectsFlag[ASes][Objects];
-dvar boolean CoreRouterCachedObjectsFlag[Objects];
-dvar float+  CacheTrafficFlow[ASes][Objects];
-dvar float+  TransitTrafficFlow[ASes][Objects];
+dvar boolean BorderRouterCachedObjectsFlag[ASes][O];
+dvar boolean CoreRouterCachedObjectsFlag[O];
+dvar float+  CacheTrafficFlow[ASes][O];
+dvar float+  TransitTrafficFlow[ASes][O];
 
 /*********************************************************
 * ILP MODEL: Objective Function
@@ -97,7 +111,7 @@ dvar float+  TransitTrafficFlow[ASes][Objects];
 
 //<aa>
 dexpr float HitRatio = 
-	1 - sum ( i in ASes, o in Objects )
+	1 - sum ( i in ASes, o in O )
 		(	TransitTrafficFlow[i][o] * TotalDemandInverse
 		);
 
@@ -109,40 +123,36 @@ maximize HitRatio;
 *********************************************************/
 
 subject to {
-	forall( a in ASes, i in ASes, o in Objects)
-	ct1:
-		CacheTrafficFlow[i][o] <= TransitTrafficFlow[i][o]+ d[o][a]* BorderRouterCachedObjectsFlag[i][o];
-
-	forall( i in ASes, o in Objects)
+	forall( o in O, i in ASes, q in Q)
 	ct2:
-		(CacheTrafficFlow[i][o] + TransitTrafficFlow[i][o]) * (1 - ObjectReachabilityMatrix[i][o]) <= 0;
+		x[o][i][q] >= a[o][i];
 
 
-
-	forall( a in ASes, o in Objects)
+	forall( o in O, a_ in ASes)
 	ct3:
-		d[o][a] == CoreRouterCachedObjectsFlag[o] * d[o][a] + sum ( i in ASes ) (CacheTrafficFlow[i][o]);
+		sum( q in Q ) I[o][a_][q] == 1;
 
-	forall( i in ASes )
+
+	forall( o in O_F, q in Q diff {1}, i in ASes, a_ in ASes )
 	ct4:
-		BorderRouterCacheStorage[i] <= MaxCachePerBorderRouter;
-
+		x[o][i][q] == I[o][a_][q] == 0;
+		
+	forall( o in O_LQ, q in Q diff {2}, i in ASes, a_ in ASes )
 	ct5:
-		CoreRouterCacheStorage <= MaxCoreCache;
+		x[o][i][q] == I[o][a_][q] == 0;
 
+		
+	forall( o in O_HQ,  i in ASes, a_ in ASes )
 	ct6:
-		CoreRouterCacheStorage + sum( i in ASes ) (BorderRouterCacheStorage[i]) <= MaxTotalCache;
+		x[o][i][1] == I[o][a_][1] == 0;
 
 
-
-
-	forall( i in ASes )
 	ct7:
-		sum( o in Objects ) (BorderRouterCachedObjectsFlag[i][o]) <= BorderRouterCacheStorage[i];
+		sum(i in ASes) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
 
 
 	ct8:
-		sum( o in Objects ) (CoreRouterCachedObjectsFlag[o]) <= CoreRouterCacheStorage;
+		sum( o in O ) (CoreRouterCachedObjectsFlag[o]) <= CoreRouterCacheStorage;
 	
 }
 
@@ -193,14 +203,14 @@ execute DISPLAY {
 
    	for (i in ASes)
 	{
-    	for (o in Objects) {
+    	for (o in O) {
     			f_border_router_cached_objects_in_scenarios.writeln(  ";" + i + ";" + o + ";" + BorderRouterCachedObjectsFlag[i][o]);
     			f_transit_traffic_in_scenarios.writeln(  ";" + i + ";" + o + ";" + TransitTrafficFlow[i][o]);
     			f_intra_as_traffic_in_scenarios.writeln(  ";" + i + ";" + o + ";" + CacheTrafficFlow[i][o]);
 		}
 	}
 	
-	for (o in Objects)
+	for (o in O)
 		f_core_router_cached_objects_in_scenarios.writeln(o + ";" + CoreRouterCachedObjectsFlag[o]);
 
 
@@ -213,7 +223,7 @@ execute DISPLAY {
 
 
 	var TotalCost = 0;
-	for (o in Objects)
+	for (o in O)
 		for (i in ASes)
 			TotalCost += TransitPrice[i] * TransitTrafficFlow[i][o];
 	TotalCost += CachePrice * BorderRouterStorage + 
@@ -244,24 +254,24 @@ execute DISPLAY {
 
     // Demand should be satisfied
 
-	for (a in ASes)
-   	for (o in Objects) {
+	for (var a_ in ASes)
+   	for (o in O) {
     		var check = 0;
 
-    		check += d[o][a] * CoreRouterCachedObjectsFlag[o];
+    		check += d[o][a_] * CoreRouterCachedObjectsFlag[o];
 
     		for (i in ASes)
     			check += CacheTrafficFlow[i][o];
 
-    		if (check != d[o] [a]) {
-    			writeln("ERROR! Demand not satisfied: Expected " + d[o][a] + ", Actual Value " + check);
+    		if (check != d[o] [a_]) {
+    			writeln("ERROR! Demand not satisfied: Expected " + d[o][a_] + ", Actual Value " + check);
     		}
 
    	}
 
 	// Transit flow should be zero if object is cached in border router
 
-	for (o in Objects)
+	for (o in O)
 		for (i in ASes)
 			if (TransitTrafficFlow[i][o] > 0 && BorderRouterCachedObjectsFlag[i][o] == 1) {
 				writeln("ERROR! Even though border router is caching object, there is some outgoing traffic");
@@ -269,7 +279,7 @@ execute DISPLAY {
 
 	// Cache flow should be zero if object is cached in core router
 
-	for (o in Objects)
+	for (o in O)
 		for (i in ASes)
 			if (CacheTrafficFlow[i][o] > 0 && CoreRouterCachedObjectsFlag[o] == 1) {
 				writeln("ERROR! Even though core router is caching object, there is some outgoing traffic");
