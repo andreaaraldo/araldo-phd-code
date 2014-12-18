@@ -25,6 +25,8 @@ execute PARAMS {
 /*********************************************************
 * Set cardinalities
 *********************************************************/
+int NumQualities =...;
+
 
 int NumASes      = ...;
 int NumObjects   = ...;
@@ -32,6 +34,7 @@ int NumObjects   = ...;
 /*********************************************************
 * Range variables
 *********************************************************/
+range Qualities = 1..NumQualities;
 
 range ASes      = 1..NumASes;
 range Objects   = 1..NumObjects;
@@ -39,6 +42,13 @@ range Objects   = 1..NumObjects;
 /*********************************************************
 * Input Parameters
 *********************************************************/
+int a[Objects][ASes]							=...;
+int s[Qualities]								=...;	
+float b[ASes][ASes]								=...;
+float K											=...;
+float M											=...;
+float hmin[Qualities]							=...;
+float hmax[Qualities]							=...;
 
 int   ObjectReachabilityMatrix[ASes][Objects]				= ...;
 float TrafficDemand[Objects]								= ...;
@@ -49,7 +59,6 @@ float MaxCoreCache 							 = ...;
 float MaxTotalCache                                      = ...;
 
 
-//<aa>
 /*********************************************************
 * Intermediate variables
 *********************************************************/
@@ -61,12 +70,18 @@ execute
 			TotalDemand += TrafficDemand[o];
 		TotalDemandInverse = 1/TotalDemand;
 };
-//</aa>
 
 
 /*********************************************************
 * Decision variables
 *********************************************************/
+dvar boolean x[Objects][ASes][Qualities];
+dvar boolean I[Objects][ASes][Qualities];
+dvar float+  y[Objects][ASes][ASes][ASes];
+dvar float+  y_to_u[Objects][ASes][Qualities];
+dvar float+  y_from_source[Objects][ASes][Qualities];
+dvar float+  r[Objects][ASes];
+
 
 dvar float+  BorderRouterCacheStorage[ASes];
 dvar float+  CoreRouterCacheStorage;
