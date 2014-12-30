@@ -232,7 +232,7 @@ subject to {
 		w[o][a_] <= z[o][a_] * (bar_bar_r_BF - bar_r_BF);
 		
 	forall ( o in O_OF, a_ in V)
-	ct21_bis:
+	ct22:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
 
 }
