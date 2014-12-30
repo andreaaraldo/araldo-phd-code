@@ -179,7 +179,7 @@ subject to {
 	  	
 	forall ( o in O_F, a_ in V)
 	ct8:
-		r[o][a_] = v[o][a_] + w[o][a_];
+		r[o][a_] == v[o][a_] + w[o][a_];
 }
 
 execute DISPLAY {
