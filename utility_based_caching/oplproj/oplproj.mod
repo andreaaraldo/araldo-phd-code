@@ -59,13 +59,13 @@ range Categories = 1..Categories_card; // corresponding to BF, OF, LQ, HQ
 *********************************************************/
 int a[O][V]				=...;
 int s[Q]				=...;	
+float U[Q]				=...;
 float b[V][V]				=...;
 float K					=...;
 float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
 float S					=...;
-float U					=...;
 
 int   ObjectReachabilityMatrix[V][O]	= ...;
 float d[O][V]				= ...;
@@ -134,7 +134,7 @@ dexpr float u_OF =
 dexpr float u_V = 
     sum ( o in O_V, a_ in V, q in Q)
     (
-      I[o][a_][q] * d[o][a_] 
+      I[o][a_][q] * d[o][a_] * U[q]
     );
 
 maximize u_BF + u_OF + u_V;
