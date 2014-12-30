@@ -50,6 +50,8 @@ range O_LQ   = O_BF_card+O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card ;
 range O_HQ   = O_BF_card+ O_LQ_card+ O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card ;
 range O_F	 = 1..O_BF_card+O_OF_card;
 range O = 1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card;
+range O_F	 = 1..O_BF_card+O_OF_card;
+range O_V	 = O_BF_card+O_OF_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card;
 range Categories = 1..Categories_card; // corresponding to BF, OF, LQ, HQ
 
 
@@ -64,6 +66,7 @@ float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
 float S					=...;
+float U					=...;
 
 int   ObjectReachabilityMatrix[V][O]	= ...;
 float d[O][V]				= ...;
@@ -128,8 +131,14 @@ dexpr float u_OF =
       d[o][a_] *
       m_OF * v[o][a_] + m_prime_OF * (w[o][a_] - bar_r_OF)
     );
+    
+dexpr float u_V = 
+    sum ( o in O_V, a_ in V, q in Q)
+    (
+      I[o][a_][q] * d[o][a_] * U[q];
+    );
 
-maximize u_BF + u_OF;
+maximize u_BF + u_OF + u_V;
 
 /*********************************************************
 * ILP MODEL: Constraints
