@@ -42,7 +42,7 @@ int O_HQ_card   = ...;
 *********************************************************/
 setof(int) Q = ...;
 
-range ASes      = 1..NumASes;
+range ASes      = 1..V_card;
 range O_BF   = 1..O_BF_card;
 range O_OF   = O_BF_card+1 .. O_BF_card+O_OF_card;
 range O_LQ   = O_BF_card+O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card ;
