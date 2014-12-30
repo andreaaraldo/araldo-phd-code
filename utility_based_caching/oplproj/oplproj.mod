@@ -56,18 +56,22 @@ range Categories = 1..Categories_card; // corresponding to BF, OF, LQ, HQ
 /*********************************************************
 * Input Parameters
 *********************************************************/
-int a[O][V]							=...;
-int s[Q]								=...;	
-float b[V][V]								=...;
-float K											=...;
-float M											=...;
-float hmin[Q]							=...;
-float hmax[Q]							=...;
-float S									=...;
+int a[O][V]				=...;
+int s[Q]				=...;	
+float b[V][V]				=...;
+float K					=...;
+float M					=...;
+float hmin[Q]				=...;
+float hmax[Q]				=...;
+float S					=...;
 
-int   ObjectReachabilityMatrix[V][O]				= ...;
-float d[O][V]							= ...;
-float TransitPrice[V]									= ...;
+int   ObjectReachabilityMatrix[V][O]	= ...;
+float d[O][V]				= ...;
+float TransitPrice[V]			= ...;
+float bar_r_BF				= ...;
+float bar_bar_r_BF			= ...;
+float bar_r_OF				= ...;
+float bar_bar_r_OF			= ...;
 
 
 
@@ -97,8 +101,9 @@ dvar float+  y_to_u_q_dependent[O][V][Q];
 dvar float+  y_to_u[O][V];
 dvar float+  y_from_source[O][V][Q];
 dvar float+  r[O][V];
-dvar float+  v[O][V];
-dvar float+  w[O][V];
+dvar float+  v[O_F][V];
+dvar float+  w[O_F][V];
+dvar boolean  z[O_F][V];
 
 
 
@@ -184,8 +189,9 @@ subject to {
 	ct18:
 		r[o][a_] == v[o][a_] + w[o][a_];
 		
-	forall ( o in O_F, a_ in V)
+	forall ( o in O_BF, a_ in V)
 	ct19:
+		bar_r_BF * z[o][a] <= v[o][a] <= bar_r_BF;
 		
 }
 

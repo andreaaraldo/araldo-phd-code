@@ -8,6 +8,10 @@ Q = {1,2,3,4};
 s = [1 1 2 3];
 hmin = [0.1 0.1 1 1];
 hmax = [2 1 1.5 2];
+bar_r_BF = 1;
+bar_bar_r_BF = 2;
+bar_r_OF = 1;
+bar_bar_r_OF = 2;
 
 ///////// CARDINALITIES
 V_card	  = 3;
