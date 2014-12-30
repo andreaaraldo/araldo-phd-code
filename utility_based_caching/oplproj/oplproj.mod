@@ -118,8 +118,10 @@ dvar boolean  z[O_F][V];
 //<aa>
 dexpr float u_BF = 
     sum (o in O_BF, a_ in V)
+    (
       d[o][a_] *
-      m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF);
+      m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF)
+    );
 
 maximize u_BF;
 //</aa>
