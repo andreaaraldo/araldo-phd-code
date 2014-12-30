@@ -94,6 +94,8 @@ dvar float+  y_to_u_q_dependent[O][V][Q];
 dvar float+  y_to_u[O][V];
 dvar float+  y_from_source[O][V][Q];
 dvar float+  r[O][V];
+dvar float+  v[O][V];
+dvar float+  w[O][V];
 
 
 
@@ -176,6 +178,8 @@ subject to {
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 	  	
 	forall ( o in O_F, a_ in V)
+	ct8:
+		r[o][a_] = v[o][a_] + w[o][a_];
 }
 
 execute DISPLAY {
