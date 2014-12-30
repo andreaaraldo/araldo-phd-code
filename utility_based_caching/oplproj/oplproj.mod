@@ -205,6 +205,14 @@ subject to {
 	ct20_bis:
 		v[o][a_] <= bar_r_OF;
 		
+	forall ( o in O_BF, a_ in V)
+	ct21:
+		w[o][a_] <= z[o][a_] * (bar_bar_r_BF - bar_r_BF);
+		
+	forall ( o in O_OF, a_ in V)
+	ct21_bis:
+		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
+
 }
 
 execute DISPLAY {
