@@ -191,7 +191,7 @@ subject to {
 		
 	forall ( o in O_BF, a_ in V)
 	ct19:
-		bar_r_BF * z[o][a] <= v[o][a];
+		bar_r_BF * z[o][a_] <= v[o][a_];
 		
 }
 
