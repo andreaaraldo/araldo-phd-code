@@ -12,6 +12,10 @@ bar_r_BF = 1;
 bar_bar_r_BF = 2;
 bar_r_OF = 1;
 bar_bar_r_OF = 2;
+m_BF = 1;
+m_prime_BF = 0.5;
+m_OF = 1;
+m_prime_OF = 0.5;
 
 ///////// CARDINALITIES
 V_card	  = 3;

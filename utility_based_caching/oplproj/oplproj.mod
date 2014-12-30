@@ -72,6 +72,10 @@ float bar_r_BF				= ...;
 float bar_bar_r_BF			= ...;
 float bar_r_OF				= ...;
 float bar_bar_r_OF			= ...;
+float m_BF				= ...;
+float m_prime_BF				= ...;
+float m_OF				= ...;
+float m_prime_OF				= ...;
 
 
 
@@ -112,7 +116,10 @@ dvar boolean  z[O_F][V];
 *********************************************************/
 
 //<aa>
-dexpr float u_BF = 1;
+dexpr float u_BF = 
+    sum (o in O_BF, a_ in V)
+      d[o][a] *
+      m_BF * v[o][a_] + m_prime_BF * (w[o][a] - bar_r_BF);
 
 maximize u_BF;
 //</aa>
