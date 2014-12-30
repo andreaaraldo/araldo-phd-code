@@ -178,7 +178,7 @@ subject to {
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 	  	
 	forall ( o in O_F, a_ in V)
-	ct8:
+	ct18:
 		r[o][a_] == v[o][a_] + w[o][a_];
 }
 
