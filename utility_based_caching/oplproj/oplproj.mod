@@ -104,8 +104,7 @@ dvar float+  r[O][ASes];
 *********************************************************/
 
 //<aa>
-dexpr float u_BF = 
-		piecewise{d[1][1] * 2 -> 2; d[1][1] * 1 -> 3; 0};
+dexpr float u_BF = 1;
 
 maximize u_BF;
 //</aa>
