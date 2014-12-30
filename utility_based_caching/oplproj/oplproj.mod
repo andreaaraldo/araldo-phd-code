@@ -197,6 +197,14 @@ subject to {
 	ct19_bis:
 		v[o][a_] <= bar_r_BF;
 		
+	forall ( o in O_OF, a_ in V)
+	ct20:
+		bar_r_OF * z[o][a_] <= v[o][a_];
+		
+	forall ( o in O_OF, a_ in V)
+	ct20_bis:
+		v[o][a_] <= bar_r_OF;
+		
 }
 
 execute DISPLAY {
