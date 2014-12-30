@@ -115,7 +115,6 @@ dvar boolean  z[O_F][V];
 * ILP MODEL: Objective Function
 *********************************************************/
 
-//<aa>
 dexpr float u_BF = 
     sum (o in O_BF, a_ in V)
     (
@@ -123,8 +122,14 @@ dexpr float u_BF =
       m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF)
     );
 
-maximize u_BF;
-//</aa>
+dexpr float u_OF = 
+    sum (o in O_OF, a_ in V)
+    (
+      d[o][a_] *
+      m_OF * v[o][a_] + m_prime_OF * (w[o][a_] - bar_r_OF)
+    );
+
+maximize u_BF + u_OF;
 
 /*********************************************************
 * ILP MODEL: Constraints
