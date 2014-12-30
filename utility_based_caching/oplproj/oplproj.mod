@@ -31,8 +31,7 @@ execute PARAMS {
 /*********************************************************
 * Set cardinalities
 *********************************************************/
-int NumASes      = ...;
-int NumCategories= ...;
+int V_card      = ...;
 int O_BF_card   = ...;
 int O_OF_card   = ...;
 int O_LQ_card   = ...;
@@ -55,18 +54,18 @@ range O = 1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card;
 /*********************************************************
 * Input Parameters
 *********************************************************/
-int a[O][ASes]							=...;
+int a[O][V]							=...;
 int s[Q]								=...;	
-float b[ASes][ASes]								=...;
+float b[V][V]								=...;
 float K											=...;
 float M											=...;
 float hmin[Q]							=...;
 float hmax[Q]							=...;
 float S									=...;
 
-int   ObjectReachabilityMatrix[ASes][O]				= ...;
-float d[O][ASes]							= ...;
-float TransitPrice[ASes]									= ...;
+int   ObjectReachabilityMatrix[V][O]				= ...;
+float d[O][V]							= ...;
+float TransitPrice[V]									= ...;
 
 
 /*********************************************************
@@ -78,7 +77,7 @@ execute
 		var TotalDemand = 0;
 		for (var o in O)
 		{		
-			for (var a_ in ASes)
+			for (var a_ in V)
 				TotalDemand += d[o][a_];
 		}
 		TotalDemandInverse = 1/TotalDemand;
@@ -88,13 +87,13 @@ execute
 /*********************************************************
 * Decision variables
 *********************************************************/
-dvar boolean x[O][ASes][Q];
-dvar boolean I[O][ASes][Q];
-dvar float+  y[O][ASes][ASes][ASes];
-dvar float+  y_to_u_q_dependent[O][ASes][Q];
-dvar float+  y_to_u[O][ASes];
-dvar float+  y_from_source[O][ASes][Q];
-dvar float+  r[O][ASes];
+dvar boolean x[O][V][Q];
+dvar boolean I[O][V][Q];
+dvar float+  y[O][V][V][V];
+dvar float+  y_to_u_q_dependent[O][V][Q];
+dvar float+  y_to_u[O][V];
+dvar float+  y_from_source[O][V][Q];
+dvar float+  r[O][V];
 
 
 
@@ -113,68 +112,70 @@ maximize u_BF;
 *********************************************************/
 
 subject to {
-	forall( o in O, i in ASes, q in Q)
+	forall( o in O, i in V, q in Q)
 	ct2:
 		x[o][i][q] >= a[o][i];
 
 
-	forall( o in O, a_ in ASes)
+	forall( o in O, a_ in V)
 	ct3:
 		sum( q in Q ) I[o][a_][q] == 1;
 
 
-	forall( o in O_F, q in Q diff {1}, i in ASes, a_ in ASes )
+	forall( o in O_F, q in Q diff {1}, i in V, a_ in V )
 	ct4:
 		x[o][i][q] == I[o][a_][q] == 0;
 		
-	forall( o in O_LQ, q in Q diff {2}, i in ASes, a_ in ASes )
+	forall( o in O_LQ, q in Q diff {2}, i in V, a_ in V )
 	ct5:
 		x[o][i][q] == I[o][a_][q] == 0;
 
 		
-	forall( o in O_HQ,  i in ASes, a_ in ASes )
+	forall( o in O_HQ,  i in V, a_ in V )
 	ct6:
 		x[o][i][1] == I[o][a_][1] == 0;
 
 
 	ct7:
-		sum(i in ASes) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
+		sum(i in V) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
 
 
-	forall(i in ASes, j in ASes)
+	forall(i in V, j in V)
 	ct8:
-		sum( o in O ) sum (a in ASes) y[o][a][i][j] <= b[i][j];
+		sum( o in O ) sum (a in V) y[o][a][i][j] <= b[i][j];
 		
-	forall( o in O, q in Q, a_ in ASes)
+	forall( o in O, q in Q, a_ in V)
 	ct9:
 	  	y_to_u_q_dependent[o][a_][q] <= K * I[o][a_][q];
 	  	
 	
-	forall( o in O, a_ in ASes)
+	forall( o in O, a_ in V)
 	ct10:
 	  	y_to_u[o][a_] ==sum( q in Q) y_to_u_q_dependent[o][a_][q];
 	  	
-	forall( o in O, a_ in ASes, i in ASes, q in Q )
+	forall( o in O, a_ in V, i in V, q in Q )
 	ct11:
-	  	sum( j in ASes ) y[o][a_][i][j] + y_to_u[o][i] == 
-	  	sum( k in ASes ) y[o][a_][k][i] + sum (q in Q) y_from_source[o][i][q];
+	  	sum( j in V ) y[o][a_][i][j] + y_to_u[o][i] == 
+	  	sum( k in V ) y[o][a_][k][i] + sum (q in Q) y_from_source[o][i][q];
 	  	
-	forall( i in ASes, o in O, q in Q )
+	forall( i in V, o in O, q in Q )
 	ct12:
 	  	y_from_source[o][i][q] <= M * x[o][i][q];
 	
-	forall( o in O, a_ in ASes )
+	forall( o in O, a_ in V )
 	ct13:
 	  	r[o][a_] == y_to_u[o][a_] / d[o][a_];
 	  	
-	forall ( o in O, a_ in ASes, q in Q)
+	forall ( o in O, a_ in V, q in Q)
 	ct14:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];
 	  	
 	  	
-	forall ( o in O, a_ in ASes, q in Q)
+	forall ( o in O, a_ in V, q in Q)
 	ct15:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
+	  	
+	forall ( o in O_F, a_ in V)
 }
 
 execute DISPLAY {

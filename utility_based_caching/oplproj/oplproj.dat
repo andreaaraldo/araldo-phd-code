@@ -11,7 +11,7 @@ hmax = [2 1 1.5 2];
 NumCategories = 4; //Corresponding to BF, OF, LQ, HQ
 
 ///////// CARDINALITIES
-NumASes= 3;
+V_card	  = 3;
 O_BF_card = 1;
 O_OF_card = 1;
 O_LQ_card = 1;
