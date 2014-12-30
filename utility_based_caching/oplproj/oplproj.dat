@@ -8,7 +8,6 @@ Q = {1,2,3,4};
 s = [1 1 2 3];
 hmin = [0.1 0.1 1 1];
 hmax = [2 1 1.5 2];
-NumCategories = 4; //Corresponding to BF, OF, LQ, HQ
 
 ///////// CARDINALITIES
 V_card	  = 3;
