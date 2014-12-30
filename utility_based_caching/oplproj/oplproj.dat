@@ -15,6 +15,7 @@ O_BF_card = 1;
 O_OF_card = 1;
 O_LQ_card = 1;
 O_HQ_card = 1;
+Categories_card = 4;
 
 
 ///////// SCENARIO

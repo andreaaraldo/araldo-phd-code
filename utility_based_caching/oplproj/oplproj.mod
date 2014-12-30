@@ -36,6 +36,7 @@ int O_BF_card   = ...;
 int O_OF_card   = ...;
 int O_LQ_card   = ...;
 int O_HQ_card   = ...;
+int Categories_card = ...;
 
 /*********************************************************
 * Range variables
@@ -49,6 +50,7 @@ range O_LQ   = O_BF_card+O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card ;
 range O_HQ   = O_BF_card+ O_LQ_card+ O_LQ_card+1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card ;
 range O_F	 = 1..O_BF_card+O_OF_card;
 range O = 1 .. O_BF_card+ O_LQ_card+ O_LQ_card+O_HQ_card;
+range Categories = 1..Categories_card; // corresponding to BF, OF, LQ, HQ
 
 
 /*********************************************************
@@ -66,6 +68,7 @@ float S									=...;
 int   ObjectReachabilityMatrix[V][O]				= ...;
 float d[O][V]							= ...;
 float TransitPrice[V]									= ...;
+
 
 
 /*********************************************************
@@ -180,6 +183,10 @@ subject to {
 	forall ( o in O_F, a_ in V)
 	ct18:
 		r[o][a_] == v[o][a_] + w[o][a_];
+		
+	forall ( o in O_F, a_ in V)
+	ct19:
+		
 }
 
 execute DISPLAY {
