@@ -42,7 +42,6 @@ int O_HQ_card   = ...;
 * Range variables
 *********************************************************/
 setof(int) Q = ...;
-setof(int) Categories = ...;
 
 range ASes      = 1..NumASes;
 range O_BF   = 1..O_BF_card;
