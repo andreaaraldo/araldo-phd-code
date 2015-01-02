@@ -196,13 +196,11 @@ subject to {
 	ct13:
 	  	r[o][a_] == ( (d[o][a_] == 0) ? 0 : (y_to_u[o][a_] / d[o][a_] ) );
 
-/*
-	forall ( o in O, a_ in V, q in Q)
+	forall ( o in O_V, a_ in V, q in Q)
 	ct14:
-	  	I[o][a_][q] * hmin[q] <= r[o][a_];
-*/	  	
+	  	I[o][a_][q] * hmin[q] <= r[o][a_];	  	
 	  	
-	forall ( o in O, a_ in V, q in Q)
+	forall ( o in O_V, a_ in V, q in Q)
 	ct15:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 	  	
