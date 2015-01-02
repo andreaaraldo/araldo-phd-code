@@ -1,6 +1,6 @@
 Q = {1 2 3 4};
 s = [1 1 2 5];
-U = [1 0 2 3];
+U = [1 2 2 3];
 hmin = [0.1 0 0 0];
 hmax = [2 100 100 100];
 bar_r_BF = 1;
@@ -42,9 +42,9 @@ TotalDemandInverse = 1;
 // RANGE_INT O_LQ [1 ,4]
 // RANGE_INT O_HQ [0 ,-1]
 
-// solution (optimal) with objective 0
+// solution (optimal) with objective 2
 // Quality Incumbent solution:
-// MILP objective                                 0.0000000000e+00
+// MILP objective                                 2.0000000000e+00
 // MILP solution norm |x| (Total, Max)            6.00000e+01  1.00000e+00
 // MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
