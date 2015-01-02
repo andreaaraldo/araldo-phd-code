@@ -194,7 +194,7 @@ subject to {
 	
 	forall( o in O, a_ in V )
 	ct13:
-	  	r[o][a_] == (d[o][a_] == 0) ? 0 : (y_to_u[o][a_] / d[o][a_] );
+	  	r[o][a_] == ( (d[o][a_] == 0) ? 0 : (y_to_u[o][a_] / d[o][a_] ) );
 	  	
 	forall ( o in O, a_ in V, q in Q)
 	ct14:
