@@ -28,8 +28,8 @@ O_HQ_card = 2;
 
 
 ///////// SCENARIO
-K = 5;
-M= 5;
+K = 5000;
+M= 5000;
 S=2;
 
 // The repository is attached to the third node. All contents are stored there.
