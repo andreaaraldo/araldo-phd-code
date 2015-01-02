@@ -24,7 +24,7 @@ V_card	  = 3;
 O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 0;
-O_HQ_card = 1;
+O_HQ_card = 4;
 
 
 ///////// SCENARIO
