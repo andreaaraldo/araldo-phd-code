@@ -198,16 +198,16 @@ subject to {
 		
 	forall( o in O, a_ in V )
 	ct13_bis:
-		r[o][a_] <= M;
+		r[o][a_] <= y_to_u[o][a_];
 
 	forall ( o in O, a_ in V, q in Q)
 	ct14:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];	  	
-/*
+
 	forall ( o in O, a_ in V, q in Q)
 	ct15:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
-*/	  	
+
 	forall ( o in O_F, a_ in V)
 	ct18:
 		r[o][a_] == v[o][a_] + w[o][a_];
