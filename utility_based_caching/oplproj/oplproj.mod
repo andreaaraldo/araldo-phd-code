@@ -295,9 +295,11 @@ execute DISPLAY {
     // hmin[q] == hmax[q], if q>0
     
     // At least one repository must provide the content.
+    
+    // The cardinality of O must be the sum of cardinalities of O_BF O_OF O_LQ O_HQ.
 
+    /////////// SOLUTION CORRECTNESS VERIFICATION
 
     // Demand should be satisfied
-	// ..
 
 }
