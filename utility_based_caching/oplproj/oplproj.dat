@@ -17,6 +17,7 @@ m_BF = 1;
 m_prime_BF = 0.5;
 m_OF = 1;
 m_prime_OF = 0.5;
+Categories_card = 4;
 
 ///////// CARDINALITIES
 V_card	  = 3;
@@ -24,7 +25,6 @@ O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 2;
 O_HQ_card = 2;
-Categories_card = 4;
 
 
 ///////// SCENARIO
