@@ -162,6 +162,7 @@ subject to {
 	ct5:
 		//x[o][i][q] == I[o][a_][q] == 0;
 		I[o][a_][q]  == 0;
+		x[o][i][q] == 0;
 
 		
 	forall( o in O_HQ,  i in V, a_ in V )
