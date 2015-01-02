@@ -149,7 +149,7 @@ subject to {
 
 	forall( o in O, a_ in V)
 	ct3:
-		d[o][a_] * sum( q in Q ) I[o][a_][q] == d[o][a_];
+		sum( q in Q ) I[o][a_][q] == 1;
 
 
 	forall( o in O_F, q in Q diff {1}, i in V, a_ in V )
