@@ -158,7 +158,8 @@ subject to {
 		
 	forall( o in O_LQ, q in Q diff {2}, i in V, a_ in V )
 	ct5:
-		x[o][i][q] == I[o][a_][q] == 0;
+		//x[o][i][q] == I[o][a_][q] == 0;
+		x[o][i][q]  == 0;
 
 		
 	forall( o in O_HQ,  i in V, a_ in V )
