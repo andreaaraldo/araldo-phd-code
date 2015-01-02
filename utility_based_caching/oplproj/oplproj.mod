@@ -234,56 +234,22 @@ subject to {
 
 }
 
+main {
+  thisOplModel.generate();
+  cplex.solve();
+  var ofile = new IloOplOutputFile("results.txt");
+  ofile.writeln(thisOplModel.printExternalData());
+  ofile.writeln(thisOplModel.printInternalData());
+  ofile.writeln(thisOplModel.printSolution());
+  ofile.close();
+}
+
 execute DISPLAY {
-	writeln("Optimization results\n\n");
-	
-	var i;
-	var o;
+    writeln("Optimization results\n\n");
 
-	var f_obj_function = new IloOplOutputFile("obj_function.csv");
-	f_obj_function.open;
-	f_obj_function.write(HitRatio); //<aa>Stampo HitRatio e non costo</aa>
-	f_obj_function.close;
-
-    var f_border_router_cache_sizes = new IloOplOutputFile("border_router_cache_sizes.csv");
+    var f_border_router_cache_sizes = new IloOplOutputFile("replica_placement.csv");
     f_border_router_cache_sizes.open;
-
-
-
     f_border_router_cache_sizes.close;
-
-    var f_core_router_cache_size = new IloOplOutputFile("core_router_cache_size.csv");
-    f_core_router_cache_size.open;
-    f_core_router_cache_size.close;
-
-    var f_border_router_cached_objects_in_scenarios = new IloOplOutputFile("cached_objects_border_router_scenarios.csv");
-    var f_core_router_cached_objects_in_scenarios = new IloOplOutputFile("cached_objects_core_router_scenaris.csv");
-    var f_transit_traffic_in_scenarios = new IloOplOutputFile("transit_traffic.csv");
-    var f_intra_as_traffic_in_scenarios = new IloOplOutputFile("intra_as_traffic.csv");
-	//<aa>
-	var f_hitratio = new IloOplOutputFile("hitratio.csv"); 
-	var f_totalcost = new IloOplOutputFile("totalcost.csv"); 
-	//</aa>
-
-    f_border_router_cached_objects_in_scenarios.open;
-    f_core_router_cached_objects_in_scenarios.open;
-    f_transit_traffic_in_scenarios.open;
-    f_intra_as_traffic_in_scenarios.open;
-
-	f_hitratio.open;
-	f_totalcost.open;
-
-	f_hitratio.writeln(HitRatio );
-
-    f_border_router_cached_objects_in_scenarios.close;
-    f_core_router_cached_objects_in_scenarios.close;
-    f_transit_traffic_in_scenarios.close;
-    f_intra_as_traffic_in_scenarios.close;
-	//<aa>
-	f_hitratio.close;
-	f_totalcost.close;
-	//</aa>
-
 
 /*********************************************************
 * TESTS
