@@ -30,7 +30,7 @@ O_HQ_card = 0;
 ///////// SCENARIO
 K = 5000;
 M= 5000;
-S=4;
+S=200;
 
 // The repository is attached to the third node. All contents are stored there.
 a = [ [0 0 1] [0 0 1] [0 0 1] [0 0 1] ] ;
