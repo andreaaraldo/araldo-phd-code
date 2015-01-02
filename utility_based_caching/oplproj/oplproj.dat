@@ -5,10 +5,10 @@
  *********************************************/
 ///////// FIXED DATA
 Q = {1,2,3,4};
-s = [1 1 2 3];
-U = [2 4 6 8];
-hmin = [0.1 0.1 1 1];
-hmax = [2 1 1.5 2];
+s = [1 1 2 5];
+U = [1 1 2 3];
+hmin = [0.1 0.1 0.2 0.5];
+hmax = [2   0.1 0.2 0.5];
 bar_r_BF = 1;
 bar_bar_r_BF = 2;
 bar_r_OF = 1;
@@ -20,10 +20,10 @@ m_prime_OF = 0.5;
 
 ///////// CARDINALITIES
 V_card	  = 3;
-O_BF_card = 1;
-O_OF_card = 1;
-O_LQ_card = 1;
-O_HQ_card = 1;
+O_BF_card = 0;
+O_OF_card = 0;
+O_LQ_card = 2;
+O_HQ_card = 2;
 Categories_card = 4;
 
 
@@ -32,15 +32,10 @@ K = 5;
 M= 5;
 S=2;
 
-a = [ [1 1 1] [1 1 1] [1 1 1] [1 1 1] ] ;
-b = [ [1 1 1] [1 1 1] [1 1 1] ] ;
+// The repository is attached to the third node. All contents are stored there.
+a = [ [0 0 1] [0 0 1] [0 0 1] [0 0 1] ] ;
+b = [ [0 1 1] [1 0 1] [1 1 0] ] ;
 
 
-
-ObjectReachabilityMatrix=[ [ 1 1 1 1 ]  [ 1 1 1 1 ]  [ 1 1 1 1 ]  ];
-
-
-d = [ [61455 61455 61455]  [30728 30728 30728 ] [20485 20485 20485 ] [15364 15364 15364 ] ] ;
-
-
-TransitPrice= [ 0 1 1 ]  ;
+// All the demand comes from the first node.
+d = [ [1 0 0]  [1 0 0] [1 0 0] [1 0 0] ] ;

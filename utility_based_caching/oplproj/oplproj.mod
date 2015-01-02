@@ -67,9 +67,7 @@ float hmin[Q]				=...;
 float hmax[Q]				=...;
 float S					=...;
 
-int   ObjectReachabilityMatrix[V][O]	= ...;
 float d[O][V]				= ...;
-float TransitPrice[V]			= ...;
 float bar_r_BF				= ...;
 float bar_bar_r_BF			= ...;
 float bar_r_OF				= ...;
@@ -288,13 +286,18 @@ execute DISPLAY {
 	//</aa>
 
 
-    ////////////////////////////////////
-    // TESTS
-    ////////////////////////////////////
+/*********************************************************
+* TESTS
+*********************************************************/
+    /////////// INPUT VERIFICATION
+    // b[i][i] must be 0
+    
+    // hmin[q] == hmax[q], if q>0
+    
+    // At least one repository must provide the content.
+
 
     // Demand should be satisfied
 	// ..
 
-	// Transit flow should be zero if object is cached in border router
-	//..
 }
