@@ -45,8 +45,8 @@ TotalDemandInverse = 1;
 // solution (optimal) with objective 2
 // Quality Incumbent solution:
 // MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            5.50600e+04  5.00000e+03
-// MILP solution error (Ax=b) (Total, Max)        3.05825e-12  2.18492e-13
+// MILP solution norm |x| (Total, Max)            5.50490e+04  5.00000e+03
+// MILP solution error (Ax=b) (Total, Max)        6.54836e-13  2.18279e-13
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
 // MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
@@ -56,17 +56,17 @@ TotalDemandInverse = 1;
 v = [];
 w = [];
 I = [[[0 1 0 0]
-                 [0 1 0 0]
-                 [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
-                 [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
-                 [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
-                 [0 1 0 0]]];
+                 [0 0 0 0]
+                 [0 0 0 0]]
+             [[0 0 0 0]
+                 [0 0 0 0]
+                 [0 0 0 0]]
+             [[0 0 0 0]
+                 [0 0 0 0]
+                 [0 0 0 0]]
+             [[0 0 0 0]
+                 [0 0 0 0]
+                 [0 0 0 0]]];
 x = [[[1 1 1 1]
                  [1 1 1 1]
                  [1 1 1 1]]
