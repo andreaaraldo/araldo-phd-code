@@ -42,6 +42,8 @@ int Categories_card = ...;
 * Range variables
 *********************************************************/
 setof(int) Q = ...;
+setof(int) Q_except_1 = ...;
+setof(int) Q_except_2 = ...;
 
 range V      = 1..V_card;
 range O_BF   = 1..O_BF_card;
@@ -152,14 +154,14 @@ subject to {
 		d[o][a_] *sum( q in Q ) I[o][a_][q] == d[o][a_];
 
 
-	forall( o in O_F, q in Q diff {1}, i in V, a_ in V )
+	forall( o in O_F, q in Q_except_1, i in V, a_ in V )
 	ct4:
 		x[o][i][q] == I[o][a_][q] == 0;
 		
-	forall( o in O_LQ, q in (Q diff {2}), i in V, a_ in V )
+	forall( o in O_LQ, q in Q_except_2, i in V, a_ in V )
 	ct5:
-		//x[o][i][q] == I[o][a_][q] == 0;
-		x[o][i][q]  == 0;
+		x[o][i][q] == I[o][a_][q] == 0;
+		//x[o][i][q]  == 0;
 
 		
 	forall( o in O_HQ,  i in V, a_ in V )
