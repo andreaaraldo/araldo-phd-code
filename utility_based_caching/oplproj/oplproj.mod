@@ -41,7 +41,7 @@ int Categories_card = ...;
 /*********************************************************
 * Range variables
 *********************************************************/
-setof(int) Q = ...;
+range Q = 1..4;
 
 range V      = 1..V_card;
 range O_BF   = 1..O_BF_card;
@@ -181,6 +181,7 @@ subject to {
 	forall( o in O, q in Q, a_ in V)
 	ct6:
 		I[o][a_][q] <= l[o][q];
+	
 	
 	ct7:
 		sum(i in V) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= Stot;
