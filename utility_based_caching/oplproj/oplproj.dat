@@ -33,9 +33,9 @@ M= 5000;
 Stot=0;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [1] ] ;
-b = [ [0]] ;
+a = [ [0 1] ] ;
+b = [ [0 0] [1 0] ] ;
 
 
 // All the demand comes from the first node.
-d = [ [1] ] ;
+d = [ [1 0] ] ;
