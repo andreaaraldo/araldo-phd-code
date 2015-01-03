@@ -1,7 +1,7 @@
 Q = {1 2 3 4};
 s = [1 1 2 5];
 U = [1 2 2 3];
-hmin = [0.1 0.65 2 3];
+hmin = [0.1 1 2 3];
 hmax = [2 0.011 0.021 0.031];
 bar_r_BF = 1;
 bar_bar_r_BF = 2;
@@ -45,11 +45,11 @@ TotalDemandInverse = 1;
 // solution (optimal) with objective 2
 // Quality Incumbent solution:
 // MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            1.61500e+01  1.95000e+00
-// MILP solution error (Ax=b) (Total, Max)        7.24976e-13  3.63376e-13
+// MILP solution norm |x| (Total, Max)            2.00000e+01  3.00000e+00
+// MILP solution error (Ax=b) (Total, Max)        1.55431e-15  4.44089e-16
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
-// MILP slack bound error (Total, Max)            4.44089e-16  4.44089e-16
+// MILP slack bound error (Total, Max)            1.11022e-15  4.44089e-16
 // 
 
 v = [];
@@ -84,7 +84,7 @@ x = [[[0 0 0 0]
                  [0 1 0 0]]];
 y = [[[[0 0 0]
                      [0 0 0]
-                     [0.65 0.65 0]]
+                     [1 1 0]]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]
@@ -118,7 +118,7 @@ y = [[[[0 0 0]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]]];
-f_usr = [[[0 0.65 0 0]
+f_usr = [[[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
              [[0 0 0 0]
@@ -132,7 +132,7 @@ f_usr = [[[0 0.65 0 0]
                  [0 0 0 0]]];
 f_src = [[[[0 0 0 0]
                      [0 0 0 0]
-                     [0 1.95 0 0]]
+                     [0 3 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]
@@ -166,11 +166,11 @@ f_src = [[[[0 0 0 0]
                  [[0 0 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]]];
-y_usr = [[0.65 0 0]
+y_usr = [[1 0 0]
              [0 0 0]
              [0 0 0]
              [0 0 0]];
-y_src = [[[0 0 1.95]
+y_src = [[[0 0 3]
                  [0 0 0]
                  [0 0 0]]
              [[0 0 0]
@@ -182,7 +182,7 @@ y_src = [[[0 0 1.95]
              [[0 0 0]
                  [0 0 0]
                  [0 0 0]]];
-r = [[0.65 0 0]
+r = [[1 0 0]
              [0 0 0]
              [0 0 0]
              [0 0 0]];
