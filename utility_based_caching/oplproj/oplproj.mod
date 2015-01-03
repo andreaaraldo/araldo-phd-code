@@ -241,11 +241,11 @@ subject to {
 	ct18:
 		r[o][a_] <= y_usr[o][a_];
 
-		
+/*		
 	forall ( o in O, a_ in V, q in Q)
 	ct19:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];	  	
-
+*/
 /*
 	forall ( o in O, a_ in V, q in Q)
 	ct20:
