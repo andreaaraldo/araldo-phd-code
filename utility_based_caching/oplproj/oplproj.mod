@@ -240,11 +240,11 @@ subject to {
 	ct17:
 		d[o][a_] * r[o][a_] == y_usr[o][a_];
 		
-		
+/*		
 	forall( o in O, a_ in V )
 	ct18:
 		r[o][a_] <= y_usr[o][a_];
-
+*/
 
 	forall ( o in O, a_ in V, q in Q)
 	ct19:
