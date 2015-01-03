@@ -225,14 +225,12 @@ subject to {
 		y[o][a_][a_][i] == 0;
 
 
-/*
 	forall( o in O, a_ in V, i in V)
 	ct15:
 	  	y_usr[o][i] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
-*/
-	  	
+/*	  	
 	forall( o in O, a_ in V)
 	ct16:
 		y_usr[o][a_] == sum(i in V) y_src[o][a_][i];
@@ -250,13 +248,13 @@ subject to {
 	forall ( o in O, a_ in V, q in Q)
 	ct19:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];
-
+*/
 /*
 	forall ( o in O, a_ in V, q in Q)
 	ct20:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 */
-
+/*
 	forall ( o in O_F, a_ in V)
 	ct23:
 		r[o][a_] == v[o][a_] + w[o][a_];
@@ -287,7 +285,7 @@ subject to {
 	forall ( o in O_OF, a_ in V)
 	ct27:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
-
+*/
 }
 
 main {
