@@ -165,7 +165,6 @@ subject to {
 		l[o][1] == 0;
 
 		
-/*
 
 	forall( o in O, i in V, q in Q)
 	ct3:
@@ -176,6 +175,7 @@ subject to {
 	ct4:
 		d[o][a_] *sum( q in Q ) I[o][a_][q] == d[o][a_];
 
+/*
 
 	forall( o in O, q in Q, i in V)
 	ct5:
