@@ -65,7 +65,7 @@ float K					=...;
 float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
-float Stot					=...;
+float Stot				=...;
 
 float d[O][V]				= ...;
 float bar_r_BF				= ...;
