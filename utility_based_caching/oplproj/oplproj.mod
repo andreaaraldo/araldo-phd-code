@@ -144,6 +144,8 @@ maximize u_BF + u_OF + u_V;
 *********************************************************/
 
 subject to {
+/*
+
 	forall( o in O_F)
 	ct1_a:
 		l[o][1] == 1;
@@ -228,7 +230,7 @@ subject to {
 	  	y_usr[o][i] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
-/*
+	  	
 	forall( o in O, a_ in V)
 	ct16:
 		y_usr[o][a_] == sum(i in V) y_src[o][a_][i];
