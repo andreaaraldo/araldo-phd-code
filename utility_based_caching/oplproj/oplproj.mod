@@ -41,7 +41,7 @@ int Categories_card = ...;
 /*********************************************************
 * Range variables
 *********************************************************/
-range Q = 1..4;
+setof(int) Q = ...;
 
 range V      = 1..V_card;
 range O_BF   = 1..O_BF_card;
