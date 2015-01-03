@@ -194,12 +194,12 @@ subject to {
 	ct8:
 		sum( o in O ) sum (a in V) y[o][a][i][j] <= b[i][j];
 
-/*
 
 	forall( o in O, q in Q, a_ in V)
 	ct9:
 	  	f_usr[o][a_][q] <= K * I[o][a_][q];
 	
+/*
 	
 	forall( o in O, q in Q, a_ in V, i in V)
 	ct10:
