@@ -225,12 +225,12 @@ subject to {
 		y[o][a_][a_][i] == 0;
 
 
+/*
 	forall( o in O, a_ in V, i in V)
 	ct15:
 	  	y_usr[o][i] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
-/*
 	  	
 	forall( o in O, a_ in V)
 	ct16:
