@@ -225,7 +225,7 @@ subject to {
 
 	forall( o in O, a_ in V, i in V)
 	ct15:
-	  	y__usr[o][a_] + sum( j in V ) y[o][a_][i][j]  == 
+	  	y_usr[o][a_] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
 	
