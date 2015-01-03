@@ -230,21 +230,21 @@ subject to {
 	  	y_usr[o][i] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
-/*
+
 	forall( o in O, a_ in V)
 	ct16:
 		y_usr[o][a_] == sum(i in V) y_src[o][a_][i];
-*/
+
 		
 	forall( o in O, a_ in V )
 	ct17:
 		d[o][a_] * r[o][a_] == y_usr[o][a_];
 		
-/*		
+
 	forall( o in O, a_ in V )
 	ct18:
 		r[o][a_] <= y_usr[o][a_];
-*/
+
 
 	forall ( o in O, a_ in V, q in Q)
 	ct19:
