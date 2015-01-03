@@ -65,7 +65,7 @@ float K					=...;
 float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
-float Stot					=...;
+float S					=...;
 
 float d[O][V]				= ...;
 float bar_r_BF				= ...;
@@ -184,7 +184,7 @@ subject to {
 	
 
 	ct7:
-		sum( i in V ) sum( o in O ) sum(q in Q) ( (x[o][i][q] - a[o][i] * l[o][q] ) * s[q] )<= Stot;
+		sum( i in V ) sum( o in O ) sum(q in Q) ( (x[o][i][q] - a[o][i] * l[o][q] ) * s[q] )<= S;
 
 
 	forall(i in V, j in V)
@@ -221,11 +221,11 @@ subject to {
 	ct14:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];	  	
 
-/*
+
 	forall ( o in O, a_ in V, q in Q)
 	ct15:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
-*/
+
 
 	forall ( o in O_F, a_ in V)
 	ct18:
