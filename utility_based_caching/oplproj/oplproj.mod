@@ -175,12 +175,13 @@ subject to {
 	ct4:
 		d[o][a_] *sum( q in Q ) I[o][a_][q] == d[o][a_];
 
-/*
 
 	forall( o in O, q in Q, i in V)
 	ct5:
 		x[o][i][q] <= l[o][q];
 		
+/*
+
 	forall( o in O, q in Q, a_ in V)
 	ct6:
 		I[o][a_][q] <= l[o][q];
