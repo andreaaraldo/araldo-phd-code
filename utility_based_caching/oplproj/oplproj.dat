@@ -30,11 +30,11 @@ O_HQ_card = 0;
 ///////// SCENARIO
 K = 5000;
 M= 5000;
-Stot=0;
+Stot=1;
 
 // The repository is attached to the second node. All contents are stored there.
 a = [ [0 1] ] ;
-b = [ [1 0] [0 1] ] ;
+b = [ [0 0] [1 0] ] ;
 
 
 // All the demand comes from the first node.
