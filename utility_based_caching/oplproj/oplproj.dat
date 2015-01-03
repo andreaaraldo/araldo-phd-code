@@ -20,7 +20,7 @@ m_prime_OF = 0.5;
 Categories_card = 4;
 
 ///////// CARDINALITIES
-V_card	  = 2;
+V_card	  = 1;
 O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 1;
@@ -30,12 +30,12 @@ O_HQ_card = 0;
 ///////// SCENARIO
 K = 5000;
 M= 5000;
-Stot=1;
+Stot=0;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [0 1] ] ;
-b = [ [0 0] [1 0] ] ;
+a = [ [1] ] ;
+b = [ [0]] ;
 
 
 // All the demand comes from the first node.
-d = [ [1 0] ] ;
+d = [ [1] ] ;
