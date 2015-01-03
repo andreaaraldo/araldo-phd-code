@@ -27,14 +27,14 @@ a = [[0 0 1]
 b = [[0 1 1]
              [1 0 1]
              [1 1 0]];
-d = [[2 0 0]
-             [2 0 0]
-             [2 0 0]
-             [2 0 0]];
+d = [[1 0 0]
+             [1 0 0]
+             [1 0 0]
+             [1 0 0]];
 
 // RANGE_INT O [1 ,4]
 // RANGE_INT V [1 ,3]
-TotalDemandInverse = 0.125;
+TotalDemandInverse = 0.25;
 // RANGE_INT O_BF [0 ,-1]
 // RANGE_INT O_F [0 ,-1]
 // RANGE_INT O_OF [0 ,-1]
@@ -42,11 +42,11 @@ TotalDemandInverse = 0.125;
 // RANGE_INT O_LQ [1 ,4]
 // RANGE_INT O_HQ [0 ,-1]
 
-// solution (optimal) with objective 16
+// solution (optimal) with objective 8
 // Quality Incumbent solution:
-// MILP objective                                 1.6000000000e+01
-// MILP solution norm |x| (Total, Max)            4.40000e+01  2.00000e+00
-// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
+// MILP objective                                 8.0000000000e+00
+// MILP solution norm |x| (Total, Max)            3.30000e+01  1.00000e+00
+// MILP solution error (Ax=b) (Total, Max)        6.06515e-13  3.03202e-13
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
 // MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
@@ -111,41 +111,41 @@ y = [[[[0 0 0]
                      [0 0 0]]]
              [[[0 0 0]
                      [0 0 0]
-                     [0 0 0]]
+                     [0.33333 0 0]]
                  [[0 0 0]
                      [0 0 0]
-                     [0 0 0]]
+                     [0.33333 0 0]]
                  [[0 0 0]
                      [0 0 0]
-                     [0 0 0]]]];
-y_to_u_q_dependent = [[[0 2 0 0]
+                     [0.33333 0 0]]]];
+y_to_u_q_dependent = [[[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]];
-y_to_u = [[2 0 0]
-             [2 0 0]
-             [2 0 0]
-             [2 0 0]];
-y_from_source = [[[0 2 0 0]
+y_to_u = [[1 0 0]
+             [1 0 0]
+             [1 0 0]
+             [1 0 0]];
+y_from_source = [[[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 1 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
-             [[0 2 0 0]
+             [[0 0.66667 0 0]
                  [0 0 0 0]
-                 [0 0 0 0]]];
+                 [0 0.33333 0 0]]];
 r = [[1 0 0]
              [1 0 0]
              [1 0 0]
