@@ -158,10 +158,10 @@ subject to {
 	ct1_d:
 		l[o][q] == 0;
 	forall( o in O_HQ, q in Q diff {1})
-	ct1_d:
+	ct1_e:
 		l[o][q] == 1;
 	forall( o in O_HQ)
-	ct1_d:
+	ct1_f:
 		l[o][1] == 0;
 
 		
