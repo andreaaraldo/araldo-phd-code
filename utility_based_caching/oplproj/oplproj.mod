@@ -228,56 +228,59 @@ subject to {
 	  	y_usr[o][a_] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
+	forall( o in O, a_ in V)
+	ct16:
+		y_usr[o][a_] = sum(i in V) y_src[o][a_][i];
 	
 	forall( o in O, a_ in V )
-	ct16:
+	ct17:
 		d[o][a_] * r[o][a_] == y_usr[o][a_];
 		
 		
 	forall( o in O, a_ in V )
-	ct17:
+	ct18:
 		r[o][a_] <= y_usr[o][a_];
 
 		
 	forall ( o in O, a_ in V, q in Q)
-	ct18:
+	ct19:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];	  	
 
 /*
 	forall ( o in O, a_ in V, q in Q)
-	ct19:
+	ct20:
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 */
 
 	forall ( o in O_F, a_ in V)
-	ct22:
+	ct23:
 		r[o][a_] == v[o][a_] + w[o][a_];
 		
 
 	forall ( o in O_BF, a_ in V)
-	ct23:
+	ct24:
 		bar_r_BF * z[o][a_] <= v[o][a_];
 		
 	forall ( o in O_BF, a_ in V)
-	ct23_bis:
+	ct24_bis:
 		v[o][a_] <= bar_r_BF;
 		
 		
 	forall ( o in O_OF, a_ in V)
-	ct24:
+	ct25:
 		bar_r_OF * z[o][a_] <= v[o][a_];
 		
 	forall ( o in O_OF, a_ in V)
-	ct24_bis:
+	ct25_bis:
 		v[o][a_] <= bar_r_OF;
 		
 		
 	forall ( o in O_BF, a_ in V)
-	ct25:
+	ct26:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_BF - bar_r_BF);
 		
 	forall ( o in O_OF, a_ in V)
-	ct26:
+	ct27:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
 
 }
