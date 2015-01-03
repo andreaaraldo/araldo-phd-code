@@ -214,7 +214,6 @@ subject to {
 	ct12:
 	  	y_usr[o][a_] == sum( q in Q) f_usr[o][a_][q];
 
-/*
 
 	forall ( o in O, a_ in V, i in V)
 	ct13:
@@ -225,6 +224,7 @@ subject to {
 	ct14:
 		y[o][a_][a_][i] == 0;
 
+/*
 
 	forall( o in O, a_ in V, i in V)
 	ct15:
