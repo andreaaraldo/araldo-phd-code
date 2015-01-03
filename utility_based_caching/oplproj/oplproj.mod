@@ -185,7 +185,7 @@ subject to {
 
 	forall( i in V)
 	ct7:
-		sum( o in O ) sum(q in Q) ( (x[o][i][q] - a[o][i] ) * s[q] )<= Stot;
+		sum( o in O ) sum(q in Q) ( (x[o][i][q] - a[o][i] * l[o][q] ) * s[q] )<= Stot;
 
 
 	forall(i in V, j in V)
