@@ -19,7 +19,7 @@ O_LQ_card = 4;
 O_HQ_card = 0;
 K = 5000;
 M = 5000;
-Stot = 1;
+Stot = 0;
 a = [[0 0 1]
              [0 0 1]
              [0 0 1]
@@ -45,7 +45,7 @@ TotalDemandInverse = 1;
 // solution (optimal) with objective 2
 // Quality Incumbent solution:
 // MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            1.00700e+01  1.00000e+00
+// MILP solution norm |x| (Total, Max)            9.07000e+00  1.00000e+00
 // MILP solution error (Ax=b) (Total, Max)        4.37693e-13  2.18279e-13
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
@@ -80,7 +80,7 @@ x = [[[0 0 0 0]
                  [0 0 0 0]
                  [0 1 0 0]]
              [[0 0 0 0]
-                 [0 1 0 0]
+                 [0 0 0 0]
                  [0 1 0 0]]];
 y = [[[[0 0 0]
                      [0 0 0]
