@@ -225,7 +225,7 @@ subject to {
 
 	forall ( o in O, a_ in V, q in Q)
 	ct15:
-	  	r[o][a_] <= I[o][a_][q] * M;
+	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 
 	forall ( o in O_F, a_ in V)
 	ct18:
