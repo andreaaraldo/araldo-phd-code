@@ -100,6 +100,7 @@ execute
 /*********************************************************
 * Decision variables
 *********************************************************/
+dvar boolean l[O][Q];
 dvar boolean x[O][V][Q];
 dvar boolean I[O][V][Q];
 dvar float+  y[O][V][V][V];
@@ -144,34 +145,45 @@ maximize u_BF + u_OF + u_V;
 *********************************************************/
 
 subject to {
+	forall( o in O_F)
+	ct1_a:
+		l[o][1] = 1;
+	forall( o in O_F, q in Q diff {1})
+	ct1_b:
+		l[o][q] = 0;
+	forall( o in O_LQ)
+	ct1_c:
+		l[o][2] = 1;
+	forall( o in O_LQ, q in Q diff {2})
+	ct1_d:
+		l[o][q] = 0;
+	forall( o in O_HQ, q in Q diff {1})
+	ct1_d:
+		l[o][q] = 1;
+	forall( o in O_HQ)
+	ct1_d:
+		l[o][1] = 0;
+
+		
+
 	forall( o in O, i in V, q in Q)
-	ct2:
+	ct3:
 		x[o][i][q] >= a[o][i];
 
 
 	forall( o in O, a_ in V)
-	ct3:
+	ct4:
 		d[o][a_] *sum( q in Q ) I[o][a_][q] == d[o][a_];
 
 
-	forall( o in O_F, q in Q_except_1, i in V, a_ in V )
-	ct4:
-		x[o][i][q] == I[o][a_][q] == 0;
-		
-	forall( o in O_LQ, q in Q_except_2, i in V, a_ in V )
+	forall( o in O, q in Q, i in V)
 	ct5:
-		I[o][a_][q]  == 0;
-
-	forall( o in O_LQ, q in Q_except_2, i in V, a_ in V )
-	ct5_bis:
-		x[o][i][q] == 0;
-
+		x[o][i][q] <= l[o][q];
 		
-	forall( o in O_HQ,  i in V, a_ in V )
+	forall( o in O, q in Q, a_ in V)
 	ct6:
-		x[o][i][1] == I[o][a_][1] == 0;
-
-
+		I[o][a_][q] <= l[o][q];
+	
 	ct7:
 		sum(i in V) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
 
