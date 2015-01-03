@@ -215,12 +215,12 @@ subject to {
 
 	forall ( o in O, a_ in V, i in V)
 	ct13:
-		y_src[o][a_][i] = sum (q in Q) f_src[o][a_][i][q];
+		y_src[o][a_][i] == sum (q in Q) f_src[o][a_][i][q];
 
 
 	forall ( o in O, a_ in V, i in V)
 	ct14:
-		y[o][a_][a_][i] = 0;
+		y[o][a_][a_][i] == 0;
 
 
 	forall( o in O, a_ in V, i in V)
