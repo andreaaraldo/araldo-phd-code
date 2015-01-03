@@ -1,0 +1,41 @@
+/*********************************************
+ * OPL 12.5 Data
+ * Author: araldo_local
+ * Creation Date: Dec 18, 2014 at 1:37:10 PM
+ *********************************************/
+///////// FIXED DATA
+Q = {1,2,3,4};
+s = [1 1 2 5];
+U = [1 2 2 3];
+hmin = [0.1 0.1 0.2 0.3];
+hmax = [2   0.011 0.021 0.031];
+bar_r_BF = 1;
+bar_bar_r_BF = 2;
+bar_r_OF = 1;
+bar_bar_r_OF = 2;
+m_BF = 1;
+m_prime_BF = 0.5;
+m_OF = 1;
+m_prime_OF = 0.5;
+Categories_card = 4;
+
+///////// CARDINALITIES
+V_card	  = 3;
+O_BF_card = 0;
+O_OF_card = 0;
+O_LQ_card = 4;
+O_HQ_card = 0;
+
+
+///////// SCENARIO
+K = 5000;
+M= 5000;
+Stot=0;
+
+// The repository is attached to the third node. All contents are stored there.
+a = [ [0 0 1] [0 0 1] [0 0 1] [0 0 1] ] ;
+b = [ [0 0 0] [1 0 0] [0 1 0] ] ;
+
+
+// All the demand comes from the first node.
+d = [ [1 0 0]  [0 0 0] [0 0 0] [0 0 0] ] ;
