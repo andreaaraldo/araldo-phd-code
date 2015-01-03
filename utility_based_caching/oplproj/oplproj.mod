@@ -199,7 +199,6 @@ subject to {
 	ct9:
 	  	f_usr[o][a_][q] <= K * I[o][a_][q];
 	
-/*
 	
 	forall( o in O, q in Q, a_ in V, i in V)
 	ct10:
@@ -215,6 +214,7 @@ subject to {
 	ct12:
 	  	y_usr[o][a_] == sum( q in Q) f_usr[o][a_][q];
 
+/*
 
 	forall ( o in O, a_ in V, i in V)
 	ct13:
