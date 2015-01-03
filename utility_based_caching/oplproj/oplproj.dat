@@ -20,10 +20,10 @@ m_prime_OF = 0.5;
 Categories_card = 4;
 
 ///////// CARDINALITIES
-V_card	  = 3;
+V_card	  = 2;
 O_BF_card = 0;
 O_OF_card = 0;
-O_LQ_card = 4;
+O_LQ_card = 1;
 O_HQ_card = 0;
 
 
@@ -32,10 +32,10 @@ K = 5000;
 M= 5000;
 Stot=0;
 
-// The repository is attached to the third node. All contents are stored there.
-a = [ [0 0 1] [0 0 1] [0 0 1] [0 0 1] ] ;
-b = [ [0 0 0] [1 0 0] [0 1 0] ] ;
+// The repository is attached to the second node. All contents are stored there.
+a = [ [0 1] ] ;
+b = [ [0 0] [1 0] ] ;
 
 
 // All the demand comes from the first node.
-d = [ [1 0 0]  [0 0 0] [0 0 0] [0 0 0] ] ;
+d = [ [1 0] ] ;
