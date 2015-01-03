@@ -104,7 +104,7 @@ dvar boolean I[O][V][Q];
 dvar float+  y[O][V][V][V];
 dvar float+  f_usr[O][V][Q];
 dvar float+  y_usr[O][V];
-dvar float+  f_src[O][V][Q][V];
+dvar float+  f_src[O][V][V][Q];
 dvar float+  y_src[O][V][V];
 dvar float+  r[O][V];
 dvar float+  v[O_F][V];
@@ -200,7 +200,7 @@ subject to {
 	
 	forall( o in O, q in Q, a_ in V, i in V)
 	ct10:
-	  	f_src[o][a_][q][i] <= K * I[o][a_][q];
+	  	f_src[o][a_][i][q] <= K * I[o][a_][q];
 	  	
 	 
 	forall( a_ in V, i in V, o in O, q in Q)
