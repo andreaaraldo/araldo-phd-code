@@ -255,6 +255,7 @@ subject to {
 	  	r[o][a_] <= I[o][a_][q] * hmax[q];
 */
 /*
+*/
 	forall ( o in O_F, a_ in V)
 	ct23:
 		r[o][a_] == v[o][a_] + w[o][a_];
@@ -285,7 +286,6 @@ subject to {
 	forall ( o in O_OF, a_ in V)
 	ct27:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
-*/
 }
 
 main {
