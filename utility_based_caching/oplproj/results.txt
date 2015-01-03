@@ -45,11 +45,11 @@ TotalDemandInverse = 1;
 // solution (optimal) with objective 2
 // Quality Incumbent solution:
 // MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            1.70400e+01  1.00000e+00
-// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
+// MILP solution norm |x| (Total, Max)            9.07000e+00  1.00000e+00
+// MILP solution error (Ax=b) (Total, Max)        4.37693e-13  2.18279e-13
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
-// MILP slack bound error (Total, Max)            6.91216e-13  6.91216e-13
+// MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
 v = [];
@@ -70,27 +70,27 @@ l = [[0 1 0 0]
              [0 1 0 0]
              [0 1 0 0]
              [0 1 0 0]];
-x = [[[0 1 0 0]
-                 [0 1 0 0]
+x = [[[0 0 0 0]
+                 [0 0 0 0]
                  [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
+             [[0 0 0 0]
+                 [0 0 0 0]
                  [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
+             [[0 0 0 0]
+                 [0 0 0 0]
                  [0 1 0 0]]
-             [[0 1 0 0]
-                 [0 1 0 0]
+             [[0 0 0 0]
+                 [0 0 0 0]
                  [0 1 0 0]]];
 y = [[[[0 0 0]
                      [0 0 0]
-                     [0 0 0]]
+                     [0.01 0 0]]
                  [[0 0 0]
                      [0 0 0]
-                     [0 0 0]]
+                     [0.01 0 0]]
                  [[0 0 0]
                      [0 0 0]
-                     [0 0 0]]]
+                     [0.01 0 0]]]
              [[[0 0 0]
                      [0 0 0]
                      [0 0 0]]
@@ -134,9 +134,9 @@ y_to_u = [[0.01 0 0]
              [0 0 0]
              [0 0 0]
              [0 0 0]];
-y_from_source = [[[0 0.01 0 0]
+y_from_source = [[[0 0 0 0]
                  [0 0 0 0]
-                 [0 0 0 0]]
+                 [0 0.01 0 0]]
              [[0 0 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]
