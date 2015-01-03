@@ -200,7 +200,7 @@ subject to {
 	
 	forall( o in O, q in Q, a_ in V, i in V)
 	ct10:
-	  	f_src[o][a_][i][q] <= K * I[o][a_][q];
+	  	f_src[o][a_][q][i] <= K * I[o][a_][q];
 	  	
 	 
 	forall( a_ in V, i in V, o in O, q in Q)
