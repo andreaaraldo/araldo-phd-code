@@ -184,12 +184,12 @@ subject to {
 	forall( o in O, q in Q, a_ in V)
 	ct6:
 		I[o][a_][q] <= l[o][q];
-	
-/*
 
+		
 	ct7:
 		sum( i in V ) sum( o in O ) sum(q in Q) ( (x[o][i][q] - a[o][i] * l[o][q] ) * s[q] )<= Stot;
 
+/*
 
 	forall(i in V, j in V)
 	ct8:
