@@ -144,7 +144,6 @@ maximize u_BF + u_OF + u_V;
 *********************************************************/
 
 subject to {
-/*
 
 	forall( o in O_F)
 	ct1_a:
@@ -166,6 +165,7 @@ subject to {
 		l[o][1] == 0;
 
 		
+/*
 
 	forall( o in O, i in V, q in Q)
 	ct3:
