@@ -230,7 +230,7 @@ subject to {
 
 	forall( o in O, a_ in V)
 	ct16:
-		y_usr[o][a_] = sum(i in V) y_src[o][a_][i];
+		y_usr[o][a_] == sum(i in V) y_src[o][a_][i];
 	
 	forall( o in O, a_ in V )
 	ct17:
