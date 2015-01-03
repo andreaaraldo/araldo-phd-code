@@ -244,8 +244,7 @@ subject to {
 
 	forall ( o in O, a_ in V, q in Q)
 	ct19:
-	  	//I[o][a_][q] * hmin[q] <= r[o][a_];
-	  	r[o][a_] > 0.00000001;
+	  	I[o][a_][q] * hmin[q] <= r[o][a_];
 
 /*
 	forall ( o in O, a_ in V, q in Q)
