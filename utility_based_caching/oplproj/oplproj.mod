@@ -42,8 +42,6 @@ int Categories_card = ...;
 * Range variables
 *********************************************************/
 setof(int) Q = ...;
-setof(int) Q_except_1 = ...;
-setof(int) Q_except_2 = ...;
 
 range V      = 1..V_card;
 range O_BF   = 1..O_BF_card;
@@ -67,7 +65,7 @@ float K					=...;
 float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
-float S					=...;
+float Stot					=...;
 
 float d[O][V]				= ...;
 float bar_r_BF				= ...;
@@ -185,7 +183,7 @@ subject to {
 		I[o][a_][q] <= l[o][q];
 	
 	ct7:
-		sum(i in V) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= S;
+		sum(i in V) sum( o in O ) sum(q in Q) (x[o][i][q] - a[o][i] ) * s[q] <= Stot;
 
 
 	forall(i in V, j in V)
