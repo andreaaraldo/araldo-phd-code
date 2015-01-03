@@ -147,28 +147,28 @@ maximize u_BF + u_OF + u_V;
 subject to {
 	forall( o in O_F)
 	ct1_a:
-		l[o][1] = 1;
+		l[o][1] == 1;
 	forall( o in O_F, q in Q diff {1})
 	ct1_b:
-		l[o][q] = 0;
+		l[o][q] == 0;
 	forall( o in O_LQ)
 	ct1_c:
-		l[o][2] = 1;
+		l[o][2] == 1;
 	forall( o in O_LQ, q in Q diff {2})
 	ct1_d:
-		l[o][q] = 0;
+		l[o][q] == 0;
 	forall( o in O_HQ, q in Q diff {1})
 	ct1_d:
-		l[o][q] = 1;
+		l[o][q] == 1;
 	forall( o in O_HQ)
 	ct1_d:
-		l[o][1] = 0;
+		l[o][1] == 0;
 
 		
 
 	forall( o in O, i in V, q in Q)
 	ct3:
-		x[o][i][q] >= a[o][i];
+		x[o][i][q] >= l[o][q] * a[o][i];
 
 
 	forall( o in O, a_ in V)
