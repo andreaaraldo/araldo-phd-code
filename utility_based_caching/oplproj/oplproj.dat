@@ -32,7 +32,7 @@ Ishare = 1;
 K = 500000000;
 M= 500000000;
 Stot=0;
-Ssingle = Stot;
+Ssingle = 0;
 
 // The repository is attached to the second node. All contents are stored there.
 a = [ [0 1] ] ;
