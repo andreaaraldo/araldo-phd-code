@@ -7,7 +7,7 @@
 Q = {1,2,3,4};
 s = [1 1 2 5];
 U = [1 2 2 3];
-hmin = [0.1 0.1 0.2 0.3];
+hmin = [1 300 1500 3500];
 hmax = [2   0.011 0.021 0.031];
 bar_r_BF = 1;
 bar_bar_r_BF = 2;
@@ -28,13 +28,13 @@ O_HQ_card = 0;
 
 
 ///////// SCENARIO
-K = 5000;
-M= 5000;
+K = 5000000;
+M= 5000000;
 Stot=0;
 
 // The repository is attached to the second node. All contents are stored there.
 a = [ [0 1] ] ;
-b = [ [0 0] [1 0] ] ;
+b = [ [0 0] [10000 0] ] ;
 
 
 // All the demand comes from the first node.
