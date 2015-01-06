@@ -231,7 +231,7 @@ subject to {
 		y_src[o][a_][i] == sum (q in Q) f_src[o][a_][i][q];
 
 	
-	forall( a_ in V, a in V, o in O)
+	forall( a_ in V, i in V, o in O)
 	ct16:
 		(a-i) * (1-a[o][i] ) * (Ishare - 1) * y_src[o][a][i] == 0;
 
