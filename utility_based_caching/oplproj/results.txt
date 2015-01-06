@@ -25,11 +25,11 @@ Ssingle = 0;
 a = [[0 1]];
 b = [[0 0]
              [10000 0]];
-d = [[0 1]];
+d = [[0 100]];
 
 // RANGE_INT O [1 ,1]
 // RANGE_INT V [1 ,2]
-TotalDemandInverse = 1;
+TotalDemandInverse = 0.01;
 // RANGE_INT O_BF [0 ,-1]
 // RANGE_INT O_F [0 ,-1]
 // RANGE_INT O_OF [0 ,-1]
@@ -37,10 +37,10 @@ TotalDemandInverse = 1;
 // RANGE_INT O_LQ [1 ,1]
 // RANGE_INT O_HQ [0 ,-1]
 
-// solution (optimal) with objective 2
+// solution (optimal) with objective 200
 // Quality Incumbent solution:
-// MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            1.50300e+03  3.00000e+02
+// MILP objective                                 2.0000000000e+02
+// MILP solution norm |x| (Total, Max)            1.20303e+05  3.00000e+04
 // MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
@@ -61,15 +61,15 @@ y = [[[[0 0]
 f_usr = [[[[0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 300 0 0]]]];
+                     [0 30000 0 0]]]];
 f_src = [[[[0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 300 0 0]]]];
+                     [0 30000 0 0]]]];
 y_usr = [[[0 0]
-                 [0 300]]];
+                 [0 30000]]];
 y_src = [[[0 0]
-                 [0 300]]];
+                 [0 30000]]];
 r = [[0 300]];
 z = [];
 
