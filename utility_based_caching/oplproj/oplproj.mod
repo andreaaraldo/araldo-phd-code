@@ -196,7 +196,7 @@ subject to {
 
 	forall( o in O, a_ in V, i in V, q in Q)
 	ct_aggiunto:
-		(a-i) * f_usr[o][a_][i][q] == 0;
+		(a_-i) * f_usr[o][a_][i][q] == 0;
 
 	forall( o in O, q in Q, a_ in V)
 	ct9:
