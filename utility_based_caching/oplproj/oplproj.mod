@@ -102,8 +102,8 @@ dvar boolean l[O][Q];
 dvar boolean x[O][V][Q];
 dvar boolean I[O][V][Q];
 dvar float+  y[O][V][V][V];
-dvar float+  f_usr[O][V][Q];
-dvar float+  y_usr[O][V];
+dvar float+  f_usr[O][V][V][Q];
+dvar float+  y_usr[O][V][V];
 dvar float+  f_src[O][V][V][Q];
 dvar float+  y_src[O][V][V];
 dvar float+  r[O][V];
@@ -194,10 +194,13 @@ subject to {
 	ct8:
 		sum( o in O ) sum (a in V) y[o][a][i][j] <= b[i][j];
 
+	forall( o in O, a_ in V, i in V, q in Q)
+	ct_aggiunto:
+		(a-i) * f_usr[o][a_][i][q] == 0;
 
 	forall( o in O, q in Q, a_ in V)
 	ct9:
-	  	f_usr[o][a_][q] <= K * I[o][a_][q];
+	  	f_usr[o][a_][a_][q] <= K * I[o][a_][q];
 	
 	
 	forall( o in O, q in Q, a_ in V, i in V)
@@ -210,9 +213,9 @@ subject to {
 		f_src[o][a_][i][q] <= M * x[o][i][q];
 
 
-	forall( o in O, a_ in V)
+	forall( o in O, a_ in V, i in V)
 	ct12:
-	  	y_usr[o][a_] == sum( q in Q) f_usr[o][a_][q];
+	  	y_usr[o][a_][i] == sum( q in Q) f_usr[o][a_][i][q];
 
 
 	forall ( o in O, a_ in V, i in V)
@@ -227,23 +230,23 @@ subject to {
 
 	forall( o in O, a_ in V, i in V)
 	ct15:
-	  	y_usr[o][a_] + sum( j in V ) y[o][a_][i][j]  == 
+	  	y_usr[o][a_][i] + sum( j in V ) y[o][a_][i][j]  == 
 	  	sum( k in V ) y[o][a_][k][i] + y_src[o][a_][i];
 
 	  	
 	forall( o in O, a_ in V)
 	ct16:
-		y_usr[o][a_] == sum(i in V) y_src[o][a_][i];
+		y_usr[o][a_][a_] == sum(i in V) y_src[o][a_][i];
 
 		
 	forall( o in O, a_ in V )
 	ct17:
-		d[o][a_] * r[o][a_] == y_usr[o][a_];
+		d[o][a_] * r[o][a_] == y_usr[o][a_][a_];
 		
 
 	forall( o in O, a_ in V )
 	ct18:
-		r[o][a_] <= y_usr[o][a_];
+		r[o][a_] <= y_usr[o][a_][a_];
 
 
 	forall ( o in O, a_ in V, q in Q)
