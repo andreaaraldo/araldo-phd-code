@@ -233,7 +233,7 @@ subject to {
 	
 	forall( a_ in V, i in V, o in O)
 	ct16:
-		(a-i) * (1-a[o][i] ) * (Ishare - 1) * y_src[o][a][i] == 0;
+		(a_-i) * (1-a[o][i] ) * (Ishare - 1) * y_src[o][a_][i] == 0;
 
 
 	forall ( o in O, a_ in V, i in V)
