@@ -1,7 +1,7 @@
 Q = {1 2 3 4};
 s = [1 1 2 5];
 U = [1 2 2 3];
-hmin = [0.1 0.1 0.2 0.3];
+hmin = [1 300 1500 3500];
 hmax = [2 0.011 0.021 0.031];
 bar_r_BF = 1;
 bar_bar_r_BF = 2;
@@ -17,12 +17,14 @@ O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 1;
 O_HQ_card = 0;
-K = 5000;
-M = 5000;
+Ishare = 1;
+K = 5e+8;
+M = 5e+8;
 Stot = 0;
+Ssingle = 0;
 a = [[0 1]];
 b = [[0 0]
-             [1 0]];
+             [10000 0]];
 d = [[0 1]];
 
 // RANGE_INT O [1 ,1]
@@ -38,11 +40,11 @@ TotalDemandInverse = 1;
 // solution (optimal) with objective 2
 // Quality Incumbent solution:
 // MILP objective                                 2.0000000000e+00
-// MILP solution norm |x| (Total, Max)            2.50030e+04  5.00000e+03
-// MILP solution error (Ax=b) (Total, Max)        3.63709e-13  3.63709e-13
+// MILP solution norm |x| (Total, Max)            1.50300e+03  3.00000e+02
+// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
-// MILP slack bound error (Total, Max)            5.45697e-12  1.81899e-12
+// MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
 v = [];
@@ -59,15 +61,15 @@ y = [[[[0 0]
 f_usr = [[[[0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 5000 0 0]]]];
+                     [0 300 0 0]]]];
 f_src = [[[[0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 5000 0 0]]]];
+                     [0 300 0 0]]]];
 y_usr = [[[0 0]
-                 [0 5000]]];
+                 [0 300]]];
 y_src = [[[0 0]
-                 [0 5000]]];
-r = [[0 5000]];
+                 [0 300]]];
+r = [[0 300]];
 z = [];
 
