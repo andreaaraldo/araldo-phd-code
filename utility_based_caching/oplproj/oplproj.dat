@@ -40,4 +40,4 @@ b = [ [0 0] [10000 0] ] ;
 
 
 // All the demand comes from the first node.
-d = [ [0 1] ] ;
+d = [ [0 100] ] ;
