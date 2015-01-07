@@ -98,7 +98,8 @@ execute
 
 
 execute INPUT_CHECKS{
-	writeln("guarda che b[1][2]=" + b[1][2]);
+	for (o in O, a_ in V)
+		writeln("guarda che b["+o+"]["+a_+"]=" + d[o][a_]);
 }
 
 
