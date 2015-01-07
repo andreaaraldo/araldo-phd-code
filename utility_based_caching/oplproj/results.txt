@@ -33,12 +33,12 @@ d = [[33 33 0]
 // RANGE_INT O [1 ,2]
 // RANGE_INT V [1 ,3]
 TotalDemandInverse = 0.0075758;
-// RANGE_INT O_BF [0 ,-1]
 // RANGE_INT O_F [0 ,-1]
-// RANGE_INT O_OF [0 ,-1]
-// RANGE_INT O_V [1 ,2]
 // RANGE_INT O_LQ [0 ,-1]
 // RANGE_INT O_HQ [1 ,2]
+// RANGE_INT O_BF [0 ,-1]
+// RANGE_INT O_OF [0 ,-1]
+// RANGE_INT O_V [1 ,2]
 
 // solution (optimal) with objective 264
 // Quality Incumbent solution:
@@ -50,14 +50,7 @@ TotalDemandInverse = 0.0075758;
 // MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
-v = [];
-w = [];
-I = [[[0 0 1 0]
-                 [0 0 1 0]
-                 [0 0 0 0]]
-             [[0 0 1 0]
-                 [0 0 1 0]
-                 [0 0 0 0]]];
+Utot = 264;
 l = [[0 1 1 1]
              [0 1 1 1]];
 x = [[[0 0 0 0]
@@ -66,6 +59,12 @@ x = [[[0 0 0 0]
              [[0 0 1 0]
                  [0 0 0 0]
                  [0 1 1 1]]];
+I = [[[0 0 1 0]
+                 [0 0 1 0]
+                 [0 0 0 0]]
+             [[0 0 1 0]
+                 [0 0 1 0]
+                 [0 0 0 0]]];
 y = [[[[0 0 0]
                      [49500 0 0]
                      [0 0 0]]
@@ -137,8 +136,9 @@ y_src = [[[0 49500 0]
                  [0 0 0]]];
 r = [[1500 1500 0]
              [1500 1500 0]];
+v = [];
+w = [];
 z = [];
 u = [132 132 0];
-Utot = 264;
 Ytot = 99000;
 
