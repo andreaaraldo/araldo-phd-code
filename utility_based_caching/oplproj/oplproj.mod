@@ -306,7 +306,9 @@ subject to {
 
 main {
   thisOplModel.generate();
-	writeln("Ciao\n");
+	
+	writeln("Ciao"+d.length);
+
   cplex.solve();
   var ofile = new IloOplOutputFile("results.txt");
   ofile.writeln(thisOplModel.printExternalData());
