@@ -333,6 +333,9 @@ execute DISPLAY {
     
     // The cardinality of O must be the sum of cardinalities of O_BF O_OF O_LQ O_HQ.
 
+	// The rows of d must be O_card, the columns V_card
+	writeln("d.length"+d.length);
+
     /////////// SOLUTION CORRECTNESS VERIFICATION
 
     // Demand should be satisfied
