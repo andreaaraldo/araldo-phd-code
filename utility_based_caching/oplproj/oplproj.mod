@@ -334,6 +334,29 @@ subject to {
 	forall ( o in O_OF, a_ in V)
 	ct31:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
+
+
+	forall ( a_ in V)
+	ct33:
+		u[a_] == 
+		sum (o in O_v) sum( q in Q) I[o][a_][q] * d[o][a_] * U[q] +
+		sum (o in O_OF)( 
+		      d[o][a_] *
+		      m_OF * v[o][a_] + m_prime_OF * (w[o][a_] - bar_r_OF)
+    	)+
+	    sum (o in O_BF)
+		(
+		  d[o][a_] *
+		  m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF)
+		);
+
+	ct34:
+		U_tot == sum( a_ in V ) u[a_];
+
+	ct36:
+		Y_tot == sum(i in V) sum(j in V) y_tot[i][j];
+
+		
 }
 
 main {
