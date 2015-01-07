@@ -342,7 +342,7 @@ subject to {
 	forall ( a_ in V)
 	ct33:
 		u[a_] == 
-		sum (o in O_v) sum( q in Q) I[o][a_][q] * d[o][a_] * U[q] +
+		sum (o in O_V) sum( q in Q) I[o][a_][q] * d[o][a_] * U[q] +
 		sum (o in O_OF)( 
 		      d[o][a_] *
 		      m_OF * v[o][a_] + m_prime_OF * (w[o][a_] - bar_r_OF)
