@@ -154,7 +154,17 @@ dexpr float u_V =
       I[o][a_][q] * d[o][a_] * U[q]
     );
 
-maximize u_BF + u_OF + u_V;
+dexpr float total_utility = u_BF + u_OF + u_V;
+
+dexpr float total_badwidth =
+    sum ( i in V, j in V)
+    (
+    	y_tot[i][j]
+    );
+
+
+maximize total_utility;
+
 
 /*********************************************************
 * ILP MODEL: Constraints
