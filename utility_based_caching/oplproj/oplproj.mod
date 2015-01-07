@@ -163,7 +163,7 @@ dexpr float total_badwidth =
     );
 
 
-maximize total_utility;
+maximize total_badwidth;
 
 
 /*********************************************************
