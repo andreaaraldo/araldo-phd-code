@@ -139,7 +139,7 @@ dvar float+ Utot;
 
 
 
-maximize Ytot;
+minimize Ytot;
 
 
 /*********************************************************
