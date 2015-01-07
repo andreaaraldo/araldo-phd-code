@@ -127,6 +127,8 @@ dvar float+  r[O][V];
 dvar float+  v[O_F][V];
 dvar float+  w[O_F][V];
 dvar boolean  z[O_F][V];
+dvar float+ Ytot;
+dvar float+ Utot;
 
 
 
@@ -351,10 +353,10 @@ subject to {
 		);
 
 	ct34:
-		U_tot == sum( a_ in V ) u[a_];
+		Utot == sum( a_ in V ) u[a_];
 
 	ct36:
-		Y_tot == sum(i in V) sum(j in V) y_tot[i][j];
+		Ytot == sum(i in V) sum(j in V) y_tot[i][j];
 
 		
 }
