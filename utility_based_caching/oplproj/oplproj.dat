@@ -28,7 +28,7 @@ O_HQ_card = 2;
 
 
 ///////// SCENARIO
-Ishare = 1;
+Ishare = 0;
 K = 500000000;
 M= 500000000;
 Stot=200;
