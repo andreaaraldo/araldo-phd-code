@@ -43,7 +43,7 @@ TotalDemandInverse = 0.0075758;
 // solution (optimal) with objective 297
 // Quality Incumbent solution:
 // MILP objective                                 2.9700000000e+02
-// MILP solution norm |x| (Total, Max)            1.19302e+06  1.15500e+05
+// MILP solution norm |x| (Total, Max)            1.32202e+06  1.15500e+05
 // MILP solution error (Ax=b) (Total, Max)        4.45652e-11  1.45519e-11
 // MILP x bound error (Total, Max)                2.98023e-07  2.98023e-07
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
@@ -84,6 +84,9 @@ y = [[[[0 0 0]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]]];
+y_tot = [[0 49500 0]
+             [59500 0 0]
+             [10000 10000 0]];
 f_usr = [[[[0 0 0 1.155e+5]
                      [0 0 0 0]
                      [0 0 0 0]]
