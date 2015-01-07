@@ -127,6 +127,7 @@ dvar float+  r[O][V];
 dvar float+  v[O_F][V];
 dvar float+  w[O_F][V];
 dvar boolean  z[O_F][V];
+dvar float+  u[V];
 dvar float+ Ytot;
 dvar float+ Utot;
 
