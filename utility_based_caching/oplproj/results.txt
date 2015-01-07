@@ -40,17 +40,17 @@ TotalDemandInverse = 0.0075758;
 // RANGE_INT O_OF [0 ,-1]
 // RANGE_INT O_V [1 ,2]
 
-// solution (optimal) with objective 240000
+// solution (optimal) with objective 0
 // Quality Incumbent solution:
-// MILP objective                                 2.4000000000e+05
-// MILP solution norm |x| (Total, Max)            8.79884e+05  2.40000e+05
-// MILP solution error (Ax=b) (Total, Max)        1.50067e-11  1.81899e-12
-// MILP x bound error (Total, Max)                7.27596e-12  1.81899e-12
+// MILP objective                                 0.0000000000e+00
+// MILP solution norm |x| (Total, Max)            1.59884e+05  9.90000e+03
+// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
+// MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
-// MILP slack bound error (Total, Max)            2.27374e-13  5.68434e-14
+// MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
-Ytot = 2.4e+5;
+Ytot = 0;
 l = [[0 1 1 1]
              [0 1 1 1]];
 x = [[[0 1 0 0]
@@ -68,38 +68,38 @@ I = [[[0 1 0 0]
 y = [[[[0 0 0]
                      [0 0 0]
                      [0 0 0]]
-                 [[0 0 10000]
+                 [[0 0 0]
                      [0 0 0]
-                     [10000 0 0]]
-                 [[0 1e+5 0]
-                     [1e+5 0 0]
+                     [0 0 0]]
+                 [[0 0 0]
+                     [0 0 0]
                      [0 0 0]]]
              [[[0 0 0]
-                     [0 0 10000]
-                     [0 10000 0]]
+                     [0 0 0]
+                     [0 0 0]]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]]];
-y_tot = [[0 1e+5 10000]
-             [1e+5 0 10000]
-             [10000 10000 0]];
-f_usr = [[[[0 9900 -1.819e-12 0]
+y_tot = [[0 0 0]
+             [0 0 0]
+             [0 0 0]];
+f_usr = [[[[0 9900 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 9900 -1.819e-12 0]
+                     [0 9900 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]]
-             [[[0 9900 -1.819e-12 0]
+             [[[0 9900 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
-                     [0 9900 -1.819e-12 0]
+                     [0 9900 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]
