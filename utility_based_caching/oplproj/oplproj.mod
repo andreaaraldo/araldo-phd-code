@@ -97,6 +97,11 @@ execute
 };
 
 
+execute INPUT_CHECKS{
+	writeln("Ciao"+d.length);
+}
+
+
 /*********************************************************
 * Decision variables
 *********************************************************/
@@ -306,9 +311,6 @@ subject to {
 
 main {
   thisOplModel.generate();
-	
-	writeln("Ciao"+d.length);
-
   cplex.solve();
   var ofile = new IloOplOutputFile("results.txt");
   ofile.writeln(thisOplModel.printExternalData());
