@@ -59,7 +59,7 @@ range Categories = 1..Categories_card; // corresponding to BF, OF, LQ, HQ
 *********************************************************/
 int Ishare				=...;
 int a[O][V]				=...;
-int s[Q]				=...;	
+float s[Q]				=...;	
 float U[Q]				=...;
 float b[V][V]				=...;
 float K					=...;
