@@ -28,11 +28,11 @@ O_HQ_card = 2;
 
 
 ///////// SCENARIO
-Ishare = 1;
+Ishare = 0;
 K = 500000000;
 M= 500000000;
 Stot=200;
-Ssingle = 131.25;
+Ssingle = 56.25;
 
 // The repository is attached to the second node. All contents are stored there.
 a = [ [0 0 1] [0 0 1] ] ;
