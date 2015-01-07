@@ -98,7 +98,7 @@ execute
 
 
 execute INPUT_CHECKS{
-	writeln("Ciao"+d.length);
+	writeln("guarda che b[1][2]=" + b[1][2]);
 }
 
 
