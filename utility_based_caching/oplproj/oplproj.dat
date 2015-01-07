@@ -5,8 +5,8 @@
  *********************************************/
 ///////// FIXED DATA
 Q = {1,2,3,4};
-s = [1 1 2 5];
-U = [1 2 2 3];
+s = [1 1 2 3];
+U = [1 1 2 3];
 hmin = [1 300 1500 3500];
 hmax = [2   0.011 0.021 0.031];
 bar_r_BF = 1;
@@ -20,24 +20,24 @@ m_prime_OF = 0.5;
 Categories_card = 4;
 
 ///////// CARDINALITIES
-V_card	  = 2;
+V_card	  = 3;
 O_BF_card = 0;
 O_OF_card = 0;
-O_LQ_card = 1;
-O_HQ_card = 0;
+O_LQ_card = 10;
+O_HQ_card = 2;
 
 
 ///////// SCENARIO
 Ishare = 1;
 K = 500000000;
 M= 500000000;
-Stot=0;
-Ssingle = 0;
+Stot=10;
+Ssingle = 5;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [0 1] ] ;
-b = [ [0 0] [10000 0] ] ;
+a = [ [0 0 1] [0 0 1] ] ;
+b = [ [0 100000 10000] [100000 0 10000] [10000 10000 0] ] ;
 
 
 // All the demand comes from the first node.
-d = [ [100 0] ] ;
+d = [ [33 33] [33 33]  ];
