@@ -137,36 +137,9 @@ dvar float+ Utot;
 * ILP MODEL: Objective Function
 *********************************************************/
 
-dexpr float u_BF = 
-    sum (o in O_BF, a_ in V)
-    (
-      d[o][a_] *
-      m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF)
-    );
-
-dexpr float u_OF = 
-    sum (o in O_OF, a_ in V)
-    (
-      d[o][a_] *
-      m_OF * v[o][a_] + m_prime_OF * (w[o][a_] - bar_r_OF)
-    );
-    
-dexpr float u_V = 
-    sum ( o in O_V, a_ in V, q in Q)
-    (
-      I[o][a_][q] * d[o][a_] * U[q]
-    );
-
-dexpr float total_utility = u_BF + u_OF + u_V;
-
-dexpr float total_badwidth =
-    sum ( i in V, j in V)
-    (
-    	y_tot[i][j]
-    );
 
 
-maximize -total_bandwidth;
+maximize Utot;
 
 
 /*********************************************************
