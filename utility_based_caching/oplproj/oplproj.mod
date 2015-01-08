@@ -137,8 +137,8 @@ dvar float+ Utot;
 /*********************************************************
 * ILP MODEL: Objective Function
 *********************************************************/
-// obj_fun = Utot - alpha * Ytot;
-obj_fun = -Ytot+ alpha * Utot;
+//dexpr float obj_fun = Utot - alpha * Ytot;
+dexpr float obj_fun = -Ytot+ alpha * Utot;
 
 maximize obj_fun;
 
