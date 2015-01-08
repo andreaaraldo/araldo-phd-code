@@ -78,6 +78,7 @@ float m_BF				= ...;
 float m_prime_BF				= ...;
 float m_OF				= ...;
 float m_prime_OF				= ...;
+float alpha				= ...;
 
 
 
@@ -136,10 +137,10 @@ dvar float+ Utot;
 /*********************************************************
 * ILP MODEL: Objective Function
 *********************************************************/
+// obj_fun = Utot - alpha * Ytot;
+obj_fun = -Ytot+ alpha * Utot;
 
-
-
-minimize Ytot;
+maximize obj_fun;
 
 
 /*********************************************************
@@ -274,46 +275,41 @@ subject to {
 	ct23:
 	  	I[o][a_][q] * hmin[q] <= r[o][a_];
 
-/*
-	forall ( o in O, a_ in V, q in Q)
-	ct24:
-	  	r[o][a_] <= I[o][a_][q] * hmax[q];
-*/
 	  	
 	forall ( o in O_F, a_ in V)
-	ct27:
+	ct26:
 		r[o][a_] == v[o][a_] + w[o][a_];
 		
 
 	forall ( o in O_BF, a_ in V)
-	ct28:
+	ct27:
 		bar_r_BF * z[o][a_] <= v[o][a_];
 		
 	forall ( o in O_BF, a_ in V)
-	ct28_bis:
+	ct27_bis:
 		v[o][a_] <= bar_r_BF;
 		
 		
 	forall ( o in O_OF, a_ in V)
-	ct29:
+	ct28:
 		bar_r_OF * z[o][a_] <= v[o][a_];
 		
 	forall ( o in O_OF, a_ in V)
-	ct29_bis:
+	ct28_bis:
 		v[o][a_] <= bar_r_OF;
 		
 		
 	forall ( o in O_BF, a_ in V)
-	ct30:
+	ct29:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_BF - bar_r_BF);
 		
 	forall ( o in O_OF, a_ in V)
-	ct31:
+	ct30:
 		w[o][a_] <= z[o][a_] * (bar_bar_r_OF - bar_r_OF);
 
 
 	forall ( a_ in V)
-	ct33:
+	ct32:
 		u[a_] == 
 		sum (o in O_V) sum( q in Q) I[o][a_][q] * d[o][a_] * U[q] +
 		sum (o in O_OF)( 
@@ -326,10 +322,10 @@ subject to {
 		  m_BF * v[o][a_] + m_prime_BF * (w[o][a_] - bar_r_BF)
 		);
 
-	ct34:
+	ct33:
 		Utot == sum( a_ in V ) u[a_];
 
-	ct36:
+	ct34:
 		Ytot == sum(i in V) sum(j in V) y_tot[i][j];
 
 		
