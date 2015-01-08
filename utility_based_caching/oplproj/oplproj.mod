@@ -102,13 +102,14 @@ execute
 /*********************************************************
 * Input checks
 *********************************************************/
-
-
+boolean error = 0;
 
 execute INPUT_CHECKS{
-	for (o in O)
-		for (a_ in V)
-			writeln("guarda che b["+o+"]["+a_+"]=" + d[o][a_]);
+	for (i in V)
+		if (b[i][i] != 0){
+			writeln ("ERROR: input incorrect. b[i][i] must be 0");
+			error = 1;
+		}
 }
 
 
@@ -351,8 +352,6 @@ execute DISPLAY {
 /*********************************************************
 * TESTS
 *********************************************************/
-    /////////// INPUT VERIFICATION
-    // b[i][i] must be 0
     
     // hmin[q] == hmax[q], if q>0
     

@@ -21,7 +21,7 @@ Categories_card = 4;
 alpha = 0.00000001;
 
 ///////// CARDINALITIES
-V_card	  = 3;
+V_card	  = 2;
 O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 0;
@@ -36,9 +36,9 @@ Stot=200;
 Ssingle = 56.25;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [0 0 1] [0 0 1] ] ;
-b = [ [0 100000 10000] [100000 0 10000] [10000 10000 0] ] ;
+a = [ [0 1] [0 1] ] ;
+b = [ [0 0] [10000 0]] ;
 
 
 // All the demand comes from the first node.
-d = [ [33 33 0] [33 33 0]  ];
+d = [ [33 33] [33 33]  ];
