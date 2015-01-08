@@ -12,6 +12,7 @@ m_prime_BF = 0.5;
 m_OF = 1;
 m_prime_OF = 0.5;
 Categories_card = 4;
+alpha = 1e-8;
 V_card = 3;
 O_BF_card = 0;
 O_OF_card = 0;
@@ -40,9 +41,9 @@ TotalDemandInverse = 0.0075758;
 // RANGE_INT O_OF [0 ,-1]
 // RANGE_INT O_V [1 ,2]
 
-// solution (optimal) with objective 0
+// solution (integer optimal, tolerance) with objective 0.00000132
 // Quality Incumbent solution:
-// MILP objective                                 0.0000000000e+00
+// MILP objective                                 1.3200000000e-06
 // MILP solution norm |x| (Total, Max)            1.59884e+05  9.90000e+03
 // MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
@@ -51,6 +52,7 @@ TotalDemandInverse = 0.0075758;
 // 
 
 Ytot = 0;
+Utot = 132;
 l = [[0 1 1 1]
              [0 1 1 1]];
 x = [[[0 1 0 0]
@@ -140,5 +142,4 @@ v = [];
 w = [];
 z = [];
 u = [66 66 0];
-Utot = 132;
 
