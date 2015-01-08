@@ -102,7 +102,7 @@ execute
 /*********************************************************
 * Input checks
 *********************************************************/
-boolean error = 0;
+int error = 0;
 
 execute INPUT_CHECKS{
 	for (i in V)
