@@ -22,11 +22,11 @@ delta_Utot = 0.9;
 delta_Ytot = 1;
 
 ///////// CARDINALITIES
-V_card	  = 3;
+V_card	  = 2;
 O_BF_card = 0;
 O_OF_card = 0;
-O_LQ_card = 0;
-O_HQ_card = 2;
+O_LQ_card = 1;
+O_HQ_card = 1;
 
 
 ///////// SCENARIO
@@ -36,8 +36,8 @@ Stot=131.25;
 Ssingle = 131.25;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [1 0 0] [0 1 0] ] ;
-b = [ [0 0 10000] [0 0 5000] [0 0 0] ] ;
+a = [ [6 0] [1 0] ] ;
+b = [ [0 0] [3300 0] ] ;
 
 
 // All the demand comes from the third node.
