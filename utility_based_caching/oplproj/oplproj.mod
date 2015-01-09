@@ -82,7 +82,7 @@ float delta_Ytot		= ...;
 
 
 // eq (36)
-float hat_U_tot = 
+float+ hat_U_tot = 
 	sum(o in O_LQ, a_ in V) ( U[2] * d[o][a_] )+
 	sum(o in O_HQ, a_ in V) ( U[4] * d[o][a_] )+
 	sum(o in O_BF, a_ in V) ( (m_BF * bar_r_BF + m_prime_BF * bar_bar_r_BF) * d[o][a_] )+
@@ -90,13 +90,13 @@ float hat_U_tot =
 ;
 
 // eq (37)
-float hat_Y_tot =
+float+ hat_Y_tot =
 	sum (i in V, j in V) b[i][j];
 
 // eq (40)
-float M[O][V];
+float+ M[O][V];
 execute{
-	for (o in O_LQ, a_ in V) M[o][a] = hmin[2] * d[o][a];
+	for (o in O_LQ) for(a_ in V) M[o][a] = hmin[2] * d[o][a];
 	for (o in O_HQ, a_ in V) M[o][a] = hmin[4] * d[o][a];
 	for (o in O_BF, a_ in V) M[o][a] = bar_bar_r_BF * d[o][a];
 	for (o in O_OF, a_ in V) M[o][a] = bar_bar_r_OF * d[o][a];
