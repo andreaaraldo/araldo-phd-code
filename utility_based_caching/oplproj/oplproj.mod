@@ -97,9 +97,9 @@ float hat_Y_tot =
 float M[O][V];
 execute{
 	for (o in O_LQ) for(a_ in V) M[o][a] = hmin[2] * d[o][a];
-	for (o in O_HQ, a_ in V) M[o][a] = hmin[4] * d[o][a];
-	for (o in O_BF, a_ in V) M[o][a] = bar_bar_r_BF * d[o][a];
-	for (o in O_OF, a_ in V) M[o][a] = bar_bar_r_OF * d[o][a];
+	for (o in O_HQ) for(a_ in V) M[o][a] = hmin[4] * d[o][a];
+	for (o in O_BF) for(a_ in V) M[o][a] = bar_bar_r_BF * d[o][a];
+	for (o in O_OF) for(a_ in V) M[o][a] = bar_bar_r_OF * d[o][a];
 };
 
 //eq (43)
