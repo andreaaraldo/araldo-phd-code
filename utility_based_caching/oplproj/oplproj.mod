@@ -63,7 +63,6 @@ float s[Q]				=...;
 float U[Q]				=...;
 float b[V][V]				=...;
 float K					=...;
-float M					=...;
 float hmin[Q]				=...;
 float hmax[Q]				=...;
 float Stot				=...;
