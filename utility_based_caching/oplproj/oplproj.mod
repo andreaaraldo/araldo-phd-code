@@ -168,8 +168,8 @@ dvar float+ Utot;
 /*********************************************************
 * ILP MODEL: Objective Function
 *********************************************************/
-//dexpr float obj_fun = Utot - alpha * Ytot;	//UTILITY
-dexpr float obj_fun = -Ytot+ beta * Utot;		//BANDWIDTH
+dexpr float obj_fun = Utot - alpha * Ytot;	//UTILITY
+//dexpr float obj_fun = -Ytot+ beta * Utot;		//BANDWIDTH
 
 maximize obj_fun;
 
