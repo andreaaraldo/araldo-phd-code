@@ -22,7 +22,7 @@ delta_Utot = 0.01;
 delta_Ytot = 1;
 
 ///////// CARDINALITIES
-V_card	  = 2;
+V_card	  = 3;
 O_BF_card = 0;
 O_OF_card = 0;
 O_LQ_card = 0;
