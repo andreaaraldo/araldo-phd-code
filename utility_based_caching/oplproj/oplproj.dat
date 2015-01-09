@@ -36,9 +36,9 @@ Stot=200;
 Ssingle = 131.25;
 
 // The repository is attached to the second node. All contents are stored there.
-a = [ [0 1] [0 1] ] ;
-b = [ [0 0] [3000 0]] ;
+a = [ [1 0 0] [0 1 0] ] ;
+b = [ [0 0 10000] [0 10000 0] [0 0 0] ] ;
 
 
-// All the demand comes from the first node.
-d = [ [2 0] [2 0]  ];
+// All the demand comes from the third node.
+d = [ [0 0 11] [0 0 9]  ];
