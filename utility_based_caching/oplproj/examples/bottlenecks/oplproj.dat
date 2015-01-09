@@ -18,7 +18,7 @@ m_prime_BF = 0.5;
 m_OF = 1;
 m_prime_OF = 0.5;
 Categories_card = 4;
-delta_Utot = 0.01;
+delta_Utot = 0.9;
 delta_Ytot = 1;
 
 ///////// CARDINALITIES

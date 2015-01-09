@@ -41,4 +41,4 @@ b = [ [0 0 10000] [0 0 5000] [0 0 0] ] ;
 
 
 // All the demand comes from the third node.
-d = [ [0 0 6] [0 0 5]  ];
+d = [ [6 0 ] [1 0]  ];
