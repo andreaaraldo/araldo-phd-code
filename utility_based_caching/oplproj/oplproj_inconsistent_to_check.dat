@@ -32,7 +32,7 @@ O_HQ_card = 2;
 ///////// SCENARIO
 Ishare = 1;
 K = 5000000;
-Stot=0;
+Stot=131.25;
 Ssingle = 131.25;
 
 // The repository is attached to the second node. All contents are stored there.
@@ -41,4 +41,4 @@ b = [ [0 0 10000] [0 0 10000] [0 0 0] ] ;
 
 
 // All the demand comes from the third node.
-d = [ [0 0 6] [0 0 5]  ];
+d = [ [0 0 11] [0 0 9]  ];
