@@ -20,8 +20,7 @@ O_OF_card = 0;
 O_LQ_card = 0;
 O_HQ_card = 2;
 Ishare = 1;
-K = 5e+8;
-M = 3e+8;
+K = 5e+6;
 Stot = 200;
 Ssingle = 131.25;
 a = [[0 1]
@@ -33,24 +32,27 @@ d = [[2 0]
 
 // RANGE_INT O [1 ,2]
 // RANGE_INT V [1 ,2]
-TotalDemandInverse = 0.25;
 // RANGE_INT O_LQ [0 ,-1]
 // RANGE_INT O_HQ [1 ,2]
+M = [[7000
+             0]
+             [7000 0]];
 // RANGE_INT O_BF [0 ,-1]
 // RANGE_INT O_OF [0 ,-1]
+TotalDemandInverse = 0.25;
 hat_U_tot = 12;
 beta = 0.083333;
 // RANGE_INT O_F [0 ,-1]
 // RANGE_INT O_V [1 ,2]
 error = 0;
 
-// solution (optimal) with objective 0.666665000072219
+// solution (optimal) with objective 0.666666666666667
 // Quality Incumbent solution:
-// MILP objective                                 6.6666500007e-01
-// MILP solution norm |x| (Total, Max)            2.70299e+04  3.00000e+03
-// MILP solution error (Ax=b) (Total, Max)        3.78100e-08  1.45519e-08
+// MILP objective                                 6.6666666667e-01
+// MILP solution norm |x| (Total, Max)            4.50320e+04  7.00000e+03
+// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
-// MILP x integrality error (Total, Max)          3.99990e-05  1.00000e-05
+// MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
 // MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
@@ -58,9 +60,9 @@ Ytot = 0;
 Utot = 8;
 l = [[0 1 1 1]
              [0 1 1 1]];
-x = [[[0 0 0 0]
+x = [[[0 0 1 0]
                  [0 1 1 1]]
-             [[0 0 0 0]
+             [[0 0 1 0]
                  [0 1 1 1]]];
 I = [[[0 0 1 0]
                  [0 0 0 0]]
@@ -76,7 +78,7 @@ y = [[[[0 0]
                      [0 0]]]];
 y_tot = [[0 0]
              [0 0]];
-f_usr = [[[[0 3000 0 0]
+f_usr = [[[[0 0 7000 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]]]
@@ -84,7 +86,7 @@ f_usr = [[[[0 3000 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]]]];
-f_src = [[[[0 2999.9 0.099996 0]
+f_src = [[[[0 0 7000 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]]]
@@ -92,15 +94,15 @@ f_src = [[[[0 2999.9 0.099996 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]]]];
-y_usr = [[[3000 0]
+y_usr = [[[7000 0]
                  [0 0]]
              [[3000 0]
                  [0 0]]];
-y_src = [[[3000 0]
+y_src = [[[7000 0]
                  [0 0]]
              [[3000 0]
                  [0 0]]];
-r = [[1500 0]
+r = [[3500 0]
              [1500 0]];
 v = [];
 w = [];
