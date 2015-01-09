@@ -12,7 +12,7 @@ m_prime_BF = 0.5;
 m_OF = 1;
 m_prime_OF = 0.5;
 Categories_card = 4;
-delta_Utot = 0.9;
+delta_Utot = 0.01;
 delta_Ytot = 1;
 V_card = 3;
 O_BF_card = 0;
@@ -42,23 +42,23 @@ M = [[0
 // RANGE_INT O_OF [0 ,-1]
 TotalDemandInverse = 0.090909;
 hat_Y_tot = 15000;
-alpha = 0.00006;
+alpha = 6.6667e-7;
 // RANGE_INT O_F [0 ,-1]
 // RANGE_INT O_V [1 ,2]
 error = 0;
 
-// solution (optimal) with objective 26.46
+// solution (optimal) with objective 26.9933333333333
 // Quality Incumbent solution:
-// MILP objective                                 2.6460000000e+01
-// MILP solution norm |x| (Total, Max)            1.38069e+05  1.75000e+04
-// MILP solution error (Ax=b) (Total, Max)        0.00000e+00  0.00000e+00
+// MILP objective                                 2.6993333333e+01
+// MILP solution norm |x| (Total, Max)            1.45236e+05  1.75000e+04
+// MILP solution error (Ax=b) (Total, Max)        1.36424e-12  9.09495e-13
 // MILP x bound error (Total, Max)                0.00000e+00  0.00000e+00
 // MILP x integrality error (Total, Max)          0.00000e+00  0.00000e+00
 // MILP slack bound error (Total, Max)            0.00000e+00  0.00000e+00
 // 
 
 Utot = 27;
-Ytot = 9000;
+Ytot = 10000;
 l = [[0 1 1 1]
              [0 1 1 1]];
 x = [[[0 1 1 1]
@@ -79,7 +79,7 @@ y = [[[[0 0 0]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]
-                 [[0 0 9000]
+                 [[0 0 10000]
                      [0 0 0]
                      [0 0 0]]]
              [[[0 0 0]
@@ -91,7 +91,7 @@ y = [[[[0 0 0]
                  [[0 0 0]
                      [0 0 0]
                      [0 0 0]]]];
-y_tot = [[0 0 9000]
+y_tot = [[0 0 10000]
              [0 0 0]
              [0 0 0]];
 f_usr = [[[[0 0 0 0]
@@ -102,7 +102,7 @@ f_usr = [[[[0 0 0 0]
                      [0 0 0 0]]
                  [[0 0 0 0]
                      [0 0 0 0]
-                     [0 0 9000 0]]]
+                     [0 0 10000 0]]]
              [[[0 0 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]
@@ -118,7 +118,7 @@ f_src = [[[[0 0 0 0]
                  [[0 0 0 0]
                      [0 0 0 0]
                      [0 0 0 0]]
-                 [[0 0 9000 0]
+                 [[0 0 10000 0]
                      [0 0 0 0]
                      [0 0 0 0]]]
              [[[0 0 0 0]
@@ -132,17 +132,17 @@ f_src = [[[[0 0 0 0]
                      [0 0 0 17500]]]];
 y_usr = [[[0 0 0]
                  [0 0 0]
-                 [0 0 9000]]
+                 [0 0 10000]]
              [[0 0 0]
                  [0 0 0]
                  [0 0 17500]]];
 y_src = [[[0 0 0]
                  [0 0 0]
-                 [9000 0 0]]
+                 [10000 0 0]]
              [[0 0 0]
                  [0 0 0]
                  [0 0 17500]]];
-r = [[0 0 1500]
+r = [[0 0 1666.7]
              [0 0 3500]];
 v = [];
 w = [];
