@@ -96,10 +96,10 @@ float hat_Y_tot =
 
 // eq (40)
 float M[O][V];
-for (o in O_LQ, a_ in V) M[o][a] = hmin[2] * d[o][a];
-for (o in O_HQ, a_ in V) M[o][a] = hmin[4] * d[o][a];
-for (o in O_BF, a_ in V) M[o][a] = bar_bar_r_BF * d[o][a];
-for (o in O_OF, a_ in V) M[o][a] = bar_bar_r_OF * d[o][a];
+forall (o in O_LQ, a_ in V) M[o][a] = hmin[2] * d[o][a];
+forall (o in O_HQ, a_ in V) M[o][a] = hmin[4] * d[o][a];
+forall (o in O_BF, a_ in V) M[o][a] = bar_bar_r_BF * d[o][a];
+forall (o in O_OF, a_ in V) M[o][a] = bar_bar_r_OF * d[o][a];
 
 //eq (43)
 float alpha = delta_Utot / hat_Y_tot;
