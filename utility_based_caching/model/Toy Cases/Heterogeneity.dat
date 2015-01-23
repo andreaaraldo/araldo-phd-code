@@ -1,0 +1,19 @@
+// Equivalente di Heterogeneity
+//
+// VA USATO CON UtilityBasedCachingCooperativeLowQualityVideos
+
+ASes = {1, 2};
+Objects = {1, 2};
+QualityLevels = {0, 1, 2, 3};
+LowQualityVideos = {1};
+
+Arcs = {<2,1,3300>};
+ObjRequests = {<1,1,6>,<2,1,1>};
+
+RatePerQuality = [0 300 1500 3500];
+CacheSpacePerQuality = [1 11.25 56.25 131.25];
+UtilityPerQuality = [0 1 2 3];
+ObjectsPublishedByProducers = [ [0 1] [0 1] ];
+
+MaxCacheStorageAtSingleAS = 131.25;
+MaxCacheStorage = 200;
