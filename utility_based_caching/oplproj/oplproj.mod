@@ -90,7 +90,8 @@ dvar float+  FlowServedByCache[ObjRequests][QualityLevels][ASes];
 *********************************************************/
 
 maximize 
-	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] );
+	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] ) / 
+	sum( r in ObjRequests) (r.numOfObjectRequests);
 
 subject to {
 
