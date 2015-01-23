@@ -1,0 +1,6 @@
+#load	QoE_without_cache	QoE_with_cache
+3e3		0.986				0.986
+4e3		0.984				0.986
+5e3		0.98				0.983
+6e3		0					0.979
+8e3		0					0
