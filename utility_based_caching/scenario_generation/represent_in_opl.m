@@ -1,5 +1,5 @@
 %<aa> purge: if true, remove redundant parenthesis </aa>
-function opl_representation = opl_representation( variable_name, data, purge, struct_type )
+function opl_representation = represent_in_opl( variable_name, data, purge, struct_type )
 %<aa> variable_name: the name that will be printed in the file</aa>
 %APPENDVARIABLETOOPLDAT Write variable in opl-like format
 
@@ -21,6 +21,7 @@ function opl_representation = opl_representation( variable_name, data, purge, st
             elementsFlipped(1, i)=elementsFlipped(1,i-1)*varDimensions(1, i-1);
         end
     end
+
     
     items = numel(data); % <aa> number of elements of data </aa>
     
@@ -78,10 +79,12 @@ function opl_representation = opl_representation( variable_name, data, purge, st
 			error("struct_type is not valid");
 	endswitch
 
-	if purge
-	{
+	if (purge == true)
 		opl_representation = strrep (opl_representation, "={", "=");
 		opl_representation = strrep (opl_representation, "};", ";");
-	}
-end
+		opl_representation = strrep (opl_representation, "=[", "=");
+		opl_representation = strrep (opl_representation, "];", ";");
+	endif
+
+endfunction
 
