@@ -1,7 +1,6 @@
 % Ciao
 global severe_debug = true;
 
-output_file = "scenario.dat";
 
 % Define an experiment
 
