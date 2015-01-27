@@ -149,6 +149,19 @@ subject to {
 execute DISPLAY 
 {
   	/************************************
+  	 *** Print objective function
+  	 ************************************/
+  	var f = new IloOplOutputFile("objective.csv");
+  	f.open;
+  	var obj = 0; var tot_reqs = 0;
+  	for (var r in ObjRequests) for (q in QualityLevels)
+  		obj += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
+	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
+	obj = obj / tot_reqs;
+  	f.write(obj);
+  	f.close;
+  
+  	/************************************
   	 *** Print cached quality levels *****
   	 ************************************/
 	var f = new IloOplOutputFile("quality_cached.csv");
