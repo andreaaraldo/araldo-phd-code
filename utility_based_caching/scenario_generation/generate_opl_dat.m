@@ -1,6 +1,6 @@
-%Ciao
+% Called by scenario_script.m
 function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
-			cache_per_quality, utility_ratio, ASes_with_users, server, total_requests,
+			cache_space_per_quality, utility_ratio, ASes_with_users, server, total_requests,
 			arcs, max_storage_at_single_as, max_cache_storage)
 
 	filename = "scenario.dat";
@@ -12,6 +12,8 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 	Arcs = sprintf("Arcs = %s\n", arcs);
 
 
+
+	############ Generate ObjRequests ##################
 	zipf = generate_zipf(alpha, catalog_size);
 	requests_at_each_AS.obj = 1:catalog_size;
 	requests_at_each_AS.req_num = zipf.distr .* (total_requests / length(ASes_with_users) );
@@ -23,7 +25,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 		for j = 1:catalog_size
 			obj = requests_at_each_AS.obj(j);
 			req_num = requests_at_each_AS.req_num(j);
-			ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, as, obj, req_num);
+			ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
 		endfor
 	endfor
 	ObjRequests = sprintf("%s};",ObjRequests);
@@ -32,7 +34,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 
 	RatePerQuality = represent_in_opl( "RatePerQuality", rate_per_quality, true, "array" );
 
-	CachePerQuality = represent_in_opl( "CachePerQuality", cache_per_quality, true, "array" );
+	CacheSpacePerQuality = represent_in_opl( "CacheSpacePerQuality", cache_space_per_quality, true, "array" );
 
 	utility_per_quality = [0, 1, utility_ratio];
 	UtilityPerQuality = represent_in_opl(
@@ -48,9 +50,9 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 
 
 	MaxCacheStorageAtSingleAS = sprintf(
-					"MaxCacheStorageAtSingleAS = %g", max_storage_at_single_as);
+					"MaxCacheStorageAtSingleAS = %g ;", max_storage_at_single_as);
 
-	MaxCacheStorage = sprintf( "MaxCacheStorageAtSingleAS = %g", max_cache_storage);
+	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 
 	f = fopen(filename, "w");
 	fprintf(f, "%s\n",ASes);
@@ -59,6 +61,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 	fprintf(f, "%s\n",Arcs);
 	fprintf(f, "%s\n",ObjRequests);
 	fprintf(f, "%s\n",RatePerQuality);
+	fprintf(f, "%s\n",CacheSpacePerQuality);
 	fprintf(f, "%s\n",UtilityPerQuality);
 	fprintf(f, "%s\n",ObjectsPublishedByProducers);
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);

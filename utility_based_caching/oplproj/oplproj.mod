@@ -138,3 +138,40 @@ subject to {
 	  	sum ( o in Objects, q in QualityLevels, sourceAS in ASes ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorage;
 
 }
+
+
+
+
+
+/*********************************************************
+* PRINT RESULTS
+*********************************************************/
+execute DISPLAY 
+{
+  	/************************************
+  	 *** Print cache quality levels *****
+  	 ************************************/
+	var f = new IloOplOutputFile("quality_cached.csv");
+	f.open;
+	f.write("AS\t");
+	for (var q in QualityLevels)
+		if (q>0) f.write("#q=",q, "\t");
+	f.write("\n");
+	for (var as in ASes)
+	{
+		f.write(as, "\t");
+		for (var q in QualityLevels)
+		{
+		  	if (q>0){
+				var num_cached  = 0;
+				for (var o in Objects) num_cached += ObjectCached[o][q][as];
+				f.write(num_cached,"\t");		
+ 			}	
+		}
+		f.write("\n");
+	}
+	f.close
+
+}
+
+
