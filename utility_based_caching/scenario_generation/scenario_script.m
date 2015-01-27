@@ -11,10 +11,11 @@ alpha = 1;
 rate_per_quality = [0, 300, 3500]; % In Kpbs
 cache_space_per_quality = [100000 11.25 131.25 ]; % In MB
 utility_ratio = 2; % Ratio between low and high quality utility
+utility_when_not_serving = -50000;
 ASes_with_users = [1];
 server = 2;
-load_ = 10.00;
-total_requests = 57000 * load_;
+load_ = 3.00;
+total_requests = 2000 * load_;
 arcs = "{<2, 1, 490000>};"; % In Kbps
 max_storage_at_single_as = (catalog_size / 100) * \
 						(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
@@ -24,5 +25,6 @@ max_cache_storage = max_storage_at_single_as; % IN Mpbs
 
 
 generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
-			cache_space_per_quality, utility_ratio, ASes_with_users, server, total_requests,
+			cache_space_per_quality, utility_ratio, utility_when_not_serving, 
+			ASes_with_users, server, total_requests,
 			arcs, max_storage_at_single_as, max_cache_storage);
