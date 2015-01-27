@@ -10,11 +10,10 @@ catalog_size = 1000;
 alpha = 1;
 rate_per_quality = [0, 300, 3500]; % In Kpbs
 cache_space_per_quality = [100000 11.25 131.25 ]; % In MB
-utility_ratio = 2; % Ratio between low and high quality utility
+utility_ratio = 3; % Ratio between low and high quality utility
 ASes_with_users = [1];
 server = 2;
-load_ = 10.00;
-total_requests = 57000 * load_;
+total_requests = 57000;
 arcs = "{<2, 1, 490000>};"; % In Kbps
 max_storage_at_single_as = (catalog_size / 100) * \
 						(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
