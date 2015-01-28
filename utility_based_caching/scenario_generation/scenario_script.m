@@ -1,6 +1,7 @@
 % Ciao
 global severe_debug = true;
 
+addpath("michele");
 
 % Define an experiment
 
@@ -20,11 +21,11 @@ arcs = "{<2, 1, 490000>};"; % In Kbps
 max_storage_at_single_as = (catalog_size / 100) * \
 						(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
 max_cache_storage = max_storage_at_single_as; % IN Mpbs
+seeds = 1:10;
 
-
-
-
+seed=1;
 generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving, 
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage);
+			arcs, max_storage_at_single_as, max_cache_storage, seed);
+

@@ -2,9 +2,9 @@
 function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving,
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage)
+			arcs, max_storage_at_single_as, max_cache_storage, seed)
 
-	filename = "scenario.dat";
+	filename = sprintf("generated/scenario_seed_%d.dat",seed);
 	objects = 1:catalog_size;
 
 	ASes = represent_in_opl( "ASes", ases, true, "set" );
@@ -15,10 +15,13 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 
 
 	############ Generate ObjRequests ##################
-	zipf = generate_zipf(alpha, catalog_size);
+	number_of_object_classes = catalog_size;
+	num_of_req_at_each_as = total_requests / length(ASes_with_users);
+	[requests_for_each_class, requests_for_each_object] = ZipfQuantizedRng(
+					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
+
 	requests_at_each_AS.obj = 1:catalog_size;
-	requests_at_each_AS.req_num = zipf.distr .* (total_requests / length(ASes_with_users) );
-	requests_at_each_AS.req_num = round(requests_at_each_AS.req_num);
+	requests_at_each_AS.req_num = requests_for_each_object;
 	requests.ASes = ASes_with_users;
 	ObjRequests = sprintf("ObjRequests = { ");
 	for i = 1:length(ASes_with_users)
