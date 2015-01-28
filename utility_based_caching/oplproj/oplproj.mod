@@ -146,6 +146,8 @@ subject to {
 /*********************************************************
 * PRINT RESULTS
 *********************************************************/
+int RequestsPerQuality[Objects][QualityLevels]; 
+
 execute DISPLAY 
 {
   	/************************************
@@ -158,7 +160,7 @@ execute DISPLAY
   		obj += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
 	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
 	obj = obj / tot_reqs;
-  	f.write(obj);
+  	f.write(obj,"\n");
   	f.close;
   
   	/************************************
@@ -213,8 +215,34 @@ execute DISPLAY
 		}
 		f.write("\n");
 	}
-	f.close
+	f.close;
 
+
+	/************************************
+  	 *** Print served quality levels per rank
+  	 ************************************/
+  	// Initialize the data structure
+  	for (var o in Objects) for (var q in QualityLevels)
+  		RequestsPerQuality[o][q] = 0;
+  		
+  	// Populate the data structure
+ 	for (var r in ObjRequests) for(var q in QualityLevels)
+		 RequestsPerQuality[r.object][q] = ObjectRequestsServed[r][q];
+	  	
+  	// Print to file
+	var f = new IloOplOutputFile("quality_served_per_rank.csv");
+	f.open;
+	f.write("rank\t");
+	for (var q in QualityLevels) f.write("q=",q, "\t");
+	f.write("\n");
+	for (var o in Objects){
+		f.write(o)
+		for (var q in QualityLevels)
+			f.write("\t",RequestsPerQuality[o][q]);
+		f.write("\n");
+	}	
+	
+	f.close;
 }
 
 
