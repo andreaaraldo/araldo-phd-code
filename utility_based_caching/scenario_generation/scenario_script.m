@@ -1,7 +1,8 @@
 % Ciao
 global severe_debug = true;
-
 addpath("michele");
+path_base = "~/software/araldo-phd-code/utility_based_caching";
+
 
 % Define an experiment
 
@@ -23,9 +24,13 @@ max_storage_at_single_as = (catalog_size / 100) * \
 max_cache_storage = max_storage_at_single_as; % IN Mpbs
 seeds = 1:10;
 
-seed=1;
-generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
+
+filename_prefix = sprintf("%s/scenario_generation/generated/scenario_utility_ratio_%g",path_base,utility_ratio);
+
+for seed = seeds
+	rand('seed',seed);
+	generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving, 
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage, seed);
-
+			arcs, max_storage_at_single_as, max_cache_storage, seed, filename_prefix);
+endfor

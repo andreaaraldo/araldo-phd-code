@@ -2,9 +2,9 @@
 function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving,
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage, seed)
+			arcs, max_storage_at_single_as, max_cache_storage, seed, filename_prefix)
 
-	filename = sprintf("generated/scenario_seed_%d.dat",seed);
+	filename = sprintf("%s_seed_%d.dat",filename_prefix,seed);
 	objects = 1:catalog_size;
 
 	ASes = represent_in_opl( "ASes", ases, true, "set" );
@@ -59,6 +59,9 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 
 	f = fopen(filename, "w");
+	if (f==-1)
+		error(sprintf("Error in writing file %s",filename) );
+	endif
 	fprintf(f, "%s\n",ASes);
 	fprintf(f, "%s\n",Objects);
 	fprintf(f, "%s\n",QualityLevels);
@@ -71,5 +74,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_qu
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
 	fclose(f);
+
+	printf("File %s written\n",filename);
 	
 endfunction
