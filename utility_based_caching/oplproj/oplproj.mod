@@ -252,7 +252,23 @@ execute DISPLAY
 	/************************************
   	 *** Print usatisfied requests
   	 ************************************/
+  	 var total_requests = 0;
+  	 var satisfied_requests = 0;
+  	 for (var r in ObjRequests)
+  	 { 
+  	 	for(var q in QualityLevels){
+			total_requests += ObjectRequestsServed[r][q];
+			if (q > 0 )
+				satisfied_requests +=  ObjectRequestsServed[r][q];
+		}		
+	 }
+	 var unsatisfied_part = (total_requests - satisfied_requests) / total_requests;  
 
+
+	var f = new IloOplOutputFile("unsatisfied_ratio.csv");
+	f.open;
+	f.write(unsatisfied_part,"\n");
+	f.close
 }
 
 
