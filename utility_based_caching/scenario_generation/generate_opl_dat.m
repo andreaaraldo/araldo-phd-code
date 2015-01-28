@@ -1,5 +1,5 @@
 % Called by scenario_script.m
-function generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
+function filename = generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving,
 			ASes_with_users, server, total_requests,
 			arcs, max_storage_at_single_as, max_cache_storage, seed, filename_prefix)
