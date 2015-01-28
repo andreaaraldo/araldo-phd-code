@@ -232,17 +232,27 @@ execute DISPLAY
   	// Print to file
 	var f = new IloOplOutputFile("quality_served_per_rank.csv");
 	f.open;
-	f.write("rank\t");
-	for (var q in QualityLevels) f.write("q=",q, "\t");
+	f.write("rank\tq_avg");
 	f.write("\n");
-	for (var o in Objects){
+	for (var o in Objects)
+	{
 		f.write(o)
-		for (var q in QualityLevels)
-			f.write("\t",RequestsPerQuality[o][q]);
-		f.write("\n");
+		var partial_sum = 0;
+		var q_tot = 0;
+		for (var q in QualityLevels){
+			partial_sum += RequestsPerQuality[o][q];
+			q_tot += q * RequestsPerQuality[o][q];
+		}
+		var q_avg = q_tot / partial_sum; 
+		f.write("\t",q_avg,"\n");
 	}	
 	
 	f.close;
+
+	/************************************
+  	 *** Print usatisfied requests
+  	 ************************************/
+
 }
 
 

@@ -1,0 +1,1 @@
+octave --quiet scenario_script.m; cp scenario.dat ../oplproj/oplproj.dat ; cd ../oplproj/; oplrun oplproj.mod oplproj.dat; for f in *.csv; do mv "$f" "../examples/impact_of_load/$f.load_1.00"; done; cd -; ls ../examples/impact_of_load/
