@@ -3,6 +3,7 @@ global severe_debug = true;
 path_base = "~/software/araldo-phd-code/utility_based_caching";
 addpath(sprintf("%s/scenario_generation",path_base) );
 addpath(sprintf("%s/scenario_generation/michele",path_base) );
+addpath(sprintf("%s/process_results",path_base) );
 
 
 % Define an experiment
