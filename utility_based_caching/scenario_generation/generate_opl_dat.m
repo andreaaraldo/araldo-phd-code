@@ -1,10 +1,10 @@
 % Called by scenario_script.m
-function filename = generate_opl_dat(ases, quality_levels, catalog_size, alpha, rate_per_quality, 
+function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
+			rate_per_quality, 
 			cache_space_per_quality, utility_ratio, utility_when_not_serving,
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage, seed, filename_prefix)
+			arcs, max_storage_at_single_as, max_cache_storage, seed, dat_filename)
 
-	filename = sprintf("%s_seed_%d.dat",filename_prefix,seed);
 	objects = 1:catalog_size;
 
 	ASes = represent_in_opl( "ASes", ases, true, "set" );
@@ -58,9 +58,9 @@ function filename = generate_opl_dat(ases, quality_levels, catalog_size, alpha, 
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 
-	f = fopen(filename, "w");
+	f = fopen(dat_filename, "w");
 	if (f==-1)
-		error(sprintf("Error in writing file %s",filename) );
+		error(sprintf("Error in writing file %s",dat_filename) );
 	endif
 	fprintf(f, "%s\n",ASes);
 	fprintf(f, "%s\n",Objects);
@@ -75,6 +75,6 @@ function filename = generate_opl_dat(ases, quality_levels, catalog_size, alpha, 
 	fprintf(f, "%s\n",MaxCacheStorage);
 	fclose(f);
 
-	printf("File %s written\n",filename);
+	printf("File %s written\n",dat_filename);
 	
 endfunction

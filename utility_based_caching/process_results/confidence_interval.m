@@ -9,6 +9,6 @@ function ye = confidence_interval(matr, dim, ignore_NaN)
 	if (!ignore_NaN)
 		ye = ( 1.96/sqrt( size(matr,dim) ) ) .* std(matr, opt, dim);
 	else
-		ye = ( 1.96/sqrt( sum( !isnan(matr),dim) ) ) .* nanstd(matr, opt, dim);
+		ye = ( 1.96./sqrt( sum( !isnan(matr),dim) ) ) .* nanstd(matr, opt, dim);
 	endif
 end

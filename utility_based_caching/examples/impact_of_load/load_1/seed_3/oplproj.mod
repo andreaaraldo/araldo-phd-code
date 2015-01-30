@@ -141,6 +141,8 @@ subject to {
 
 
 
+
+
 /*********************************************************
 * PRINT RESULTS
 *********************************************************/
@@ -153,7 +155,6 @@ execute DISPLAY
   	 ************************************/
   	var f = new IloOplOutputFile("objective.csv");
   	f.open;
-	f.write("utility\n");
   	var obj = 0; var tot_reqs = 0;
   	for (var r in ObjRequests) for (q in QualityLevels)
   		obj += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
@@ -167,19 +168,19 @@ execute DISPLAY
   	 ************************************/
 	var f = new IloOplOutputFile("quality_cached.csv");
 	f.open;
-	f.write("AS ");
+	f.write("AS\t");
 	for (var q in QualityLevels)
-		if (q>0) f.write("#q=",q, " ");
+		if (q>0) f.write("#q=",q, "\t");
 	f.write("\n");
 	for (var as in ASes)
 	{
-		f.write(as, " ");
+		f.write(as, "\t");
 		for (var q in QualityLevels)
 		{
 		  	if (q>0){
 				var num_cached  = 0;
 				for (var o in Objects) num_cached += ObjectCached[o][q][as];
-				f.write(num_cached," ");		
+				f.write(num_cached,"\t");		
  			}	
 		}
 		f.write("\n");
@@ -192,12 +193,12 @@ execute DISPLAY
   	 ************************************/
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
-	f.write("rank ");
-	for (var as in ASes) f.write("AS=",as, " ");
+	f.write("rank\t");
+	for (var as in ASes) f.write("AS=",as, "\t");
 	f.write("\n");
 	for (var o in Objects)
 	{
-		f.write(o, " ");
+		f.write(o, "\t");
 		for (var as in ASes)
 		{
 		  	var partial_sum  = 0;
@@ -210,7 +211,7 @@ execute DISPLAY
  			}
  			var q_avg = num_cached_tot == 0 ? 
  					0 : partial_sum / num_cached_tot; 
- 			f.write(q_avg, " ");
+ 			f.write(q_avg, "\t");
 		}
 		f.write("\n");
 	}
@@ -231,7 +232,7 @@ execute DISPLAY
   	// Print to file
 	var f = new IloOplOutputFile("quality_served_per_rank.csv");
 	f.open;
-	f.write("rank q_avg");
+	f.write("rank\tq_avg");
 	f.write("\n");
 	for (var o in Objects)
 	{
@@ -243,7 +244,7 @@ execute DISPLAY
 			q_tot += q * RequestsPerQuality[o][q];
 		}
 		var q_avg = q_tot / partial_sum; 
-		f.write(" ",q_avg,"\n");
+		f.write("\t",q_avg,"\n");
 	}	
 	
 	f.close;
@@ -266,7 +267,6 @@ execute DISPLAY
 
 	var f = new IloOplOutputFile("unsatisfied_ratio.csv");
 	f.open;
-	f.write("unsatisfied_ratio\n");
 	f.write(unsatisfied_part,"\n");
 	f.close
 }
