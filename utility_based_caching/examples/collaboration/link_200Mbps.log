@@ -97,3 +97,29 @@ Elapsed time = 1372.31 sec. (80918.34 ticks, tree = 124.04 MB, solutions = 6)
    2077    34     7347.1787     9     7346.0000     7349.8078   243395    0.05%
    2082    31        cutoff           7346.0000     7349.8078   244815    0.05%
    2105    17        cutoff           7346.0000     7349.8078   259210    0.05%
+
+Cover cuts applied:  3
+Implied bound cuts applied:  205
+Flow cuts applied:  5122
+Mixed integer rounding cuts applied:  3559
+Gomory fractional cuts applied:  349
+
+Root node processing (before b&c):
+  Real time             =  223.80 sec. (25907.70 ticks)
+Parallel b&c, 8 threads:
+  Real time             = 1492.29 sec. (69931.56 ticks)
+  Sync time (average)   =  530.87 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) = 1716.09 sec. (95839.27 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 7346
+
+<<< post process
+
+
+<<< done
+
