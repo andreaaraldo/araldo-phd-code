@@ -16,8 +16,8 @@ ASes_with_users = [1, 2];
 server = 3;
 load_ = 1;
 total_requests = 2800 * load_ * length(ASes_with_users);
-inter_as_link = 49000;
-external_link = 30000;
+inter_as_link = 0;
+external_link = 49000;
 arcs = sprintf("{<1, 2, %g>, <2, 1, %g>, <2, 3, %g>, <3, 2, %g>, <1, 3, %g>, <3, 1, %g>};",...
 			inter_as_link, inter_as_link, ...
 			external_link, external_link, external_link, external_link); % In Kbps
@@ -37,7 +37,7 @@ seeds = 1:1;
 
 	experiment_folder=sprintf("%s/examples/collaboration/%s",path_base,experiment_name); 
 
-	single_value_folder = sprintf("%s/alpha_%g", experiment_folder, alpha);
+	single_value_folder = sprintf("%s/inter_link_%g", experiment_folder, inter_as_link);
 
 
 
