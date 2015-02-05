@@ -16,15 +16,15 @@ ASes_with_users = [1, 2];
 server = 3;
 load_ = 1;
 total_requests = 2800 * load_ * length(ASes_with_users);
-inter_as_link = 0;
-external_link = 49000;
-arcs = sprintf("{<1, 2, %g>, <2, 1, %g>, <2, 3, %g>, <3, 2, %g>, <1, 3, %g>, <3, 1, %g>};",...
-			inter_as_link, inter_as_link, ...
-			external_link, external_link, external_link, external_link); % In Kbps
-max_storage_at_single_as = (catalog_size / 100) * ...
-						(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
-max_cache_storage = max_storage_at_single_as*2; % IN Mpbs
-seeds = 1:1;
+	inter_as_link = 0;
+	external_link = 490000;
+	arcs = sprintf("{<1, 2, %g>, <2, 1, %g>, <2, 3, %g>, <3, 2, %g>, <1, 3, %g>, <3, 1, %g>};",...
+				inter_as_link, inter_as_link, ...
+				external_link, external_link, external_link, external_link); % In Kbps
+	max_storage_at_single_as = (catalog_size / 100) * ...
+							(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
+	max_cache_storage = max_storage_at_single_as*2; % IN Mpbs
+	seeds = 1:1;
 
 
 
