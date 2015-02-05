@@ -90,8 +90,7 @@ dvar float+  FlowServedByCache[ObjRequests][QualityLevels][ASes];
 *********************************************************/
 
 maximize 
-	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] ) / 
-	sum( r in ObjRequests) (r.numOfObjectRequests);
+	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] ) ;
 
 subject to {
 
@@ -151,16 +150,23 @@ execute DISPLAY
   	/************************************
   	 *** Print objective function
   	 ************************************/
+  	var total_utility = 0; var tot_reqs = 0; var avg_utility = 0; 
+  	for (var r in ObjRequests) for (q in QualityLevels)
+  		total_utility += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
+	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
+	avg_utility = total_utility / tot_reqs;
   	var f = new IloOplOutputFile("objective.csv");
   	f.open;
-	f.write("utility\n");
-  	var obj = 0; var tot_reqs = 0;
-  	for (var r in ObjRequests) for (q in QualityLevels)
-  		obj += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
-	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
-	obj = obj / tot_reqs;
-  	f.write(obj,"\n");
+	f.write("avg_utility\n");
+  	f.write(avg_utility,"\n");
   	f.close;
+
+  	var f = new IloOplOutputFile("total_utility.csv");
+  	f.open;
+	f.write("total_utility\n");
+  	f.write(total_utility,"\n");
+  	f.close;
+
   
   	/************************************
   	 *** Print cached quality levels *****
@@ -283,7 +289,7 @@ execute DISPLAY
 			for (var q in QualityLevels)
 				traffic += Flow[r][q][a];
 		var load = traffic / a.linkCapacity;
-		f.write(a.sourceAS,"-"," ",load,"\n");
+		f.write(a.sourceAS,"-",a.targetAS," ",load,"\n");
 	}
 	f.close
 	

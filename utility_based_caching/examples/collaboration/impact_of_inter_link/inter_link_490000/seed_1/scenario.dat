@@ -1,0 +1,26 @@
+
+ASes= { 1, 2, 3 } ;
+
+
+Objects= { 1, 2, 3 } ;
+
+
+QualityLevels= { 0, 1, 2 } ;
+
+Arcs = {<1, 2, 490000>, <2, 1, 490000>, <2, 3, 490000>, <3, 2, 490000>, <1, 3, 490000>, <3, 1, 490000>};
+
+ObjRequests = {  <1,1,1518>, <2,1,780>, <3,1,502>, <1,2,1518>, <2,2,780>, <3,2,502> };
+
+RatePerQuality= [ 0  300  3500 ] ;
+
+
+CacheSpacePerQuality= [ 0  11.25  131.25 ] ;
+
+
+UtilityPerQuality= [ 0  1  2 ] ;
+
+
+ObjectsPublishedByProducers=[ [ 0  0  1 ]  [ 0  0  1 ]  [ 0  0  1 ] ];
+
+MaxCacheStorageAtSingleAS = 2.1375 ;
+MaxCacheStorage = 0 ;
