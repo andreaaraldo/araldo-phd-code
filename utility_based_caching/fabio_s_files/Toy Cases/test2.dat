@@ -1,0 +1,19 @@
+// Topologia con 1 nodo produttore
+//
+// 10 richieste servite dal nodo stesso che cacha una copia di media qualità dell'oggetto
+// Utilità: 20
+
+ASes = {1};
+Objects = {1};
+QualityLevels = {0, 1, 2, 3};
+
+Arcs = { };
+ObjRequests = {<1,1,10>};
+
+RatePerQuality = [0 300 1500 3500];
+CacheSpacePerQuality = [1 11.25 56.25 131.25];
+UtilityPerQuality = [0 1 2 3];
+ObjectsPublishedByProducers = [ [0] ];
+
+MaxCacheStorageAtSingleAS = 131;
+MaxCacheStorage = 200;

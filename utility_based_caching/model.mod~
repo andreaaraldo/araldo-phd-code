@@ -193,7 +193,7 @@ execute DISPLAY
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
 	f.write("rank");
-	for (var as in ASes) f.write(" AS=",as, " ");
+	for (var as in ASes) f.write(" AS=",as);
 	f.write("\n");
 	for (var o in Objects)
 	{
@@ -269,6 +269,25 @@ execute DISPLAY
 	f.write("unsatisfied_ratio\n");
 	f.write(unsatisfied_part,"\n");
 	f.close
+
+	/************************************
+  	 *** Print link load
+  	 ************************************/
+	var f = new IloOplOutputFile("link_load.csv");
+	f.open;
+	f.write("link load\n");
+	for (var a in Arcs)
+	{
+		var traffic = 0;
+		for (var r in ObjRequests)
+			for (var q in QualityLevels)
+				traffic += Flow[r][q][a];
+		var load = traffic / a.linkCapacity;
+		f.write(a.sourceAS,"-"," ",load,"\n");
+	}
+	f.close
+	
+
 }
 
 

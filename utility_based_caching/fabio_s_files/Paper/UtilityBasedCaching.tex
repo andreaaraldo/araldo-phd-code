@@ -1,0 +1,234 @@
+\documentclass[review]{elsarticle}
+
+\usepackage{lineno,hyperref}
+\modulolinenumbers[5]
+
+\usepackage[american]{babel}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{graphicx}
+
+\usepackage[cmex10]{amsmath}
+\usepackage{array}
+\usepackage{paralist}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{plotmarks}
+\usepackage[ruled]{algorithm2e}
+\usepackage[caption=false]{subfig}
+\usepackage{epstopdf}
+\usepackage{hhline}
+\usepackage[ruled]{algorithm2e}
+
+% http://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+%
+\newcommand{\multilinecell}[2][l]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+
+\newtheorem{theo}{Theorem}
+
+\journal{Notes}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+
+    \title{Appunti utility-based caching}
+
+% ==============================================================================
+% Abstract
+% ==============================================================================
+
+\begin{abstract}
+    Appunti per Utility-based caching. Ho riscritto il modello in maniera comprensibile e togliendo le assunzioni su singola qualità degli oggetti.
+\end{abstract}
+
+\begin{keyword}
+    Optimization \sep Content Distribution.
+\end{keyword}
+
+\end{frontmatter}
+
+\linenumbers
+
+\section{Modello}
+
+Di seguito propongo un modello per utility-based caching. Comincio a descrivere il caso in cui vi sono solamente oggetti di tipo ``video''; in seguito aggiungo gli altri come estensione.
+
+\begin{table}
+  \caption{Summary of the notation used in this paper.}
+  \small
+  \label{tbl:basic_notation}
+  \centering
+  \begin{tabular}{| c | l |}
+    \hline
+    \multicolumn{2}{| c |}{\textbf{Parameters of the Models}} \\ 
+    \hline
+    $A$ & Set of arcs \\
+    \hline
+    $V$ & Set of ASes \\
+    \hline
+    $O$ & Set of objects \\
+    \hline
+    $Q$ & Set of qualities \\
+    \hline
+    $FS(i)$ & Set of forward arcs $(i,j) \in A$ for node $i \in V$ \\
+    \hline
+    $BS(i)$ & Set of backward arcs $(j,i) \in A$ for node $i \in V$ \\
+    \hline
+    $b_{i,j}$ & Capacity of arc $(i,j) \in A$ \\
+    \hline
+    $n^o_v$ & Number of requests for object $o$, in AS $v \in V$ \\
+    \hline
+    $r^q$ & Rate required to retrieve an object at quality $q \in Q$ \\
+    \hline
+    $s^q$ & Storage space required to cache an object at quality $q \in Q$ \\
+    \hline
+    $U^q$ & Utility gained to serve one request for an object at quality $q$ \\
+    \hline
+    $p^{o}_{v}$ & \multilinecell{0-1 Producers reachability matrix \\ $p^{o}_v=1$ if AS $v$ has a producer for object $o \in O$ (it can serve whatever quality of object $o$)} \\
+    \hline
+    $S_{AS}$ & Max caching storage that can be installed at an AS \\
+    \hline
+    $S_{TOT}$ & Max caching storage that can be installed in the network \\
+    \hline
+    $bw_v$ & \multilinecell{Max egress capacity for AS $v \in V$, $bw_v = \max{\left(\sum\limits_{e \in FS(v)}{b_e}; \sum\limits_{o \in O}{n^o_v \cdot \max_{q \in Q}{r^q}}\right)}$} \\
+    \hline
+    \multicolumn{2}{c}{} \\
+  
+    \hline
+    \multicolumn{2}{| c |}{\textbf{Decision Variables of the Models}} \\
+    \hline
+    $n^{o,q}_{v}$ & Number of requests for object $o$ at quality $q$ satisfied at AS $v$ \\
+    \hline
+    $x^{o,q}_{v_s}$ & \multilinecell{0-1 Caching variable, if the source AS $v_s \in V$ caches $o$ at quality $q$} \\
+    \hline
+    $y^{o,q,v_d}_{e}$ & \multilinecell{Flow on arc $e \in A$ for object $o \in O$, \\ at quality $q$ sent to the destination AS $v_d \in V$} \\
+    \hline
+    $d^{o,q,v_d}$ & Rate requested at AS $v_d \in V$, for object $o$ at quality $q$ \\
+    \hline
+    $z^{o,q,v_d}_{v_s}$ & \multilinecell{Rate provided by the source AS $v_s \in V$, for object $o$, at quality $q$ \\ for the destination $v_d \in V$, when $v_s$ behaves as a producer ($p^{o,q}_{v_s} = 1$)} \\
+    \hline
+    $w^{o,q,v_d}_{v_s}$ & \multilinecell{Rate provided by the source AS $v_s \in V$, for object $o$, at quality $q$ \\ for the destination $v_d \in V$, when $v_s$ behaves as a cache ($x^{o,q}_{v_s} = 1$)} \\
+    %\hhline{|==|}
+    \hline
+  \end{tabular}
+\end{table}
+
+\newpage
+
+\small
+\begin{flalign}
+    \max{\sum\limits_{o \in O}{\sum\limits_{q \in Q}{\sum\limits_{v \in V}{n^{o,q}_v U^q}}}} \label{eq:objectiveFunction}
+\end{flalign}
+\normalsize
+subject to:
+\small
+\begin{flalign}
+    & \sum\limits_{q \in Q}{n^{o,q}_{v}} = n^o_v & \forall o \in O, v \in V \label{eq:numOfRequests} \\
+    & d^{o,q,v_d} = n^{o,q}_v \cdot r^q & \forall o \in O, q \in Q, v_d \in V \label{eq:rateRequested}
+\end{flalign}
+\begin{flalign}
+    & d^{o,q,v_d} = z^{o,q,v_d}_{v_d} + w^{o,q,v_d}_{v_d} + \sum\limits_{e \in BS(v_d)}{y^{o,q,v_d}_e} - \sum\limits_{e \in FS(v_d)}{y^{o,q,v_d}_e} & \forall o \in O, q \in Q, v_d \in V \label{eq:ingressFlow} 
+\end{flalign}
+\begin{flalign}
+    & z^{o,q,v_d}_{v_s} + w^{o,q,v_d}_{v_s} + \sum\limits_{e \in BS(v_s)}{y^{o,q,v_d}_{e}} = \sum\limits_{e \in FS(v_s)}{y^{o,q,v_d}_{e}} & \forall o \in O, q \in Q, v_s \in V, v_d \in V, v_s \neq v_d \label{eq:flowBalance}
+\end{flalign}
+\begin{flalign}
+    & \sum\limits_{o \in O}{\sum\limits_{q \in Q}{\sum\limits_{v_d\in V}{y^{o,q,v_d}_e}}} \leq b_e & \forall e \in A \label{eq:arcCapacity} \\ 
+    & \sum\limits_{v_d \in V}{z^{o,q,v_d}_{v_s}} \leq p^{o,q}_{v_s} \cdot bw_{v_s} & \forall o \in O, q \in Q, v_s \in V \label{eq:producerCapacity} \\
+    & \sum\limits_{v_d \in V}{w^{o,q,v_d}_{v_s}} \leq x^{o,q}_{v_s} \cdot bw_{v_s} & \forall o \in O, q \in Q, v_s \in V \label{eq:cacheCapacity} \\
+    & \sum\limits_{o \in O}{\sum\limits_{q \in Q}{x^{o,q}_{v_s} \cdot s^q}} \leq S_{AS} & \forall v_s \in V \label{eq:singleASCacheBound} \\
+    & \sum\limits_{o \in O}{\sum\limits_{q \in Q}{\sum\limits_{v_s \in V}{x^{o,q}_{v_s} \cdot s^q}}} \leq S_{TOT} \label{eq:totalASCacheBound} \\
+    & x^{o,q}_{v} \in \left\{0,1\right\} & \forall o \in O, q \in Q, v \in V \label{eq:binaryCache} \\
+    & n^{o,q}_{v} \in \mathbb{Z}^+ & \forall o \in O, q \in Q, v \in V \label{eq:numOfRequestsIsPositiveIntegral} \\
+    & y^{o,q,v_d}_e \in \mathbb{R}^+ & \forall o \in O, q \in Q, v_d \in V, e \in A \label{eq:positiveFlows} \\
+    & d^{o,q,v_d} \in \mathbb{R}^+ & \forall o \in O, q \in Q, v_d \in V \label{eq:positiveDemand} \\
+    & z^{o,q,v_d}_{v_s}, w^{o,q,v_d}_{v_s} \in \mathbb{R}^+ & \forall o \in O, q \in Q, v_d \in V, v_s \in V. \label{eq:positiveASReplicationFlows}
+\end{flalign}
+\normalsize
+
+The set of constraints (\ref{eq:numOfRequests}) makes sure that all the requests are served at one quality level. In the problem instances we add a ``special'' quality level $q=0$, which represents unserved traffic demands. When serving quality $q=0$ no bandwidth is required: $r^q = 0$, moreover, it does not generate any utility $\forall o \in O, U^o_r = 0$. The set of constraints (\ref{eq:rateRequested}) set the value of the bandwidth demand at AS $a$, for object $o$, at quality $q$. Such demand is satisfied in (\ref{eq:ingressFlow}). In particular, it can be satisfied because:
+\begin{inparaenum}[(1)]
+\item the AS is a producer for that object (i.e.: $z^{o,q,v_d}_{v_d} = d^{o,q,v_d}$),
+\item the AS caches the object (i.e.: $w^{o,q,v_d}_{v_d} = d^{o,q,v_d}$), or
+\item the AS retrieves the object (i.e.: la somma dei flussi sugli archi entranti).
+\end{inparaenum}
+
+Flow balance constraints are imposed in (\ref{eq:flowBalance}). We bound the arc capacity in (\ref{eq:arcCapacity}); similarly, in (\ref{eq:producerCapacity}) and (\ref{eq:cacheCapacity}), we limit the maximum emitted flows the AS sends when it behaves as a producer and a cache, respectively.
+
+In (\ref{eq:singleASCacheBound}) we restrict the overall caching storage that can be deployed in an AS, and in (\ref{eq:totalASCacheBound}) we set the same limit w.r.t. the entire topology.
+
+E' molto meglio presentare il modello come descritto sopra (con pochi dettagli, in modo che il reviewer lo capisca senza troppo sforzo). Si aggiunge poi una section sulle estensioni.
+
+\section{Estensioni}
+
+\subsection{Non-cooperazione tra gli AS}
+
+E' facile aggiungere dei vincoli per prevenire la cooperazione tra gli AS. Per farlo basta cambiare il bilanciamento dei flussi, rimuovere (\ref{eq:flowBalance}), ed aggiungere(\ref{eq:flowBalanceNonCoop}).
+
+\small
+\begin{flalign}
+	& z^{o,q,v_d}_{v_s} + \sum\limits_{e \in BS(v_s)}{y^{o,q,v_d}_{e}} = \sum\limits_{e \in FS(v_s)}{y^{o,q,v_d}_{e}} & \forall o \in O, q \in Q, v_s \in V, v_d \in V, v_s \neq v_d \label{eq:flowBalanceNonCoop}
+\end{flalign}
+\normalsize
+
+\subsection{Low-quality videos}
+
+Esistono dei video che possono essere serviti solo a bassa qualità. Sia $O_{LQ} \subseteq O$ il set di questi oggetti video, low quality. Sia $q=1 \in Q$ l'unica qualità a cui possono essere serviti. Questi possono essere facilmente integrati al modello come estensione, aggiungendo i seguenti vincoli:
+
+\begin{flalign}
+	& n^{o,q}_v = 0 & \forall o \in O_{LQ}, v \in V, q \in Q q \neq 1 \label{eq:lowQualityVideos}
+\end{flalign}
+
+\subsection{Max utility, min traffic}
+
+C'è il problema di trovare la soluzione che minimizzi il traffico, fissata l'utilità. Per risolvere questo problema, usare l'approccio multiobiettivo è fattibile, ma è preferibile (principalmente per evitare problemi di instabilità numerica)  risolvere il modello in due passi. Nella prima iterazione si calcola il valore della massima utilità. Nella seconda iterazione si determina la soluzione dell'istanza della rete, minimizzando il traffico, e fissando come utilità il valore massimo trovato al passo precedente. Per ora non lo implementerei e basta.
+
+
+
+\newpage
+
+\section{Esempi numerici}
+
+Ho qualche dubbio sul risultato di Fig. 3b nel caso non-cooperative (non avevo il sorgente e magari c'è un refuso nella figura/descrizione). Si dice che i clients di AS 2 scaricano l'oggetto 1 e l'oggetto 2 a qualità 2, ma questo violerebbe i vincoli di banda, dato che servono 33*1500 Kbps ma ne sono disponibili solamente 20000 Kbps.
+
+I risultati sono pressoché equivalenti, anche se la formulazione riportata in questi appunti riesce a calcolare bound di performance migliori evitando di fissare a priori le qualità degli oggetti richiesti, e potendo soddisfare le richieste con qualità differenziate.
+
+
+\end{document}

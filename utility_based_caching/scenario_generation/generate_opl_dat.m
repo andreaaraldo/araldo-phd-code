@@ -16,7 +16,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 
 	############ Generate ObjRequests ##################
 	number_of_object_classes = catalog_size;
-	num_of_req_at_each_as = total_requests / length(ASes_with_users);
+	num_of_req_at_each_as = round(total_requests / length(ASes_with_users) );
 	[requests_for_each_class, requests_for_each_object] = ZipfQuantizedRng(
 					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
 
