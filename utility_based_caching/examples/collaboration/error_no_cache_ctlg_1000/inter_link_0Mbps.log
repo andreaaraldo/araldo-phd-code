@@ -1,0 +1,72 @@
+File ~/software/araldo-phd-code/utility_based_caching/examples/collaboration/impact_of_inter_link/inter_link_0/seed_1/scenario.dat written
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.01 sec. (2.97 ticks)
+Tried aggregator 3 times.
+MIP Presolve eliminated 20370 rows and 62943 columns.
+MIP Presolve modified 2 coefficients.
+Aggregator did 14426 substitutions.
+Reduced MIP has 9214 rows, 15632 columns, and 38056 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.49 sec. (259.02 ticks)
+Probing time = 0.19 sec. (18.85 ticks)
+Tried aggregator 613 times.
+MIP Presolve eliminated 3610 rows and 6778 columns.
+MIP Presolve modified 3672 coefficients.
+Aggregator did 2452 substitutions.
+Reduced MIP has 3152 rows, 6402 columns, and 13808 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 9.17 sec. (5579.49 ticks)
+Probing time = 0.06 sec. (7.82 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 1930 rows and 2758 columns.
+MIP Presolve modified 14 coefficients.
+Aggregator did 8 substitutions.
+Reduced MIP has 1214 rows, 3636 columns, and 6060 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.03 sec. (13.85 ticks)
+Probing time = 0.00 sec. (1.97 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 1214 rows, 3636 columns, and 6060 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (4.27 ticks)
+Probing time = 0.00 sec. (1.96 ticks)
+Clique table members: 584.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.01 sec. (3.90 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000        2.7921        2     --- 
+*     0+    0                            0.1414        2.7921        2     --- 
+      0     0        0.5833     4        0.1414        0.5833        2  312.46%
+*     0+    0                            0.5832        0.5833        2    0.02%
+      0     0        cutoff              0.5832        0.5833        2    0.02%
+Elapsed time = 10.06 sec. (5929.79 ticks, tree = 0.00 MB, solutions = 3)
+
+Root node processing (before b&c):
+  Real time             =   10.07 sec. (5934.40 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =   10.07 sec. (5934.40 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 0.5832143
+
+<<< post process
+
+
+<<< done
+

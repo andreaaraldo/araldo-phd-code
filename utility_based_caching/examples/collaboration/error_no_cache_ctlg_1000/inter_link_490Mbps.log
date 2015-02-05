@@ -1,0 +1,66 @@
+File ~/software/araldo-phd-code/utility_based_caching/examples/collaboration/impact_of_inter_link/inter_link_490000/seed_1/scenario.dat written
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.01 sec. (2.97 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 18368 rows and 42941 columns.
+Aggregator did 2424 substitutions.
+Reduced MIP has 23218 rows, 47636 columns, and 130060 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.26 sec. (87.30 ticks)
+Probing time = 0.03 sec. (1.69 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 5188 rows and 10376 columns.
+Reduced MIP has 18030 rows, 37260 columns, and 102132 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.59 sec. (166.83 ticks)
+Probing time = 0.02 sec. (1.34 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 8304 rows and 16608 columns.
+Reduced MIP has 9726 rows, 20652 columns, and 54684 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.14 sec. (50.49 ticks)
+Probing time = 0.01 sec. (0.84 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 9726 rows, 20652 columns, and 54684 nonzeros.
+Reduced MIP has 1752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.05 sec. (24.22 ticks)
+Probing time = 0.01 sec. (0.84 ticks)
+Clique table members: 584.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.15 sec. (90.34 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000        2.9214     3203     --- 
+      0     0        0.2188     2        0.0000        0.2188     3203     --- 
+*     0+    0                            0.2187        0.2188     3203    0.03%
+*     0     0      integral     0        0.2188        0.2188     3203    0.03%
+Elapsed time = 1.52 sec. (498.07 ticks, tree = 0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    1.54 sec. (502.16 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    1.54 sec. (502.16 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 0.21875
+
+<<< post process
+
+
+<<< done
+
