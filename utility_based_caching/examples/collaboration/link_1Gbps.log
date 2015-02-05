@@ -1,0 +1,77 @@
+File ~/software/araldo-phd-code/utility_based_caching/examples/collaboration/impact_of_inter_link/inter_link_1e+06/seed_1/scenario.dat written
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.01 sec. (2.97 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 12364 rows and 24941 columns.
+MIP Presolve modified 4004 coefficients.
+Aggregator did 2424 substitutions.
+Reduced MIP has 29222 rows, 65636 columns, and 172060 nonzeros.
+Reduced MIP has 7752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.99 sec. (104.93 ticks)
+Probing time = 0.40 sec. (2.61 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 3633 rows and 7266 columns.
+Reduced MIP has 25589 rows, 58370 columns, and 153016 nonzeros.
+Reduced MIP has 7752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5.23 sec. (199.48 ticks)
+Probing time = 0.57 sec. (2.34 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 4348 rows and 8696 columns.
+Reduced MIP has 21241 rows, 49674 columns, and 128172 nonzeros.
+Reduced MIP has 7752 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.59 sec. (76.01 ticks)
+Probing time = 0.54 sec. (2.18 ticks)
+Clique table members: 584.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 2.58 sec. (434.93 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000    16800.0000     6703     --- 
+      0     0    11200.0000  1025        0.0000    11200.0000     6703     --- 
+*     0+    0                         3904.0000    11200.0000    13580  186.89%
+      0     0     9102.7325  1106     3904.0000    Cuts: 2546    13580  133.16%
+      0     0     7978.0925  1002     3904.0000    Cuts: 2734    17615  104.36%
+      0     0     7841.9456   864     3904.0000    Cuts: 2416    24729  100.87%
+      0     0     7821.9627   125     3904.0000    Cuts: 1721    26249  100.36%
+      0     0     7817.7559   204     3904.0000     Cuts: 356    26867  100.25%
+      0     0     7816.3906   447     3904.0000     Cuts: 546    28487  100.21%
+      0     0     7815.6944   831     3904.0000     Cuts: 947    29284  100.20%
+      0     0     7756.8056   347     3904.0000    Cuts: 1730    30256   98.69%
+      0     0     7680.4132    26     3904.0000     Cuts: 464    30527   96.73%
+      0     0     7672.7694    95     3904.0000      Cuts: 43    30725   96.54%
+      0     0     7671.0391    77     3904.0000     Cuts: 370    30952   96.49%
+      0     0     7670.0704    21     3904.0000     Cuts: 160    31052   96.47%
+      0     0     7670.0631    18     3904.0000      Cuts: 19    31056   96.47%
+      0     0     7669.9353    22     3904.0000      Cuts: 15    31067   96.46%
+Heuristic still looking.
+*     0+    0                         7095.0000     7669.9353    31067    8.10%
+      0     2     7669.9353    22     7095.0000     7669.9353    31067    8.10%
+Elapsed time = 780.62 sec. (40534.75 ticks, tree = 0.01 MB, solutions = 3)
+      2     4     7669.9352    26     7095.0000     7669.9353    31129    8.10%
+      3     5     7669.9353    30     7095.0000     7669.9353    31302    8.10%
+      6     8     7664.7698    30     7095.0000     7669.9353    31633    8.10%
+     12    14     7667.9886    25     7095.0000     7669.9353    32092    8.10%
+     15    17     7625.8715    19     7095.0000     7669.9353    34918    8.10%
+     23    25     7668.0046    20     7095.0000     7669.9353    37364    8.10%
+     24    26     7664.6589    27     7095.0000     7669.9353    38446    8.10%
+     25    27     7616.8552    20     7095.0000     7669.9353    42147    8.10%
+     41    43     7406.5358    18     7095.0000     7669.9353    57509    8.10%
+     58    60     7664.7531    23     7095.0000     7669.9353    63855    8.10%
+Elapsed time = 1117.47 sec. (59426.47 ticks, tree = 1.94 MB, solutions = 3)
+     64    66     7592.9193    34     7095.0000     7669.9353    67389    8.10%
+     71    73     7634.2395    23     7095.0000     7669.9353    71616    8.10%
+     74    76     7663.5530    24     7095.0000     7669.9353    74158    8.10%
+     86    88     7398.6947    18     7095.0000     7669.9353    78940    8.10%
+     97    99     7615.0488    37     7095.0000     7669.9353    81874    8.10%
+    103   105     7664.7531    23     7095.0000     7669.9353    83624    8.10%
+    116   118     7589.8433    12     7095.0000     7669.9353    87720    8.10%
+    129   131     7630.0337    25     7095.0000     7669.9353   100652    8.10%

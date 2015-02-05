@@ -6,7 +6,7 @@ run_ = true;
 experiment_name = "impact_of_inter_link";
 ases = [1, 2, 3];
 quality_levels = [0, 1, 2];
-catalog_size = 3;
+catalog_size = 1000;
 alpha = 1;
 rate_per_quality = [0, 300, 3500]; % In Kpbs
 cache_space_per_quality = [0 11.25 131.25 ]; % In MB
@@ -16,7 +16,7 @@ ASes_with_users = [1, 2];
 server = 3;
 load_ = 1;
 total_requests = 2800 * load_ * length(ASes_with_users);
-	inter_as_link = 0;
+	inter_as_link = 1000000;
 	external_link = 490000;
 	arcs = sprintf("{<1, 2, %g>, <2, 1, %g>, <2, 3, %g>, <3, 2, %g>, <1, 3, %g>, <3, 1, %g>};",...
 				inter_as_link, inter_as_link, ...
@@ -24,7 +24,6 @@ total_requests = 2800 * load_ * length(ASes_with_users);
 	max_storage_at_single_as = (catalog_size / 100) * ...
 							(cache_space_per_quality(2) + cache_space_per_quality(3) )/2  ; % IN MB
 	max_cache_storage = max_storage_at_single_as*2; % IN Mpbs
-	max_cache_storage = 0;
 	seeds = 1:1;
 
 
