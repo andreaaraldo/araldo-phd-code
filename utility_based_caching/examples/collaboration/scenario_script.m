@@ -16,7 +16,7 @@ ASes_with_users = [1, 2];
 server = 3;
 load_ = 1;
 total_requests = 2800 * load_ * length(ASes_with_users);
-	inter_as_link = 1000000;
+	inter_as_link = 0;
 	external_link = 490000;
 	arcs = sprintf("{<1, 2, %g>, <2, 1, %g>, <2, 3, %g>, <3, 2, %g>, <1, 3, %g>, <3, 1, %g>};",...
 				inter_as_link, inter_as_link, ...

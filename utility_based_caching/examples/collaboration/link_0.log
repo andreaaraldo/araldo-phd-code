@@ -1,0 +1,72 @@
+File ~/software/araldo-phd-code/utility_based_caching/examples/collaboration/impact_of_inter_link/inter_link_0/seed_1/scenario.dat written
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.01 sec. (2.97 ticks)
+Tried aggregator 4 times.
+MIP Presolve eliminated 17096 rows and 51196 columns.
+MIP Presolve modified 4009 coefficients.
+Aggregator did 8004 substitutions.
+Reduced MIP has 18910 rows, 33801 columns, and 85299 nonzeros.
+Reduced MIP has 5387 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.94 sec. (544.34 ticks)
+Probing time = 0.03 sec. (1.81 ticks)
+Tried aggregator 394 times.
+MIP Presolve eliminated 3821 rows and 6704 columns.
+MIP Presolve modified 2358 coefficients.
+Aggregator did 1576 substitutions.
+Reduced MIP has 13513 rows, 25521 columns, and 63711 nonzeros.
+Reduced MIP has 5387 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 20.44 sec. (9338.75 ticks)
+Probing time = 0.02 sec. (1.49 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 2595 rows and 3710 columns.
+MIP Presolve modified 6 coefficients.
+Aggregator did 6 substitutions.
+Reduced MIP has 10912 rows, 21805 columns, and 53303 nonzeros.
+Reduced MIP has 5387 binaries, 1884 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.13 sec. (52.95 ticks)
+Probing time = 0.02 sec. (1.35 ticks)
+Clique table members: 584.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.99 sec. (372.53 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000    16800.0000     6401     --- 
+*     0+    0                           78.0000    16800.0000     6401     --- 
+*     0+    0                          104.0000    16800.0000     6401     --- 
+*     0+    0                          130.0000    16800.0000     6401     --- 
+*     0+    0                          156.0000    16800.0000     6401     --- 
+*     0+    0                          182.0000    16800.0000     6401     --- 
+*     0+    0                          208.0000    16800.0000     6401     --- 
+*     0+    0                          234.0000    16800.0000     6401     --- 
+*     0+    0                          260.0000    16800.0000     6401     --- 
+*     0+    0                          286.0000    16800.0000     6401     --- 
+      0     0     9794.2288  1045      286.0000     9794.2288     6401     --- 
+*     0+    0                         2490.0000     9794.2288    10097  293.34%
+      0     0     8704.2884  1186     2490.0000    Cuts: 2515    10097  249.57%
+      0     0     7288.9972   211     2490.0000    Cuts: 2828    15871  192.73%
+      0     0     7217.3561    10     2490.0000     Cuts: 440    17406  189.85%
+*     0+    0                         2848.0000     7217.3561    17406  153.42%
+      0     0     7214.6098    12     2848.0000       Cuts: 5    17424  153.32%
+      0     0     7213.7508    15     2848.0000      Cuts: 12    17434  153.29%
+      0     0     7213.4281    17     2848.0000      Cuts: 10    17458  153.28%
+      0     0     7213.0236    17     2848.0000    MIRcuts: 4    17470  153.27%
+*     0+    0                         7116.0000     7213.0236    17470    1.36%
+      0     2     7213.0236    17     7116.0000     7213.0236    17470    1.36%
+Elapsed time = 33.19 sec. (15577.33 ticks, tree = 0.01 MB, solutions = 13)
+      5     7     7201.8974    14     7116.0000     7208.8177    17550    1.30%
+     26    24     7177.2969    11     7116.0000     7201.8974    17791    1.21%
+     49    39     7133.1823    12     7116.0000     7201.8974    17960    1.21%
+    199    89        cutoff           7116.0000     7191.8067    20729    1.07%
+    211    95     7132.8001    16     7116.0000     7191.8067    30610    1.07%
+    216    98     7177.0654    15     7116.0000     7181.3662    30673    0.92%
+    351   172     7126.9293    17     7116.0000     7181.3662    33080    0.92%
+    505   313     7117.5634     6     7116.0000     7181.3662    41026    0.92%
