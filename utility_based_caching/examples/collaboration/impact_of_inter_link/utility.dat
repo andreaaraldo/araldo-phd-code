@@ -1,14 +1,8 @@
-avg_utility
-1.30107
-avg_utility
-1.31179
-avg_utility
-1.32161
-avg_utility
-1.33839
-avg_utility
-1.35768
-avg_utility
-1.38696
-avg_utility
-0.959821
+capacity avg_utility
+1e5 1.30107
+2e5 1.31179
+3e5 1.32161
+4.9e5 1.33839
+1e6 1.35768
+1e7 1.38696
+1e9 0.959821
