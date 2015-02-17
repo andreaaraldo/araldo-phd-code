@@ -1,0 +1,16 @@
+
+NumASes= 2;
+NumObjects= 10;
+NumScenarios= 2;
+RealizationProbabilities= [ 1 0 ]  ;
+
+ObjectReachabilityMatrix=[ [  [ 1 1 ]  [ 1 1 ]  [ 1 1 ]  [ 1 0 ]  [ 0 1 ]  [ 1 0 ]  [ 0 1 ]  [ 1 1 ]  [ 0 1 ]  [ 1 0 ] ]  [  [ 1 0 ]  [ 1 0 ]  [ 0 0 ]  [ 0 1 ]  [ 1 0 ]  [ 1 1 ]  [ 1 1 ]  [ 1 1 ]  [ 1 1 ]  [ 0 1 ] ]  ];
+
+TrafficDemand=[ [ 405233 405233 ]  [ 176388 176388 ]  [ 108433 108433 ]  [ 76777 76777 ]  [ 58741 58741 ]  [ 47198 47198 ]  [ 39227 39227 ]  [ 33419 33419 ]  [ 29014 29014 ]  [ 25569 25569 ]  ];
+
+TransitPrice=[ [ 1 0 ]  [ 1 0 ]  ];
+
+CachePrice= 0;
+MaxCachePerBorderRouter= 2;
+MaxCoreCache= 2;
+MaxTotalCache= 2;
