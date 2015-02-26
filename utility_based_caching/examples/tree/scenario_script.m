@@ -14,7 +14,7 @@ utility_ratio = 2; % Ratio between low and high quality utility
 utility_when_not_serving = 0;
 ASes_with_users = [1, 2];
 server = 4;
-loads = [0.25, 0.5, 1, 1.5, 2, 4, 8];
+loads = [3, 5, 6, 7];
 link_capacity = 490000 %In Kbps.
 
 
