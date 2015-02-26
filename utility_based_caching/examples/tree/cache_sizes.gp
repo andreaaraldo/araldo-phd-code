@@ -1,4 +1,8 @@
-reset
+set terminal postscript eps enhanced color
+set output "cache_sizes.eps"
+
+
+
 bw = 0.1; # boxwidth
 set boxwidth 0.1
 set style fill solid
