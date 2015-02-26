@@ -24,7 +24,7 @@ for load = loads
 
 	arcs = sprintf("{<3, 1, %g>, <3, 2, %g>, <4, 3, %g>};",  link_capacity, link_capacity, link_capacity); % In Kbps
 	max_storage_at_single_as = (catalog_size / 100) * mean(cache_space_per_quality(2:3) ); % IN MB
-	max_cache_storage = max_storage_at_single_as; % IN Mpbs
+	max_cache_storage = max_storage_at_single_as % IN Mpbs
 	seeds = 1:1;
 
 	global severe_debug = true;
