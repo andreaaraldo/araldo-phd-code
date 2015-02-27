@@ -1,4 +1,4 @@
-% ciao
+% Data taken from some paper
 A_360p = -17.53;
 B_360p = -1.048;
 C_360p = 0.9912;

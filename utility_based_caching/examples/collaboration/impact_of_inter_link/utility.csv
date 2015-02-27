@@ -1,4 +1,8 @@
 capacity avg_utility
 0 1.35143
+<<<<<<< HEAD
 490Kpbs 1.41857
+=======
+490Kbps 1.41857
+>>>>>>> b0eabdccfbfcf887dd4703da6d696e9082d6a1cf
 1Gbps 1.44714
