@@ -1,3 +1,4 @@
+reset
 set terminal postscript eps enhanced mono
 set output "utility.eps"
 
