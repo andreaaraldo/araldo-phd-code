@@ -6,5 +6,5 @@ vp, ep = graph_tool.centrality.betweenness(g, norm=False)
 # For other centrality measures, see http://graph-tool.skewed.de/static/doc/centrality.html#graph_tool.centrality.betweennesshttp://graph-tool.skewed.de/static/doc/centrality.html#graph_tool.centrality.betweenness
 
 for v in g.vertices():
-	print(v, v.out_degree() )
+	print(v.out_degree() )
 
