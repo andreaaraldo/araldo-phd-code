@@ -7,4 +7,5 @@ vp, ep = graph_tool.centrality.betweenness(g, norm=False)
 
 for v in g.vertices():
 	print(v.in_degree() )
+	print(v.out_degree() )
 
