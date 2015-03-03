@@ -6,7 +6,7 @@ function [pHitChe, pHitCheAvg] = che_unif(P_zipf, lambda_obj, TC, q)
 
 	for i=1:N
 		e_ = exp(-lambda_obj(1,i)*TC);
-		pHitChe(1,i) = q * (1 - e_ ) / e_ + q * (1-e_)
+		pHitChe(1,i) = q * (1 - e_ ) / ( e_ + q * (1-e_) );
 	end
 
 	pHitCheAvg = mean(pHitChe(1,:));

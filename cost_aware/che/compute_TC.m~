@@ -1,4 +1,4 @@
-function TC = compute_TC(N, cache_size, lambda_tot)
+function TC = compute_TC(N, cache_size, lambda_tot, P_zipf)
 
 	lambda_obj = zeros(1,N);
 	for i=1:N
@@ -8,4 +8,7 @@ function TC = compute_TC(N, cache_size, lambda_tot)
 	TC = 0;
 	syms x;
 	TC = solve(sum(1-exp(-lambda_obj(1,1:N).*x)) == cache_size);
+
+	
+	fid = fopen(fname,'w');  
 end

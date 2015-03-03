@@ -1,13 +1,20 @@
 %
 N = 100000;
 B = 100;
-lambda_tot = 4;
+lambda_tots = [100];
 alpha = 1;
 TC = 31.688717870764198291331729873124;
+
+
+for lambda_tot = lambda_tots
+	f_name = sprint("TC-ctlg_%g-csize_%g-alpha_%g-lambda_tot_%g", N, B, alpha, lambda_tot)
+end
 
 q = 0.01; % probability to accept an incoming object
 
 [P_zipf, lambda_obj] = prepare_zipf(N,B,lambda_tot,alpha);
+
+
 [pHitChe, pHitCheAvg_LCE] = che_LCE(P_zipf, lambda_obj, TC);
 pHitCheAvg_LCE
 

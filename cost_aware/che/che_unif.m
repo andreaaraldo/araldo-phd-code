@@ -1,7 +1,7 @@
 % q: probability to accept an incoming object
 function [pHitChe, pHitCheAvg] = che_unif(P_zipf, lambda_obj, TC, q)
 
-	N = size(P_zipf, 2)
+	N = size(P_zipf, 2); % catalog size
 	pHitChe = zeros(1, N);
 
 	for i=1:N
