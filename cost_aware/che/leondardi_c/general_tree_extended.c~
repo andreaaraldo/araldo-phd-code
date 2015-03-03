@@ -114,7 +114,7 @@ double  comp_pin(long k, long stage )
   #ifdef SEVERE_DEBUG
   if (isnan(return_value) )
   {
-		printf("ERROR: the probability that object %ld is in cache is nan\n", k);
+		printf("ERROR: the probability that object %ld is in cache is nan, q=%g\n", k, q);
 		printf("a=%g, q=%g\n",a, q);
 		exit(-1);
   }	
@@ -218,10 +218,16 @@ double  phitcond(long k, int stage )
 	  exit(0);    
   }
 
+  //<aa>
+  if (cache_pol == CoA && q==0)
+		return_value = 0;
+  //</aa>
+
 	
   if ( isnan(return_value) )
   {
-		printf("ERROR: phitcond of object %ld is nan", k);
+		printf("ERROR: phitcond of object %ld is nan, q=%g\n", k, q);
+		exit(-1);
   }
 }
 
@@ -229,19 +235,20 @@ double  phitcond(long k, int stage )
 // <aa> Returns the overall hit probability </aa>
 double hitp(long CATALOG, int stage, double alpha)
 {
-     long k;
-     double phit=0.0;
-     double phitc; 
+	long k;
+	double phit=0.0;
+	double phitc; 
      
-     for (k=1; k<=CATALOG; k++){
-       phitc=phitcond(k, stage );
-       if(stage>0) phit += lam[k][stage]*phitc/sumzipf[stage]; 
-        else phit += zipfs_pop(k,alpha)*phitcond(k, stage );
-      if(DETAILEDPRINT) printf(" stage=%d phit(%ld)=%le price=%g\n",
-			stage, k, phitc, obj_price[k]);
+	for (k=1; k<=CATALOG; k++)
+	{
+		phitc=phitcond(k, stage );
+		if(stage>0) 
+			phit += lam[k][stage]*phitc/sumzipf[stage]; 
+        else 
+			phit += zipfs_pop(k,alpha)*phitcond(k, stage );
+		if(DETAILEDPRINT) 
+			printf(" stage=%d phit(%ld)=%le price=%g\n",stage, k, phitc, obj_price[k]);
      }  
-
-		
 
 	return phit;
 }
@@ -250,7 +257,7 @@ double hitp(long CATALOG, int stage, double alpha)
 void generate_obj_price(long ctlg_size, double* price)
 {
 	obj_price = (double*) calloc(ctlg_size, sizeof(double) );
-	int k=0; for(k=0; k<ctlg_size; k++)
+	int k; for(k=0; k<ctlg_size; k++)
 	{
 		int l = rand() % EXT_LINKS; // external link which the object lies behind
 		obj_price[k] = price[l];
@@ -260,19 +267,28 @@ void generate_obj_price(long ctlg_size, double* price)
 // Beta multiplier K is such that beta(o) = K * obj_price[o]
 void compute_K(double* prices, double* split_ratio)
 {
+	#ifdef SEVERE_DEBUG
 	if (cache_pol != CoA)
 	{
 		printf("ERROR: It makes no sense to compute K if CoA is not used\n");
 		exit (-1);
 	}
+	#endif
 
 	// From formulas (7) and (8) of the 1st submission of TPDS
 	double sum = 0;
 	
+	
 	int i; for (i=0; i<EXT_LINKS; i++)
 		sum += split_ratio[i] * prices[i];
 
-	// ERROR CHECKING{
+	#ifdef SEVERE_DEBUG
+	if (split_ratio[0]!=0.333 || split_ratio[1]!=0.333 || split_ratio[2]!=0.334)
+	{
+		printf("ERROR: split_ratio not valid\n");
+		exit(-1);
+	}
+
 	if (sum == 0)
 	{
 		printf("%s:%d:ERROR: sum is 0\n",__FILE__, __LINE__);
@@ -288,7 +304,7 @@ void compute_K(double* prices, double* split_ratio)
 
 		exit(-1);
 	}
-	// }ERROR CHECKING
+	#endif
 
 	K_ = (double*) calloc(1,sizeof(double) );
 	*K_ = 1/sum;
@@ -318,7 +334,7 @@ main(int argc, char *argv[])
   double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
-  cache_pol=CoA;
+  cache_pol=LRU;
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
