@@ -1,5 +1,7 @@
 % Modified version of Michele Mangili's code
-function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che()
+% N catalog size
+% B cache size
+function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha)
 
 % Che's Approximation
 
@@ -10,10 +12,6 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che()
 
 % Generation of truncated Zipf distribution
 
-N = 10000;
-B = 100;
-lambda_tot = 4;
-alpha = 1;
 
 P_zipf = zeros(1,N);
 norm_factor = 0;
