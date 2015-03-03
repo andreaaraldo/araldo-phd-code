@@ -1,7 +1,7 @@
 % Modified version of Michele Mangili's code
 % N catalog size
 % B cache size
-function [P_zipf, lambda_obj] = prepare_zipf(N, B, lambda_tot, alpha, TC)
+function [P_zipf, lambda_obj] = prepare_zipf(N, B, lambda_tot, alpha)
 
 	% Che's Approximation
 

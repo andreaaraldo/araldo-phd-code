@@ -1,4 +1,4 @@
-function [pHitChe, pHitCheAvg] = che_LCE(P_zipf, lambda_obj)
+function [pHitChe, pHitCheAvg] = che_LCE(P_zipf, lambda_obj, TC)
 
 	N = size(P_zipf, 2)
 	pHitChe = zeros(1, N);
