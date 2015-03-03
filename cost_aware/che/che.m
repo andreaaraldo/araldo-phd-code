@@ -46,5 +46,10 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha
 		pHitChe(1,i) = 1-exp(-lambda_obj(1,i)*TC);
 	end
 
+<<<<<<< HEAD
 	pHitCheAvg = mean(pHitChe(1,:));
 end
+=======
+pHitCheAvg = mean(pHitChe(1,:));
+exit
+>>>>>>> 0eb5debf1f4645947af6bd44982d97574210360c
