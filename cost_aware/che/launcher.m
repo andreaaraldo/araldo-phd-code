@@ -1,5 +1,5 @@
 %
-N = 1000;
+N = 100;
 B = 10;
 lambda_tot = 4;
 alpha = 1;
