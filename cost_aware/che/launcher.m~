@@ -13,7 +13,7 @@ TC = 3; % compute_TC(N, cache_size, lambda_tot, P_zipf);
 f_name = sprintf('TC-ctlg_%g-csize_%g-alpha_%g-lambda_tot_%g.dat', N, cache_size, alpha, lambda_tot);
 fid = fopen(f_name,'w');  
 if fid ~= -1
-  fprintf('%g',TC);
+  fprintf(fid, '%g',TC);
   fclose(fid);
 else
 	error('Error in opening file');
