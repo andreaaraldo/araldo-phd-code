@@ -49,3 +49,4 @@ for i=1:N
 end
 
 pHitCheAvg = mean(pHitChe(1,:));
+exit
