@@ -1,7 +1,7 @@
 % Modified version of Michele Mangili's code
 % N catalog size
 % B cache size
-function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha, TC)
+function [P_zipf, lambda_obj] = prepare_zipf(N, B, lambda_tot, alpha, TC)
 
 	% Che's Approximation
 
@@ -32,13 +32,5 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha
 	for i=1:N
 		lambda_obj(1,i) = P_zipf(1,i) * lambda_tot;
 	end
-
-	pHitChe = zeros(1, N);
-
-	for i=1:N
-		pHitChe(1,i) = 1-exp(-lambda_obj(1,i)*TC);
-	end
-
-	pHitCheAvg = mean(pHitChe(1,:));
 end
 
