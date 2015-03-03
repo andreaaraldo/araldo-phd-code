@@ -8,7 +8,7 @@ TC = 31.688717870764198291331729873124;
 
 for lambda_tot = [1, 100]
 	a=5;
-	f_name = sprintf('TC-ctlg_%g-csize_%g-alpha_%g-lambda_tot_%g', N, B, alpha, lambda_tot);
+	f_name = sprintf('TC-ctlg_%g-csize_%g-alpha_%g-lambda_tot_%g.dat', N, B, alpha, lambda_tot);
 
 	
 
