@@ -6,6 +6,10 @@ Modifications are embraced by tags <aa>.and </aa>.
 #include<stdlib.h>
 #include<math.h>
 
+//<aa>
+#define SEVERE_DEBUG
+//</aa>
+
 #define  MAXITER   20
 #define STAGES       1
 #define DETAILEDPRINT   1
@@ -32,10 +36,10 @@ double sumzipf[STAGES];
 //<aa> 
 // The results slightly change when changind this number, but are approximately the same.
 // Indeed, the final values are obtained after the convergence of an iterative algorithm
-double TC_init_factor = 0.00001; //Leonardi's default was 0.3
+double TC_init_factor = 0.3; //Leonardi's default was 0.3
 
 // COST_AWARE STUFF{
-#define EXT_LINKS 2
+#define EXT_LINKS 3
 double* K_; // beta_multiplier (see compute_K(...) for more info)
 double* obj_price; //obj_price[k] is the price of object k
 // }COST_AWARE STUFF
@@ -82,24 +86,40 @@ double  comp_pin(long k, long stage )
   double a= 1.0 - exp(-lam[k][stage]*TC[stage]);
   double q=Q;
 
-  
+  double return_value;
+
   //<aa>
   if (cache_pol==CoA)  
   {
 	double K = *K_;
-	
 	q = Q*K*obj_price[k];
   }
   //</aa>
 
   if(cache_pol==LRU)
-		return  a;
+		return_value = a;
   //  if((cache_pol==FIFO)||((cache_pol==RANDOM)))   return Lambda*zipfs_pop(k,alpha)*TC/(1.0+ 	Lambda*zipfs_pop(k,alpha)*TC);
-  if(cache_pol==pLRU || cache_pol==CoA) 
-		return  a*q/(1.0-a*(1-q));
+  else if(cache_pol==pLRU || cache_pol==CoA) 
+		return_value = a*q/(1.0-a*(1-q));
+  else{
+	  printf(" caching policy not implemented\n");
+	  exit(0);
+  }
 
-  printf(" caching policy not implemented\n");
-  exit(0);    
+  //<aa>
+  if (cache_pol == CoA && q == 0)
+		return_value = 0;
+  //</aa>
+
+  #ifdef SEVERE_DEBUG
+  if (isnan(return_value) )
+  {
+		printf("ERROR: the probability that object %ld is in cache is nan\n", k);
+		printf("a=%g, q=%g\n",a, q);
+		exit(-1);
+  }	
+  #endif
+  return return_value;    
 }
 
 
@@ -111,10 +131,11 @@ double  cachedim(int stage, long CATALOG)
      double C;
      C=0.0;
      for (k=1; k<=CATALOG; k++){
-          pin[k][stage]= comp_pin(k, stage ); 
-	  //printf( "k=%ld, s=%d, lam=%le,  pin=%le\n", k,stage, lam[k][stage], pin[k][stage]);
-	  C+=   pin[k][stage];
+        pin[k][stage]= comp_pin(k, stage ); 
+		//printf( "k=%ld, s=%d, lam=%le,  pin=%le\n", k,stage, lam[k][stage], pin[k][stage]);
+		C+=   pin[k][stage];
     }
+
 	return C;
 }
 
@@ -208,7 +229,8 @@ double hitp(long CATALOG, int stage, double alpha)
        phitc=phitcond(k, stage );
        if(stage>0) phit += lam[k][stage]*phitc/sumzipf[stage]; 
         else phit += zipfs_pop(k,alpha)*phitcond(k, stage );
-      if(DETAILEDPRINT) printf(" stage=%d phit(%ld)=%le\n",stage, k, phitc);
+      if(DETAILEDPRINT) printf(" stage=%d phit(%ld)=%le price=%g\n",
+			stage, k, phitc, obj_price[k]);
      }   
 
 	return phit;
@@ -265,8 +287,17 @@ void compute_K(double* prices, double* split_ratio)
 
 
 
-main()
+main(int argc, char *argv[])
 {
+
+  if ( argc != 2 ) /* argc should be 1 for correct execution */
+  {
+        /* We print argv[0] assuming it is the program name */
+        printf( "usage: %s <priceratio>\n", argv[0] );
+		exit(-1);
+  }
+
+  double price_ratio = atof(argv[1] );
 
   int i,s,iter;
   double phit_tot,adist;
@@ -279,8 +310,8 @@ main()
   CATALOG=CATALOGUE-1;
   //<aa>
   double seed = 1;
-  double price[EXT_LINKS] = {1,10}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.5, 0.5};
+  double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
+  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
   //</aa>
 
 
@@ -290,7 +321,6 @@ main()
 
 	if (cache_pol == CoA){
 		compute_K(price, split_ratio);
-		printf("Ciao K=%g\n", *K_);
 	}
 	//<//aa> }COST_AWARE STUFF
 
@@ -323,11 +353,12 @@ main()
 	    if(s>0) sumzipf[s]=initizipf(alpha,CATALOG,s,Lambda);
 	  //  printf("s=%d sumzipf=%le\n", s,sumzipf[s]);
 	    iter=0;
-	    do{    
+	    do{   
 			//<aa>	Fixing a value of TC, I obtained a value of 'fake cache size'. Increasing
 			//		TC increases the fake cache size. I iteratively try to increase TC until 
 			//		the fake cache size exceeds the real cache size. </aa>
 			C[s]=cachedim(s,CATALOG);        
+
 			TC[s]=TC[s]*2.0;
 			iter++;
 	    } while(C[s]<Ctarg[s]&&(iter<MAXITER));
