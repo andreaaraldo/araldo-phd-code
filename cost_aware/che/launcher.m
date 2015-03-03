@@ -7,7 +7,7 @@ TC = 31.688717870764198291331729873124;
 
 
 for lambda_tot = [1, 100]
-	suca = "ciao";
+	a=5;
 	f_name = sprint("TC-ctlg_%g-csize_%g-alpha_%g-lambda_tot_%g", N, B, alpha, lambda_tot)
 	[P_zipf, lambda_obj] = prepare_zipf(N,B,lambda_tot,alpha);
 
