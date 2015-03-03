@@ -1,0 +1,5 @@
+CATALOG=100000 cache_size=1000 alpha=1.000000 Lambda=100 cache_pol=2
+See at the end line the resuming results 
+Entering stage 0
+ stage=0 phit(1)=0.000000e+00 price=1
+ERROR: phitcond of object 2 is nan

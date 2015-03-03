@@ -142,6 +142,7 @@ double  cachedim(int stage, long CATALOG)
 
 double  phitcond(long k, int stage ) 
 {
+  double return_value;
   double  a,b,c;
   double  q=Q;
   //<aa>
@@ -173,15 +174,15 @@ double  phitcond(long k, int stage )
 		if (stage>0)  
 		{
 			if (TREE_DEG==1) 
-				return 1.0 - exp (-a);
+				return_value = 1.0 - exp (-a);
 		    else 
-				return 1.0 - exp (-b);
+				return_value = 1.0 - exp (-b);
 		}else   
-			return 1.0 - exp (-a);
+			return_value = 1.0 - exp (-a);
   }
 	    //if((cache_pol==FIFO)||((cache_pol==RANDOM))) {
 	    //   if(TC2>TC1)  return  lambda*(TC2-TC1)/(1.0 + lambda*(TC2-TC1)); else return 0.0;}
-  if(cache_pol==pLRU || cache_pol==CoA)
+  else if(cache_pol==pLRU || cache_pol==CoA)
   {	
 		TC2=TC[stage];
 		if(stage>0)
@@ -207,14 +208,21 @@ double  phitcond(long k, int stage )
 		b= 1.0-exp(-lam[k][stage]*TC2);
 		if(stage>0)
 		{
-			return  a*q/(1.0- a*(1.0-q));  
+			return_value =  a*q/(1.0- a*(1.0-q));  
 		}else 
 		{
-			return b*q/(1.0-b*(1.0-q));
+			return_value = b*q/(1.0-b*(1.0-q));
 		}	
-  }	 
-  printf(" caching policy not implemented\n");
-  exit(0);    
+  }else{
+	  printf(" caching policy not implemented\n");
+	  exit(0);    
+  }
+
+	
+  if ( isnan(return_value) )
+  {
+		printf("ERROR: phitcond of object %ld is nan", k);
+  }
 }
 
 
@@ -231,7 +239,9 @@ double hitp(long CATALOG, int stage, double alpha)
         else phit += zipfs_pop(k,alpha)*phitcond(k, stage );
       if(DETAILEDPRINT) printf(" stage=%d phit(%ld)=%le price=%g\n",
 			stage, k, phitc, obj_price[k]);
-     }   
+     }  
+
+		
 
 	return phit;
 }
@@ -290,14 +300,16 @@ void compute_K(double* prices, double* split_ratio)
 main(int argc, char *argv[])
 {
 
-  if ( argc != 2 ) /* argc should be 1 for correct execution */
+  if ( argc != 3 ) /* argc should be 1 for correct execution */
   {
         /* We print argv[0] assuming it is the program name */
-        printf( "usage: %s <priceratio>\n", argv[0] );
+        printf( "usage: %s <priceratio> <seed>\n", argv[0] );
 		exit(-1);
   }
 
   double price_ratio = atof(argv[1] );
+  int seed = atoi(argv[2] );
+  srand(seed);
 
   int i,s,iter;
   double phit_tot,adist;
@@ -309,7 +321,6 @@ main(int argc, char *argv[])
   cache_pol=CoA;
   CATALOG=CATALOGUE-1;
   //<aa>
-  double seed = 1;
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
   double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
   //</aa>
