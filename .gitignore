@@ -1,0 +1,10 @@
+*.o
+*.old
+*~
+out/*
+Makefile
+ccnSim
+.tkenvrc
+.temp
+packets/*.cc
+packets/*.h
