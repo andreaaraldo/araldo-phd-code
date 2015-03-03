@@ -11,7 +11,7 @@ q = 0.01; % probability to accept an incoming object
 [pHitChe, pHitCheAvg_LCE] = che_LCE(P_zipf, lambda_obj, TC);
 pHitCheAvg_LCE
 
-[pHitChe, pHitCheAvg_unif] = che_LCE(P_zipf, lambda_obj, TC, q);
+[pHitChe, pHitCheAvg_unif] = che_unif(P_zipf, lambda_obj, TC, q);
 pHitCheAvg_unif
 
 exit
