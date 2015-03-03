@@ -12,6 +12,7 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha
 
 	% Generation of truncated Zipf distribution
 
+	disp 'welcome'
 
 	P_zipf = zeros(1,N);
 	norm_factor = 0;
