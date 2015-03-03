@@ -1,4 +1,4 @@
-function [TC] = compute_TC(N, cache_size, )
+function TC = compute_TC(N, cache_size, lambda_tot)
 
 	lambda_obj = zeros(1,N);
 	for i=1:N
