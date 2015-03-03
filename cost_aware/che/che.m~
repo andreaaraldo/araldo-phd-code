@@ -23,7 +23,7 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha
 
 	for i=1:N
 		P_zipf(1,i) = norm_factor * (1/i^alpha);
-	end 
+	end
 
 	%Calculate the Mean Interarrival Rate per each content
 

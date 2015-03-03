@@ -33,6 +33,8 @@ function [P_zipf, lambda_obj, pHitChe, pHitCheAvg] = che(N, B, lambda_tot, alpha
 	end
 
 	TC = 0;
+	
+	disp 'Finding TC';
 
 	syms x;
 	TC = solve(sum(1-exp(-lambda_obj(1,1:N).*x)) == B);
