@@ -152,7 +152,7 @@ long CATALOG,k;
   double Ctarg[STAGES], TC1, TC2;
   double alpha=1.0;
   double Lambda=100.0;
-  cache_pol=pLRU;
+  cache_pol=LRU;
   CATALOG=CATALOGUE-1;
   sumzipf[0]=initizipf(alpha,CATALOG,0,Lambda); 
   for(s=0; s<STAGES; s++)

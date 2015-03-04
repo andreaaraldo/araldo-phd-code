@@ -223,16 +223,25 @@ double  phitcond(long k, int stage )
 		return_value = 0;
   //</aa>
 
-	
+  #ifdef SEVERE_DEBUG
   if ( isnan(return_value) )
   {
 		printf("ERROR: phitcond of object %ld is nan, q=%g\n", k, q);
 		exit(-1);
   }
+
+  if ( return_value == 0 && cache_pol != CoA )
+  {
+		printf("ERROR: phitcond of object %ld is 0, q=%g. This is not possible\n", k, q);
+		exit(-1);
+  }
+  #endif
+
+	return return_value;
 }
 
 
-// <aa> Returns the overall hit probability </aa>
+// <aa> Returns the overall hit probability at that stage </aa>
 double hitp(long CATALOG, int stage, double alpha)
 {
 	long k;
@@ -242,14 +251,24 @@ double hitp(long CATALOG, int stage, double alpha)
 	for (k=1; k<=CATALOG; k++)
 	{
 		phitc=phitcond(k, stage );
+
+		#ifdef SEVERE_DEBUG
+		if (phitc == 0 && cache_pol != CoA)
+		{
+			printf("ERROR: Content %ld has phitc=0\n",k);
+			exit(-1);
+		}
+		#endif
+
+
 		if(stage>0) 
 			phit += lam[k][stage]*phitc/sumzipf[stage]; 
         else 
 			phit += zipfs_pop(k,alpha)*phitcond(k, stage );
 		if(DETAILEDPRINT) 
 			printf(" stage=%d phit(%ld)=%le price=%g\n",stage, k, phitc, obj_price[k]);
-     }  
-
+	}
+	
 	return phit;
 }
 
@@ -334,7 +353,7 @@ main(int argc, char *argv[])
   double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
-  cache_pol=pLRU;
+  cache_pol=CoA;
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
