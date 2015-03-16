@@ -3,7 +3,7 @@
 % 		of the matrix corresponds to a seed
 % If dim == 2, onem confidence interval will be computed for each row. This is useful when each column
 % 		of the matrix corresponds to a seed
-function ye = confidence_interval(matr, dim, ignore_NaN)
+function ye = confidence_interval(matr, dim, ignore_NaN=false)
 	pkg load statistics;
 	opt = 0; % see http://www.gnu.org/software/octave/doc/interpreter/Descriptive-Statistics.html
 	if (!ignore_NaN)
