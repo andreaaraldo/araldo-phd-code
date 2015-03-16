@@ -9,7 +9,7 @@ for PI in 10;
 do
 	for SEED in 1 2 3 4 5;
 	do 
-		./general_tree_extended.o $PI $SEED > results/results-LRU-pi_$PI-seed_$SEED.log
+		./general_tree_extended.o $PI $SEED > /tmp/prova/results-CoA-pi_$PI-seed_$SEED.log
 	done
 done
 

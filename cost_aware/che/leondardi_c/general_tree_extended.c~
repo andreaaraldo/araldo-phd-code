@@ -8,6 +8,7 @@ Modifications are embraced by tags <aa>.and </aa>.
 
 //<aa>
 #define SEVERE_DEBUG
+#define COSTAWARE_MEASURES
 //</aa>
 
 #define  MAXITER   20
@@ -272,11 +273,45 @@ double hitp(long CATALOG, int stage, double alpha)
 	return phit;
 }
 
+//<aa> Measures the costfraction of stage 0
+#ifdef COSTAWARE_MEASURES
+double costfraction(long CATALOG, double alpha)
+{
+	long k;
+	double phitc; 
+	int stage = 0;
+     
+	double overall_object_cost_with_cache = 0;
+	double overall_object_cost_without_cache = 0;
+	for (k=1; k<=CATALOG; k++)
+	{
+		phitc=phitcond(k, stage );
+
+		#ifdef SEVERE_DEBUG
+		if (phitc == 0 && cache_pol != CoA)
+		{
+			printf("ERROR: Content %ld has phitc=0\n",k);
+			exit(-1);
+		}
+		#endif
+
+		double popularity = zipfs_pop(k,alpha);
+		double average_object_cost_with_cache = popularity * (1-phitc) * obj_price[k];
+		double object_cost_without_cache = popularity * obj_price[k];
+		overall_object_cost_with_cache += average_object_cost_with_cache;
+		overall_object_cost_without_cache += object_cost_without_cache;
+	}
+	double cost_fraction = overall_object_cost_with_cache / overall_object_cost_without_cache;
+	return cost_fraction;
+}
+#endif
+//</aa>
+
 //<aa> COST AWARE STUFF{
 void generate_obj_price(long ctlg_size, double* price)
 {
 	obj_price = (double*) calloc(ctlg_size, sizeof(double) );
-	int k; for(k=0; k<ctlg_size; k++)
+	int k; for(k=1; k<=ctlg_size; k++)
 	{
 		int l = rand() % EXT_LINKS; // external link which the object lies behind
 		obj_price[k] = price[l];
@@ -353,7 +388,7 @@ main(int argc, char *argv[])
   double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
-  cache_pol=CoA;
+  cache_pol=LRU;
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
@@ -437,8 +472,8 @@ main(int argc, char *argv[])
 	adist+=(STAGES+1)*(1.0-phit_tot);
 	printf("num_stages=%d\t",STAGES);
 	for(s=0; s<STAGES;s++)
-	    printf(" csize_of_stage_%d=%lf \t phit_of_stage_%d=%lf \t TC_of_stage_%d=%lf\t", 
-				s, C[s], s, phit[s], s, TC[s]);     
+	    printf(" csize_of_stage_%d=%lf \t phit_of_stage_%d=%lf \t TC_of_stage_%d=%lf\t	cost_fraction_of_stage_0=%lf\t", 
+				s, C[s], s, phit[s], s, TC[s], costfraction(CATALOG, alpha) );     
 	printf("phit_tot=%lf\t adist=%lf\n",phit_tot, adist);
 	fflush(stdout);
 
