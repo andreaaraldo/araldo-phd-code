@@ -6,7 +6,7 @@ global ignore_simtime = false;
 global ignore_lambda = false;
 
 
-out_folder="/tmp/long_sim_time/"; % where to put results
+out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000"};
-simtime_list = {"1800000"};
+simtime_list = {"1800"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
