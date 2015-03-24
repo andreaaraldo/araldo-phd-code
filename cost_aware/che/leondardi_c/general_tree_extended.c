@@ -308,13 +308,22 @@ double costfraction(long CATALOG, double alpha)
 //</aa>
 
 //<aa> COST AWARE STUFF{
-void generate_obj_price(long ctlg_size, double* price)
+void generate_obj_price(long ctlg_size, double* price, double* split_ratio)
 {
 	obj_price = (double*) calloc(ctlg_size, sizeof(double) );
+	double r;
+
 	int k; for(k=1; k<=ctlg_size; k++)
 	{
-		int l = rand() % EXT_LINKS; // external link which the object lies behind
-		obj_price[k] = price[l];
+		r = (double) rand()/RAND_MAX;
+		
+		double accumulated = 0; int l = 0;
+		while(r > accumulated)
+		{
+			accumulated += split_ratio[l];
+			l++;
+		}
+		obj_price[k] = price[l-1];
 	}
 }
 
@@ -333,11 +342,12 @@ void compute_K(double* prices, double* split_ratio)
 	double sum = 0;
 	
 	
-	int i; for (i=0; i<EXT_LINKS; i++)
+	int i; for (i=0; i<EXT_LINKS; i++){
 		sum += split_ratio[i] * prices[i];
+	}
 
 	#ifdef SEVERE_DEBUG
-	if (split_ratio[0]!=0.333 || split_ratio[1]!=0.333 || split_ratio[2]!=0.334)
+	if (split_ratio[0] + split_ratio[1] + split_ratio[2] != 1)
 	{
 		printf("ERROR: split_ratio not valid\n");
 		exit(-1);
@@ -388,17 +398,17 @@ main(int argc, char *argv[])
   double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
-  cache_pol=pLRU;
+  cache_pol=CoA;
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
+  double split_ratio[EXT_LINKS] = {0.333, 0, 0.667};
   //</aa>
 
 
 
 	//<aa> COST_AWARE STUFF{
-	generate_obj_price(CATALOG, price);
+	generate_obj_price(CATALOG, price, split_ratio);
 
 	if (cache_pol == CoA){
 		compute_K(price, split_ratio);

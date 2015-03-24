@@ -7,9 +7,9 @@ gcc general_tree_extended.c -lm -o general_tree_extended.o
 
 for PI in 1 2 5 10 100;
 do
-	for SEED in {1..40};
+	for SEED in {1..20};
 	do 
-		./general_tree_extended.o $PI $SEED > risultati/results-pLRU-pi_$PI-seed_$SEED.log
+		./general_tree_extended.o $PI $SEED > /tmp/results-CoA-pi_$PI-seed_$SEED.log
 	done
 done
 

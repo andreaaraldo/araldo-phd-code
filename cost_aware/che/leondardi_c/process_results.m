@@ -2,7 +2,7 @@
 addpath("~/software/araldo-phd-code/general/process_results");
 
 
-che_output_folder = "~/software/araldo-phd-code/cost_aware/che/leondardi_c/risultati";
+che_output_folder = "/tmp";
 outfolder = "/tmp";
 
 priceratios = [1, 2, 5, 10, 100];
