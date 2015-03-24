@@ -1,0 +1,2520 @@
+#! /usr/bin/perl
+#
+#    xgnuplot                                
+#    0.51 (this)	Thu Jul 26 09:54:24 CEST 2007
+#    0.41 		Thu Jun 14 18:40:15 CEST 2007
+#    0.01 (first)  	Wed Feb 11 05:08:57 PST 2004 
+#                                                     _ _
+#                                           __________@\@
+#\_________________________________________/.:nonsns:.\-/
+#
+BEGIN {
+   use vars qw(%terminal %font $xterm %code $VERSION @bin %using %args $gnuplot);
+   $VERSION = 0.51;
+   $gnuplot = 'gnuplot';  
+   sub TOC { chomp($now = `date +%s` ); return $now - $^T; }
+}
+
+#===================================================================
+# initialization
+#-------------------------------------------------------------------
+use Getopt::Std;  # to be useful
+use Pod::Usage;   # to be helpful
+use Data::Dumper;
+
+# avoid expensive calls such as:
+#      use IO::Handle;
+#      STDERR->autoflush(1);
+#      STDOUT->autoflush(1);
+select((select(STDOUT), $|=1)[0]);
+select((select(STDERR), $|=1)[0]);
+
+
+# init some variables, parse config file or create it if unexistent
+initXgp();
+
+# parse options and make the first consistency checks
+@ARGV = parseLongOpt(@ARGV);
+parseOpt();
+
+# be verbose unless otherwise stated)
+sub verbose {  
+  return if $opt{Q};
+  my $verb = "@_\n";
+     $verb =~ s/\n+$/\n/g;
+  print STDERR "$verb";
+}
+sub DBG { 
+  return unless ( $opt{D} );
+  (undef ,$filename, $line, $subroutine) = caller(1);
+  verbose("$filename:$line\t$subroutine(@_)\n");
+}    
+
+# close other gnuplot windows
+system("killall gnuplot_x11 > /dev/null 2> /dev/null") if $opt{K};
+
+{
+   my @files;
+
+   #===================================================================
+   # single argument expansion
+   #-------------------------------------------------------------------
+   if (( $#ARGV == 0 ) and ( !-e $ARGV[0] ) and ( $ARGV[0] !~ m/:/ )) {
+      verbose("1ARG-mode (glob)");
+      @files = cozyGlob($ARGV[0]);
+      xgpDie("Don't know what to do: better stop here") unless @files;			      
+      @ARGV = @files;	   
+   }
+
+   #===================================================================
+   # double argument expansion
+   #-------------------------------------------------------------------
+   if (( $#ARGV == 1 ) and (! $opt{multiplot} )) {
+      map {
+	if(( !-e $ARGV[$_] ) and ( $ARGV[$_] !~ m/:/ )) {
+	   verbose("2ARG-mode (glob ARGV[$_])");
+	   if( @files = cozyGlob($ARGV[$_]) ) {
+	       # here, we try to preserve expansion order,
+	       # although this isn't necessary
+               @ARGV = $_ ? ($ARGV[0],@files) : (@files,$ARGV[1]);
+           }	    
+	}
+      } (0, 1);
+   }
+}
+
+#===================================================================
+# multiplot need special care
+#-------------------------------------------------------------------
+if ( $opt{multiplot} ) {
+     verbose("MULTI-plot mode\n");
+     my $gpcode = optionCode();     
+     map {	    
+       $gpcode .= "\n";
+       $gpcode .= $code->{"multi$_"};
+       die "Multiplot code for $_ is empry!" if $code->{"multi$_"} eq "";
+       $gpcode .= $code->{"zap"} if $opt{z};
+       $gpcode .= "\n";
+
+       if (!scalar(@ARGV)) {
+           # no args
+	   xgpDie("Multiplot with embedded data not supported") 
+  	           if $opt{d};
+           verbose("Multiplot style: -[0|1..8] file1.gp -[1..8] file2.gp")
+   	           unless $_;
+           if ( -e $opt{$_} && is_gnuplot( $opt{$_} ) ) {
+	       $gpcode .= `cat $opt{$_}`;
+	   } else { 
+	       xgpDie("Multiplot: wrong or missing gnuplot files $opt{$_} for -$_");
+	   }    
+
+       } elsif ( ($#ARGV == 0) && !( -e $ARGV[0] ) && ($ARGV[0] =~ m/:/) ) {
+           # single arg
+	   verbose("Multiplot style: -0 GLOB -[1..4] GLOB modifier")
+	      unless $_;	       	   
+           my @glob = cozyGlob($opt{$_})
+	      or xgpDie("Multiplot: GLOB($_) = $opt{$_} returned an empty list");
+	   $gpcode .= codeBuild(-using => $ARGV[0], -files => \@glob);
+	   
+       } else {
+           verbose("Multiplot style: -0 modifier -[1..4] modifier DATA-files")
+   	          unless $_;	       	   
+           @ARGV = cozyGlob($ARGV[0])
+	     if ($#ARGV == 0) && !( -e $ARGV[0] ) && ($ARGV[0] =~ m/\*/);
+	             		  
+	   my ($res,$exist,$total)=all_exists(@ARGV);
+	   if ($res) {
+	       $gpcode .= codeBuild(-using => $opt{$_}, -files => \@ARGV);
+           } else {
+			       
+	       #===============================================
+	       #  deal with empty files APR06
+	       #-----------------------------------------------
+	       #  $exist = $exist > 1 ? "only $exist exist " :  		       
+	       # 		  $exist == 1 ? "only one exists " :		        
+	       # 		  "no one exists";				       
+                 			             
+ 	       verbose("...trimming empty files ($exist/$total non-empty)");
+	       my @files;
+	       map { push @files, $_ if -e $_ and -s $_ } @ARGV;
+	       my ($res,$exist,$total)=all_exists(@files);
+	       if( $res ) {
+	          $gpcode .= codeBuild(-using => $opt{$_}, -files => \@files);
+	       } else {
+    	          xgpDie("...trimming empty files ($exist/$total non-empty) is NOT sufficient");	       
+	       }
+           }
+       }	   
+     } ($opt{true0}, $opt{multiplot});
+     codePlot( $gpcode );      
+  
+   
+#===================================================================
+# no arguments
+#-------------------------------------------------------------------
+} elsif ( ! scalar(@ARGV) ) {
+    verbose("0ARG mode\n");
+    if( $opt{c} ) {
+       #manual page
+       -e $file{gp} and system("cat $file{gp}");
+       -e $file{gp} or xgpDie("Apparently no $file{gp} exists...");
+       exit(0);
+
+    } elsif( $opt{h} ) {
+       #manual page
+       pod2usage(-verbose => 2) 
+
+    } elsif( $opt{'?'} ) {
+      #extracting the example section from the pod documentation
+      system("cat $file{pod} | podselect -section EXAMPLES | pod2text -c");
+
+    } elsif ( $opt{P} ) {
+       sysCmd("$gnuplot -persist < /dev/stdin", 
+              "Piping /dev/stdin to| gnuplot -persist");
+	    
+    } elsif ( $opt{H} ) {	    
+      # asking gnuplot's help on $opt{H}
+      system("echo 'help $opt{H}' | $gnuplot 2>&1 | less");
+
+    } elsif ($opt{t} eq 'help') {      
+      # Gnuplot's help on terminal
+      sysCmd("echo 'help term' | $gnuplot", 
+             "Gnuplot's help on terminal");
+      
+    } elsif ($opt{t} eq 'list') {
+      # Available gnuplot terminals
+      my @term = listTerm();
+      my $pad  = max( map { length $_ } @term );
+      my $count = 0;
+      printf "Available gnuplot terminals:\n";
+      map { 
+        printf "%-${pad}s\t", $_;
+	print "\n" unless ++$count%4;
+      } @term;
+      print "\n";
+    
+    } elsif ($opt{t} eq 'dump') {
+      # Additional xgp terminals
+      printf "Additional xgp terminals:\n";
+      printf "%-15s %-15s %s %s\n", qw(#-tXXX Extension Terminal Options);
+      map {
+	printf "%-15s %-15s %s %s\n", 
+        	 $_, $terminal{$_}{ext}, $terminal{$_}{term}, $terminal{$_}{opt};
+      } (sort keys %terminal);
+
+   } else {
+     # you want a plain gnuplot terminal
+     sysCmd($code{xterm},                 #xterm command
+            "Opening gnuplot terminal\n", #explanation
+	    1)                            #show_command flag
+        unless $opt{K};
+	
+   }  
+
+#===================================================================
+# one only argument
+#-------------------------------------------------------------------
+} elsif  ( $#ARGV == 0 ) {
+   verbose("1ARG mode\n");
+   if ( -e $ARGV[0] && ! -s $ARGV[0] ) {
+      verbose("File <$ARGV[0]> is empty...\n");
+      exit(1);
+   
+   } elsif ( -e $ARGV[0]  && is_gnuplot( $ARGV[0] ) ) {
+      verbose("You gave me a GNUPLOT file...\n");
+      # $ARGV[0] is a gnuplotfile
+      # plotting to x11 / or to file
+      gpPlot($ARGV[0]);
+      
+   } elsif ( -e $ARGV[0] ) { #is_data ( $ARGV[0] )  
+      verbose("You gave me a DATA file...\n");
+      $opt{u} = "1:2";
+      dataPlot($ARGV[0])
+
+   } elsif (!-e $ARGV[0] && $ARGV[0] =~ m/:/ ) {
+      if( $opt{d} ) {
+         verbose("You gave me a data-file modifier (RAW-DATA from /dev/stdin)...\n");
+      } else {
+         verbose("You gave me a data-file modifier (DATA files from /dev/stdin)...\n");
+      }	 
+      $opt{u} = $ARGV[0];
+      dataPlot($opt{d} ? '-' : map { chomp; $_ } (<STDIN>) );
+
+   } else {
+      verbose(looseDequote("Mmmm. I run short of interpretations... It may be that 
+	      $ARGV[0] is a mispelled gnuplot modifier, but I kinda doubt it."));	       
+      exit(1);	      
+   }
+
+   
+#===================================================================
+# several arguments
+#-------------------------------------------------------------------
+} elsif( $#ARGV > 0 ) {
+   verbose("*ARG mode\n");
+   if ( all_exists(@ARGV) && all_gnuplot(@ARGV) ) {
+      verbose("Arguments seem @{[ $#ARGV+1 ]} GNUPLOT files...\n");
+      gpPlot(@ARGV);
+
+   } elsif ( all_exists(@ARGV) ) {   
+      verbose("Arguments seem @{[ $#ARGV+1 ]} DATA files...\n");
+      $opt{u} = "1:2";
+      dataPlot(@ARGV);
+
+   } else {
+      # 
+      # either the first or last is a gnuplot-using syntax;
+      #
+      verbose("Arguments seems $#ARGV DATA files AND a gnuplot modifier ");
+      if ( all_exists(@ARGV[(0..$#ARGV-1)]) ) {
+	verbose("(last argument)\n");
+	$opt{u} = pop @ARGV;
+      } elsif ( all_exists(@ARGV[(1..$#ARGV)]) ) {
+	verbose("(first argument)\n");
+	$opt{u} = shift @ARGV;
+      } else {
+	#===============================================
+	#  deal with empty files APR06
+	#-----------------------------------------------
+	#  verbose("(wrong guess!)\n");
+	#  ($res,$exist,$total)=all_exists(@ARGV);
+	#  $exist = $exist > 1 ? "only $exist exist " :  		       
+	# 		  $exist == 1 ? "only one exists " :		        
+	# 		  "no one exists";				       
+	verbose("...trimming empty files ($exist/$total non-empty)");
+	my @f;
+	map { push @f, $_ if -e $_ and -s $_ } @ARGV;
+	my ($res,$exist,$total)=all_exists(@f);
+  	xgpDie("...trimming empty files ($exist/$total non-empty) is NOT sufficient")
+	   unless $res;
+	@ARGV = @f;   
+	verbose("@ARGV");
+      }
+      dataPlot(@ARGV);
+   }
+} else {
+   xgpDie("This code shan't be reached\n");
+}
+
+exit(0);
+#                                                     _ _
+#     Ok, we are done                       __________@\@
+#\_________________________________________/.:nonsns:.\-/
+#
+
+
+#===================================================================
+# parseOpt
+#-------------------------------------------------------------------
+# @ARGV = parseLongOpt(@ARGV);
+sub parseLongOpt {
+    #
+    # stripping off --var val (which yeld "set var val" in gnuplot)
+    #  		note that val is possibly expanded
+    #
+    my(@copy,@argv);
+    my($this,$that)=(0,$#_);
+    while($this<=$that) {
+       # is a long option	     
+       if( $_[$this] =~ s/^--// ) {
+          if ( $_[$this] =~ m/^vl$/ ) {
+	  #
+	  # vertical line
+	  #	  
+	     $gplongopt .= "set arrow from  $_[$this+1],graph 0 to $_[$this+1],graph 1 nohead lt -1 lw 0.5\n";
+
+          } elsif ( $_[$this] =~ m/^hl$/ ) {
+	  #
+	  # horizontal line
+	  #
+	     $gplongopt .= "set arrow from graph 0,$_[$this+1] to graph 1,$_[$this+1] nohead lt -1 lw 0.5\n";
+
+          } elsif ( $_[$this] =~ m/^sm$/ ) {
+	  #
+	  # smoothing      
+	  # smooth {unique | frequency | csplines | acsplines | bezier | sbezier}
+	  #
+	     $next = $_[$this+1];
+	     my ($sm,$smooth)=("","unique");
+	     $gpopt{__smooth__} = "sm $smooth "; 	  
+	  
+	  
+	  } else {
+	  #
+	  # stripping off --var val (which yeld "set var val" in gnuplot)
+	  #  		note that val is possibly expanded
+	  #
+             $gpopt{$_[$this]}=
+	 	    exists $code->{$_[$this+1]} ?
+	 		   $code->{$_[$this+1]} : $_[$this+1];
+	     # print(" gpopt{$_[$this]} = $gpopt{$_[$this]}\n");
+	 }
+         $this++;
+	 
+       # not a long option	     
+       } else {
+      	  push @copy, $this;
+       }
+       $this++;
+    }
+    map { push @argv, $_[$_]; } (@copy);
+    # print "@argv\n";
+    return @argv;
+}   
+
+
+sub parseOpt { DBG(@_);
+    $opt{cmdline} = "@ARGV";
+    
+    #
+    # standard option parsing
+    #
+    $opt = "h?H:KPdD";	          # running behavior and context hints 
+    $opt.= "o:t:m:QCczF:w:e:";        # output modifiers
+    $opt.= "Tq:x:y:X:Y:k:w:b:s:S"; # code building blocks shorthands
+    $opt.= "N:M1:2:3:4:5:6:7:8:9:0:%:";     # Megalomaniac multiplot made easy... 
+    $opt.= "i:";     # identified curve is plot with lp, others with default style
+    $opt.= "r";     # X11 resource from ./xrm
+    $opt.= "a";     # avoid plotting to X11
+    getopts($opt,\%opt);
+
+    if ($opt{r} && ((-e "./xrm") || (-e $file{xrm})) ) {
+       $opt{xrm} = join " -xrm ", " ",
+       		map { chomp; "'$_'" } (-e "./xrm") ?  
+			`cat ./xrm` : `cat $file{xrm}`;
+    }
+    chomp( $opt{xrm} ); 
+
+    map { 
+      $opt{$_} = 0 unless exists $opt{$_}; 
+      $opt{$_} ||= 0;      
+    } qw(d D M Q K C Q S T U c h ? z);
+    $opt{sort} = !$opt{S};
+    $opt{w} = " l" unless $opt{w} ne '';
+    $opt{u} = ''; #this is NOT a command line option
+    $opt{o} ||= "/dev/stdout"; # unless $opt{o};
+    ## $opt{c} ||= $file{gp}; # unless $opt{o};
+    $opt{t} ||= "x11";
+    $opt{k} ||= "default";
+    $opt{q} = "xy" if ( $opt{q} eq "q" );
+    $opt{b} .= ";\nset logs $opt{q}\n" if defined $opt{q} && $opt{q} ne '';
+    $opt{F} ||= "#"; # not used for the moment
+    $opt{true0} = 0; # just in case one uses multiplot #FXI
+    map {  
+      if( exists $opt{$_} and defined $opt{$_} and $opt{$_} ne '' ) {
+        unless( $opt{0} ) {
+	  $opt{0}   = $opt{$_}; 
+	  $opt{true0} = $_; 
+	} else {
+	  $opt{multiplot} = $_ 
+	}	 
+      }	
+    } (1..8);
+
+    if( $opt{multiplot} ) { 
+       xgpDie("for now, you MUST specify -0 when multiplotting")
+         unless $opt{0};
+    }
+
+    #startup code1,codeN
+    my @code;
+    push @code, split( ',' , $opt{s} ) if $opt{s};
+    push @code, "zap" if $opt{z};
+    push @code, "multi$opt{multiplot}", "multi$opt{true0}" if $opt{multiplot};
+    if( $opt{s} ) {
+	map {
+	  die "Code template '$opt{s}' unexistent\n"
+	    unless exists $code->{$_};
+	} (@code);     
+    }
+    
+    $code->{default} ||= "";
+    $code->{default} = "# Created the $date with:
+#   ____________________________
+#  /                            \\
+# /        xgp        __________/
+# \\__________________/.:nonsns:.
+#
+$code->{default}
+";
+    
+    #whether to use mpage
+    $opt{mpage} = $opt{m};
+
+    #gnuplot terminals
+    unless ( belongs($opt{t}, qw(list dump help) ) ) {
+      if (!exists $terminal{$opt{t}} ) {
+	 $terminal{$opt{t}}{term} = $terminal{$opt{t}}{ext} = $opt{t}; 
+	 $terminal{$opt{t}}{opt} = "";
+      }
+      ### probeTerm("$terminal{$opt{t}}{term} $terminal{$opt{t}}{opt}");
+   }
+
+}
+
+
+
+#===================================================================
+# initXgp
+#-------------------------------------------------------------------
+sub initXgp { DBG(@_);
+    #myself
+    $opt{app} = @{[split('/',$0)]}[-1];
+    #########################################################################33
+    $opt{app} = "xgp";
+    #########################################################################33
+
+    mkdir "$ENV{HOME}/.$opt{app}" unless -d "$ENV{HOME}/.$opt{app}";     
+    $file{rc}  = "$ENV{HOME}/.$opt{app}/rc";
+    $file{err} = "$ENV{HOME}/.$opt{app}/err";
+    $file{gp}  = "$ENV{HOME}/.$opt{app}/gp";
+    $file{xrm} = "$ENV{HOME}/.$opt{app}/xrm";
+    $file{pod} = "$0"; #assume this script contains pod help
+    if ( -e $file{rc} ) {
+        probeXgprc();
+    } else {
+        createXgprc();
+    }	
+
+    $dummy = $file{rc};
+    foreach my $localrc (glob ("*xgprc")) {
+       if ( -e "$localrc" ) {
+          # we haven't testet for verboseness yet... so shut up !
+	  # verbose("Loading local resources <$localrc>");
+	  $file{rc} = "$localrc";
+	  probeXgprc();
+       }
+    }
+    $file{rc} = $dummy;             
+
+    
+    chomp( $date=`date` );
+    chomp( $cwd = $ENV{PWD} || `pwd` );
+    $cwd =~ s/$ENV{HOME}/~/;
+    
+    # we may overwrite code{xterm} entry
+    # but who cares ?
+    $code{xterm} = "xterm \\
+    -title 'gnuplot ($cwd)' \\
+    -n  '<gnuplot>' \\
+    -fg  $xterm->{color}{fg} \\
+    -bg  $xterm->{color}{bg} \\
+    -fn  $xterm->{font}->{norm} \\
+    -fw  $xterm->{font}->{wide} \\
+    -fb  $xterm->{font}->{bold} \\
+    -fwb $xterm->{font}->{bdwd} \\
+    -geometry $xterm->{geometry} \\
+    -e gnuplot &\n";    
+}
+
+#===================================================================
+# {create,probe}Xgprc 
+#-------------------------------------------------------------------
+# initialization
+# hard-coded defaults
+sub createXgprc { DBG(@_);
+    # testing for some external bin programs
+    @bin = qw(which killall gnuplot cat podselect pod2text xterm date pwd);
+    map {
+      system("which $_ 2> /dev/null > /dev/null");
+      xgpDie("Sorry, but at present time I cannot run without using ``$_''\n")
+          if $?;
+    } @bin;
+
+    verbose("Creating $file{rc} resources");
+    open XRC, "> $file{rc}";
+    print XRC "# !/usr/bin/perl -w \n# Created on $date
+#   ____________________________
+#  /                            \\
+# /        xgp/rc     __________/
+# \\__________________/.:nonsns:.
+# 
+"; 
+   $date = `date`;
+   chomp( $date );
+   open SELF, "cat $file{pod} | podselect -section  'RC-FILE' | pod2text |"
+       or die "Cannot create $file{rc} from section 'RC-FILE' of $file{pod}\n";
+   while( <SELF> ) {
+        next if m/RC-FILE/;
+	s/^\s{1,6}//g; # remove indent inserted by pod2text
+	print XRC $_
+   }
+   close SELF;
+   close XRC;	
+   # ok, here I should test if  the file is still safe, 
+   # i.e., someone didn't interveined to manipulate the
+   # resource file... however this is a bit of paranoia,
+   # and I won't do it. 
+   
+   probeXgprc("I");
+   verbose("Resource file $file{rc} seems to be ok");
+}
+
+sub probeXgprc { DBG(@_);
+ my $who = shift;
+    $who ||= "You";
+    unless ( is_safe( $file{rc} ) ) {
+       xgpDie("WARNING! Unsafe resource file!
+               Someone could alter $file{rc} content. Reason:
+               $@
+	       I'd better not execute its code, and advise you to change 
+	       the file permissions before trying to run me again.");
+    }
+    unless( do $file{rc} ) {       
+       $error = `perl -cw $file{rc} > /dev/null 2>&1`;
+       xgpDie("Ops! $who've created a buggy resource file $file{rc} and perl says: 
+               $error
+               $@");
+    }		  
+}       
+
+
+
+#===================================================================
+# xgpDie, sysCmd
+#-------------------------------------------------------------------
+sub xgpDie { DBG(@_);
+   $msg = looseDequote( "@_" );
+   $msg .= "\n" unless $msg =~ m/\n$/;
+   die "$msg";
+}
+
+sub sysCmd { DBG(@_);
+   my ($cmd,$prompt,$show)=@_;
+   chomp($prompt);
+   verbose("$prompt");
+   verbose("\n$cmd") if $show;
+   ($err,$msg)=system($cmd);
+   verbose ( $err ? "Troubles executing ``$cmd'':\nSystem says: $msg\n" :
+                    "...done\n");
+   return !$err;		    
+}
+
+
+
+#===================================================================
+# probeTerm, listTerm
+#-------------------------------------------------------------------
+sub probeTerm { DBG(@_);
+  my $term = shift;
+  my ($err,$msg)=system("echo \"set term $term\" | $gnuplot 2> /dev/null");
+  die "Unknown terminal <$term>
+Try ``-t help'' and ``-t dump'' for more informations about,
+respectively, gnuplot and xgnuplot terminals. For help on
+a specific terminal, e.g. Xxyzx, use ``-H Xxyzx'' instead.
+" if $err;
+}  
+
+sub listTerm { DBG(@_);
+  open TERM , "echo 'help term' |  $gnuplot  2>&1 |"
+     or die "Troubles when detecting gnuplot terminals...";
+  my $match=0;
+  my @term;
+  while(<TERM>) {
+     next unless $match || m/return for more:/;
+     $match ||= m/return for more:/;
+     s/^.*more://g;
+     s/^\s+//g;
+     s/\s+$//g;
+     push @term, split '\s+', $_;
+  }
+  close TERM;
+  return @term;     
+}
+
+
+#===================================================================
+# optionCode, codeBuild
+#-------------------------------------------------------------------
+sub optionCode { DBG(@_);
+my $ret  = "$code->{default}\n";   # default
+   $ret .= "set multiplot\n" if $opt{multiplot};
+   $ret .= "$code->{$opt{s}}\n" if $opt{s}; # startup
+   $ret .= "$code->{zap}\n"                # cleanup...
+           if $opt{z} && !$opt{multiplot};  # ...unless multiplot
+   $ret .= "set key $key->{$opt{k}}\n" if ( $key->{$opt{k}} );
+
+   #xrange
+   map {
+     if ( $opt{$_} ) {
+       #strip unnecessary parens pair
+       ( $opt{$_} = "[$opt{$_}]" ) =~ s/([\[\]])+/$1/;
+       $ret .= "set ${_}ran $opt{$_}\n";
+     }
+   } qw(x y);
+   
+   #xlabel
+   map { $ret .= "set ${_}lab '$opt{$_}'\n"  if ( $opt{$_} )} qw(X Y);
+   
+   #--var val
+   map { 
+     if( /title/ ) {
+       $ret .= "set ${_} '$gpopt{$_}'\n"  
+     } else {
+       $ret .= "set ${_} $gpopt{$_}\n"  unless m/__(.*)__/
+     }
+   } keys (%gpopt);
+
+   $ret .= "\n\n#Long options\n$gplongopt\n\n" if $gplongopt;
+   return $ret;
+}
+
+
+sub simple_using {
+my ($x,$y) = split ':', shift;
+$x = "$using->{$x}" unless "$using->{$x}" eq "";
+$y = "$using->{$y}" unless "$using->{$y}" eq "";
+return "'$x:$y'";
+# useful if defined $using = { 1 => "time", 2 => "speed" } in a xgprc file
+}
+
+sub codeBuild { DBG(@_);
+my ($title,@title,%title,$gpcode,@using,@files);
+### v1.2
+### my %args = @_;
+### now -files are global (mainly for cozyUsing)
+    %args = @_;
+
+
+   # there may be many modifiers...
+   # there may be many files...
+   @using  = cozyUsing( $args{-using} );   
+   if ($using_expansion) {
+       @using_title = cozyUsingExpansion( $args{-using} );   
+   }   
+   @files  = $opt{sort} ? cozySort( @{$args{-files}} ) : @{$args{-files}};      
+
+###
+## verbose("FILES: @files:\nUSING($args{-using}): @using\n \n ");
+###
+   if ( $#using == $#files and $opt{N} ) {
+       # normalized plots are not megalomaniac
+       
+   } elsif (  $#using > 0 and
+         $#files > 0 and
+        ($#using+1)*($#files+1) >= 9 ) {
+	unless( $opt{M} ) {
+           xgpDie(
+	     looseDequote("Wow! you are a real megalomaniac!
+	     Then, in order to plot @{[($#using+1)]} curves over @{[($#files+1)]} files, 
+	     you should use the MegaloMania option (-M)\n")
+           ) 
+	} else {
+	   verbose("Turning MegaloMania into effect... feeling dizzy?");
+	}
+   }
+
+
+   if ((scalar(@files) > 1) && !$opt{d} && !$opt{T}) {
+      # split filenames and aggregate them
+      ($title,@title) = cozyTitle(@files);
+   } else {
+      ($title,@title) = ("",@files);
+   }
+
+### my @format = cozyFormat(-using => \@using, -files => \@files);
+
+   #mix formats and filenames into key-title
+   $using_id= -1;
+   foreach my $us (@using) {
+         $using_id++;
+	 foreach my $id (0..$#files) {   
+   	       $title{$us}[$id] = 	       		  
+	        	  ($#using > 0) ? 
+			    ( ($#files > 0) ?	  
+        			 "'$us ($title[$id])'" :
+				 $using_expansion ? 
+				     "'$using_title[$using_id]'" :
+				        simple_using( $us )) : 
+			     "'$title[$id]'";		
+			     
+	}
+   } 
+   $fLen = max( map { length($_) } @files ) + 2;
+   $tLen = max( map { length($_) } @title ) + 2;
+   $uLen = max( map { length($_) } @using ) + 2;
+
+
+   # code style: compact (default) or not   
+   my($u,$w,$t);
+   if ( $opt{C} ) {
+      $u = "using";
+      $w = "with";
+      $t = "title";       
+   } else {
+      $u = "u";
+      $w = "w";
+      $t = "t";       
+   }   
+
+   $title .= "($files[0])" if $#using > 0 and $#files == 0 ;
+   $gpcode .= "set title '$title'\n" unless ($title eq '') || ($gpopt{title} ne '');
+   $gpcode .= "$opt{b}\n";
+
+   ( $opt{splot} = $opt{u} )=~ s/[^:]//g;  
+   if (length($opt{splot})==2) {
+      $gpcode .= "splot \\\n" 
+   } else {
+      $gpcode .= "plot \\\n" 
+   }
+      
+   if ( $opt{N}  &&  $#using == $#files ) {
+      foreach my $id (0..$#files) {   
+	   $gpcode .= sprintf "%-${fLen}s\t$u %s %-${uLen}s $gpopt{__smooth__}\t$t  %-${tLen}s\t$w %s, \\\n", 	   
+                              "'$files[$id]'", $opt{e}>0 ? "every $opt{e}" : "",
+			       "$using[$id]", "'$title[$id] (norm$opt{N})'",
+			       ($id == $opt{i}-1 ) ? "lp" : $opt{w};
+      }
+   
+   } elsif ( $opt{U} ) { #not filefirst 
+      foreach my $using (@using) {
+	foreach my $id (0..$#files) {   
+	   $gpcode .= sprintf "%-${fLen}s\t$u %-${uLen}s $gpopt{__smooth__}\t$t %-${tLen}s\t$w %s, \\\n", 
+                              "'$files[$id]'", "$using", "$title{$using}[$id]", 
+			      ($id == $opt{i}-1 ) ? "lp" : $opt{w};
+	} 
+      }      
+   } else {
+      foreach my $id (0..$#files) {   
+	foreach my $using (@using) {
+	   $gpcode .= sprintf "%-${fLen}s\t$u %-${uLen}s $gpopt{__smooth__}\t$t %-${tLen}s\t$w %s, \\\n", 
+                              "'$files[$id]'", "$using", "$title{$using}[$id]",
+			      ($id == $opt{i}-1 ) ? "lp" : $opt{w};
+	} 
+      }      
+   }
+   chomp($gpcode);
+   $gpcode =~ s/, \\$//g;
+   return $gpcode;
+}
+
+
+#===================================================================
+# dataPlot, codePlot, gpPlot
+#-------------------------------------------------------------------
+sub dataPlot { DBG(@_);
+   my (@files) = @_;
+   if ( $opt{d} ) {
+     verbose("Building gnuplot code (embedding /dev/stdin RAW-DATA)\n");   
+   } else {
+     verbose("Building gnuplot code (to plot @{[$#files+1]} DATA files)\n");
+   }      
+   
+   $gpcode = optionCode();
+   $gpcode .= codeBuild(-using => $opt{u}, -files => [@files]);
+   codePlot( $gpcode );   
+}
+
+
+sub codePlot { DBG(@_);
+my $gpcode  = "#! xgp $opt{cmdline}\n@_\n";
+   # this should be done in a loop
+ 
+   # print CODE to STDOUT if user redirects it > and using x11
+   if( !-t STDOUT ) {
+      print STDOUT "$gpcode\n";
+      if ( $opt{d} ) {  map { print STDOUT $_ } (<STDIN>) };
+   }
+
+   # print CODE to STDERR if user redirects it 2> and ! using x11
+   if( !-t STDERR ) {
+      print STDERR "$gpcode\n";
+      if ( $opt{d} ) {  map { print STDERR $_ } (<STDIN>) };
+   }
+   
+   # print CODE to file{gp} anyway
+   open GPF, "> $file{gp}";
+   print GPF "$gpcode\n";
+   if ( $opt{d} ) {  map { print GPF $_ } (<STDIN>) };
+
+   # avoiding to close GPF allows to rotate axis, 
+   # take point coordinates, etc.
+   #   close GPF;
+   
+   runGnuplot("-persist $file{gp}") unless $opt{a};   
+}
+
+
+
+
+sub gpPlot { DBG(@_);
+  my (@files) = @_;
+  my @out;
+  undef @out;
+  #
+  # give user precise information on what's going on:
+  # at this point, it's a mere question of how many
+  # gnuplot files are going to be plotted and where
+  # 
+  $file = ($#files > 0) ? 
+               "@{[$#files+1]} files" :
+          ($files[0] eq $file{gp} ) ? 
+	       "default ($file{gp})" : 
+	       "1 file";
+	       
+  $term = ($opt{t} eq 'x11') ? 
+               "x11" : 
+	       "terminal <$opt{t}>"; 
+
+  $term .= "($terminal{$opt{t}}{term} $terminal{$opt{t}}{opt})"
+      if $terminal{$opt{t}}{opt} ne '';
+  verbose("Plotting $file to $term\n");
+  
+  
+  #
+  # all files are plotted in different windows...
+  #
+  if ( $opt{t} eq 'x11' ) {
+     map { 
+        verbose("@{[++$id]}/@{[$#files+1]} $_...");
+	my($err,$msg) = runGnuplot("-persist $_");
+	verbose( $err ? "failed!\n$msg" : "ok\n" );
+	
+	# fixating annoying bug that
+	# suppressed fatal error on Quiet mode
+	xgpDie($msg) if $err && $opt{Q};
+     } (@files);
+     
+  } elsif (($files[0] eq $file{gp}) && !$#files)   {
+    #
+    # building gpCode on the fly (and using a terminal)
+    #
+    open GPLOT, "| $gnuplot $opt{xrm}";
+    
+    #stdout is redirected
+    if( !-t STDOUT ) {
+       print GPLOT "set term $terminal{$opt{t}}{term} $terminal{$opt{t}}{opt}\n";
+    } else {
+       verbose("Avoiding to print binary data ($opt{t}) on screen (use > file.$opt{t})");
+    }
+    print GPLOT "load '$file{gp}'";
+    close GPLOT;
+
+  } else {
+  #
+  # all files are plotted into different files...
+  #
+     map {
+        ( $out = $_ ) =~ s/\.\w+$/.$terminal{$opt{t}}{ext}/g;
+	$output = $out;
+	$output =~ s/^(.+\/)//g;
+        push @out, $out;
+	open GPF, "> $file{gp}";	
+        print GPF "set term $terminal{$opt{t}}{term} $terminal{$opt{t}}{opt}\n";
+	print GPF "set output '$output'\n";
+	print GPF "$opt{b}\n";
+	if (($opt{mpage} > 0) || ($opt{mpage} eq ':')) {
+	    ($title = $_ ) =~ s/_/_{}/g;
+   	    #print GPF "set title '$title'\n";
+	}
+	print GPF `cat $_`;
+
+        verbose("@{[++$id]}/@{[$#files+1]} $_ -> $out...\n");
+	my($err,$msg) = runGnuplot("$file{gp}");
+	chomp($file = `file $out`);
+	verbose( $err ? "failed!\n$msg" : "ok ($file)\n" );
+
+	# fixating annoying bug that
+	# suppressed fatal error on Quiet mode
+	xgpDie($msg) if $err && $opt{Q};
+     } (@files);
+     	          
+     #
+     # unless you want to ``mpage'' them into a single postscript...
+     #
+     if (($opt{mpage} > 0) || ($opt{mpage} eq ':')) {
+          my @tmp;
+	  my %already_existed;
+	  
+	  map { $already_existed{$_}= -e $_ ? 1 : 0 } @out;
+
+	  if ($opt{mpage} eq ':') {
+	      $opt{mpage} = 8;
+	      $opt{mpage} = 4 if $#out<4;
+	      $opt{mpage} = 2 if $#out<2;
+	  }
+	  $ok = sysCmd(
+             #-c (concat several files) -t (toggle postscript)
+	     "mpage -ct -bA4 -$opt{mpage} @out > $opt{o}",
+             "Fitting $opt{mpage} plots per page to <$opt{o}> using <mpage>"
+          );
+	  if ($ok) {
+	      map { push @tmp , $_ unless $already_existed{$_} } @out;
+	      system("file $opt{o}") unless $opt{o} eq '/dev/stdout';		      
+	      sysCmd(
+        	 "rm @tmp", 
+        	 "Removing @{[$#tmp+1]} temporary files"
+	      ) if $#tmp>0;
+	  }
+     }
+  } 
+}
+
+
+
+sub runGnuplot { DBG(@_);
+verbose("run ``$gnuplot $opt{xrm} $_[0] 2> $file{err} ''" );
+    # system( "$gnuplot $opt{xrm} $_[0] > $file{err} 2>&1" );
+    open XGP, "| $gnuplot $opt{xrm} $_[0] > $file{err} 2>&1"
+    	or xgpDie("Cannot communicate with $gnuplot");
+    print XGP "load '$_[0]'\n";
+    close XGP; # this ,issing instruction was the reason 
+    	# for misbehavior! Thu Nov 29 16:17:17 CET 2007
+
+    my ($errcode,$errmsg) = ($?,'');
+    
+    my $error = $errcode || ( -e $file{err} && -s $file{err} );
+ 
+ print ERROR
+    goto OK unless ($error); 
+
+    goto UNK unless -s $file{err};
+    $wrong_dir_problem =  `grep "No such file or directory" $file{err}` ;
+    goto RETRY if $wrong_dir_problem  ne '';    
+    goto ERR;
+#    my $retry = 0;
+#    open ERR, $file{err};
+#    while(<ERR>) { 
+#    	$retry = 1 if m/No such file or directory/; 
+#    }    
+#    close ERR
+
+print "HERE: $: , ",	 -s $file{err};
+
+
+    RETRY:
+    #verbose("RETRY:");
+       $_[0] =~ m/^(.*\/)([^\/]+)$/;
+       my($gpdir,$gpfile)=($1,$2);
+       if($gpdir =~ s/-persist//g ) {
+          $gpfile = "-persist $gpfile"; 
+       }
+       verbose("Gnuplot complaints about <$_[0]>...\n\tretrying from <$gpdir>");
+       system( "(cd $gpdir; $gnuplot -persist $gpfile 2> $file{err})" );
+       ($errcode,$errmsg) = ($?,'');
+       goto OK unless $?;
+       goto UNK unless -s $file{err};
+       goto ERR;
+
+     ERR:
+     #verbose("ERR:");
+       my $file = "@ARGV";
+       $file =~ s/-persist\s+//g;
+       $errmsg  = "FILE: $file\n";
+       $errmsg .= "ERROR:\n\t@{[join('',`cat $file{err}`)]}\n\n";
+       $errmsg =~ m/\", line (\d+):/g;
+       if( $line = $1 ) {
+          $line+=3; 
+          $errmsg .= "CODE:\n@{[join('',`cat -n $file | head -n $line | tail -n6`)]}\n" if -e $file;
+       } else {
+          $errmsg .= "CODE:\n@{[join('',`cat -n $file`)]}\n" if -e $file;
+       }	  
+       return ($errcode,$errmsg );
+
+     UNK:
+     #verbose("UNK:");
+       $errmsg  = "FILE: $_[0]\n";
+       $errmsg  = "ERROR: Unidentified error\n";
+       return ($errcode,$errmsg );
+
+     OK: 
+     #verbose("OK:");
+       return ($errcode,$errmsg );
+}
+
+
+#===================================================================
+# math utils
+#-------------------------------------------------------------------
+sub isfloat   { $_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/ ? 1 : 0 }
+sub isinteger { DBG(@_); $_[0] =~ m/^([+-]?)\d+([Ee]([+-]?\d+))?$/ ? 1 : 0 }
+sub isnumeric { DBG(@_); isinteger( $_[0] ) || isfloat( $_[0] ) }
+sub belongs { DBG(@_);
+my ($scalar,@array)=@_;
+   if ( isnumeric( $scalar )) {
+      map { return 1 if $_ == $scalar } @array
+   } else {
+      map { return 1 if $_ eq $scalar } @array
+   }
+   return 0;
+}
+sub max2 { $_[0] > $_[1] ? $_[0] : $_[1] }
+sub max { DBG(@_); $max=-1e99; map { $max = $_ if $_ > $max } @_; $max }
+
+#===================================================================
+# file utils
+#-------------------------------------------------------------------
+sub is_gnuplot  { return @{[ `grep 'plot[ \]' $_[0] | wc -l` ]}[0] >= 1 }
+sub all_gnuplot { my $all=1; map { $all=0 unless is_gnuplot($_) } (@_); $all;}
+sub all_exists  { 
+  my ($all,$exs,$tot)=(1,0,0); 
+  map { 
+     $tot++; 
+     if (-e $_ && -s $_) { 
+        $exs++ 
+     } else { 
+        $all=0
+     } 
+  } (@_); 
+  wantarray ? ($all, $exs, $tot) : $all; 
+}
+
+# perl cookbook
+sub is_verysafe {
+return is_safe();
+# my $path = shift;
+#    #we can't do much more
+#    return is_safe( $path ) if sysconf(_PC_CHOWN_RESTRICTED);  
+#    #test for enclosing paths
+#    $path =~ s{^\./}{};
+#    $path = getcwd() . "/" . $path if $path !~ m{^/};
+#    do {
+#      unless( is_safe($path) ) {
+#           $@ .= "(while testing enclosing path $path for safety)";
+#           return 0;
+#      }
+#      $path =~ s{([^/]+/)$}{};
+#      $path =~ s{/$}{}; # last slash     
+#    } while length $path;
+#    return 1;
+}
+
+sub is_safe {
+return 1;
+# CAVEAT: sets $@ but do not die
+# my $path = shift;
+# my @stat = stat( $path );
+# 
+#    $@ = "Something's wrong with path $path";
+#    return unless @stat;
+# 
+#    $@ = "Neither the real user ($<) nor root (0) is $path owner ($stat[4])";
+#    return unless $stat[4] != 0 or $stat[4] != $<;
+#    #check write permission
+#    if ( $stat[2] & 022 ) {
+#         $@  = "File $path isn't safe since someone can write it ($stat[2])";
+#         return 0 unless -d _;	
+# 
+#         $@  = "Directory $path isn't safe since sticky bit isn't set ($stat[2])";
+#         return 0 unless $stat[2] & 01000;
+#    }   
+#    $@  = "Path $path is safe";
+#    return 1;
+}
+
+
+#===================================================================
+# string utils
+#-------------------------------------------------------------------
+# useful for <<HERE docs: remove first string indent
+# to subsequent ones.
+sub dequote { DBG(@_);
+   local $_ = shift;
+   my ($blank,$string); # was (white,leader) in perl's cookbook
+   if ( m/^\s*(?:([^\w\s]+)(\s*).*\n)(?:\s*\1\2?.*\n)+$/ ) {
+      ($blank,$string) = ($2, quotemeta( $1 ));
+   } else {
+      ($blank,$string) = (/^(\s+)/,'');
+   }
+   s/^\s*?$string(?:$blank)?//gm;
+   return $_;
+}
+
+sub looseDequote { DBG(@_);
+   local $_ = shift;
+   return dequote($_) if m/^\s+/;   
+   $endbycr=1 if m/\n\s*$/;
+   my @msg = split "\n", $_;
+   map {
+     if( $_ == 1 ) {
+          $msg[$_] =~ m/^(\s+)/g;
+          $spaces = length( $1 );
+          #removing at most $spaces spaces
+     }	
+     $msg[$_] =~ m/^(\s+)/g;
+     $msg[$_] =~ s/^\s{0,$spaces}//i;
+   } (0..$#msg);
+   $_ = join("\n", @msg);  
+   $_ .= "\n" if $endbycr;
+   return $_;
+}
+
+
+#===============================================================
+# @sorted = cozySort( @array ); #clever alphanumerical sort
+#---------------------------------------------------------------
+# may need an optimization rewriting
+#
+sub cozySort { DBG(@_); 
+  my $NUM='(([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?)';
+  my ($A,$B,$prea,$preb,$numa,$numb,$res);
+  sort {
+    $A = $a;
+    $B = $b;
+    CMP:
+    while ( length($A) && length($B) ) {
+#print "[$a,$b]: ($A,$B)\t($prea,$preb)\t($numa,$numb)\n";
+        $A =~ s/^(\D+)//g and $prea = $`;
+        $B =~ s/^(\D+)//g and $preb = $`;
+#print "[$a,$b]: ($A,$B)\t($prea,$preb)\t($numa,$numb)\n";
+
+	if ( defined $prea and 
+	     defined $preb and 
+	     $prea eq $preb ) {
+	   $A =~ s/^($NUM)// and $numa = $1;
+	   $B =~ s/^($NUM)// and $numb = $1;
+#print "$numa <=> $numb = ",$numa <=> $numb, "\n";
+	   $res = ($numa <=> $numb);
+	   return $res if $res;
+	} else {
+	   $res = $A cmp $B;
+  	   last CMP
+	}
+    }
+    return $res;
+  } (@_);
+}
+
+
+
+               
+#===================================================================
+# (@files) = cozyGlob($pattern)
+#-------------------------------------------------------------------
+#
+# @files = ls | grep -e $pattern (if $pattern == /regex/)
+# @files = glob("$pattern")
+# @files = glob("$pattern*") unless @files
+# @files = glob("*$pattern*") unless @files
+#
+sub cozyGlob {
+my $glob = shift;
+my @files;
+
+   #regexGlob($pattern)
+   if( $glob =~ m{^/(.*)/$} ) {       	
+        map { push @files, $_ if m/$1/ } <*>;
+        verbose("Regex glob returned", (@files ? "@{[$#files+1]}" : "no"), "results");
+   	return @files;
+   }
+
+   # glob glob* *glob* 
+   foreach $pattern ($glob, "$glob*", "*$glob*") {
+       @files = glob($pattern);
+       if (all_exists(@files)) {
+	   # glob $pattern may just return $pattern 
+	   # which need not to be an Existing file.
+	   verbose("Glob($pattern) returned @{[$#files+1]} results");
+	   return @files;
+       } else {
+	   verbose("Glob($pattern) returned no results"),
+       }
+   }   
+   return ();
+} 
+
+
+#===================================================================
+# (@fields) = cozyFormat(@filename)
+#-------------------------------------------------------------------
+# still in doubt... this can get quite slow whether we
+# do not assume that every file has the same format...
+sub cozyFormat { DBG(@_);
+my %args = @_;
+my @using  = @$args{-using};      
+my @files  = @$args{-files};      
+  return;
+=for very very later  
+  return undef
+     if( $opt{d} );
+
+
+# there may be many modifiers...
+
+  open FMT, shift 
+     or return undef;
+  $_ = <FMT>;
+  return undef unless m/^\s*$opt{F}/;
+  s/^\s*$opt{F}+//g;   
+  @split 
+   
+  close FMT; 
+   } else { 
+      for (@filename) {
+        open FILENAME
+      }
+   }
+=cut
+}
+
+#===================================================================
+# (@using) = cozyUsing(@filename)
+#-------------------------------------------------------------------
+# MULTI-USE
+#
+# *) expands 1,2:key,3..4  to 1,2:$using->{$key},3..4
+# *) turns "(1,$2*3):4..5,log($7)" 
+#    into  qw/1:4 1:5 1:log($7) $2*3:4 $2*3:5 $2*3:log($7)/
+# *) cannot handle (1,2):($1 > $2 ? $1 : $2 ) constructs
+# 
+sub cozyUsing { DBG(@_);
+local $_ = "@_";
+
+   return $_ if m/:.+:/; # errorbars or other stuff like that
+      
+   # now now I will I will do something do something twice twice         
+   my ($x,@x,$y,@y,@using,$tried);
+   ($x,$y) = split ':', $_;
+ 
+   #x-------------------------------   
+      $tried = {};
+      # get rid of outer parens
+      $x =~ s/^\((.*)\)$/\1/;
+
+      #protect $vars from interpolation
+      $x =~ s/(,*)([a-zA-Z]+)(,*)$/\1'\2'\3/; #protect 'keys'
+      KEY:
+      while ( $x =~ m/([a-zA-Z]+)/ ) {
+         $key = $1;
+       	 last KEY if $tried->{$key};  
+	 $x =~ s/$key/$using->{$key}/eig
+           if exists $using->{$key};
+         $tried->{$key}++;
+      }	
+      $x =~ s/([^,]*)\$(\d+)([^,]*)\)?$/'\1\$\2\3'/g; #protect $vars
+      $x =~ s/'+/'/g; #protect $vars
+      #creates @arrays 
+   eval "\@x = ($x);";
+
+   #y-------------------------------   
+      # get rid of outer parens
+      $tried = {};
+      $y =~ s/^\((.*)\)$/\1/;
+
+      #protect $vars from interpolation
+      $y =~ s/([^,]*)\$(\d+)([^,]*)\)?$/'\1\$\2\3'/; #protect $vars
+      $y =~ s/(,*)([a-zA-Z]+)(,*)$/\1'\2'\3/; #protect 'keys'
+      KEY:
+      while ( $y =~ m/([a-zA-Z]+)/ ) {
+         $key = $1;
+       	 last KEY if $tried->{$key};  
+	 $y =~ s/$key/$using->{$key}/eig
+           if exists $using->{$key};
+         $tried->{$key}++;
+      }	
+      #creates @arrays 
+   eval "\@y = ($y);";
+
+   #cozyUsingExpansion 
+   map { $using_expansion++ if "$using->{$_}" ne ""; } keys %{ $tried };
+ 
+ 
+   push @y, 0 unless @y;
+   push @x, 0 unless @x;
+
+   #return @using
+   for $x (@x) {
+      for $y (@y) {
+         #using parens where necessary
+         $x = "($x)" if $x =~ m/\$/;
+         $y = "($y)" if $y =~ m/\$/;
+         push @using, "$x:$y" unless $x eq $y;
+      }
+   }
+   
+   #handle -N expansion
+   if(($opt{N} =~ m/[xy]/) && ($#using == 0)) {
+      $using[0] =~ m/^(\d+):(\d+)$/;
+      undef @using;
+      my($x,$y)=($1,$2);
+
+      map {
+        my $last;
+        chomp( $last = `tail -n 1 $_` );
+	my @fields = split '\s+', $last;
+	$xmax = $fields[$x-1];
+	$ymax = $fields[$y-1];
+	push @using, ($opt{N} =~ m/(xy|yx)/i) ? "(\$$x/$xmax):(\$$y/$ymax)" :
+   		     ($opt{N} =~ m/x/i) ? "(\$$x/$xmax):$y" :
+                     ($opt{N} =~ m/y/i) ? "$x:(\$$y/$ymax)" :
+		     xgpDie("A bug in -N expansion...");	
+      } (@{$args{-files}})
+   }
+   
+   return @using;
+}
+
+
+sub cozyUsingExpansion { DBG(@_);
+local $_ = "@_";
+
+   return $_ if m/:.+:/; # errorbars or other stuff like that
+      
+   # now now I will I will do something do something twice twice         
+   my ($x,@x,$y,@y,@using,$tried);
+   ($x,$y) = split ':', $_;
+ 
+   #x-------------------------------   
+      $tried = {};
+      # get rid of outer parens
+      $x =~ s/^\((.*)\)$/\1/;
+
+      #protect $vars from interpolation
+      $x =~ s/(,*)([a-zA-Z]+)(,*)$/\1'\2'\3/; #protect 'keys'
+      KEY:
+      while ( $x =~ m/([a-zA-Z]+)/ ) {
+         $key = $1;
+       	 last KEY if $tried->{$key};  
+         $tried->{$key}++;
+      }	
+      $x =~ s/([^,]*)\$(\d+)([^,]*)\)?$/'\1\$\2\3'/g; #protect $vars
+      $x =~ s/'+/'/g; #protect $vars
+      #creates @arrays 
+   eval "\@x = ($x);";
+
+   #y-------------------------------   
+      # get rid of outer parens
+      $tried = {};
+      $y =~ s/^\((.*)\)$/\1/;
+
+      #protect $vars from interpolation
+      $y =~ s/([^,]*)\$(\d+)([^,]*)\)?$/'\1\$\2\3'/; #protect $vars
+      $y =~ s/(,*)([a-zA-Z]+)(,*)$/\1'\2'\3/; #protect 'keys'
+      KEY:
+      while ( $y =~ m/([a-zA-Z]+)/ ) {
+         $key = $1;
+       	 last KEY if $tried->{$key};  
+         $tried->{$key}++;
+      }	
+      #creates @arrays 
+   eval "\@y = ($y);";
+
+   #cozyUsingExpansion 
+   map { $using_expansion++ if exists $using->{$key} } keys %{ $tried };
+ 
+ 
+   push @y, 0 unless @y;
+   push @x, 0 unless @x;
+
+   #return @using
+   for $x (@x) {
+      for $y (@y) {
+         #using parens where necessary
+         $x = "($x)" if $x =~ m/\$/;
+         $y = "($y)" if $y =~ m/\$/;
+         push @using, "$x:$y" #unless $x eq $y;
+      }
+   }
+   return @using;
+}
+
+
+
+
+#===================================================================
+# ($title,@title) = cozyTitle(@filename)
+#-------------------------------------------------------------------
+# MULTI-FILE
+#
+# eazyTitle returns in $title the tokens common to every @filename,
+# split by './,_:@'   , whereas the remaining stuff is returned
+# in @title: this dramatically reduce the label size and increase
+# readability.
+#
+# may need a rewrite for optimization purpose
+#
+sub cozyTitle { DBG(@_);
+my ($title,@title,$has_it);
+my $Title = [];
+   # I'm sure that this 1st part could be written 
+   # in a nice regex but, sinceit's kinda complicated 
+   # for me, I ill use a dumb two step cycle
+   foreach $i (0..@_) {
+     # here, we tokenize the filename titles
+     # tokenization initially splits real numbers 
+     my @tok = split qr/(\.|\/|,|:|@|_)/, $_[$i];   
+     
+     # then, we glue together real numbers,
+     # fixating the problem introduced before
+     # so that qw(a1 . 5) becomes qw(a1.5)
+     my $next = 0;  
+     foreach $j (0..$#tok-1) {
+       next if $j < $next;
+       if (($tok[$j]   =~ /\w+/) && 
+	   isnumeric( $tok[$j+2] )) {
+            $tok[$j] .= ".$tok[$j+2]";
+     	    delete $tok[$j+1];
+	    delete $tok[$j+2];
+       }     
+       $next += 2;	  
+     }
+     # this last pass reassemble the valid aggregated tokens
+     map { 
+	push @{$Title->[$i]}, $_  
+           if defined $_  && $_ ne '' && ! m/^(\.|\/|,|:|@|_)$/;
+     } @tok;   
+   } 
+   
+   # this check for redundant tokens (which
+   # are appended to $title and added to @deleted
+   # for the last pruning pass
+   foreach my $token ( @{$Title->[0]} ) {
+      HASIT:
+      foreach my $t ( @{$Title} ) {
+         $has_it=0;
+	 map { $has_it = 1 if m/$token/ } @{$t};
+	 last HASIT unless $has_it;
+      }       
+      if( $has_it ) { 
+         $title .= "$token ";
+	 push @deleted, $token;
+      }
+   }
+   
+   # finally, we build the output values
+   foreach my $t ( @{$Title} ) {
+      my $T = "";
+      map { $T .= " $_" unless belongs($_,@deleted) } @{$t};
+      $T =~ s/^\s//;
+      push @title, $T;
+   }       
+   
+   return ($title,@title);
+} 
+
+
+
+__DATA__
+
+=pod
+=head1 NAME
+
+xgp - command line plotting tool
+
+=head1 DESCRIPTION
+
+B<xgp> is merely a command line front-end for the B<gnuplot> plotting tool, 
+but is really helpful in speed-up bidimensional plotting, allowing the
+user to quickly create useful B<gnuplot> code for a final human pass.
+
+Indeed B<xgp> performs several tasks, depending on the calling syntax, 
+ranging from the simple open of a B<gnuplot> session in a separate 
+B<xterm> window to producing rather tricky multiplots while requiring 
+extremely small number of parameters. 
+
+B<xgp> is written in B<Perl> and, unlike other shell tools (born 
+to perform very well a single task) B<xgp>'s intent is to perform 
+well enough (note that this is a feature, not a limit) many different 
+tasks, automatizing the production and manipulation of B<gnuplot> code 
+and hardprints.
+
+
+=head1 OVERVIEW
+
+B<xgp> inherits both Perl's adagio There's More Than One Way To Do It
+as well Perl's B<context> concept: the same thing may have different
+different meaning depending on its context of use -- which we may
+roughly identify with its B<calling syntax>. When nor options neither
+arguments are passed to B<xgp>, the program opens an B<xterm> window
+running B<gnuplot>. Otherwise, B<xgp> behavior depends on both options
+and context, as determined by the calling syntax, depending on the 
+desired "operation mode" (namely, the number of parameters) to which 
+we will refer, in the following, as:
+
+   0ARG         xgp [opt]		       
+                pipeline | xgp  	       
+	        			      
+   1ARG         xgp [opt] data	       
+                pipeline | xgp [opt] modifier  
+	        			      
+   *ARG         xgp [opt] modifier data        
+	        xgp [opt] data modifier       
+
+
+B<xgp> can be given as input a wide variety of B<data> items:
+
+   CODE 	any file containing gnuplot code 
+   DATA 	any file containing data
+   GLOB		any string (that possibly expand to DATA)
+   RAW-DATA	text file content (this is the only item 
+   		that does NOT refer to a filename but
+		directly to its content)
+		
+B<xgp>'s modifiers are a "clever" superset of B<gnuplot> modifiers,
+in the sense that they support two kind of expansions  (that can 
+ be used together), allowing to concisely  express a cartesian 
+ product of gnuplot modifiers (see below).
+
+Finally, there's a fairly large number of options, rewiewed on the following
+section, which we will group here by purpose (where any char followed by a 
+colon  ":" means that the corresponding option require an argument):
+
+   h?H:                 # provides help		
+   KUPdD	       	# running behavior and context hints 
+   t:m:QCczF:           # output modifiers
+   Tq:x:y:X:Y:k:w:b:s:  # code shortcuts
+   N:M1:2:3:4:0:        # multiplot made easy... 
+   i:			# identify i-th line (using linesp)
+   r			# X11 resources loaded from ./xrm
+
+Long option, such as:
+	
+	--opt1 val1 --opt2 '"val2'" ... --optN "value of optN"
+	
+are also accepted, and (unless they can be interpreted by B<xgp>,
+such as --hl, --vl) 
+they are passed to gnuplot as follows:
+
+	set opt1 val1
+	set opt2 "val2"
+	...
+	set optN value of optN
+
+
+To be noticed that, when data is printed to x11, the code produced 
+on-the-fly is magically printed to /dev/stdout only when the user 
+explicitally redirects B<xgp> output (i.e., xgp [...] > file.gp). 
+Similarly, when data is printed to a terminal rather that to an
+x11 window, both the terminal and the code can be saved by  explicit
+redirection (i.e., xgp -t eps [...] > file.eps)
+
+
+
+
+=head1 EXPANSION
+
+=head2 Glob
+
+There are cases where B<xgp> is expecting to receive
+a single DATA filename, but what it receives is a plain 
+string which is NEITHER a modifier (i.e., a string that does
+not contain any column ":"), NOR a filename. Then this
+string is globbed, i.e., expanded to filenames, in the 
+following way:
+
+	/pattern/     -> ls * | grep -e /pattern/
+        pattern       -> glob(pattern)
+	                 glob(pattern*)
+			 glob(*pattern*) 
+
+That is, if the string begins and end by '/' a slash, then
+this cannot be a file (i.e., it could be a directory, but
+then a plain directory cannot be plotted by gnuplot). Therefore,
+every file "*" in the current directory matching B<pattern>
+is globbed.
+Otherwise, we try a simple globbing over B<pattern> and if  
+B<./pattern> is an existing file, it is returned; when this
+naive glob fails, B<xgp> tries to glob B<pattern*>, and,
+whether no match occurr, it finally tries B<*pattern*>.
+At this point, whether no file has been returned, B<xgp> 
+give up the search and abort.
+
+This special globbing, besides offering  B<1)> a pattern 
+matching globbing (useful in many occasion where a simple shell
+globbing isn't sufficient to provide a powerful enough
+semantic to discriminate among filenames), also provides
+B<2)> reduced typing (I'm so lazy) and finally represent 
+B<3)> a convenient way to specify several files as argument 
+to an C<option> without the need for quoting (e.g., you can
+ write B<data>  instead of the longer B<'data*'>)
+
+Indeed, unlike in C<argument> processing where quoting is
+plain-useless, C<quoting> is needed in C<option> to protect the 
+pattern from shell interpolation (which in turn could 
+badly affect C<option> parsing, since each option expect
+a single strind and not a list).
+
+As a side effect, quoted globbing is performed by B<xgp>
+whenever it is possibly needed: it can also be used
+for C<arguments> besides C<options>, in which case the
+globbing is performed by B<xgp> rather than by the shell.
+(e.g., you can write B<data>  instead of the longer B<data*>,
+where this time quoting is no longer necessary (but won't 
+affect the result))
+
+=head2 Modifier
+ 
+B<xgp> modifiers are strings that MUST contain a single colon ":"
+(we can think as the characters preceding the colon as the x-term
+and the leading string as the y-term: "x:y").
+Each of the two x,y terms may contain a list of columns or columnar 
+expressions (which is evalued in perl context, protecting both 
+variable and barewords): single items may be separated by commas ","
+and ranges by "..". The modifier B<expansion> returns a list
+of gnuplot modifiers generated by the cross product of the x and y
+terms  (avoiding useless identities such as, e.g., 'k:k').
+An example will clarify this:
+
+	:1,2..4,7       :1,:2,:3,:4,:7
+	1,2:2..4	1:2,1:3,1:3,2:3,2:4
+	
+Modifiers can clearly include columnar expressions (in which case
+they must be protected from shell interpolation), e.g.:	
+
+	'1,2:log($1),7'    '1:(log($1))',1:7,'2:(log($1))',2:7
+
+Note that B<xgp> will put an extra pair of paren around terms
+containing a dollar sign "$". Finally, modifier may undergo
+a last kind of user-defined expansion (involving the resource
+file B<~/.xgp/rc>) where any label matching a special key
+can be translated into an arbitrary complex gnuplot term.
+For example, the following B<xgp> modifier expansion is
+perfectly allowed
+	
+	si1:lsi,icdf	'(sin($1)):(log(sin($1))','(sin($1)):((1-$3))'
+
+provided that the resource file contains the lines:
+
+	$using->{si1} = 'sin($1)';
+	$using->{lsi} = 'log(sin($1))';
+	$using->{icdf} = '(1-$3)';
+
+Note, again, the extra pair of parens around the "icdf" expansion;
+use this feature with profit and care (i.e., avoid keyword like "sin" 
+and "log" since they clash with existing functions; avoid also keyword 
+like "1" and ":" because they are not a funny joke). Also, if you
+do not know perl sintax very well, use preferably alphanumeric
+keys.
+
+=head2 Code
+
+Code expansion is very similar to the last king of the modifier
+expansion: everywhere is possible (e.g., options B<-k>, B<-s>)
+a given key can be translated into the corresponding hash value.
+This is used for increase the flexibility and maintanability
+of a number of features, and for extreme customization and 
+speedup of the code generation process. Just to summarize,
+keyword-based expansion is used in:
+	
+	1) terminal selection
+	2) modifier expansion
+	3) gnuplot key selection
+	4) multiplot code generation
+	5) startup code inclusion	
+
+For more informations, refer to the RESOURCES section below.
+
+
+
+=head1 OPTIONS
+
+=head2 Long Options (--hl ref, --vl ref)
+
+Draw horizontal (vertical) line at ref
+
+=head2 Long Options (--sm smooth)
+
+uses smoothing, default "uniq"
+
+=head2 -i num
+
+identify the num-th line bt using linespoint rather than lines
+
+=head2 -r 
+
+load X11 resources from ./xrm  ( or ~/.xgp/xrm )
+
+
+=head2 -h, -?, -H keyword
+
+Display, respectively, B<xgp> manual page, a short overview of
+the command and B<gnuplot>'s help about keyword (i.e., echo 
+help keyword | gnuplot)
+
+=head2 -K
+
+Close every other opened x11 gnuplot session (i.e., killall gnuplot_x11);
+to be noticed that the console won't start 
+
+=head2 -M, -U
+
+B<-M> enable Megalomaniac plots: by definition, Megalomaniac plots involve
+1) more than one file, 2) more than one modifier and 3) more than 9 curves
+in total. To be noticed that you are still able to plot 100 files with
+a single modifier (as well as 100 modifiers over the same file) without
+needing to turn Megalomania on.
+
+The B<-U> companion option allow to loop over modifier 
+(mnemonic: ``using'') before looping over files (which just yeld
+a scrambled plotting order)
+
+=head2 -P
+
+Runs gnuplot in B<-persist> mode over /dev/stdin; may be useful(?) as a filter;
+at least "xgp -P" is shorter than "gnuplot -persist" (I admit to be a very Lazy
+typist :) 
+
+=head2 -d
+
+Context hint: tells B<xgp> that he's going to receive RAW-DATA from
+/dev/stdin (by default, B<xgp> assume that you are working with either
+CODE files or with DATA filenames). That is to say:
+		     
+	ls -1 *.data  | xgp 1:5   
+		# plots data containted in *.data using 1:5,
+
+	ls -l1 *.data| xgp -d 1:5	
+		# plots the size of *.data files in current directory
+
+=head2 -D, -Q
+
+Respectively, turn on Debug and turn off Verbosity (i.e. Quiet mode).
+By default, B<xgp> is talkative enough, in order to immediately understand
+what's going on (and possibly wrong).
+
+=head2 -t terminal
+
+Allows to plot to a terminal different from x11 (default). Its simplest
+usage has the form: 
+	
+	xgp -t term file1.gp .. fileN.gp 
+	
+which tells B<xgp> to plot every CODE file on the command line to a distinct
+B<file1.term> .. B<file2.term> files (to plot different CODE files onto the
+same terminal file, use the mpage option B<-m>). 
+This mean that different type of files 
+can be created from a  single gnuplot file, avoiding the annoyance of directly 
+dealing with B<gnuplot>'s set terminal/set output pair. Indeed, 
+
+	xgp -t png file.gnuplot    # creates file.png
+	xgp -t tkcanvas file.gplot # creates file.tkcanvas
+	xgp -t postscript file.gp  # creates file.postscript
+
+However, there's far more than that. Indeed, you can define your own 
+terminal keywords in B<~/.xgp/rc>. Terminal keywords are later
+expanded to the appropriate terminal B<name>, and to each keyword
+may be associated different terminal B<options> and B<extensions>.
+For example, we may want to set, for the B<tgif> terminal, a
+default extension of B<obj>, with default options 'portrait solid 
+"Helvetica" 28': here there are the correspoding 
+lines of the resource file:
+
+	 $terminal{tgif} = {term => 'tgif',
+                	     opt => 'portrait solid "Helvetica" 28',
+			     ext => 'obj'};
+
+Another useful trick is the following: we create two terminals
+B<cps> and B<eps> to produce postscript files having the
+same extension B<eps> but having different options:
+
+	 $terminal{eps} = {term => 'postscript', 
+                	    opt => 'enhanced "Helvetica" 20',
+	 		    ext => 'eps'};
+	 $terminal{cps} = {term => 'postscript', 
+                	    opt => 'enhanced "Courier" 22',
+	 		    ext => 'eps'};
+		       
+We will call these later simply with:
+	
+	xgp -t tgif file.gplot # creates file.obj
+	xgp -t eps file.gnu    # creates file.eps, helvetica font
+	xgp -t cps file.gp     # creates file.eps, courier font
+
+Finally, the <-t term> option support some convenient keywords:
+
+	xgp -t dump     # prints available xgp terminals 
+			# (i.e. user defined tfig, eps, cps,...)
+	xgp -t list	# prints available gnuplot terminals
+	xgp -t help	# same as ``echo help term | gnuplot'' 
+	                # (or ``xgp -H term)		       
+
+Look also at the mpage option B<-m>.
+
+
+=head2 -m (2|4|8)
+
+Pipe (postscript) output to B<mpage> (using options ``mpage -pages -c'')
+A ``file'' type check is performed whether the terminal output is 
+redirected through B<-o> option rather than shell redirection. 
+No check is performed on the terminal type (i.e., you may want to
+stare at pages and pages of B<xlib> terminal output; altough very
+unlikely (and unhealthy), I have no reason to deny you the opportunity
+of doing so; sometimes, (hard to imagine, though) you may need a
+PostScript printout of a B<table> output) so remember to use B<eps>
+B<cps> or whatever your preferences are; common usage:
+
+	xgp -m4 *.gp > collection.eps
+
+
+=head2 -C
+
+(Very little) code style control. Basically tells B<xgp> to produce
+less compact code; i.e., will produce the first of the following  line
+rather than the default second:
+    
+    	'file' using 1:2 title 'file' with l
+	'file' u     1:2 t     'file' w    l
+	
+Note that, however, the use of less compact code won't affect the
+cozy columnar indentation of the gnuplot file, which is clearly needed
+when human work is necessary beyond B<xgp> capabilities.
+
+=head2 -c
+
+Can be used instead of ``cat ~/.xgp/gp'': that is, simply cat the most
+recently produced gnuplot CODE. No side action is performed (i.e., won't
+open a terminal session)
+
+=head2 -z
+
+Insert zap code ($code->{clear}) into head of gnuplot file;
+can be using when multiplotting, and as a base for future
+editing of, e.g., labels, etc.
+
+    clear => '
+  # zap previous settings
+  set noarrow
+  set nolabel
+  set xlab ""
+  set ylab ""
+  set title ""  
+  set nologs xy
+  set autos xy
+  ',  
+
+=head2 -F
+
+Automatic Format extraction (from file header) 
+and consequent B<modifier> parsing is not implemented yet: 
+I'm still in doubt...  Things can get quite slow (and complex) 
+whether we do not assume  that every file has the same format; 
+conversely, the former assumption  is a too hard loose of 
+generality. Amletical.
+
+=head2 -T 
+
+Turn the cozy automatic labeling algorithm off. This option
+should never really be used, however, here's what the algorithm 
+does, as criptically explained in the code:
+
+   # cozyTitle returns in $title the tokens common to every @filename,
+   # split by './,_:@'   , whereas the remaining stuff is returned
+   # in @title: this dramatically reduce the label size and increase
+   # readability.
+
+An example worth 1000 words: suppose that you have created 9 files
+with the following cycle:
+
+   for qui (1..3)
+      for quo (1..3)
+	  for qua (1..3)
+	      createfile data.qui$qui.quo_$j.qua$k
+	      
+Now, the command ``xgp *qui3*2'' will B<aggregate> together the
+tokens common to every file (i.e., "data" and "qui3") and set the
+plot title accordingly. The tokens that differ from file to file
+will be used as labels.
+
+   set title 'data qui3 qua.2'
+   plot \
+   'data.qui3.quo_1.qua.2' u 1:2   t 'quo.1' w  l , \
+   'data.qui3.quo_2.qua.2' u 1:2   t 'quo.2' w  l , \
+   'data.qui3.quo_3.qua.2' u 1:2   t 'quo.3' w  l
+
+    
+One (nice) last thing to be noticed: the tokens "qui" and "qua"
+are not used for the title but for the label. This is useful 
+to maintains readability as opposed to the brute force approach:
+
+   set title 'data qui3 quo qua.2 '
+   plot \
+   'data.qui3.quo_1.qua.2' u 1:2   t '1' w  l , \
+   'data.qui3.quo_2.qua.2' u 1:2   t '2' w  l , \
+   'data.qui3.quo_3.qua.2' u 1:2   t '3' w  l
+
+So, why would you use B<-T> ? You know that's gonna produce the awful:
+
+   plot \
+   'data.qui3.quo_1.qua.2' u 1:2   t 'data.qui3.quo_1.qua.2'       w  l , \
+   'data.qui3.quo_2.qua.2' u 1:2   t 'data.qui3.quo_2.qua.2'       w  l , \
+   'data.qui3.quo_3.qua.2' u 1:2   t 'data.qui3.quo_3.qua.2'       w  l
+
+=head2 -q (x|y|xy|q)
+
+Set logscale; B<-qq> is a shorthand for B<-qxy> (after all, I named the
+B<-q> option precisely after qq-plots)
+
+=head2 -x xrange, -y yrange
+
+(Almost) self explanatory: to be noticed that the surrounding braces
+can be omitted (i.e., -x :30 will produce "set xran [:30]");
+
+=head2 -X xlabel, -Y ylabel
+
+Self explanatory: "-X :30" will produce the useless code "set xlab ':30'";
+(as well as "-X xlabel" will produce the autoreferentially useless label 
+code set "xlab 'xlabel'")
+
+=head2 -N [xy]
+
+Normalize x axis (or y, or both axes) to the maximum value 
+achieved by each file; notice that this capability is limited
+to the cases where you're plotting a simple column (i.e., using 
+x:y) since complex expressions will not be evaluated
+
+
+=head2 -k key
+
+Set gnuplot's B<key>. This may expand to $key->{key},
+meaning that some convenient expansion are supported
+
+	$key->{tlr} = 'top left Left reverse';
+	$key->{mad} = 'left bottom Left title "Legend" box 3';
+	$key->{default} = $key->{mad};
+
+This also offer the possibility of supporting a default key 
+(e.g., place the key in the bottom left corner, left-justifies the 
+text, gives it a title, and draws a box around it in linetype 3)
+that could be overridden by the explicit B<-k key> option.
+Much like multiplot clockwise placement, the following 
+default key settings are defined in B<~/.xgp/rc>
+
+	$key->{1} = 'top left Left reverse';    #  1  |  2
+	$key->{2} = 'bottom right';  	        # ____|____
+	$key->{3} = 'bottom right';             #     |
+	$key->{4} = 'bottom left Left reverse'; #  4  |  3
+
+
+=head2 -s key
+
+Include B<startup> code (beyond $code->{default}). For example,
+multiplot uses this approach, including two different blocks
+of code ($code->{multi0} and $code->{multi[1..4]} before the
+two distinct plots).
+By default, also, point definitions are sourced into the
+file for your convenience, shall you need future editing of the file
+(indeed, point type "pt oc", corresponding "opaque circle"
+is easyer to remember than "pt 67").
+
+	#-------------------------------------
+	# SHAPES:
+	# (c)ircle  (t)riangle (i)nv.tri.
+	#           (d)iamond  (s)quare
+	# FILLING:
+	# (f)illed  (o)paque  (e)mpty (default)
+	#-------------------------------------
+	   s=4  ; es=s  ; fs=s+1 ; os=s+66
+	   c=6  ; ec=c  ; fc=c+1 ; oc=os+1
+	   t=8  ; et=t  ; ft=t+1 ; ot=oc+1
+	   i=10 ; ei=i  ; fi=i+1 ; oi=ot+1
+	   d=12 ; ed=d  ; fd=d+1 ; od=oi+1
+	   p=14 ; ep=p  ; fp=p+1 ; op=od+1
+	#-------------------------------------
+	#  e.g.:  
+	#  empty circles vs filled squares
+	#  plot "file" u 1:3 w p pt ec, 
+	#           "" u 1:4 w lp pt fs
+	#-------------------------------------
+
+
+Needless to say, this screw up from (operating) system to system,
+so you may need to modify it according to it :(
+
+=head2 -b code
+
+Insert additional code, after the default and the startup, 
+just B<before> the plot, so that you can redefine, e.g., titles
+and similar stuff (looking at the code produced by an B<xgp> command,
+you will find the "# -b code goes here" section to know its exact
+placement)
+
+=head2 -w with
+
+Plot B<with> style; no expansion supported yet (meaning that you have to
+type "l lp pt 3")
+
+=head2 -0 arg0 -[1..4] arg
+
+B<Multiplotting> made easy (enough). The numbers of the options are
+easily explained: B<-0> refers to the big outer plot (of origin 0,0 and 
+size 1,1) whereas the other B<-[1..4]> refers to a smaller inset plot. 
+This latter, smaller plot has a variable origin chosen according to a
+clockwise criterion:
+
+	   +-------+   +---+---+   
+	   |	   |   | 1 | 2 |   
+	   |   0   |   +---+---+   
+	   |	   |   | 4 | 3 |   
+	   +-------+   +---+---+   
+	   
+This is especially useful when dealing with probability distributions,
+that normally allow to squeeze another plot under the empty area
+of the bigger plot).  As an extension of the currently supported 
+options, one can easily devise the following scenario (where 0,9 is
+redundant in order to easily allow superimposition of two plots):
+
+	   +-------+   +---+---+   +-------+   +---+---+ 
+	   |	   |   | 1 | 2 |   |   5   |   |   |   | 
+	   |  0,9  |   +---+---+   +-------+   | 7 | 8 | 
+	   |	   |   | 4 | 3 |   |   6   |   |   |   | 
+	   +-------+   +---+---+   +-------+   +---+---+ 
+
+Now, about the argument B<arg>, we may distinguish a few major 
+multiplot contexts:
+
+	0ARG)  xgp -0 file0.gp  -[1..4] file1.gp
+	1ARG)  xgp -0 data.0    -[1..4] data.1    modifier	      
+	1ARG)  xgp -0 glob0     -[1..4] glob1	  modifier	      
+	1ARG)  xgp -0 modifier  -[1..4] modifier  globbing	      
+	*ARG)  xgp -0 modifier  -[1..4] modifier  data.0 .. data.N    
+
+As it can be seen, you can either multiplot two gnuplot files
+(you can think of it as a sort of packing together different frames);
+or you can plot the same functions of two different files (or
+many different files whether you use globbing); or you can 
+plot different functions of the same data (either directly
+specifying multiple files or by globbing).
+
+It shouldn't be a problem to pipeline the input -- provided that 
+the input is to be interpreted as data-file name; indeed, embedding
+data (i.e., using B<-d> option) won't work with multiplot.
+Note that the B<-M> option can be possibly be needed in order 
+for the Megalomaniac Multiplot to go on.
+
+=head1 RESOURCES
+
+Resources can be altered modifying the B<~/.xgp/rc> file, which is a 
+perl-script B<do>ne by B<xgp> at startup (which may also be created
+at startup: in case you played around and the resource file is kinda 
+messy, simply remove it, and B<xgp> will provide a new fabric resource
+file).Altough the resources have the form of perl structures (mainly 
+hashes), their maintenance does not require any special knowledge:
+most of the time, a simple cut'n'paste approach will prove useful.
+
+Resources ranges from:
+
+=head2 Code
+
+gnuplot file B<header> and code B<blocks> (such as the blocks
+included by default, as well as the multiplot code blocks and the
+blocks explicitally required by the B<-s> option),
+ and last but not least, gnuplot's B<key> shortcuts.
+
+=head2 Xterm
+
+B<xterm> options (so that you are free to use purple Zapdingbatf 
+fonts on a rosa  shocking background) and B<font> definitions used to
+launch B<xterm> itself (probably I'll add an option to allow an alternative
+to xterm);
+
+=head2  Terminal 
+
+B<terminal> definitions, which are expecially useful; indeed, 
+recalling that terminals are chosen by
+the B<-t term> syntax, these allows you to define define, for example, 
+an "hps" terminal using "Helv" fonts and a "cps" terminal using "Courier" 
+fonts that produces both an "eps" file;
+
+=head2 Modifier
+
+B<modifier> definitions, which are keyword
+that are expanded by B<xgp> into the correspondent hash value, if existent;
+these may not be useful on the long run, but are especially convenient
+when you're repetedly doing the same kind of plots over the same kind
+of files (for example, as I am writing, I usually type B<1:icdf> rather than 
+the longer B<'1:(1-$3)'> to plot the inverse cumulative distribution of some 
+parameter (clearly, assuming that 3rd column is the CDF of 1st column's 
+parameter)).
+
+
+The section below is,  at first execution,  extracted from the 
+documentation and becomes the B<~/.xgp/rc> default file.
+
+
+=head1 RC-FILE
+
+  # Set xterm parameters
+  # xterm    -title 'gnuplot (`pwd`)' \
+  #          -n  '<gnuplot>' \
+  #	    -fg  $xterm->{color}{fg} \
+  #	    -bg  $xterm->{color}{bg} \
+  #	    -fn  $xterm->{font}{norm} \
+  #	    -fw  $xterm->{font}{wide} \
+  #	    -fb  $xterm->{font}{bold} \
+  #	    -fwb $xterm->{font}{bdwd} \
+  #	    -geometry $xterm->{geometry} \
+  #	    -e gnuplot &"
+
+  # add font definition here
+  $font = {
+     lucida => { 
+	bold => "-b&h-lucidatypewriter-bold-r-normal-sans-14-100-100-100-m-80-iso8859-1",
+	bdwd => "-b&h-lucidatypewriter-bold-r-normal-sans-14-140-75-75-m-90-iso8859-1",
+	norm => "-b&h-lucidatypewriter-medium-r-normal-sans-14-100-100-100-m-80-iso8859-1",
+	wide => "-b&h-lucidatypewriter-medium-r-normal-sans-14-140-75-75-m-90-iso8859-1",
+     },
+     courier => {
+	norm => "-adobe-courier-medium-r-normal--14-100-100-100-m-90-iso8859-1",
+	wide => "-adobe-courier-medium-r-normal--14-140-75-75-m-90-iso8859-1",
+	bold => "-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1",
+	bdwd => "-adobe-courier-bold-r-normal--14-140-75-75-m-90-iso8859-1",
+     },
+  };        
+  #chose your default font, color and initial geometry there
+  $xterm = {
+             geometry => "100x15+0+450",
+             color => { fg => 'lightgray', bg => 'black' },
+             font => $font->{courier},
+	     msg => "@{[`fortune`]}",
+           };
+
+
+  #
+  # gnuplot terminal stuff; using``-t xxx'' option 
+  # produce the following gnuplot code:
+  #   set term $terminal{xxx}{term} $terminal{xxx}{opt}
+  #   set output "$output.$terminal{xxx}{ext}"
+  #
+  #
+  # -t tgif: setting options and extension
+    $terminal{tgif} = {term => 'tgif',
+                	opt => 'portrait solid "Helvetica" 28',
+			ext => 'obj'};
+  
+  # -t png : setting options only
+    $terminal{png}{opt} = 'large';
+  
+  # -t eps and the like...
+  
+  $terminal{eps} = {term => 'postscript', 
+                       opt => 'enhanced "Times-Roman" 22',
+	 	       ext => 'eps'};
+  $terminal{cps} = {term => 'postscript', 
+                       opt => 'enhanced color "Times-Roman" 22',
+	 	       ext => 'eps'};
+		       
+  $terminal{ps} = $terminal{eps};   
+
+  $terminal{hps} = {term => 'postscript',
+                     opt => 'enhanced color "Helvetica" 20',
+                     ext => 'eps'};
+  $terminal{tcps} = {term => 'postscript',
+                     opt => 'enhanced color "Times-Roman" 22',
+                     ext => 'eps'};
+  $terminal{tps} = {term => 'postscript',
+                     opt => 'enhanced "Times-Roman" 22',
+                     ext => 'eps'};
+
+
+  #
+  # gnuplot template code using``-s xxx'' embed
+  # code template xxx at startup; multiplot also
+  # uses this codes fragments; finally, it allows
+  # to specify a $code->{default} that shall always
+  # be inserted on the top of
+  #  
+  $code = {
+     pdef => ' 
+  #-------------------------------------
+  # SHAPES:
+  # (c)ircle  (t)riangle (i)nv.tri.
+  #           (d)iamond  (s)quare
+  # FILLING:
+  # (f)illed  (o)paque  (e)mpty (default)
+  #-------------------------------------
+     s=4  ; es=s  ; fs=s+1 ; os=s+66
+     c=6  ; ec=c  ; fc=c+1 ; oc=os+1
+     t=8  ; et=t  ; ft=t+1 ; ot=oc+1
+     i=10 ; ei=i  ; fi=i+1 ; oi=ot+1
+     d=12 ; ed=d  ; fd=d+1 ; od=oi+1
+     p=14 ; ep=p  ; fp=p+1 ; op=od+1
+  #-------------------------------------
+  #  e.g.:  
+  #  empty circles vs filled squares
+  #  plot "file" u 1:3 w p pt ec, 
+  #           "" u 1:4 w lp pt fs
+  #-------------------------------------
+  ',
+    clear => '
+  # zap previous settings
+  set noarrow
+  set nolabel
+  set xlab ""
+  set ylab ""
+  set title ""  
+  set nologs xy
+  set autos xy
+  ',  
+    multi0 => '
+  #  +-------+
+  #  |       |
+  #  | Multi |
+  #  |       |
+  #  +-------+
+  set multiplot
+  set origin 0.00,0.00
+  set size   1.00,1.00
+  ',
+    multi1 => '
+  #  +---+---+
+  #  | 1 |   |
+  #  +---+   |
+  #  |       |
+  #  +-------+
+  set origin 0.15,0.45
+  set size   0.45,0.45
+  ',
+    multi2 => '
+  #  +---+---+
+  #  |   | 2 |
+  #  |   +---+
+  #  |       |
+  #  +-------+
+  set origin 0.45,0.45
+  set size   0.45,0.45
+  ',
+    multi3 => '
+  #  +-------+
+  #  |       |
+  #  |   +---+
+  #  |   | 3 |
+  #  +---+---+
+  set origin 0.45,0.15
+  set size   0.45,0.45
+  ',
+    multi4 => '
+  #  +-------+
+  #  |       |
+  #  +---+   |
+  #  | 4 |   |
+  #  +---+---+
+  set origin 0.15,0.15
+  set size   0.45,0.45
+  ', 
+  multi5 => ' 
+  #  +-------+
+  #  |   5   |
+  #  +-------+
+  #  |       |
+  #  +-------+
+  set origin 0.0,0.5
+  set size   1.0,0.5
+  ',
+    multi6 => '
+  #  +-------+
+  #  |       |
+  #  +-------+
+  #  |   6   |
+  #  +-------+
+  set origin 0.0,0.0
+  set size   1.0,0.5
+  ',
+    multi7 => '
+  #  +---+---+
+  #  |   |   |
+  #  | 7 |   |
+  #  |   |   |
+  #  +---+---+
+  set origin 0.0,0.0
+  set size   0.5,1.0
+  ',
+    multi8 => '
+  #  +---+---+
+  #  |   |   |
+  #  |   | 8 |
+  #  |   |   |
+  #  +---+---+
+  set origin 0.5,0.0
+  set size   0.5,1.0
+  ',
+  };        
+
+  $code->{default} = "$code->{pdef}\n#Happy gnuplotting\n";
+
+
+  #
+  # using shortcuts
+  #
+  $using->{pdf}  = "2";
+  $using->{cdf}  = "3";
+  $using->{icdf} = '(1-$3)';
+
+  #
+  # key shortcut
+  #  
+  $key->{br} = 'bottom right';
+  $key->{tr} = 'top right';
+  $key->{bl} = 'bottom left';
+  $key->{bL} = $key->{blr} = 'bottom left Left reverse';
+  $key->{tl} = 'top left';
+  $key->{tL} = $key->{tlr} = 'top left Left reverse';
+  #
+  $key->{1} = $key->{tL};  #  1  |  2
+  $key->{2} = $key->{tr};  # ____|____
+  $key->{3} = $key->{br};  #     |
+  $key->{4} = $key->{bL};  #  4  |  3
+  # 
+  $key->{mad} = 'left bottom Left title "Legend" box 3';
+  $key->{default} = $key->{3};
+
+=cut
+
+
+
+=head1 EXAMPLES
+
+Here there are some example of use of B<xgp>, divided into
+different sections depending on the number of command line
+arguments passed
+
+=head2 0ARG
+
+    xgp           
+    	    # opens an xterm gnuplot session
+
+    xgp -P
+            # gnuplot -persist < /dev/stdin 
+
+    xgp -K        
+	    # killall gnuplot_x11
+
+    xgp -?
+            # small help msg 
+
+    xgp -h
+            # man page
+
+    xgp -H keyword          
+	    # echo "help keyword" | gnuplot 
+
+    xgp -t dump
+            # dumps xgp terminals (defined in ~/.xgp/rc)
+	    
+    xgp -t help
+            # dump available gnuplot terminals; similar to xgp -H term
+	    # to get help on a specific Xxyzx gnuplot terminal, use -H Xxyzx
+
+   
+    xgp -0 file1.gp -[1..4] file2.gp
+            # produce a multiplot file assembling the two specified CODE files
+
+=head2 1ARG
+
+    xgp file.gp   
+	    # gnuplot -persist file.gp; 
+
+    xgp file.data 
+    	    # echo "plot 'file.data' u 1:2" | gnuplot -persist
+
+    xgp file.da
+      	    # provided that "file.da" do not contains a ":", xgp tries to 
+	    # glob "file.da" (and then key* (and then *key*)) as the shell 
+	    # would do and then plots the globbed files using 1:2
+
+    xgp file.data > file.gp
+    	    # echo "plot 'file.data' u 1:2" | tee file.gp | gnuplot -persist
+	    
+    xgp -w "p pt 3" file.data 
+    	    # echo "plot 'file.data' u 1:2 w p pt 3" | gnuplot -persist
+
+    echo file.data | xgp -w "p pt 3"  1:2	    
+            # it can also be pipelined, in which case the argument is necessary
+	    # (otherwise it will open a terminal); accepting DATA file names
+	    # from /dev/stdin, we can replicate the previous command
+
+    cat file.data | xgp -w "p pt 3"  -d 1:2
+    someprog | xgp -d 1:3
+            # accepting RAW-DATA from /dev/stdin (as in perl, there's more
+	    # than one way to do it)
+
+    someprog | xgp --xtics .1 -d '2:log($3)'
+    	    # passing every modifier to gnuplot...
+
+    someprog | xgp -d 1,2:1..3
+    	    # ...possibly expanding them, avoiding useless identity plots (i.e.,
+	    # 1:1 and 2:2): this one gets transated into qw(1:2 1:3 2:1 2:3)
+	    
+    someprog | xgp -d '1,2:1..3,log($3)'
+    	    # ...possibly expanding them, avoiding useless identity plots 
+	    # this one adds qw(1:log($3) 2:log($3)) to the previous
+
+    xgp -b "set title 'Xxyzx'" -qq -x:3 -Xzoe file.data 
+    	    # echo "set title 'Xxyzx'
+	    #   set logs xy
+	    #   set xran [:3]
+	    #   set xlab 'zoe' 
+	    #   plot 'file.data' u 1:2" | gnuplot -persist
+
+    xgp -t eps file.gp
+            # print file.gp to file.eps in Enhanced Poscript format.
+	    # default font size and parameters may be altered in 
+	    # the resource file ~/.xgp/rc
+	    
+    xgp -t wow file.gp
+            # would produce a file.wow provided that you defined
+	    # a wow terminal entry in ~/.xgp/rc 	    
+
+    xgp -t eps file.data > file.eps 2> file.gp
+            # builds code to plot file.data using 1:2, create a 
+	    # postscript to /dev/stdout and the code to /dev/stderr
+
+    xgp -0 1:3 -2 1:2 file.data
+    	    # plots file.data using 1:3 in the big plot and using 
+	    # 1:2 in the zoomed (top,right) inset
+
+    xgp -0 file1.data -2 file2.data 1:3
+    	    # plots file1.data in the big plot and file2.data
+	    # in the zoomed (top,right) inset both using 1:3 
+
+    xgp -M0 file[0-9] -2 file[A-Z] 1,2,3:2,3,4	    
+    	    # globs file[0-9] and file[A-Z] and produce a plot
+	    # for every combination of the 1,2,3 x 2,3,4 modifiers,
+	    # avoiding useless identity (i.e., 2:2 and 3:3).
+	    # the use of the MegaloMania option is necessary 
+	    # (otherwise xgp will cowardly refuse to produce such 
+	    # an horror)
+	    
+
+=head2 *ARG
+
+    xgp file1.gp .. fileN.gp   
+    	    #for k in file*.gp; do gnuplot -persist $k; done
+	    
+    xgp file.data  'log($1):3'
+    xgp 'log($1):3' file.data  
+    	    #echo "plot 'file.data' u log($1):3 " | gnuplot -persist
+
+    xgp 'log($1):3' file1.data ... fileN.data 
+    xgp file1.data ... fileN.data 'log($1):3' 
+    	    # plot all the data-files using 'log($1):3'
+	    	       
+    xgp -t eps -m 4 file1.gp ... fileN.gp > collection.eps
+            # prints all the gnuplot files to collection.eps, four per 
+	    # page (using mpage -c)
+
+    xgp -M0  1,2,3:2,3,4 -2 file[A-Z] 1..100:1..100 *
+            # oh, come one, why don't you try the next example, then!
+	    
+    find / | xargs cat | xgp -Md 1..1000:1..1000
+    	    # this will surely crash your machine :)
+
+
+=head1 SEE ALSO
+
+B<gnuplot>, B<mpage>, B<xterm>, B<perl>
+
+=head1 AUTHOR
+
+=item Dario Rossi, PhD Student.
+
+=item The Networking Group (TNG)
+
+=item Electronic Department, Politecnico di Torino
+
+=item <dario.rossi@polito.it>
+
+
+=head1 LICENCE
+
+This program is free software; you can redistribute it and/or 
+modify it under the same terms as Perl itself.
+
+=cut
+
+
+
+
+
+
+
+
