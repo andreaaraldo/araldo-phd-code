@@ -39,10 +39,15 @@ double sumzipf[STAGES];
 // Indeed, the final values are obtained after the convergence of an iterative algorithm
 double TC_init_factor = 0.3; //Leonardi's default was 0.3
 
+#ifdef SEVERE_DEBUG
+unsigned* repo_cardinality;
+#endif
+
+
 // COST_AWARE STUFF{
-#define EXT_LINKS 3
-double* K_; // beta_multiplier (see compute_K(...) for more info)
-double* obj_price; //obj_price[k] is the price of object k
+	#define EXT_LINKS 3
+	double* K_; // beta_multiplier (see compute_K(...) for more info)
+	double* obj_price; //obj_price[k] is the price of object k
 // }COST_AWARE STUFF
 //</aa> 
 
@@ -311,6 +316,10 @@ double costfraction(long CATALOG, double alpha)
 void generate_obj_price(long ctlg_size, double* price, double* split_ratio)
 {
 	obj_price = (double*) calloc(ctlg_size, sizeof(double) );
+	#ifdef SEVERE_DEBUG
+	unsigned* repo_cardinality = (unsigned*) calloc(EXT_LINKS, sizeof(unsigned) );
+	#endif
+
 	double r;
 
 	int k; for(k=1; k<=ctlg_size; k++)
@@ -324,6 +333,10 @@ void generate_obj_price(long ctlg_size, double* price, double* split_ratio)
 			l++;
 		}
 		obj_price[k] = price[l-1];
+		#ifdef SEVERE_DEBUG
+		repo_cardinality[l-1] = repo_cardinality[l-1] + 1;
+		printf("repo_cardinality[%d-1]=%u\n",l,repo_cardinality[l-1] );
+		#endif
 	}
 }
 
@@ -402,7 +415,7 @@ main(int argc, char *argv[])
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.333, 0, 0.667};
+  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
   //</aa>
 
 
@@ -484,7 +497,12 @@ main(int argc, char *argv[])
 	for(s=0; s<STAGES;s++)
 	    printf(" csize_of_stage_%d=%lf \t phit_of_stage_%d=%lf \t TC_of_stage_%d=%lf\t	cost_fraction_of_stage_0=%lf\t", 
 				s, C[s], s, phit[s], s, TC[s], costfraction(CATALOG, alpha) );     
-	printf("phit_tot=%lf\t adist=%lf\n",phit_tot, adist);
+	printf("phit_tot=%lf\t adist=%lf\t",phit_tot, adist);
+	int l = 2;
+	printf("repo_cardinality[%d-1]=%u\n",l,repo_cardinality[l-1] );
+	//printf("repo_card=%u-%u-%u\t", repo_cardinality[1], repo_cardinality[1], repo_cardinality[1] );
+	printf("phit_tot=%lf\t adist=%lf\t",phit_tot, adist);
+	printf("\n");
 	fflush(stdout);
 
 	//<aa> What is the purpose of these lines? </aa>
