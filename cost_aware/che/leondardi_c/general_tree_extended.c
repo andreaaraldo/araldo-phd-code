@@ -317,7 +317,7 @@ void generate_obj_price(long ctlg_size, double* price, double* split_ratio)
 {
 	obj_price = (double*) calloc(ctlg_size, sizeof(double) );
 	#ifdef SEVERE_DEBUG
-	unsigned* repo_cardinality = (unsigned*) calloc(EXT_LINKS, sizeof(unsigned) );
+	repo_cardinality = (unsigned*) calloc(EXT_LINKS, sizeof(unsigned) );
 	#endif
 
 	double r;
@@ -335,7 +335,6 @@ void generate_obj_price(long ctlg_size, double* price, double* split_ratio)
 		obj_price[k] = price[l-1];
 		#ifdef SEVERE_DEBUG
 		repo_cardinality[l-1] = repo_cardinality[l-1] + 1;
-		printf("repo_cardinality[%d-1]=%u\n",l,repo_cardinality[l-1] );
 		#endif
 	}
 }
@@ -393,15 +392,27 @@ void compute_K(double* prices, double* split_ratio)
 main(int argc, char *argv[])
 {
 
-  if ( argc != 3 ) /* argc should be 1 for correct execution */
+  if ( argc != 4 ) /* argc should be 1 for correct execution */
   {
         /* We print argv[0] assuming it is the program name */
-        printf( "usage: %s <priceratio> <seed>\n", argv[0] );
+        printf( "usage: %s <priceratio> <seed> <cache_pol>\n", argv[0] );
 		exit(-1);
   }
 
   double price_ratio = atof(argv[1] );
   int seed = atoi(argv[2] );
+  char* cache_pol_str = argv[3];
+  if( strcmp(cache_pol_str, "LRU") == 0 )
+		cache_pol=LRU;
+  else if( strcmp(cache_pol_str, "pLRU") == 0 )
+		cache_pol=pLRU;
+  else if( strcmp(cache_pol_str, "CoA") == 0 )
+		cache_pol=CoA;
+  else{
+		printf("Policy %s is not valid\n", cache_pol_str);
+		exit(-1);
+  }
+
   srand(seed);
 
   int i,s,iter;
@@ -411,7 +422,6 @@ main(int argc, char *argv[])
   double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
-  cache_pol=CoA;
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
@@ -493,14 +503,12 @@ main(int argc, char *argv[])
 
 	//<aa> Print resume </aa>
 	adist+=(STAGES+1)*(1.0-phit_tot);
-	printf("num_stages=%d\t",STAGES);
+	printf("policy=%s num_stages=%d\t",cache_pol_str, STAGES);
 	for(s=0; s<STAGES;s++)
 	    printf(" csize_of_stage_%d=%lf \t phit_of_stage_%d=%lf \t TC_of_stage_%d=%lf\t	cost_fraction_of_stage_0=%lf\t", 
 				s, C[s], s, phit[s], s, TC[s], costfraction(CATALOG, alpha) );     
 	printf("phit_tot=%lf\t adist=%lf\t",phit_tot, adist);
-	int l = 2;
-	printf("repo_cardinality[%d-1]=%u\n",l,repo_cardinality[l-1] );
-	//printf("repo_card=%u-%u-%u\t", repo_cardinality[1], repo_cardinality[1], repo_cardinality[1] );
+	printf("repo_card=%u-%u-%u\t", repo_cardinality[0], repo_cardinality[1], repo_cardinality[2] );
 	printf("phit_tot=%lf\t adist=%lf\t",phit_tot, adist);
 	printf("\n");
 	fflush(stdout);
