@@ -10,11 +10,11 @@ out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
-id_rep_list=[1:19]; # list of seeds
+id_rep_list=[1:20]; # list of seeds
 
 priceratio_list={"10","1.111","1.25","1.429","1.667","2","2.5","3.333","5"};
-priceratio_list={"10"};
 priceratio_list={"1","2","5","10","100"};
+priceratio_list={"10"};
 
 
 % The decision policies that I want to plot
@@ -33,7 +33,7 @@ xi_list = {"1"};
 weights_list={"0.5_0.25_0.25","0.333_0.333_0.334","0.25_0.25_0.5"};
 weights_list={"0.333_0.333_0.334","0.5_0.25_0.25","0.25_0.25_0.5"};
 weights_list={"0.333_0.333_0.334","0_0.25_0.75", "0_0.5_0.5", "0_0.75_0.25", "0.25_0_0.75", "0.25_0.25_0.5", "0.25_0.5_0.25", "0.25_0.75_0", "0.5_0.25_0.25", "0.5_0.5_0", "0.75_0_0.25", "0.75_0.25_0","0.5_0.5_0"};
-weights_list={"0.333_0.333_0.334"};
+weights_list={"0_0.5_0.5"};
 
 alpha_list = {"0.8","1","1.2"};
 alpha_list = {"1"};
@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000","9000000"};
-simtime_list = {"9000000"};
+simtime_list = {"1800000"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
