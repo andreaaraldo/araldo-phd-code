@@ -10,7 +10,7 @@ out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
-id_rep_list=[1:8]; # list of seeds
+id_rep_list=[1:2,5:7,10:11,16:19]; # list of seeds
 
 priceratio_list={"10","1.111","1.25","1.429","1.667","2","2.5","3.333","5"};
 priceratio_list={"10"};
@@ -43,7 +43,7 @@ alpha_list = {"1"};
 window_list = {"60"};
 variance_list = {"0.05"};
 
-lambda_list = {"100"};
+lambda_list = {"1000"};
 
 q_list={"0"};
 
@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000","9000000"};
-simtime_list = {"18000000"};
+simtime_list = {"1800000"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
