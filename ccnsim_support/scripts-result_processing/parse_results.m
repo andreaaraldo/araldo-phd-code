@@ -10,7 +10,7 @@ out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
-id_rep_list=[1:2,5:7,10:11,16:19]; # list of seeds
+id_rep_list=[1:11,15:20]; # list of seeds
 
 priceratio_list={"10","1.111","1.25","1.429","1.667","2","2.5","3.333","5"};
 priceratio_list={"10"};
