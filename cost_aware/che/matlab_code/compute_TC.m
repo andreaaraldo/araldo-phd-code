@@ -12,7 +12,7 @@ function TC = compute_TC(N, cache_size, lambda_tot, P_zipf, policy_)
 			TC = solve(sum(1-exp(-lambda_obj(1,1:N).*x)) == cache_size);
 		case 'MID'
 			syms x;
-			TC = solve(sum( ( 1-exp(-lambda_obj(1,1:N).*x) )/(1-exp(-lambda_obj(1,1:N).*x) - exp(-lambda_obj(1,1:N).*(x/2) ))  ) == cache_size);
+			TC = solve(sum( ( 1-exp(-lambda_obj(1,1:N).*(x/2)) )/(1 + exp(-lambda_obj(1,1:N).*x) - exp(-lambda_obj(1,1:N).*(x/2) ))  ) == cache_size);
 		otherwise
 			error('Policy not valid');
 	end
