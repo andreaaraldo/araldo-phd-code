@@ -19,7 +19,7 @@ Modifications are embraced by tags <aa>.and </aa>.
 #define  Q           0.01   // parametro di qLRU
 
 // Implements   LRU FIFO Random pLRU 
-typedef enum policy {LRU,pLRU, CoA } policy;   //politoca usata   se usi qLRU -> ottieni LCP
+typedef enum policy {LRU,pLRU, CoA, MID } policy;   //politoca usata   se usi qLRU -> ottieni LCP
 policy  cache_pol;
 
 // <aa> lam[o][s] rate of requests for object o seen at stage s </aa>
@@ -115,7 +115,16 @@ double  comp_pin(long k, long stage )
   //<aa>
   if (cache_pol == CoA && q == 0)
 		return_value = 0;
+
+
+  if (cache_pol == MID)
+  {
+		double expo = exp(-lam[k][stage]*TC[stage]);
+		double expo2 = exp(-lam[k][stage]*TC[stage]/2 );
+		double return_value= (1.0 - expo2 ) / (1- expo - expo2);
+  }
   //</aa>
+
 
   #ifdef SEVERE_DEBUG
   if (isnan(return_value) )
@@ -167,8 +176,8 @@ double  phitcond(long k, int stage )
 		TC2=TC[stage];
 		if(stage>0)
 		{
-		 TC1=TC[stage-1];
-		     b= lam[k][stage]*TC2;
+			TC1=TC[stage-1];
+			b= lam[k][stage]*TC2;
 		 }else 
 			TC1=0.0;
 		 
@@ -425,7 +434,7 @@ main(int argc, char *argv[])
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
+  double split_ratio[EXT_LINKS] = {0.5, 0.5, 0};
   //</aa>
 
 

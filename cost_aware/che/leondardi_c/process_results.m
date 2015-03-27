@@ -5,8 +5,8 @@ addpath("~/software/araldo-phd-code/general/process_results");
 che_output_folder = "/tmp";
 outfolder = "/tmp";
 
-priceratios = [1, 2, 5, 10, 100];
-decisions = {"LRU","pLRU","CoA"};
+priceratios = [1];
+decisions = {"LRU" "pLRU","CoA"};
 expression_for_cost_fraction = "grep -r \"cost_fraction\" %s/results-%s-pi_%g-seed_*.log | cut  -f6 | cut -d'=' -f2";
 expression_for_hit_ratio = "grep -r \"phit_of_stage_0\" %s/results-%s-pi_%g-seed_*.log | cut -f3 | cut -f2 -d'='";
 metrics = {"hit_ratio","cost_fraction"};

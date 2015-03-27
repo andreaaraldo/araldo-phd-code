@@ -7,9 +7,9 @@ gcc general_tree_extended.c -lm -o general_tree_extended.o
 
 for POL in "LRU" "pLRU" "CoA"
 do
-	for PI in 1 2 5 10 100;
+	for PI in 1;
 	do
-		for SEED in {1..20};
+		for SEED in {1..5};
 		do 
 			./general_tree_extended.o $PI $SEED $POL | tail -n1 > /tmp/results-$POL-pi_$PI-seed_$SEED.log
 		done
