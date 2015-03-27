@@ -1,5 +1,5 @@
 % q: probability to accept an incoming object
-function [pHitChe, pHitCheAvg] = hit(P_zipf, lambda_obj, TC, q, 'policy')
+function [pHitChe, pHitCheAvg] = hit(P_zipf, lambda_obj, TC, q, policy)
 
 	N = size(P_zipf, 2); % catalog size
 	pHitChe = zeros(1, N);
@@ -24,7 +24,7 @@ function [pHitChe, pHitCheAvg] = hit(P_zipf, lambda_obj, TC, q, 'policy')
 			end
 
 		otherwise
-			error("Policy not valid");
+			error('Policy not valid');
 	end
 
 	pHitCheAvg = mean(pHitChe(1,:));
