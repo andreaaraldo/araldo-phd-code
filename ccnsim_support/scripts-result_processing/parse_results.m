@@ -22,7 +22,7 @@ decision_list={"lce","fix0.01","costaware0.01","tailandrank","costprobtailperf",
 decision_list={"lce","fix0.1", "fix0.05", "fix0.01", "fix0.005", "fix0.001", "fix0.0001", "fix0.00001"};
 decision_list={"lce","fix0.01","costaware0.01","costprobprodplain0.01", "costprobcoincorr0.5", "costprobcoinplain0.5", "costprobcoincorr0.1", "costprobcoinplain0.1","costprobcoincorr0.01", "costprobcoinplain0.01"};
 decision_list={"lce","fix0.01","tailandrank","costaware0.01","costprobtailcons"};
-decision_list={"fix0.01","costaware0.01"};
+decision_list={"lce","fix0.01","costaware0.01"};
 
 xi_list = {"0.01","0.025","0.05","0.075","0.25","0.50","0.75","1","1.25","1.50","1.75","2","3","5","8"};
 xi_list = {"0.01","0.25","0.50","0.75","1","1.25","1.50","1.75","2"};
@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000","9000000"};
-simtime_list = {"18000"};
+simtime_list = {"180000"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
