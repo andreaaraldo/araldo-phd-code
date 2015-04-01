@@ -434,7 +434,7 @@ main(int argc, char *argv[])
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.5, 0.5, 0};
+  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
   //</aa>
 
 
