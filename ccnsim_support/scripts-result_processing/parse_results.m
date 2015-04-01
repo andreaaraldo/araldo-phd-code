@@ -10,11 +10,11 @@ out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
-id_rep_list=[1:40]; # list of seeds
+id_rep_list=[1:20]; # list of seeds
 
 priceratio_list={"10","1.111","1.25","1.429","1.667","2","2.5","3.333","5"};
 priceratio_list={"10"};
-priceratio_list={"1","2","5","10","100"};
+priceratio_list={"1","10","100"};
 
 
 % The decision policies that I want to plot
@@ -35,8 +35,8 @@ weights_list={"0.333_0.333_0.334","0.5_0.25_0.25","0.25_0.25_0.5"};
 weights_list={"0.333_0.333_0.334","0_0.25_0.75", "0_0.5_0.5", "0_0.75_0.25", "0.25_0_0.75", "0.25_0.25_0.5", "0.25_0.5_0.25", "0.25_0.75_0", "0.5_0.25_0.25", "0.5_0.5_0", "0.75_0_0.25", "0.75_0.25_0","0.5_0.5_0"};
 weights_list={"0.333_0.333_0.334"};
 
-alpha_list = {"0.8","1","1.2"};
 alpha_list = {"1"};
+alpha_list = {"0.8","1","1.2"};
 
 
 % The time window in which the samples to evaluate the stabilization are collected
@@ -50,7 +50,7 @@ q_list={"0"};
 
 % See select.m for all the possible metrics
 metric_list={"cost_reduction_wrt_fix","cost_savings_wrt_fix", "potential_reduction_wrt_costprobtailcons", "cost_savings_wrt_fix", "potential_savings_wrt_costprobtailcons","cost_fraction","hit_on_node_0"};
-metric_list={"cost_savings_wrt_fix"};
+metric_list={"hit_on_node_0"};
 
 
 network_list={"cost_scenario","abilene_cost","geant_cost","level3_cost","dtelecom_cost","tiger_cost","ws"};
@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000","9000000"};
-simtime_list = {"1800000"};
+simtime_list = {"180000"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
@@ -70,9 +70,9 @@ csize_to_write_list = csize_list;
 ctlg_="1e5";
 ctlg_to_write_=ctlg_;
 fixed_variable_names_additional = {"window","variance","simtime", "network","weights",...
-			"q", "forwarding","lambda","xi","alpha"};
+			"q", "forwarding","lambda","xi","decision"};
 x_variable_name = "priceratio";
-z_variable_name = "decision"; % Over the columns
+z_variable_name = "alpha"; % Over the columns
 
 
 
