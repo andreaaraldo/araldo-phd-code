@@ -62,7 +62,7 @@ forwarding_list={"nrr"};
 replacement_="lru";
 
 simtime_list = {"1800","18000","180000","1800000","9000000"};
-simtime_list = {"180000"};
+simtime_list = {"1800000"};
 
 csize_list = {"1e3"};
 csize_to_write_list = csize_list;
