@@ -10,11 +10,10 @@ out_folder="/tmp/"; % where to put results
 optimization_result_folder="~/shared_with_servers/icn14_runs/greedy_algo-NESSUNA";
 resultdir="~/software/ccnsim/results/sim_vs_che";
 
-id_rep_list=[1:20]; # list of seeds
+id_rep_list=[1:5,7:12,14:19]; # list of seeds
 
 priceratio_list={"10","1.111","1.25","1.429","1.667","2","2.5","3.333","5"};
 priceratio_list={"10"};
-priceratio_list={"1","10","100"};
 
 
 % The decision policies that I want to plot
@@ -36,7 +35,7 @@ weights_list={"0.333_0.333_0.334","0_0.25_0.75", "0_0.5_0.5", "0_0.75_0.25", "0.
 weights_list={"0.333_0.333_0.334"};
 
 alpha_list = {"1"};
-alpha_list = {"0.8","1","1.2"};
+alpha_list = {"0.8","0.9","1","1.1","1.2"};
 
 
 % The time window in which the samples to evaluate the stabilization are collected
@@ -71,8 +70,8 @@ ctlg_="1e5";
 ctlg_to_write_=ctlg_;
 fixed_variable_names_additional = {"window","variance","simtime", "network","weights",...
 			"q", "forwarding","lambda","xi","decision"};
-x_variable_name = "priceratio";
-z_variable_name = "alpha"; % Over the columns
+x_variable_name = "alpha";
+z_variable_name = "priceratio"; % Over the columns
 
 
 
