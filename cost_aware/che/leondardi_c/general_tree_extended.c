@@ -401,16 +401,18 @@ void compute_K(double* prices, double* split_ratio)
 main(int argc, char *argv[])
 {
 
-  if ( argc != 4 ) /* argc should be 1 for correct execution */
+  if ( argc != 5 ) /* argc should be 1 for correct execution */
   {
         /* We print argv[0] assuming it is the program name */
-        printf( "usage: %s <priceratio> <seed> <cache_pol>\n", argv[0] );
+        printf( "usage: %s <priceratio> <seed> <cache_pol> <alpha>\n", argv[0] );
 		exit(-1);
   }
 
   double price_ratio = atof(argv[1] );
   int seed = atoi(argv[2] );
   char* cache_pol_str = argv[3];
+  double alpha = atof(argv[4]);
+
   if( strcmp(cache_pol_str, "LRU") == 0 )
 		cache_pol=LRU;
   else if( strcmp(cache_pol_str, "pLRU") == 0 )
@@ -428,7 +430,6 @@ main(int argc, char *argv[])
   double phit_tot,adist;
   long CATALOG,k;
   double Ctarg[STAGES], TC1, TC2;
-  double alpha=1.0;
   double Lambda=100.0;
   double cache_size = 1000;
   CATALOG=CATALOGUE-1;
