@@ -8,12 +8,11 @@ outfolder = "/tmp/che_alpha";
 priceratios = [10];
 
 decisions = {"LRU" "pLRU","CoA"};
-decisions = {"CoA"};
 
 metrics = {"hit_ratio","cost_fraction","saving"};
 metrics={"hit_ratio"};
 
-alphas = 0.8:0.05:1.2;
+alphas = 0.8:0.1:1.2;
 
 expression_for_cost_fraction = "grep -r \"cost_fraction\" %s/results-%s-pi_%g-alpha_%g-seed_*.log | cut  -f6 | cut -d'=' -f2";
 expression_for_hit_ratio = "grep -r \"phit_of_stage_0\" %s/results-%s-pi_%g-alpha_%g-seed_*.log | cut -f3 | cut -f2 -d'='";
