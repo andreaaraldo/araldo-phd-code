@@ -174,7 +174,7 @@ subject to {
 	cAlwaysHighQuality:
 		(Strategy == 3) => ObjectCached[o][q][v] == 0;
 
-	forall (o in Objects, v in ASes, q1 in QualityLevels, q2 in QualityLevels)
+	forall (o in Objects, v in ASes, q1 in QualityLevels : q1!=0, q2 in QualityLevels: q2!=0)
 	cAllQualityLevels:
 		(Strategy == 4) => ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
 	// </aa>

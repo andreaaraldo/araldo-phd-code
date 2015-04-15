@@ -4,35 +4,50 @@ path_base = "~/software/araldo-phd-code/utility_based_caching";
 addpath(sprintf("%s/scenario_generation",path_base) );
 addpath(sprintf("%s/scenario_generation/michele",path_base) );
 addpath("~/software/araldo-phd-code/general/process_results" );
+addpath("~/software/araldo-phd-code/general/optim_tools" ); % for launch_opl.m
 pkg load statistics;
+pkg load parallel;
 
 
 generate = true;
 run_ = true;
+parallel_processes = 7;
 
 % Define an experiment
-seeds = 1:1;
+seeds = 1;
 experiment_name = "comparison";
 ases = [1, 2];
 ases_with_storage = [1];
-quality_level_num = 5;
-catalog_size = 500;
+quality_level_num = 5; % not considering 0
+catalog_size = 1000;
 cache_to_ctlg_ratio = 1/100;	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 alpha = 1;
 rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 cache_space_at_low_quality = 11.25;% In MB
-utilities = [0, 10, 10.1, 10.2, 10.3, 10.4]; % Ratio between low and high quality utility
-utility_when_not_serving = 0;
+utilities = [0,...
+			 1+ log(rate_per_quality(2) / rate_per_quality(2) ),...
+			 1+ log(rate_per_quality(3) / rate_per_quality(2) ),...
+			 1+ log(rate_per_quality(4) / rate_per_quality(2) ),...
+			 1+ log(rate_per_quality(5) / rate_per_quality(2) ),...
+			 1+ log(rate_per_quality(6) / rate_per_quality(2) ) ];
+utilities = [0, 1, 1.2, 1.3, 1.4, 1.5];
 ASes_with_users = [1];
 server = 2;
 link_capacity = 490000; % In Kbps
 
-load_ = 10; 	% Multiple of link capacity we would use to transmit 
+load_ = 2; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
 strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels"};
 
+
+
+single_value_folders = {};
+
+##############################
+##### GENERATE SCENARIOS #####
+##############################
 for strategy_idx = 0:( length(strategies)-1 )
 	strategy = strategies{strategy_idx+1};
 	total_requests = load_ * link_capacity / rate_per_quality(2);
@@ -40,15 +55,17 @@ for strategy_idx = 0:( length(strategies)-1 )
 
 	% {BUILD CACHE_SPACE_PER_QUALITY
 	cache_space_per_quality = [10000];
-	for idx_q = 2:quality_level_num
+	for idx_q = 2:quality_level_num+1
 		cache_space_per_quality = [cache_space_per_quality, ...
 			cache_space_at_low_quality * rate_per_quality(idx_q) / rate_per_quality(2) ];
 	end % for
 	% }BUILD CACHE_SPACE_PER_QUALITY
 
 
+	cache_space_at_high_q = max(cache_space_per_quality(2:length(cache_space_per_quality) ) );
+
 	max_cache_storage = (catalog_size * cache_to_ctlg_ratio) ...
-						* cache_space_per_quality(3) ; % IN MB
+						* cache_space_at_high_q ; % IN MB
 	single_cache_storage = max_cache_storage / length(ases_with_storage);
 
 	quality_levels = 0:quality_level_num;
@@ -63,28 +80,35 @@ for strategy_idx = 0:( length(strategies)-1 )
 			end %if
 		end %for idx_as
 
-		% {CHECK FOR NON-INITIALIZED VALUES
-			if(severe_debug)
-				if (any (max_storage_at_single_as < 0) )
-					max_storage_at_single_as
-					ases
-					error("Uninitialized values");
-				end
-			end
-		% }CHECK FOR NON-INITIALIZED VALUES	
 	% }BUILD MAX_STORAGE_AT_SINGLE_AS
 
 
 	experiment_folder=sprintf("%s/examples/%s",path_base,experiment_name); 
 	single_value_folder = sprintf("%s/strategy_%d", experiment_folder,strategy_idx);
+	single_value_folders = [single_value_folders, single_value_folder];
 
+	% {CHECKS
+	if(severe_debug)
+		if (length(cache_space_per_quality) != quality_level_num+1)
+			cache_space_per_quality
+			quality_level_num
+			error("ERROR: cache_space_per_quality and quality_level_num have a mismatching length");
+		end
 
+		if (length(cache_space_per_quality) != length(rate_per_quality) )
+			cache_space_per_quality
+			rate_per_quality
+			error("ERROR: cache_space_per_quality and rate_per_quality have not the same length");
+		end
 
+		if (any (max_storage_at_single_as < 0) )
+			max_storage_at_single_as
+			ases
+			error("Uninitialized values in max_storage_at_single_as");
+		end
+	end
+	% }CHECKS
 
-
-	##############################
-	##### GENERATE SCENARIOS #####
-	##############################
 	for seed = seeds
 		if generate
 			specific_folder = sprintf("%s/seed_%g", single_value_folder, seed);
@@ -103,23 +127,56 @@ for strategy_idx = 0:( length(strategies)-1 )
 					arcs, max_storage_at_single_as, max_cache_storage, seed, dat_filename,
 					strategy);
 		endif
-	
-		if run_
-			command = sprintf("cp %s/model.mod %s", path_base, specific_folder);
-			if ( system(command ) != 0)
-				error(sprintf("ERROR in copying file %s/model.mod", path_base) );
-			endif
-	
-			command = sprintf("oplrun %s/model.mod %s", specific_folder, dat_filename);
-			if ( system(command ) != 0)
-				error(sprintf("ERROR in the execution of command %s", command) );
-			endif
-		endif
-	endfor
+	endfor % seeds
+endfor % strategy for
 
-	##############################
-	##### PARSE OUTPUT ###########
-	##############################
+##############################
+##### RUN SCENARIOS ##########
+##############################
+active_children = 0;
+if run_
+	for seed = seeds
+		for idx_single_value = 1:length(single_value_folders)
+			single_value_folder = single_value_folders{idx_single_value};
+			specific_folder = sprintf("%s/seed_%g", single_value_folder, seed);
+			dat_filename = sprintf("%s/scenario.dat",specific_folder);
+			mod_filename = sprintf("%s/model.mod",path_base);
+
+			if (active_children > parallel_processes)
+				waitpid(-1);
+				% One child process finished
+				active_children--;
+			endif
+
+			pid = fork();
+			if (pid==0)
+				% I am the child process
+				printf("Running experiment %s\n", specific_folder);
+				launch_opl(specific_folder, mod_filename, dat_filename);
+				exit(0);
+			elseif (pid > 0)
+				% I am the father
+				active_children ++;
+			else (pid < 0)
+				error ("Error in forking");
+			endif
+		end % for single_value_folder
+	endfor % seed
+	
+	while (active_children > 0)
+		printf("Waiting for %d processes to finish\n", active_children);
+		waitpid(-1);
+		active_children--;
+	end % while
+end % for run
+
+##############################
+##### PARSE OUTPUT ###########
+##############################
+printf("Parsing results\n");
+for idx_single_value_folder = 1:length(single_value_folders)
+	single_value_folder = single_value_folders{idx_single_value_folder};
+
 	rows_ = 1;
 	columns_ = 1;
 	utility_header = [];
@@ -144,7 +201,9 @@ for strategy_idx = 0:( length(strategies)-1 )
 	unsatisfied_ratio = zeros(rows_, columns_, length(seeds) );
 
 
+	idx_seed = 0;
 	for seed = seeds
+			idx_seed ++;
 			specific_folder = sprintf("%s/seed_%g", single_value_folder, seed);
 
 			file_to_read = sprintf("%s/objective.csv", specific_folder);
@@ -154,8 +213,7 @@ for strategy_idx = 0:( length(strategies)-1 )
 				fclose(f);
 			endif
 			value = dlmread(file_to_read,' ',1,0);
-			utility(:,:,seed)  = value;
-
+			utility(:,:,idx_seed)  = value;
 			file_to_read = sprintf("%s/quality_served_per_rank.csv",  specific_folder);
 			if (!length(quality_served_header))
 				f = fopen(file_to_read, "r");
@@ -163,7 +221,7 @@ for strategy_idx = 0:( length(strategies)-1 )
 				fclose(f);
 			endif
 			value = dlmread(file_to_read,' ',1, 0);
-			quality_served(:,:,seed) = value;
+			quality_served(:,:,idx_seed) = value;
 
 
 			file_to_read = sprintf("%s/quality_cached_per_rank.csv",  specific_folder);
@@ -173,7 +231,7 @@ for strategy_idx = 0:( length(strategies)-1 )
 				fclose(f);
 			endif
 			value = dlmread(file_to_read,' ',1, 0);
-			quality_cached_per_rank(:,:,seed) = value;
+			quality_cached_per_rank(:,:,idx_seed) = value;
 
 
 
@@ -184,8 +242,16 @@ for strategy_idx = 0:( length(strategies)-1 )
 				fclose(f);
 			endif
 			value = dlmread(file_to_read,' ',1,0);
-			unsatisfied_ratio(:,:,seed)  = value;
+			unsatisfied_ratio(:,:,idx_seed)  = value;
 	endfor
+
+	%{ CHECK
+	
+	if (size(utility,3)!=length(seeds) || size(quality_served,3)!=length(seeds) || ...
+		size(quality_cached_per_rank,3)!=length(seeds) || size(unsatisfied_ratio,3)!=length(seeds) )
+		error("ERROR: bad matrix size");
+	end % if
+	%} CHECK
 
 	##############################
 	##### PROCESS OUTPUT #########
