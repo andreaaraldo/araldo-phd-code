@@ -44,8 +44,15 @@ float RatePerQuality[QualityLevels] = ...;
 float CacheSpacePerQuality[QualityLevels] = ...;
 float UtilityPerQuality[QualityLevels] = ...;
 int   ObjectsPublishedByProducers[Objects][ASes] = ...;
-float MaxCacheStorageAtSingleAS = ...;
+float MaxCacheStorageAtSingleAS[ASes] = ...;
 float MaxCacheStorage = ...;
+
+//<aa>
+// 0 for Representation Aware, 1 for No Cache
+// 2 for Always Low Quality, 
+// 3 for Always High Quality, 4 for All Quality Levels
+int Strategy = ...;
+//</aa>
 
 
 float MaxEgressCapacityAtAS[ASes];
@@ -73,6 +80,23 @@ execute {
     	MaxEgressCapacityAtAS[as] = maxCapacity;
   }  	  
 }
+
+//<aa>
+/*********************************************************
+* Input checks
+*********************************************************/
+int error = 0;
+
+execute INPUT_CHECKS{
+	for (q in QualityLevels)
+		if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
+		{
+			writeln ("ERROR: Only quality levels 0:5 are admissible");
+			exit;
+		}
+}
+//<aa>
+
 
 /*********************************************************
 * Decision variables
@@ -131,11 +155,29 @@ subject to {
 		
 	forall ( sourceAS in ASes )
 	ctLocalCacheSize:
-	  	sum ( o in Objects, q in QualityLevels ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS;
+	  	sum ( o in Objects, q in QualityLevels ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS];
 	
 	ctTotalCacheSize:
 	  	sum ( o in Objects, q in QualityLevels, sourceAS in ASes ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorage;
 
+	// <aa> Different strategies
+	forall (o in Objects, q in QualityLevels, v in ASes)
+	cNoCache:
+		(Strategy == 1) => ObjectCached[o][q][v] == 0;
+
+	forall (o in Objects, v in ASes, q in QualityLevels : q != 1 )
+	cAlwaysLowQuality:
+		(Strategy == 2) => ObjectCached[o][q][v] == 0;
+
+
+	forall (o in Objects, v in ASes, , q in QualityLevels : q != 5)
+	cAlwaysHighQuality:
+		(Strategy == 3) => ObjectCached[o][q][v] == 0;
+
+	forall (o in Objects, v in ASes, q1 in QualityLevels, q2 in QualityLevels)
+	cAllQualityLevels:
+		(Strategy == 4) => ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
+	// </aa>
 }
 
 
@@ -143,7 +185,10 @@ subject to {
 /*********************************************************
 * PRINT RESULTS
 *********************************************************/
-int RequestsPerQuality[Objects][QualityLevels]; 
+int RequestsPerQuality[Objects][QualityLevels];
+
+
+
 
 execute DISPLAY 
 {
@@ -292,7 +337,23 @@ execute DISPLAY
 		f.write(a.sourceAS,"-",a.targetAS," ",load,"\n");
 	}
 	f.close
-	
+
+
+	/************************************
+  	 *** Print cache sizes
+  	 ************************************/
+	var f = new IloOplOutputFile("cache_sizes.csv");
+	f.open;
+	f.write("node size\n");
+	for (var a in ASes)
+	{
+		var size = 0;
+		for (var o in Objects)
+			for (var q in QualityLevels)
+				size += ObjectCached[o][q][a] * CacheSpacePerQuality[q];
+		f.write(a," ",size,"\n");
+	}
+	f.close
 
 }
 
