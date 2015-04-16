@@ -11,7 +11,7 @@ pkg load parallel;
 
 generate = true;
 run_ = true;
-parallel_processes = 7;
+parallel_processes = 24;
 
 % Define an experiment
 experiment_name = "collaboration";
