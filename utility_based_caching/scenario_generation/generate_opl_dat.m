@@ -1,9 +1,10 @@
 % Called by scenario_script.m
 function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 			rate_per_quality, 
-			cache_space_per_quality, utility_ratio, utility_when_not_serving,
+			cache_space_per_quality, utilities,
 			ASes_with_users, server, total_requests,
-			arcs, max_storage_at_single_as, max_cache_storage, seed, dat_filename)
+			arcs, max_storage_at_single_as, max_cache_storage, seed, dat_filename,
+			strategy_)
 
 	objects = 1:catalog_size;
 
@@ -36,13 +37,40 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 	ObjRequests(length(ObjRequests)-2) = " ";
 
 
+	% GENERATE_STRATEGY{
+	strategy_num = 0;
+	switch (strategy_)
+		 case "RepresentationAware"
+			strategy_num = 0;
+		 case "NoCache"
+			strategy_num = 1;
+		 case "AlwaysLowQuality"
+			strategy_num = 2;
+		 case "AlwaysHighQuality"
+			strategy_num = 3;
+		 case "AllQualityLevels"
+			strategy_num = 4;
+		 case "DedicatedCache"
+			strategy_num = 5;
+		otherwise
+			error("Invalid strategy_");	
+	end %swictch
+	Strategy = sprintf("Strategy = %d ;", strategy_num);
+	% }GENERATE_STRATEGY
+
+
 	RatePerQuality = represent_in_opl( "RatePerQuality", rate_per_quality, true, "array" );
 
 	CacheSpacePerQuality = represent_in_opl( "CacheSpacePerQuality", cache_space_per_quality, true, "array" );
 
-	utility_per_quality = [utility_when_not_serving, 1, utility_ratio];
+	utility_per_quality = utilities;
 	UtilityPerQuality = represent_in_opl(
 							"UtilityPerQuality", utility_per_quality, true, "array" );
+
+	MaxCacheStorageAtSingleAS = represent_in_opl(
+					"MaxCacheStorageAtSingleAS", max_storage_at_single_as, true, "array");
+
+	
 
 
 	% Each object is published by only one producer
@@ -53,8 +81,6 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
 
 
-	MaxCacheStorageAtSingleAS = sprintf(
-					"MaxCacheStorageAtSingleAS = %g ;", max_storage_at_single_as);
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 
@@ -73,6 +99,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 	fprintf(f, "%s\n",ObjectsPublishedByProducers);
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
+	fprintf(f, "%s\n",Strategy);
 	fclose(f);
 
 	printf("File %s written\n",dat_filename);
