@@ -50,6 +50,8 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 			strategy_num = 3;
 		 case "AllQualityLevels"
 			strategy_num = 4;
+		 case "DedicatedCache"
+			strategy_num = 5;
 		otherwise
 			error("Invalid strategy_");	
 	end %swictch

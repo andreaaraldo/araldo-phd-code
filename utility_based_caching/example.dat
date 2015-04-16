@@ -4,18 +4,18 @@
 // Utilità: 30
 
 ASes = {1,2};
-Objects = {1};
+Objects = {1, 2};
 QualityLevels = {0, 1, 2};
-Strategy = 4;
+Strategy = 5;
 
 
 Arcs = {<1,2,0>, <2,1,0>};
-ObjRequests = {<1,1,10>};
+ObjRequests = {<1,1,10>, <2,1,10>};
 
 RatePerQuality = [0 300 1500];
 CacheSpacePerQuality = [1 11.25 56.25];
 UtilityPerQuality = [0 1 2];
-ObjectsPublishedByProducers = [ [0 1] ];
+ObjectsPublishedByProducers = [ [0 1] [0 1] ];
 
-MaxCacheStorageAtSingleAS = 200;
-MaxCacheStorage = 200;
+MaxCacheStorageAtSingleAS = [70 0];
+MaxCacheStorage = 140;

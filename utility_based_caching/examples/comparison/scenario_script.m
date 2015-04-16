@@ -18,29 +18,34 @@ seeds = 1;
 experiment_name = "comparison";
 ases = [1, 2];
 ases_with_storage = [1];
-quality_level_num = 5; % not considering 0
 catalog_size = 1000;
 cache_to_ctlg_ratio = 1/100;	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 alpha = 1;
+
+rate_per_quality = [0, 300, 3500]; % In Kpbs
 rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
+
 cache_space_at_low_quality = 11.25;% In MB
-utilities = [0,...
-			 1+ log(rate_per_quality(2) / rate_per_quality(2) ),...
-			 1+ log(rate_per_quality(3) / rate_per_quality(2) ),...
-			 1+ log(rate_per_quality(4) / rate_per_quality(2) ),...
-			 1+ log(rate_per_quality(5) / rate_per_quality(2) ),...
-			 1+ log(rate_per_quality(6) / rate_per_quality(2) ) ];
+
+%utilities = [0,...
+%			 1+ log(rate_per_quality(2) / rate_per_quality(2) ),...
+%			 1+ log(rate_per_quality(3) / rate_per_quality(2) ),...
+%			 1+ log(rate_per_quality(4) / rate_per_quality(2) ),...
+%			 1+ log(rate_per_quality(5) / rate_per_quality(2) ),...
+%			 1+ log(rate_per_quality(6) / rate_per_quality(2) ) ];
+utilities = [0, 1, 1.5];
 utilities = [0, 1, 1.2, 1.3, 1.4, 1.5];
+
 ASes_with_users = [1];
 server = 2;
 link_capacity = 490000; % In Kbps
 
-load_ = 2; 	% Multiple of link capacity we would use to transmit 
+load_ = 2.0; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
-strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels"};
-
+strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
+strategies = {"DedicatedCache"};
 
 
 single_value_folders = {};
@@ -52,6 +57,8 @@ for strategy_idx = 0:( length(strategies)-1 )
 	strategy = strategies{strategy_idx+1};
 	total_requests = load_ * link_capacity / rate_per_quality(2);
 	arcs = sprintf("{<2, 1, %g>};", link_capacity );
+
+	quality_level_num = length(rate_per_quality)-1; % number of qualities starting from q=1
 
 	% {BUILD CACHE_SPACE_PER_QUALITY
 	cache_space_per_quality = [10000];
@@ -84,7 +91,7 @@ for strategy_idx = 0:( length(strategies)-1 )
 
 
 	experiment_folder=sprintf("%s/examples/%s",path_base,experiment_name); 
-	single_value_folder = sprintf("%s/strategy_%d", experiment_folder,strategy_idx);
+	single_value_folder = sprintf("%s/load_%g/strategy_%s", experiment_folder,load_,strategy);
 	single_value_folders = [single_value_folders, single_value_folder];
 
 	% {CHECKS
