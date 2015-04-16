@@ -32,7 +32,7 @@ ASes_with_users = [2,3];
 server = 1;
 link_capacity = 490000; % In Kbps
 
-peer_link_scales = [1];
+peer_link_scales = [1.2, 1.5];
 loads = [0.1, 1, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
