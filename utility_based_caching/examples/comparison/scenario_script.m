@@ -39,13 +39,12 @@ utilities = [0, 1, 1.2, 1.3, 1.4, 1.5];
 
 ASes_with_users = [1];
 server = 2;
-link_capacity = 490000; % In Kbps
+link_capacity = 49000000; % In Kbps
 
 load_ = 2.0; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
 strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
-strategies = {"DedicatedCache"};
 
 
 single_value_folders = {};
@@ -91,7 +90,7 @@ for strategy_idx = 0:( length(strategies)-1 )
 
 
 	experiment_folder=sprintf("%s/examples/%s",path_base,experiment_name); 
-	single_value_folder = sprintf("%s/load_%g/strategy_%s", experiment_folder,load_,strategy);
+	single_value_folder = sprintf("%s/high_capacity/load_%g/strategy_%s", experiment_folder,load_,strategy);
 	single_value_folders = [single_value_folders, single_value_folder];
 
 	% {CHECKS
