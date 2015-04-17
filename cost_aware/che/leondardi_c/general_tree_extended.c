@@ -5,6 +5,7 @@ Modifications are embraced by tags <aa>.and </aa>.
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<string.h>
 
 //<aa>
 #define SEVERE_DEBUG
@@ -401,10 +402,10 @@ void compute_K(double* prices, double* split_ratio)
 main(int argc, char *argv[])
 {
 
-  if ( argc != 5 ) /* argc should be 1 for correct execution */
+  if ( argc != 6 ) /* argc should be 1 for correct execution */
   {
         /* We print argv[0] assuming it is the program name */
-        printf( "usage: %s <priceratio> <seed> <cache_pol> <alpha>\n", argv[0] );
+        printf( "usage: %s <priceratio> <seed> <cache_pol> <alpha> <sfree_scheap_sexp>\n", argv[0] );
 		exit(-1);
   }
 
@@ -412,6 +413,7 @@ main(int argc, char *argv[])
   int seed = atoi(argv[2] );
   char* cache_pol_str = argv[3];
   double alpha = atof(argv[4]);
+  char* split_str = argv[5];
 
   if( strcmp(cache_pol_str, "LRU") == 0 )
 		cache_pol=LRU;
@@ -424,6 +426,26 @@ main(int argc, char *argv[])
 		exit(-1);
   }
 
+  //<aa>
+  //PARSE split ratio
+  double split_ratio[EXT_LINKS];
+  int repo_idx = 0;
+  char* split_tok = strtok(split_str,"_");
+  while(split_tok != NULL)
+  {
+    split_ratio[repo_idx] = atof(split_tok);
+	split_tok = strtok(NULL,"_");
+	repo_idx++;
+  }
+  #ifdef SEVERE_DEBUG
+  if (repo_idx != 3){
+	printf("ERROR: split ratio string is malformed\n");
+	exit(-1);
+  }
+  #endif 
+  //</aa>
+
+
   srand(seed);
 
   int i,s,iter;
@@ -435,7 +457,6 @@ main(int argc, char *argv[])
   CATALOG=CATALOGUE-1;
   //<aa>
   double price[EXT_LINKS] = {0, 1,price_ratio}; // Prices of free, cheap and expensive links
-  double split_ratio[EXT_LINKS] = {0.333, 0.333, 0.334};
   //</aa>
 
 
