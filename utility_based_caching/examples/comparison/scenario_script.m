@@ -6,7 +6,6 @@ addpath(sprintf("%s/scenario_generation/michele",path_base) );
 addpath("~/software/araldo-phd-code/general/process_results" );
 addpath("~/software/araldo-phd-code/general/optim_tools" ); % for launch_opl.m
 pkg load statistics;
-pkg load parallel;
 
 
 generate = true;
