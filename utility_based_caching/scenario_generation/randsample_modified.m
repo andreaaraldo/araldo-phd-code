@@ -30,7 +30,7 @@
 ## @seealso{randperm}
 ## @end deftypefn
 
-function y = randsample(v,k,replacement=false,w=[])
+function y = randsample_modified(v,k,replacement=false,w=[])
 
   if isscalar (v)
     n = v;

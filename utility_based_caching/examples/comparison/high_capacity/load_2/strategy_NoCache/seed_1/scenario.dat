@@ -26,4 +26,4 @@ ObjectsPublishedByProducers=[ [ 0  1 ]  [ 0  1 ]  [ 0  1 ]  [ 0  1 ]  [ 0  1 ]  
 MaxCacheStorageAtSingleAS= [ 1312.5  0 ] ;
 
 MaxCacheStorage = 1312.5 ;
-Strategy = 4 ;
+Strategy = 1 ;

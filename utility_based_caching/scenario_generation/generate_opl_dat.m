@@ -16,35 +16,30 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 
 
 	%{ GENERATE_OBJ_REQUESTS
-	number_of_object_classes = catalog_size;
-	num_of_req_at_each_as = round(total_requests / length(ASes_with_users) );
-	time1=time();
-	[requests_for_each_class, requests_for_each_object] = ZipfQuantizedRng(
-					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
-	time2=time();
-	time2-time1
+		number_of_object_classes = catalog_size;
+		num_of_req_at_each_as = round(total_requests / length(ASes_with_users) );
 
-	time1 = time();
-	[requests_for_each_class, requests_for_each_object] = zipf_realization(
-					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
-	time2 = time();
-	time2-time1
-	% Replace zipf_realization with ZipfQuantizedRng if you want to use Michele's code
+		time1 = time();
+		[requests_for_each_class, requests_for_each_object] = zipf_realization(
+						catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
+		time2 = time();
+		printf("Requests generated in %g seconds\n",time2-time1);
+		% Replace zipf_realization with ZipfQuantizedRng if you want to use Michele's code
 
-	requests_at_each_AS.obj = 1:catalog_size;
-	requests_at_each_AS.req_num = requests_for_each_object;
-	requests.ASes = ASes_with_users;
-	ObjRequests = sprintf("ObjRequests = { ");
-	for i = 1:length(ASes_with_users)
-		as = ASes_with_users(i);
-		for j = 1:catalog_size
-			obj = requests_at_each_AS.obj(j);
-			req_num = requests_at_each_AS.req_num(j);
-			ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
+		requests_at_each_AS.obj = 1:catalog_size;
+		requests_at_each_AS.req_num = requests_for_each_object;
+		requests.ASes = ASes_with_users;
+		ObjRequests = sprintf("ObjRequests = { ");
+		for i = 1:length(ASes_with_users)
+			as = ASes_with_users(i);
+			for j = 1:catalog_size
+				obj = requests_at_each_AS.obj(j);
+				req_num = requests_at_each_AS.req_num(j);
+				ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
+			endfor
 		endfor
-	endfor
-	ObjRequests = sprintf("%s};",ObjRequests);
-	ObjRequests(length(ObjRequests)-2) = " ";
+		ObjRequests = sprintf("%s};",ObjRequests);
+		ObjRequests(length(ObjRequests)-2) = " ";
 	%} GENERATE_OBJ_REQUESTS
 
 
@@ -85,13 +80,11 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 
 	%{OBJECT MAPPING
 	% Each object is published by only one producer
-	printf("Mapping objects\n");
 	objects_producer_mapping_per_objects = zeros(1,length(ases) );
 	objects_producer_mapping_per_objects(1, server) = 1;
 	objects_published_by_producers = repmat(objects_producer_mapping_per_objects, catalog_size, 1);
 	ObjectsPublishedByProducers = represent_in_opl( 
 				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
-	printf("Objects mapped");
 	%}OBJECT MAPPING
 
 
