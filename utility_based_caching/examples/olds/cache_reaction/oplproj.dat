@@ -1,0 +1,20 @@
+// Dependency on peering link capacity
+
+// ASes 1 and 2 are two peers. They are both connected to AS 3, which hosts the permanent repository.
+
+ASes = {1, 2};
+Objects = {1, 2, 3, 4,5,6,7,8};
+QualityLevels = {0, 1, 2, 3};
+
+
+Arcs = {<2, 1, 5e6>};
+ObjRequests = {<1,1,1000>, <2,1,1000>, <3,1,1000>, <4,1,1000>, <5,1,1000>, <6,1,1000>, <7,1,1000>, <8,1,1000>};
+
+RatePerQuality = [0 2100 3000 3450];
+CacheSpacePerQuality = [1 78750 112500 129375 ];
+UtilityPerQuality = [-1000000 0.97662 0.98371 0.98607];
+
+ObjectsPublishedByProducers = [ [0 1] [0 1] [0 1] [0 1] [0 1] [0 1] [0 1] [0 1] ];
+
+MaxCacheStorageAtSingleAS = 551250;
+MaxCacheStorage = 551250;

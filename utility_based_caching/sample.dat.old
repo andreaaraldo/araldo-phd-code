@@ -1,0 +1,36 @@
+///////// FIXED DATA
+NumQualities = 4;
+s = [1 1 2 3];
+hmin = [0.1 0.1 1 1];
+hmax = [2 1 1.5 2];
+
+///////// CARDINALITIES
+NumASes= 3;
+NumObjects= 4;
+
+
+///////// SCENARIO
+K = 5;
+M= 5;
+
+a = [ [1 1 1] [1 1 1] [1 1 1] [1 1 1] ] ;
+b = [ [1 1 1] [1 1 1] [1 1 1] ] ;
+
+
+
+ObjectReachabilityMatrix=[ [ 1 1 1 1 ]  [ 1 1 1 1 ]  [ 1 1 1 1 ]  ];
+
+
+TrafficDemand= [ 61455 30728 20485 15364 ]  ;
+
+
+TransitPrice= [ 0 1 1 ]  ;
+
+
+CachePrice= 0;
+
+MaxCachePerBorderRouter= 0;
+
+MaxCoreCache= 0;
+
+MaxTotalCache= 0;
