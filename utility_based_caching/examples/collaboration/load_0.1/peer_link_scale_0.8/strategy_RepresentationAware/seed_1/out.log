@@ -1,0 +1,64 @@
+
+<<< setup
+
+
+<<< generate
+
+Presolve has eliminated 81929 rows and 111029 columns...
+Tried aggregator 7 times.
+MIP Presolve eliminated 232149 rows and 277649 columns.
+MIP Presolve modified 10003 coefficients.
+Aggregator did 38000 substitutions.
+Reduced MIP has 4887 rows, 9380 columns, and 19280 nonzeros.
+Reduced MIP has 1752 binaries, 228 generals, 0 SOSs, and 0 indicators.
+Presolve time = 6,18 sec. (13657,50 ticks)
+Found incumbent of value 0,000000 after 6,25 sec. (13686,87 ticks)
+Probing time = 0,01 sec. (0,50 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 2000 rows and 2900 columns.
+MIP Presolve modified 900 coefficients.
+Aggregator did 900 substitutions.
+Reduced MIP has 1987 rows, 5580 columns, and 13680 nonzeros.
+Reduced MIP has 1752 binaries, 228 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,05 sec. (34,20 ticks)
+Probing time = 0,00 sec. (0,74 ticks)
+Tried aggregator 1 time.
+MIP Presolve modified 900 coefficients.
+Reduced MIP has 1987 rows, 5580 columns, and 13680 nonzeros.
+Reduced MIP has 1752 binaries, 228 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,01 sec. (10,25 ticks)
+Probing time = 0,03 sec. (0,74 ticks)
+Clique table members: 142.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,04 sec. (54,16 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     2086,4000              --- 
+      0     0      489,0000    12        0,0000      489,0000      658     --- 
+*     0+    0                          489,0000      489,0000             0,00%
+      0     0        cutoff            489,0000      489,0000      658    0,00%
+Elapsed time = 7,37 sec. (15295,72 ticks, tree = 0,00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    7,39 sec. (15306,69 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    7,39 sec. (15306,69 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 489
+
+<<< post process
+
+
+<<< done
+
