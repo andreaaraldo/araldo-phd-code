@@ -72,13 +72,16 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 
 	
 
-
+	%{OBJECT MAPPING
 	% Each object is published by only one producer
+	printf("Mapping objects\n");
 	objects_producer_mapping_per_objects = zeros(1,length(ases) );
 	objects_producer_mapping_per_objects(1, server) = 1;
 	objects_published_by_producers = repmat(objects_producer_mapping_per_objects, catalog_size, 1);
 	ObjectsPublishedByProducers = represent_in_opl( 
 				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
+	printf("Objects mapped");
+	%}OBJECT MAPPING
 
 
 
