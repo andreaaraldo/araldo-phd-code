@@ -15,11 +15,21 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 
 
 
-	############ Generate ObjRequests ##################
+	%{ GENERATE_OBJ_REQUESTS
 	number_of_object_classes = catalog_size;
 	num_of_req_at_each_as = round(total_requests / length(ASes_with_users) );
+	time1=time();
 	[requests_for_each_class, requests_for_each_object] = ZipfQuantizedRng(
 					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
+	time2=time();
+	time2-time1
+
+	time1 = time();
+	[requests_for_each_class, requests_for_each_object] = zipf_realization(
+					catalog_size, number_of_object_classes, num_of_req_at_each_as, alpha);
+	time2 = time();
+	time2-time1
+	% Replace zipf_realization with ZipfQuantizedRng if you want to use Michele's code
 
 	requests_at_each_AS.obj = 1:catalog_size;
 	requests_at_each_AS.req_num = requests_for_each_object;
@@ -35,6 +45,7 @@ function generate_opl_dat(ases, quality_levels, catalog_size, alpha,
 	endfor
 	ObjRequests = sprintf("%s};",ObjRequests);
 	ObjRequests(length(ObjRequests)-2) = " ";
+	%} GENERATE_OBJ_REQUESTS
 
 
 	% GENERATE_STRATEGY{
