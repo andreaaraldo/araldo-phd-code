@@ -9,15 +9,15 @@ pkg load statistics;
 
 
 generate = true;
-run_ = true;
-parallel_processes = 7;
+run_ = false;
+parallel_processes = 1;
 
 % Define an experiment
 seeds = 1;
 experiment_name = "comparison";
 ases = [1, 2];
 ases_with_storage = [1];
-catalog_size = 1000;
+catalog_size = 10;
 cache_to_ctlg_ratio = 1/100;	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 alpha = 1;
@@ -40,7 +40,7 @@ ASes_with_users = [1];
 server = 2;
 link_capacity = 490e6; % In Kbps
 
-load_ = 2.0; 	% Multiple of link capacity we would use to transmit 
+load_ = 0.01; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
 strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
