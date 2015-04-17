@@ -1,0 +1,59 @@
+
+<<< setup
+
+
+<<< generate
+
+Presolve has eliminated 107221 rows and 174319 columns...
+Tried aggregator 2 times.
+MIP Presolve eliminated 260345 rows and 305005 columns.
+MIP Presolve modified 898 coefficients.
+Aggregator did 12010 substitutions.
+Reduced MIP has 2681 rows, 8014 columns, and 16032 nonzeros.
+Reduced MIP has 4034 binaries, 2196 generals, 0 SOSs, and 0 indicators.
+Presolve time = 2,71 sec. (11997,26 ticks)
+Found incumbent of value 0,000000 after 2,78 sec. (12022,34 ticks)
+Probing time = 0,01 sec. (2,72 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 2 rows and 0 columns.
+MIP Presolve modified 2 coefficients.
+Aggregator did 4 substitutions.
+Reduced MIP has 2675 rows, 8010 columns, and 16020 nonzeros.
+Reduced MIP has 4034 binaries, 2196 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,02 sec. (17,56 ticks)
+Probing time = 0,02 sec. (2,68 ticks)
+Clique table members: 524.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,03 sec. (30,74 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000    20572,0000              --- 
+*     0+    0                          672,4000    20572,0000              --- 
+      0     0     3546,0000     6      672,4000     3546,0000     1158  427,36%
+*     0+    0                         3546,0000     3546,0000             0,00%
+*     0     0      integral     0     3546,0000     3546,0000     1158    0,00%
+Elapsed time = 2,93 sec. (12115,76 ticks, tree = 0,00 MB, solutions = 3)
+
+Root node processing (before b&c):
+  Real time             =    2,98 sec. (12128,27 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    2,98 sec. (12128,27 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 3546
+
+<<< post process
+
+
+<<< done
+
