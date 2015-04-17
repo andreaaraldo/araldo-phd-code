@@ -140,6 +140,7 @@ endfor % strategy for
 ##############################
 active_children = 0;
 if run_
+	printf("Running scenarios\n");
 	for seed = seeds
 		for idx_single_value = 1:length(single_value_folders)
 			single_value_folder = single_value_folders{idx_single_value};
