@@ -14,122 +14,62 @@ parallel_processes = 22;
 
 % Define an experiment
 experiment_name = "collaboration";
-seeds = 1;
-ases = [1, 2, 3];
-ases_with_storage = [2,3];
-catalog_size = 1000;
-cache_to_ctlg_ratio = 1/100;	% fraction of catalog we could store in the cache if all 
+
+data.topologys = [];
+topology.ases = [1, 2, 3];
+topology.ases_with_storage = [2,3];
+topology.ASes_with_users = [2,3];
+topology.server = 1;
+for link_capacity = [490000] % In Kbps
+	for peer_link_scale = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]
+		topology.link_capacity = link_capacity;
+		topology.arcs = sprintf("{<1, 2, %g>, <1,3, %g>, <2,3,%g>, <3,2,%g> };", ...
+			link_capacity, link_capacity, link_capacity*peer_link_scale, link_capacity*peer_link_scale);
+			topology.name = sprintf("triangle-%gMbps-peer-%g",link_capacity/1000, peer_link_scale);
+			data.topologys = [data.topologys, topology];
+	end % peer_link
+end % link_capacity
+
+data.seeds = [1];
+data.catalog_sizes = [1000];
+data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
-alpha = 1;
+data.alphas = [1];
 
-rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
+fixed_data.path_base = path_base;
+fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
+fixed_data.cache_space_at_low_quality = 11.25;% In MB
+fixed_data.utilities = [0, 1, 1.2, 1.3, 1.4, 1.5];
+fixed_data.name = "non_linear";
+data.fixed_datas = [fixed_data];
 
-cache_space_at_low_quality = 11.25;% In MB
 
-utilities = [0, 1, 1.2, 1.3, 1.4, 1.5];
-
-ASes_with_users = [2,3];
-server = 1;
-link_capacity = 490000; % In Kbps
-
-peer_link_scales = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
-loads = [0.1, 1, 2]; 	% Multiple of link capacity we would use to transmit 
+data.loadds = [0.1, 1, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
 
-strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
+data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
 
+run_list = divide_runs(experiment_name, data);
+for idx_run = 1:length(run_list)
+	singledata = run_list(idx_run);
+	[singledata.parent_folder, singledata.seed_folder] = folder_names(path_base, experiment_name, singledata);
+	error("do not create if it already exists");
+	command = sprintf("mkdir -p %s", singledata.seed_folder);
+	[status, output] = system(command,1);
+	if (status != 0)
+		sprintf("%s\n%g\n%s\n",command, status, output);
+	end %if
+	singledata.dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
+	generate_opl_dat(singledata);
+	run_list(idx_run) = singledata;
+end % idx_run
+
+run_scenarios(run_list);
+
+exit(1)
 for load_ = loads
 	for peer_link_scale = peer_link_scales
 		single_value_folders = {};
-
-		##############################
-		##### GENERATE SCENARIOS #####
-		##############################
-		for strategy_idx = 0:( length(strategies)-1 )
-			strategy = strategies{strategy_idx+1};
-			total_requests = load_ * length(ASes_with_users) * link_capacity / rate_per_quality(2);
-			arcs = sprintf("{<1, 2, %g>, <1,3, %g>, <2,3,%g>, <3,2,%g> };", ...
-				link_capacity, link_capacity, link_capacity*peer_link_scale, link_capacity*peer_link_scale);
-
-			quality_level_num = length(rate_per_quality)-1; % number of qualities starting from q=1
-
-			% {BUILD CACHE_SPACE_PER_QUALITY
-			cache_space_per_quality = [10000];
-			for idx_q = 2:quality_level_num+1
-				cache_space_per_quality = [cache_space_per_quality, ...
-					cache_space_at_low_quality * rate_per_quality(idx_q) / rate_per_quality(2) ];
-			end % for
-			% }BUILD CACHE_SPACE_PER_QUALITY
-
-
-			cache_space_at_high_q = max(cache_space_per_quality(2:length(cache_space_per_quality) ) );
-
-			max_cache_storage = (catalog_size * cache_to_ctlg_ratio) ...
-								* cache_space_at_high_q ; % IN MB
-			single_cache_storage = max_cache_storage / length(ases_with_storage);
-
-			quality_levels = 0:quality_level_num;
-
-			% BUILD MAX_STORAGE_AT_SINGLE_AS{
-				max_storage_at_single_as = -1 .* ones(1,max(ases) );
-				for as_ = ases
-					if (any(ases_with_storage == as_) )
-						max_storage_at_single_as(as_) = single_cache_storage;
-					else
-						max_storage_at_single_as(as_) = 0;
-					end %if
-				end %for idx_as
-
-			% }BUILD MAX_STORAGE_AT_SINGLE_AS
-
-
-			experiment_folder=sprintf("%s/examples/%s",path_base,experiment_name); 
-			single_value_folder = sprintf("%s/load_%g/peer_link_scale_%g/strategy_%s", experiment_folder,load_,...
-						peer_link_scale, strategy);
-			single_value_folders = [single_value_folders, single_value_folder];
-
-			% {CHECKS
-			if(severe_debug)
-				if (length(cache_space_per_quality) != quality_level_num+1)
-					cache_space_per_quality
-					quality_level_num
-					error("ERROR: cache_space_per_quality and quality_level_num have a mismatching length");
-				end
-
-				if (length(cache_space_per_quality) != length(rate_per_quality) )
-					cache_space_per_quality
-					rate_per_quality
-					error("ERROR: cache_space_per_quality and rate_per_quality have not the same length");
-				end
-
-				if (any (max_storage_at_single_as < 0) )
-					max_storage_at_single_as
-					ases
-					error("Uninitialized values in max_storage_at_single_as");
-				end
-			end
-			% }CHECKS
-
-			for seed = seeds
-				if generate
-					specific_folder = sprintf("%s/seed_%g", single_value_folder, seed);
-					command = sprintf("rm -r %s", specific_folder);
-					system(command );
-					command = sprintf("mkdir -p %s", specific_folder);
-					system(command );
-
-					dat_filename = sprintf("%s/scenario.dat",specific_folder);
-
-					rand('seed',seed);
-					generate_opl_dat(ases, quality_levels, catalog_size, alpha,
-							rate_per_quality, 
-							cache_space_per_quality, utilities,
-							ASes_with_users, server, total_requests,
-							arcs, max_storage_at_single_as, max_cache_storage, seed, dat_filename,
-							strategy);
-				endif
-			endfor % seeds
-		endfor % strategy for
 
 		##############################
 		##### RUN SCENARIOS ##########
