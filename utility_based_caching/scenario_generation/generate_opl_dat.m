@@ -1,5 +1,6 @@
 % Called by scenario_script.m
 function generate_opl_dat(singledata)
+
 	rand("state",singledata.seed);
 	
 	objects = 1:singledata.catalog_size;
@@ -13,35 +14,20 @@ function generate_opl_dat(singledata)
 
 
 
-	%{ GENERATE_OBJ_REQUESTS
-		total_requests = total_requests = ...
-			singledata.loadd *  ...
-			singledata.topology.link_capacity / singledata.fixed_data.rate_per_quality(2);
-		number_of_object_classes = singledata.catalog_size;
-		num_of_req_at_each_as = round(total_requests / length(singledata.topology.ASes_with_users) );
+	%{ RETRIEVE_OBJ_REQUESTS
+	ObjRequests = "";
+		if ( !exist(singledata.request_file) )
+			error(sprintf("File %s does not exist", singledata.request_file) );
+		else
+			f = fopen(singledata.request_file, "r");
+			ObjRequests = fgetl(f);
+			fclose(f);
+		endif % request_file existence
 
-		time1 = time();
-		[requests_for_each_class, requests_for_each_object] = zipf_realization(
-			singledata.catalog_size, number_of_object_classes, num_of_req_at_each_as, singledata.alpha);
-		time2 = time();
-		printf("Requests generated in %g seconds\n",time2-time1);
-		% Replace zipf_realization with ZipfQuantizedRng if you want to use Michele's code
-
-		requests_at_each_AS.obj = 1:singledata.catalog_size;
-		requests_at_each_AS.req_num = requests_for_each_object;
-		requests.ASes = singledata.topology.ASes_with_users;
-		ObjRequests = sprintf("ObjRequests = { ");
-		for i = 1:length(singledata.topology.ASes_with_users)
-			as = singledata.topology.ASes_with_users(i);
-			for j = 1:singledata.catalog_size
-				obj = requests_at_each_AS.obj(j);
-				req_num = requests_at_each_AS.req_num(j);
-				ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
-			endfor
-		endfor
-		ObjRequests = sprintf("%s};",ObjRequests);
-		ObjRequests(length(ObjRequests)-2) = " ";
-	%} GENERATE_OBJ_REQUESTS
+		if length(ObjRequests) == 0
+			error("ObjectRequests malformed");
+		endif
+	%} RETRIEVE_OBJ_REQUESTS
 
 
 	% GENERATE_STRATEGY{
@@ -121,20 +107,20 @@ function generate_opl_dat(singledata)
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 
-	
 	f = fopen(singledata.dat_filename, "w");
 	if (f==-1)
 		error(sprintf("Error in writing file %s",dat_filename) );
 	endif
+
 	fprintf(f, "%s\n",ASes);
 	fprintf(f, "%s\n",Objects);
 	fprintf(f, "%s\n",QualityLevels);
 	fprintf(f, "%s\n",Arcs);
-	fprintf(f, "%s\n",ObjRequests);
 	fprintf(f, "%s\n",RatePerQuality);
 	fprintf(f, "%s\n",CacheSpacePerQuality);
 	fprintf(f, "%s\n",UtilityPerQuality);
 	fprintf(f, "%s\n",ObjectsPublishedByProducers);
+	fprintf(f, "%s\n",ObjRequests);
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
 	fprintf(f, "%s\n",Strategy);
