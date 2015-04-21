@@ -21,7 +21,7 @@ decision_list={"lce","fix0.01","costaware0.01","tailandrank","costprobtailperf",
 decision_list={"lce","fix0.1", "fix0.05", "fix0.01", "fix0.005", "fix0.001", "fix0.0001", "fix0.00001"};
 decision_list={"lce","fix0.01","costaware0.01","costprobprodplain0.01", "costprobcoincorr0.5", "costprobcoinplain0.5", "costprobcoincorr0.1", "costprobcoinplain0.1","costprobcoincorr0.01", "costprobcoinplain0.01"};
 decision_list={"lce","fix0.01","tailandrank","costaware0.01","costprobtailcons"};
-decision_list={"lce","fix0.01","costaware0.01"};
+decision_list={"costaware0.01"};
 
 xi_list = {"0.01","0.025","0.05","0.075","0.25","0.50","0.75","1","1.25","1.50","1.75","2","3","5","8"};
 xi_list = {"0.01","0.25","0.50","0.75","1","1.25","1.50","1.75","2"};
@@ -32,7 +32,8 @@ xi_list = {"1"};
 weights_list={"0.5_0.25_0.25","0.333_0.333_0.334","0.25_0.25_0.5"};
 weights_list={"0.333_0.333_0.334","0.5_0.25_0.25","0.25_0.25_0.5"};
 weights_list={"0.333_0.333_0.334","0_0.25_0.75", "0_0.5_0.5", "0_0.75_0.25", "0.25_0_0.75", "0.25_0.25_0.5", "0.25_0.5_0.25", "0.25_0.75_0", "0.5_0.25_0.25", "0.5_0.5_0", "0.75_0_0.25", "0.75_0.25_0","0.5_0.5_0"};
-weights_list={"0.333_0.333_0.334"};
+weights_list={"0.5_0.25_0.25","0.333_0.333_0.334","0.25_0.25_0.5"};
+
 
 alpha_list = {"1"};
 alpha_list = {"0.8","0.9","1","1.1","1.2"};
@@ -68,10 +69,10 @@ csize_to_write_list = csize_list;
 
 ctlg_="1e5";
 ctlg_to_write_=ctlg_;
-fixed_variable_names_additional = {"window","variance","simtime", "network","weights",...
+fixed_variable_names_additional = {"window","variance","simtime", "network","decision",...
 			"q", "forwarding","lambda","xi","priceratio"};
 x_variable_name = "alpha";
-z_variable_name = "decision"; % Over the columns
+z_variable_name = "weights"; % Over the columns
 
 
 

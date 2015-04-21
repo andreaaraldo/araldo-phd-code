@@ -5,48 +5,16 @@
 <<< generate
 
 Tried aggregator 2 times.
-MIP Presolve eliminated 129014 rows and 117013 columns.
+MIP Presolve eliminated 145021 rows and 143013 columns.
 MIP Presolve modified 5010 coefficients.
-Aggregator did 18000 substitutions.
-Reduced MIP has 11007 rows, 21000 columns, and 46000 nonzeros.
-Reduced MIP has 5000 binaries, 6000 generals, 0 SOSs, and 0 indicators.
-Presolve time = 1,89 sec. (3003,40 ticks)
-Found incumbent of value 0,000000 after 2,01 sec. (3032,46 ticks)
-Probing time = 0,17 sec. (1,07 ticks)
-Tried aggregator 1 time.
-Reduced MIP has 11007 rows, 21000 columns, and 46000 nonzeros.
-Reduced MIP has 5000 binaries, 6000 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,05 sec. (25,23 ticks)
-Probing time = 0,33 sec. (1,06 ticks)
-MIP emphasis: balance optimality and feasibility.
-MIP search method: dynamic search.
-Parallel mode: deterministic, using up to 8 threads.
-Root relaxation solution time = 0,26 sec. (72,65 ticks)
-
-        Nodes                                         Cuts/
-   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
-
-*     0+    0                            0,0000  2090668,8000              --- 
-      0     0   388632,9500     2        0,0000   388632,9500     1075     --- 
-      0     0   388632,9500     4        0,0000   LiftProj: 1     1076     --- 
-      0     0   388632,9500     2        0,0000   LiftProj: 1     1077     --- 
-*     0+    0                       388632,8000   388632,9500             0,00%
-
-Lift and project cuts applied:  1
-
-Root node processing (before b&c):
-  Real time             =    6,01 sec. (5239,76 ticks)
-Parallel b&c, 8 threads:
-  Real time             =    0,00 sec. (0,00 ticks)
-  Sync time (average)   =    0,00 sec.
-  Wait time (average)   =    0,00 sec.
-                          ------------
-Total (root+branch&cut) =    6,01 sec. (5239,76 ticks)
+Aggregator did 13000 substitutions.
+All rows and columns eliminated.
+Presolve time = 0,95 sec. (2952,64 ticks)
 
 <<< solve
 
 
-OBJECTIVE: 388632.8
+OBJECTIVE: 1500
 
 <<< post process
 
