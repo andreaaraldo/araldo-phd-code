@@ -1,5 +1,6 @@
 % Called by scenario_script.m
 function generate_opl_dat(singledata)
+	rand("state",singledata.seed);
 	
 	objects = 1:singledata.catalog_size;
 	quality_level_num = length(singledata.fixed_data.rate_per_quality)-1; % number of qualities starting from q=1
@@ -139,6 +140,6 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",Strategy);
 	fclose(f);
 
-	printf("File %s written\n",dat_filename);
+	printf("File %s written\n", singledata.dat_filename);
 	
 endfunction

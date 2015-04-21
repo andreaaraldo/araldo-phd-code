@@ -5,9 +5,10 @@ function [ numOfRequestsPerClass, numOfRequestsPerObj ] = zipf_realization( numO
     numOfRequestsPerClass = zeros(numOfClasses,1);
     objsPerClass = numOfObjects/numOfClasses;
     
-    for reqObj = requestedObjects'
+    for reqObj = requestedObjects
         numOfRequestsPerObj(reqObj,1) = numOfRequestsPerObj(reqObj,1) + 1;
-        numOfRequestsPerClass(1+floor((reqObj-1)/objsPerClass),1) = numOfRequestsPerClass(1+floor((reqObj-1)/objsPerClass),1) + 1;
+        numOfRequestsPerClass(1+floor((reqObj-1)/objsPerClass),1) = ...
+					numOfRequestsPerClass(1+floor((reqObj-1)/objsPerClass),1) + 1;
     end
 end
 

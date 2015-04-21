@@ -18,6 +18,9 @@ function run_list = divide_runs(experiment_name, data)
 		singledata.topology = topology;
 		singledata.loadd = loadd;
 		singledata.strategy = strategy;
+		[singledata.parent_folder, singledata.seed_folder] = folder_names(fixed_data.path_base, experiment_name, singledata);
+		singledata.dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
+
 		run_list = [run_list, singledata];
 	end % startegy
 	end % loadd
