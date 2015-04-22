@@ -17,7 +17,7 @@ function run_scenarios(run_list)
 					pid = fork();
 					if (pid==0)
 						% I am the child process
-						printf("Running experiment %s\n", singledata.seed_folder);
+						printf("(%d\%) Running experiment %s\n", idx_run * 100 /length(run_list), singledata.seed_folder);
 						launch_opl(singledata.seed_folder, mod_filename, dat_filename);
 						exit(0);
 					elseif (pid > 0)
