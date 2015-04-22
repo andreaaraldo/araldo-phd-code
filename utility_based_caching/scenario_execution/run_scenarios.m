@@ -28,7 +28,8 @@ function run_scenarios(run_list)
 					endif
 		else
 			printf("Run %s already performed\n",singledata.seed_folder);
-		end % idx_run for
+		endif % existence
+	endfor
 
 	while (active_children > 0)
 		printf("Waiting for %d execution processes to finish\n", active_children);
