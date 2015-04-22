@@ -1,0 +1,58 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 152340 rows and 148491 columns.
+MIP Presolve modified 313 coefficients.
+Aggregator did 4772 substitutions.
+Reduced MIP has 926 rows, 2772 columns, and 5236 nonzeros.
+Reduced MIP has 1586 binaries, 570 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,94 sec. (2963,19 ticks)
+Found incumbent of value 0,000000 after 0,96 sec. (2976,08 ticks)
+Probing time = 0,00 sec. (1,05 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 926 rows, 2772 columns, and 5236 nonzeros.
+Reduced MIP has 1586 binaries, 570 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,01 sec. (5,13 ticks)
+Probing time = 0,00 sec. (1,05 ticks)
+Clique table members: 213.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,01 sec. (9,63 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     2928,3984              --- 
+*     0+    0                          241,8714     2928,3984              --- 
+      0     0      456,6625     6      241,8714      456,6625      503   88,80%
+*     0+    0                          456,0605      456,6625             0,13%
+*     0+    0                          456,6625      456,6625             0,00%
+      0     0        cutoff            456,6625      456,6625      504    0,00%
+Elapsed time = 1,03 sec. (3021,95 ticks, tree = 0,00 MB, solutions = 4)
+
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    1,04 sec. (3028,83 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    1,04 sec. (3028,83 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 456.6625
+
+<<< post process
+
+
+<<< done
+
