@@ -54,7 +54,7 @@ data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we w
 				% all the requested objects at low quality
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality"};
+data.strategys = {"AlwaysHighQuality", "AllQualityLevels"};
 
 launch_runs(experiment_name, data);
 
