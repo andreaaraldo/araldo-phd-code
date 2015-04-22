@@ -6,7 +6,7 @@ function run_scenarios(run_list)
 		mod_filename = sprintf("%s/model.mod",singledata.fixed_data.path_base);
 		
 		% Check if the run was already performed
-		if ( !exist(sprintf("ls %s/objective.csv", singledata.seed_folder) ) )
+		if ( !exist(sprintf("%s/objective.csv", singledata.seed_folder) ) )
 			% The run has to be done
 					if (active_children == singledata.fixed_data.parallel_processes)
 						waitpid(-1);
