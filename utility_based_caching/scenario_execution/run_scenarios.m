@@ -1,4 +1,5 @@
 function run_scenarios(run_list)
+	max_active_opl_instances = 1;
 	active_children = 0;
 	for idx_run = 1:length(run_list)
 		singledata = run_list(idx_run);
@@ -8,7 +9,7 @@ function run_scenarios(run_list)
 		% Check if the run was already performed
 		if ( !exist(sprintf("%s/objective.csv", singledata.seed_folder) ) )
 			% The run has to be done
-					if (active_children == singledata.fixed_data.parallel_processes)
+					if (active_children == max_active_opl_instances)
 						waitpid(-1);
 						% One child process finished
 						active_children--;
