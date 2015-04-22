@@ -70,7 +70,7 @@ function generate_request_files(run_list)
 
 	% Wait for the remaining active children
 	while (active_children > 0)
-		printf("Waiting for %d processes to finish\n", active_children);
+		printf("Waiting for %d generation processes to finish\n", active_children);
 		waitpid(-1);
 		active_children--;
 	end % while

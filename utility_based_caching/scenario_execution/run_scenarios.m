@@ -31,7 +31,7 @@ function run_scenarios(run_list)
 		end % idx_run for
 
 	while (active_children > 0)
-		printf("Waiting for %d processes to finish\n", active_children);
+		printf("Waiting for %d execution processes to finish\n", active_children);
 		waitpid(-1);
 		active_children--;
 	end % while
