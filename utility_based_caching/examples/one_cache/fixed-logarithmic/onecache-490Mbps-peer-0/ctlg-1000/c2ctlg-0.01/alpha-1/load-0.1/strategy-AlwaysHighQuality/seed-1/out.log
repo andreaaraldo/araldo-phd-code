@@ -1,0 +1,57 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 154944 rows and 152397 columns.
+MIP Presolve modified 93 coefficients.
+Aggregator did 2819 substitutions.
+Reduced MIP has 275 rows, 819 columns, and 1547 nonzeros.
+Reduced MIP has 493 binaries, 144 generals, 0 SOSs, and 0 indicators.
+Presolve time = 1,08 sec. (2952,37 ticks)
+Found incumbent of value 0,000000 after 1,12 sec. (2961,69 ticks)
+Probing time = 0,00 sec. (0,33 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 275 rows, 819 columns, and 1547 nonzeros.
+Reduced MIP has 493 binaries, 144 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,00 sec. (2,39 ticks)
+Probing time = 0,00 sec. (0,33 ticks)
+Clique table members: 67.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,00 sec. (2,12 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000      584,2460              --- 
+*     0+    0                          140,1609      584,2460           316,84%
+*     0+    0                          143,8982      584,2460           306,01%
+*     0+    0                          145,5509      584,2460           301,40%
+      0     0      163,0000     2      145,5509      163,0000      200   11,99%
+*     0+    0                          163,0000      163,0000             0,00%
+      0     0        cutoff            163,0000      163,0000      200    0,00%
+Elapsed time = 1,15 sec. (2982,21 ticks, tree = 0,00 MB, solutions = 5)
+
+Root node processing (before b&c):
+  Real time             =    1,17 sec. (2989,98 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    1,17 sec. (2989,98 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 163
+
+<<< post process
+
+
+<<< done
+
