@@ -198,7 +198,12 @@ subject to {
 
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cDedicatedCache:
-	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
+	  	(Strategy == 5) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
+		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
+
+	forall ( sourceAS in ASes, q in QualityLevels )
+	cProportionalDedicatedCache:
+	  	(Strategy == 6) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : q!=0 );
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
 
 	// </aa>

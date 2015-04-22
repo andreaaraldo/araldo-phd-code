@@ -45,8 +45,10 @@ function generate_opl_dat(singledata)
 			strategy_num = 4;
 		 case "DedicatedCache"
 			strategy_num = 5;
+		 case "ProportionalDedicatedCache"
+			strategy_num = 6;
 		otherwise
-			error("Invalid strategy_");	
+			error( sprintf("Strategy %s is invalid" ,singledata.strategy) );	
 	end %swictch
 	Strategy = sprintf("Strategy = %d ;", strategy_num);
 	% }GENERATE_STRATEGY

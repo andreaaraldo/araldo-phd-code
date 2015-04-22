@@ -42,7 +42,7 @@ for link_capacity = [490000] % In Kbps
 	end % peer_link
 end % link_capacity
 
-data.seeds = [1];
+data.seeds = [1,2];
 data.catalog_sizes = [10];
 data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
@@ -52,10 +52,9 @@ data.alphas = [1];
 
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
-data.loadds = [0.1];
+data.loadds = [1];
 
-data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache"};
-data.strategys = {"RepresentationAware", "NoCache"};
+data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
 
 launch_runs(experiment_name, data);
 

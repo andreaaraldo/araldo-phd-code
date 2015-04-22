@@ -22,6 +22,7 @@ function generate_request_files(run_list)
 					error(sprintf("Error in writing file %s",singledata.request_file) );
 				endif
 
+				rand("state",singledata.seed);
 				total_requests = total_requests = ...
 					singledata.loadd *  ...
 					singledata.topology.link_capacity / singledata.fixed_data.rate_per_quality(2);
