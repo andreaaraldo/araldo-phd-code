@@ -1,0 +1,58 @@
+
+<<< setup
+
+
+<<< generate
+
+Presolve has eliminated 83137 rows and 106577 columns...
+Tried aggregator 7 times.
+MIP Presolve eliminated 238317 rows and 272917 columns.
+MIP Presolve modified 2691 coefficients.
+Aggregator did 21248 substitutions.
+Reduced MIP has 15471 rows, 30864 columns, and 72224 nonzeros.
+Reduced MIP has 9184 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5,03 sec. (13584,80 ticks)
+Found incumbent of value 0,000000 after 5,13 sec. (13650,33 ticks)
+Probing time = 0,02 sec. (8,44 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 3656 rows and 3312 columns.
+MIP Presolve modified 1312 coefficients.
+Aggregator did 2624 substitutions.
+Reduced MIP has 9191 rows, 24928 columns, and 57728 nonzeros.
+Reduced MIP has 9184 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,14 sec. (123,35 ticks)
+Probing time = 0,02 sec. (7,05 ticks)
+Clique table members: 1312.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,20 sec. (218,75 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     8396,8000       13     --- 
+      0     0     1589,8500    28        0,0000     1589,8500       13     --- 
+*     0+    0                         1589,8000     1589,8500       13    0,00%
+      0     0        cutoff           1589,8000     1589,8500       13    0,00%
+Elapsed time = 9,59 sec. (18152,11 ticks, tree = 0,00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    4,07 sec. (3318,28 ticks)
+Parallel b&c, 24 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    4,07 sec. (3318,28 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1589.8
+
+<<< post process
+
+
+<<< done
+

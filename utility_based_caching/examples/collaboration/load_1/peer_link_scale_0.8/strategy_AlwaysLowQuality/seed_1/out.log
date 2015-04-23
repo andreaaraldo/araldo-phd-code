@@ -6,63 +6,52 @@
 
 Presolve has eliminated 85669 rows and 111219 columns...
 Tried aggregator 7 times.
-MIP Presolve eliminated 246338 rows and 284771 columns.
+MIP Presolve eliminated 246349 rows and 284779 columns.
 MIP Presolve modified 3956 coefficients.
 Aggregator did 19560 substitutions.
-Reduced MIP has 9138 rows, 20698 columns, and 44750 nonzeros.
-Reduced MIP has 4034 binaries, 2196 generals, 0 SOSs, and 0 indicators.
-Presolve time = 11,11 sec. (13596,55 ticks)
-Found incumbent of value 0,000000 after 11,30 sec. (13648,51 ticks)
-Probing time = 0,26 sec. (1,76 ticks)
+Reduced MIP has 9127 rows, 20690 columns, and 44720 nonzeros.
+Reduced MIP has 6230 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5,04 sec. (13514,28 ticks)
+Found incumbent of value 0,000000 after 5,10 sec. (13544,50 ticks)
+Probing time = 0,01 sec. (5,18 ticks)
 Tried aggregator 2 times.
-MIP Presolve eliminated 2002 rows and 2892 columns.
-MIP Presolve modified 890 coefficients.
-Aggregator did 896 substitutions.
-Reduced MIP has 6240 rows, 16910 columns, and 39172 nonzeros.
-Reduced MIP has 4034 binaries, 2196 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,12 sec. (74,48 ticks)
-Probing time = 0,03 sec. (1,84 ticks)
-Tried aggregator 1 time.
-MIP Presolve modified 890 coefficients.
-Reduced MIP has 6240 rows, 16910 columns, and 39172 nonzeros.
-Reduced MIP has 4034 binaries, 2196 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,05 sec. (24,86 ticks)
-Probing time = 0,03 sec. (1,83 ticks)
-Clique table members: 524.
+MIP Presolve eliminated 2000 rows and 2890 columns.
+MIP Presolve modified 1780 coefficients.
+Aggregator did 890 substitutions.
+Reduced MIP has 6237 rows, 16910 columns, and 39160 nonzeros.
+Reduced MIP has 6230 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,08 sec. (77,72 ticks)
+Probing time = 0,02 sec. (4,89 ticks)
+Clique table members: 890.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
-Parallel mode: deterministic, using up to 8 threads.
-Root relaxation solution time = 0,16 sec. (174,90 ticks)
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,13 sec. (166,21 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
 
-*     0+    0                            0,0000    20902,4000              --- 
-      0     0     3546,0000   180        0,0000     3546,0000     5094     --- 
-      0     0     3546,0000     5        0,0000       Cuts: 4     5196     --- 
-      0     0     3546,0000     2        0,0000      Cuts: 11     5204     --- 
-      0     0     3546,0000     4        0,0000   Impl Bds: 2     5213     --- 
-      0     0     3546,0000     2        0,0000       Cuts: 6     5216     --- 
-*     0+    0                         3530,6000     3546,0000             0,44%
-*     0+    0                         3545,8000     3546,0000             0,01%
+*     0+    0                            0,0000     5696,0000       11     --- 
+      0     0     1112,6250     4        0,0000     1112,6250       11     --- 
+*     0+    0                         1112,6000     1112,6250       14    0,00%
+*     0     0      integral     0     1112,6000     1112,6250       14    0,00%
+Elapsed time = 6,07 sec. (15834,72 ticks, tree = 0,00 MB, solutions = 2)
 
-Implied bound cuts applied:  14
-Flow cuts applied:  1
-Gomory fractional cuts applied:  6
+Flow cuts applied:  2
 
 Root node processing (before b&c):
-  Real time             =   56,21 sec. (17239,84 ticks)
-Parallel b&c, 8 threads:
+  Real time             =    0,60 sec. (751,62 ticks)
+Parallel b&c, 24 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =   56,21 sec. (17239,84 ticks)
+Total (root+branch&cut) =    0,60 sec. (751,62 ticks)
 
 <<< solve
 
 
-OBJECTIVE: 3545.8
+OBJECTIVE: 1112.6
 
 <<< post process
 
