@@ -19,7 +19,10 @@ function run_scenarios(run_list)
 					if (pid==0)
 						% I am the child process
 						printf("(%d %%) Running experiment %s\n", idx_run * 100 / length(run_list)  , singledata.seed_folder);
+						time1 = time();
 						launch_opl(singledata.seed_folder, mod_filename, dat_filename);
+						time2 = time();
+						dlmwrite(sprintf("%s/oplrun_time.csv",singledata.seed_folder), time2-time1 );						
 						exit(0);
 					elseif (pid > 0)
 						% I am the father
