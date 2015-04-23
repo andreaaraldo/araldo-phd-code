@@ -1,0 +1,58 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 153549 rows and 149507 columns.
+MIP Presolve modified 1 coefficients.
+Aggregator did 4080 substitutions.
+Reduced MIP has 409 rows, 2448 columns, and 4488 nonzeros.
+Reduced MIP has 1518 binaries, 930 generals, 0 SOSs, and 0 indicators.
+Presolve time = 1,29 sec. (2948,35 ticks)
+Found incumbent of value 0,000000 after 1,36 sec. (2961,70 ticks)
+Probing time = 0,00 sec. (2,04 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 409 rows, 2448 columns, and 4488 nonzeros.
+Reduced MIP has 1518 binaries, 930 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,01 sec. (3,63 ticks)
+Probing time = 0,00 sec. (2,04 ticks)
+Clique table members: 253.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,17 sec. (7,07 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     4662,7206              --- 
+*     0+    0                          233,7860     4662,7206              --- 
+      0     0      467,1233     2      233,7860      467,1233      414   99,81%
+*     0+    0                          466,8975      467,1233             0,05%
+      0     0        cutoff            466,8975                    415    0,00%
+Elapsed time = 1,89 sec. (2998,27 ticks, tree = 0,00 MB, solutions = 3)
+
+Mixed integer rounding cuts applied:  1
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    1,93 sec. (3004,20 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    1,93 sec. (3004,20 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 466.8975
+
+<<< post process
+
+
+<<< done
+
