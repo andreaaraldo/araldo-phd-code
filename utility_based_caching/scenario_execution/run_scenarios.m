@@ -1,4 +1,6 @@
 function run_scenarios(run_list)
+	printf("Press a button");
+
 	for idx_run = 1:length(run_list)
 		singledata = run_list(idx_run);
 		dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
