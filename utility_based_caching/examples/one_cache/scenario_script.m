@@ -15,7 +15,7 @@ run_ = true;
 % Define an experiment
 experiment_name = "one_cache";
 
-fixed_data.parallel_processes = 3;
+fixed_data.parallel_processes = 7;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
