@@ -15,7 +15,7 @@ run_ = true;
 % Define an experiment
 experiment_name = "one_cache";
 
-fixed_data.parallel_processes = 7;
+fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -54,7 +54,7 @@ data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we w
 				% all the requested objects at low quality
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
+data.strategys = {"NoCache", "AlwaysLowQuality"};
 
 launch_runs(experiment_name, data);
 
