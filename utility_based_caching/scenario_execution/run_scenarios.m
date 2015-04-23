@@ -13,12 +13,14 @@ function run_scenarios(run_list)
 						waitpid(-1);
 						% One child process finished
 						active_children--;
+					elseif (active_children > max_active_opl_instances)
+						error("Too many children launched")
 					endif
 
 					pid = fork();
 					if (pid==0)
 						% I am the child process
-						printf("(%d %%) Running experiment %s\n", idx_run * 100 / length(run_list)  , singledata.seed_folder);
+						printf("(%d/%d) Running experiment %s\n", idx_run ,length(run_list)  , singledata.seed_folder);
 						time1 = time();
 						launch_opl(singledata.seed_folder, mod_filename, dat_filename);
 						time2 = time();
