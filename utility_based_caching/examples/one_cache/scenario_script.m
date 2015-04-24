@@ -19,13 +19,13 @@ fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
-fixed_data.utilities = [0, log10(10*1/5), log10(10*2/5), log10(10*3/5), log10(10*4/5), log10(10*5/5)];
-fixed_data.name = "logarithmic";
-%data.fixed_datas = [fixed_data];
+fixed_data.utilities = [sqrt(0)/sqrt(5), sqrt(1)/sqrt(5), sqrt(2)/sqrt(5), sqrt(3)/sqrt(5), sqrt(4)/sqrt(5), sqrt(5)/sqrt(5)];
+fixed_data.name = "sqrt";
+data.fixed_datas = [fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
