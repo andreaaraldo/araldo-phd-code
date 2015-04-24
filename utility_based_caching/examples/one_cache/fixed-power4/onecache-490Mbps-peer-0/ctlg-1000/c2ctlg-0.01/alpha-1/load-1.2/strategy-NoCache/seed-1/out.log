@@ -1,0 +1,52 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 152515 rows and 148003 columns.
+MIP Presolve modified 1 coefficients.
+Aggregator did 5020 substitutions.
+Reduced MIP has 503 rows, 3012 columns, and 5522 nonzeros.
+Reduced MIP has 1656 binaries, 1356 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,90 sec. (2942,76 ticks)
+Found incumbent of value 0,000000 after 0,92 sec. (2949,71 ticks)
+Probing time = 0,01 sec. (11,07 ticks)
+Tried aggregator 1 time.
+Presolve time = 0,00 sec. (3,86 ticks)
+Probing time = 0,00 sec. (0,94 ticks)
+Clique table members: 276.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,01 sec. (2,89 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     8227,6079        1     --- 
+*     0+    0                          261,1118     8227,6079        1     --- 
+      0     0     1092,2753     2      261,1118     1092,2753        1  318,32%
+*     0+    0                         1092,0524     1092,2753        1    0,02%
+
+Repeating presolve.
+Tried aggregator 2 times.
+MIP Presolve eliminated 1 rows and 2510 columns.
+MIP Presolve modified 2 coefficients.
+Aggregator did 502 substitutions.
+All rows and columns eliminated.
+Presolve time = 0,00 sec. (2,99 ticks)
+Represolve time = 0,02 sec. (12,20 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1092.052
+avg_utility = 0.5571696020408151
+
+<<< post process
+
+
+<<< done
+

@@ -1,0 +1,64 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 132092 rows and 106737 columns.
+MIP Presolve modified 2799 coefficients.
+Aggregator did 19795 substitutions.
+Reduced MIP has 6151 rows, 9503 columns, and 20683 nonzeros.
+Reduced MIP has 2251 binaries, 1662 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,33 sec. (189,44 ticks)
+Found incumbent of value 0,000000 after 0,35 sec. (201,10 ticks)
+Probing time = 0,00 sec. (2,00 ticks)
+Tried aggregator 1 time.
+Presolve time = 0,01 sec. (9,38 ticks)
+Probing time = 0,02 sec. (2,00 ticks)
+Clique table members: 282.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,10 sec. (108,57 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000    10510,1693     4753     --- 
+      0     0     1943,9345    77        0,0000     1943,9345     4753     --- 
+      0     0     1856,7708    23        0,0000     Fract: 16     4792     --- 
+      0     0     1838,0708    30        0,0000       Cuts: 5     4808     --- 
+      0     0     1812,3069    30        0,0000    MIRcuts: 4     5246     --- 
+*     0+    0                          311,6904     1812,3069     5246  481,44%
+*     0+    0                         1760,0524     1812,3069     5246    2,97%
+      0     0     1779,5222    23     1760,0524    MIRcuts: 3     5251    1,11%
+      0     2     1760,2753     2     1760,0524     1779,5222     5254    1,11%
+Elapsed time = 1,22 sec. (908,57 ticks, tree = 0,01 MB, solutions = 3)
+      7     8     1760,2753     2     1760,0524     1760,2753     5269    0,01%
+     19    19     1760,2753     2     1760,0524     1760,2753     5295    0,01%
+     48    44     1760,2753     2     1760,0524     1760,2753     5366    0,01%
+    518   495     1760,2753     2     1760,0524     1760,2753     6557    0,01%
+   2105  2002     1760,0841     2     1760,0524     1760,2753     8642    0,01%
+   4827  4560     1760,0841     2     1760,0524     1760,2753    11691    0,01%
+
+Root node processing (before b&c):
+  Real time             =    0,71 sec. (669,06 ticks)
+Parallel b&c, 24 threads:
+  Real time             =    3,60 sec. (2944,32 ticks)
+  Sync time (average)   =    0,02 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    4,31 sec. (3613,39 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1760.052
+avg_utility = 0.718388742857146
+
+<<< post process
+
+
+<<< done
+
