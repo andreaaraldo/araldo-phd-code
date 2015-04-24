@@ -235,11 +235,26 @@ execute DISPLAY
   	/************************************
   	 *** Print objective function
   	 ************************************/
+	var max_utility = -1000;
+	for (q in QualityLevels)
+		if(UtilityPerQuality[q] > max_utility) max_utility=UtilityPerQuality[q];
+
   	var total_utility = 0; var tot_reqs = 0; var avg_utility = 0; 
   	for (var r in ObjRequests) for (q in QualityLevels)
+	{
   		total_utility += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
+	}
 	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
 	avg_utility = total_utility / tot_reqs;
+	//{ CHECK
+		if ( avg_utility > max_utility )
+		{
+			writeln("ERROR: avg_utility > max_utility\n");
+			exit;
+		}else
+			writeln("avg_utility = ", avg_utility);
+	//} CHECK
+
   	var f = new IloOplOutputFile("objective.csv");
   	f.open;
 	f.write("avg_utility\n");

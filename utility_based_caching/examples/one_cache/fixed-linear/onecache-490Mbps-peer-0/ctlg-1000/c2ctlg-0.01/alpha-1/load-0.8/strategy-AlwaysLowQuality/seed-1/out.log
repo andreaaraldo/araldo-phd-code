@@ -10,46 +10,44 @@ MIP Presolve modified 413 coefficients.
 Aggregator did 5672 substitutions.
 Reduced MIP has 1226 rows, 3672 columns, and 6936 nonzeros.
 Reduced MIP has 1926 binaries, 930 generals, 0 SOSs, and 0 indicators.
-Presolve time = 1,49 sec. (2967,02 ticks)
-Found incumbent of value 0,000000 after 1,54 sec. (2978,40 ticks)
-Probing time = 0,00 sec. (1,85 ticks)
+Presolve time = 0,94 sec. (2956,89 ticks)
+Found incumbent of value 0,000000 after 0,97 sec. (2964,41 ticks)
+Probing time = 0,01 sec. (11,25 ticks)
 Tried aggregator 1 time.
-Reduced MIP has 1226 rows, 3672 columns, and 6936 nonzeros.
-Reduced MIP has 1926 binaries, 930 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,01 sec. (6,24 ticks)
-Probing time = 0,00 sec. (1,85 ticks)
+Presolve time = 0,01 sec. (5,15 ticks)
+Probing time = 0,00 sec. (0,62 ticks)
 Clique table members: 253.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
-Parallel mode: deterministic, using up to 8 threads.
-Root relaxation solution time = 0,05 sec. (24,92 ticks)
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,04 sec. (24,92 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
 
-*     0+    0                            0,0000     3899,0000              --- 
-*     0+    0                          173,0000     3899,0000              --- 
+*     0+    0                            0,0000     3899,0000      892     --- 
+*     0+    0                          173,0000     3899,0000      892     --- 
       0     0      401,4000     6      173,0000      401,4000      892  132,02%
-*     0+    0                          401,0000      401,4000             0,10%
-*     0+    0                          401,4000      401,4000             0,00%
-*     0     0      integral     0      401,4000      401,4000      893    0,00%
-Elapsed time = 1,88 sec. (3045,73 ticks, tree = 0,00 MB, solutions = 4)
-
-Gomory fractional cuts applied:  1
+*     0+    0                          401,0000      401,4000      892    0,10%
+*     0+    0                          401,2000      401,4000      892    0,05%
+*     0+    0                          401,4000      401,4000      892    0,00%
+*     0     0      integral     0      401,4000      401,4000      892    0,00%
+Elapsed time = 1,11 sec. (3051,47 ticks, tree = 0,00 MB, solutions = 5)
 
 Root node processing (before b&c):
-  Real time             =    1,94 sec. (3052,62 ticks)
-Parallel b&c, 8 threads:
+  Real time             =    0,13 sec. (70,33 ticks)
+Parallel b&c, 24 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    1,94 sec. (3052,62 ticks)
+Total (root+branch&cut) =    0,13 sec. (70,33 ticks)
 
 <<< solve
 
 
 OBJECTIVE: 401.4
+avg_utility = 0.3071155317521007
 
 <<< post process
 

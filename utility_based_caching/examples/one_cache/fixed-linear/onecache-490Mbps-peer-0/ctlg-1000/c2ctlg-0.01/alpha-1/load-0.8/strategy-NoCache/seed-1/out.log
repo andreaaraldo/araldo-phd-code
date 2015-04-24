@@ -10,43 +10,42 @@ MIP Presolve modified 1 coefficients.
 Aggregator did 4080 substitutions.
 Reduced MIP has 409 rows, 2448 columns, and 4488 nonzeros.
 Reduced MIP has 1518 binaries, 930 generals, 0 SOSs, and 0 indicators.
-Presolve time = 1,60 sec. (2948,35 ticks)
-Found incumbent of value 0,000000 after 1,69 sec. (2961,70 ticks)
-Probing time = 0,00 sec. (2,04 ticks)
+Presolve time = 0,89 sec. (2941,96 ticks)
+Found incumbent of value 0,000000 after 0,91 sec. (2952,36 ticks)
+Probing time = 0,01 sec. (10,32 ticks)
 Tried aggregator 1 time.
-Reduced MIP has 409 rows, 2448 columns, and 4488 nonzeros.
-Reduced MIP has 1518 binaries, 930 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,01 sec. (3,63 ticks)
-Probing time = 0,00 sec. (2,04 ticks)
+Presolve time = 0,00 sec. (3,39 ticks)
+Probing time = 0,00 sec. (0,79 ticks)
 Clique table members: 253.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
-Parallel mode: deterministic, using up to 8 threads.
-Root relaxation solution time = 0,07 sec. (7,08 ticks)
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,01 sec. (6,49 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
 
-*     0+    0                            0,0000     3899,0000              --- 
-*     0+    0                          186,8000     3899,0000              --- 
-      0     0      310,3500     2      186,8000      310,3500      414   66,14%
-*     0+    0                          310,2000      310,3500             0,05%
-*     0     0      integral     0      310,2000      310,3500      414    0,05%
-Elapsed time = 1,89 sec. (2994,78 ticks, tree = 0,00 MB, solutions = 3)
+*     0+    0                            0,0000     3899,0000      413     --- 
+*     0+    0                          186,8000     3899,0000      413     --- 
+      0     0      310,3500     2      186,8000      310,3500      413   66,14%
+*     0+    0                          310,2000      310,3500      413    0,05%
+*     0     0      integral     0      310,2000      310,3500      413    0,05%
+Elapsed time = 0,96 sec. (2991,12 ticks, tree = 0,00 MB, solutions = 3)
 
 Root node processing (before b&c):
-  Real time             =    1,92 sec. (3000,71 ticks)
-Parallel b&c, 8 threads:
+  Real time             =    0,04 sec. (23,85 ticks)
+Parallel b&c, 24 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    1,92 sec. (3000,71 ticks)
+Total (root+branch&cut) =    0,04 sec. (23,85 ticks)
 
 <<< solve
 
 
 OBJECTIVE: 310.2
+avg_utility = 0.2373374139250173
 
 <<< post process
 

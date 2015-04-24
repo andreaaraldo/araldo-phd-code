@@ -21,11 +21,11 @@ fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
 fixed_data.utilities = [0, log10(10*1/5), log10(10*2/5), log10(10*3/5), log10(10*4/5), log10(10*5/5)];
 fixed_data.name = "logarithmic";
-data.fixed_datas = [fixed_data];
+%data.fixed_datas = [fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
@@ -54,7 +54,6 @@ data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we w
 				% all the requested objects at low quality
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"NoCache", "AlwaysLowQuality"};
 
 launch_runs(experiment_name, data);
 
