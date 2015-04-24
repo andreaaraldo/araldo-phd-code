@@ -102,15 +102,26 @@ execute {
 /*********************************************************
 * Input checks
 *********************************************************/
-int error = 0;
-
 execute INPUT_CHECKS{
-	for (q in QualityLevels)
+	for (var q in QualityLevels)
 		if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
 		{
 			writeln ("ERROR: Only quality levels 0:5 are admissible");
 			exit;
 		}
+	
+	for (var o in Objects)
+	{
+		var sum_ = 0;
+		for ( var as_ in ASes )
+			sum_ += ObjectsPublishedByProducers[o][as_];
+			
+		if ( sum_ < 1 )
+		{
+			writeln ("ERROR: object ", o, " is published by no AS");
+			exit;
+		}
+	}			
 }
 //<aa>
 
@@ -203,7 +214,7 @@ subject to {
 
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cProportionalDedicatedCache:
-	  	(Strategy == 6) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : q!=0 );
+	  	(Strategy == 6) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
 
 	// </aa>
@@ -224,11 +235,26 @@ execute DISPLAY
   	/************************************
   	 *** Print objective function
   	 ************************************/
+	var max_utility = -1000;
+	for (q in QualityLevels)
+		if(UtilityPerQuality[q] > max_utility) max_utility=UtilityPerQuality[q];
+
   	var total_utility = 0; var tot_reqs = 0; var avg_utility = 0; 
   	for (var r in ObjRequests) for (q in QualityLevels)
+	{
   		total_utility += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
+	}
 	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
 	avg_utility = total_utility / tot_reqs;
+	//{ CHECK
+		if ( avg_utility > max_utility )
+		{
+			writeln("ERROR: avg_utility > max_utility\n");
+			exit;
+		}else
+			writeln("objective = ", );
+	//} CHECK
+
   	var f = new IloOplOutputFile("objective.csv");
   	f.open;
 	f.write("avg_utility\n");
