@@ -54,6 +54,7 @@ float MaxCacheStorage = ...;
 // 3 for Always High Quality
 // 4 for All Quality Levels
 // 5 for Dedicated Cache
+// 6 for ProportionalDedicatedCache
 int Strategy = ...;
 //</aa>
 
@@ -121,7 +122,13 @@ execute INPUT_CHECKS{
 			writeln ("ERROR: object ", o, " is published by no AS");
 			exit;
 		}
-	}			
+	}	
+
+	if (Strategy < 0 || Strategy > 6)
+	{
+		writeln("ERROR: Strategy ", Strategy, " is not valid");
+		exit;
+	}
 }
 //<aa>
 
@@ -252,7 +259,7 @@ execute DISPLAY
 			writeln("ERROR: avg_utility > max_utility\n");
 			exit;
 		}else
-			writeln("objective = ", );
+			writeln("avg_utility = ", avg_utility);
 	//} CHECK
 
   	var f = new IloOplOutputFile("objective.csv");
