@@ -1,6 +1,7 @@
 function launch_runs(experiment_name, data);
 	run_list = divide_runs(experiment_name, data);
 	generate_scenarios(run_list);
+	error("I want to quit here");
 	run_scenarios(run_list);
 	seeds = unique([run_list.seed] );
 

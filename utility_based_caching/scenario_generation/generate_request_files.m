@@ -57,7 +57,17 @@ function generate_request_files(run_list)
 				ObjRequests(length(ObjRequests)-2) = " ";
 				fprintf(f_req, "%s\n",ObjRequests);
 				fclose(f_req);
+
+				% Write the req_frac_for_each_object_file
+				req_frac_for_each_object_file = sprintf("%s-req_frac_for_each_object.csv", singledata.request_file);
+				fid = fopen(req_frac_for_each_object_file, "w+");
+				fprintf(fid, "#requests\n");
+				fclose(fid);
+				dlmwrite(req_frac_for_each_object_file, requests_for_each_object ./ total_requests,...
+						 "append","on", "delimiter"," " );
+
 				exit(0);
+
 
 			elseif (pid > 0)
 				% I am the father
