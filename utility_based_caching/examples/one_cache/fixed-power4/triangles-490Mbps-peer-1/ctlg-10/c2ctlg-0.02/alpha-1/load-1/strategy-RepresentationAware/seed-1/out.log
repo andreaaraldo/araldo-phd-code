@@ -1,0 +1,9 @@
+
+<<< setup
+
+*** ERROR[GENERATE_217] at 41:1-73 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/one_cache/fixed-power4/triangles-490Mbps-peer-1/ctlg-10/c2ctlg-0.02/alpha-1/load-1/strategy-RepresentationAware/seed-1/model.mod: External data element "ObjRequests" was not defined.
+*** ERROR[GENERATE_202] at 83:0 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/one_cache/fixed-power4/triangles-490Mbps-peer-1/ctlg-10/c2ctlg-0.02/alpha-1/load-1/strategy-RepresentationAware/seed-1/model.mod: Data element "ObjRequests" not defined.
+*** ERROR[GENERATE_202]: Data element "ObjRequests" not defined.
+
+<<< generate
+

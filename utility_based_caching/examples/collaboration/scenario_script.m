@@ -13,7 +13,7 @@ generate = true;
 run_ = true;
 
 % Define an experiment
-experiment_name = "one_cache";
+experiment_name = "collaboration";
 
 fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
@@ -42,7 +42,6 @@ topology.ases_with_storage = [2, 3];
 topology.ASes_with_users = [2, 3];
 topology.server = 1;
 peer_link_scales = [0, 0.5, 0.8, 1, 1.2, 1.5, 2, 5];
-peer_link_scales = [1];
 for link_capacity = [490000] % In Kbps
 	for peer_link_scale = peer_link_scales
 		topology.link_capacity = link_capacity;
@@ -56,19 +55,19 @@ end % link_capacity
 
 data.seeds = [1];
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
+data.cache_to_ctlg_ratios = [2/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
 
 
-
-data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we would use to transmit 
-				% all the requested objects at low quality
+% Load on each AS with users attached
+% It is expressed as a multiple of link capacity we would use to transmit 
+% all the requested objects at low quality
+data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	
 data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"RepresentationAware"};
 
 
 launch_runs(experiment_name, data);

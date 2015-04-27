@@ -23,28 +23,33 @@ function generate_request_files(run_list)
 				endif
 
 				rand("state",singledata.seed);
-				total_requests = total_requests = ...
+				num_of_req_at_each_as =  ...
 					singledata.loadd *  ...
 					singledata.topology.link_capacity / singledata.fixed_data.rate_per_quality(2);
 				number_of_object_classes = singledata.catalog_size;
-				num_of_req_at_each_as = round(total_requests / length(singledata.topology.ASes_with_users) );
+				total_requests = num_of_req_at_each_as * length(singledata.topology.ASes_with_users);
 
 				time1 = time();
 				[requests_for_each_class, requests_for_each_object] = zipf_realization(
-					singledata.catalog_size, number_of_object_classes, num_of_req_at_each_as, singledata.alpha);
+					singledata.catalog_size, number_of_object_classes, total_requests, singledata.alpha);
+				rnd_matrix = rand( ( length(singledata.topology.ASes_with_users) -1) , singledata.catalog_size);
+				rnd_matrix = sort(rnd_matrix, 1);
+				rnd_matrix = [zeros(1,singledata.catalog_size); rnd_matrix];
+				rnd_matrix = [rnd_matrix; ones(1,singledata.catalog_size)];
 				time2 = time();
 				% printf("Requests generated in %g seconds\n",time2-time1);
 				% Replace zipf_realization with ZipfQuantizedRng if you want to use Michele's code
 
-				requests_at_each_AS.obj = 1:singledata.catalog_size;
 				requests_at_each_AS.req_num = requests_for_each_object;
 				requests.ASes = singledata.topology.ASes_with_users;
 				ObjRequests = sprintf("ObjRequests = { ");
-				for i = 1:length(singledata.topology.ASes_with_users)
-					as = singledata.topology.ASes_with_users(i);
-					for j = 1:singledata.catalog_size
-						obj = requests_at_each_AS.obj(j);
-						req_num = requests_at_each_AS.req_num(j);
+				for as_idx = 1:length(singledata.topology.ASes_with_users)
+					as = singledata.topology.ASes_with_users(as_idx);
+					fraction_of_requests = ( rnd_matrix(as_idx+1,:) - rnd_matrix(as_idx,:) )';
+					requests_at_as = round( fraction_of_requests .* requests_for_each_object );
+
+					for obj = 1:singledata.catalog_size
+						req_num = requests_at_as(obj);
 						ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
 					endfor
 				endfor
