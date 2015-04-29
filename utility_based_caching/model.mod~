@@ -328,22 +328,6 @@ execute DISPLAY
 			f.write(" ",RequestsForEachObject[o]);
 			for (var as in ASes)
 				f.write(" ",ObjectCached[o][q][as]);
-
-			
-
-			{
-			  	var partial_sum  = 0;
-			  	var num_cached_tot = 0;
-				for (var q in QualityLevels)
-				{ 
-					var num_cached_at_q = ObjectCached[o][q][as];
-					num_cached_tot += num_cached_at_q;
-					partial_sum += q * num_cached_at_q;  
-	 			}
-	 			var q_avg = num_cached_tot == 0 ? 
-	 					0 : partial_sum / num_cached_tot; 
-	 			f.write(" ",q_avg);
-			}
 			f.write("\n");
 		}
 		f.close;
