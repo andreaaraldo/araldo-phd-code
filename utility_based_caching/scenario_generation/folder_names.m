@@ -2,9 +2,9 @@ function [parent_folder, seed_folder, request_file] = folder_names(path_base, ex
 	grandfather_folder = sprintf("%s/examples/%s/fixed-%s/%s/ctlg-%g/c2ctlg-%g/alpha-%g/load-%g",...
 		path_base, experiment_name, singledata.fixed_data.name, singledata.topology.name,singledata.catalog_size,
 		singledata.cache_to_ctlg_ratio, singledata.alpha, singledata.loadd);
-	request_file_folder = sprintf("%s/examples/%s/request_files/%s/ctlg-%g/alpha-%g/load-%g",...
+	request_file_folder = sprintf("%s/examples/%s/request_files/%s/ctlg-%g/alpha-%g/load-%g/seed-%g",...
 		path_base, experiment_name, singledata.topology.name,singledata.catalog_size,
-		singledata.alpha, singledata.loadd);
+		singledata.alpha, singledata.loadd, singledata.seed);
 
 	%{ CREATE REQUEST_FILE_FOLDER	
 	command = sprintf("mkdir -p %s", request_file_folder);
