@@ -364,6 +364,32 @@ execute DISPLAY
 	f.close;
 
 
+	 /************************************
+  	 *** Print intersection
+	  	 ************************************/
+	var f = new IloOplOutputFile("intersection.csv");
+	f.open;
+	f.write("#rank requests intersection\n");
+	for (var o in Objects)
+	{
+		f.write(o," ",RequestsForEachObject[o]," ");
+		var it_is_cached = 1;
+		for (var as in ASes)
+		{	
+			if ( MaxCacheStorageAtSingleAS[as]>0 )
+			{
+				var it_is_cached_in_this_as = 0;
+				for (var q in QualityLevels)
+					it_is_cached_in_this_as += ObjectCached[o][q][as];
+				it_is_cached = it_is_cached * it_is_cached_in_this_as;  
+ 			}
+		}//as loop
+		f.write( it_is_cached>0 ? 1:0);
+		f.write("\n");
+	} //o loop
+	f.close;
+
+
 	/************************************
   	 *** Print served quality levels per rank
   	 ************************************/
