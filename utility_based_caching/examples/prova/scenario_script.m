@@ -13,19 +13,15 @@ generate = true;
 run_ = true;
 
 % Define an experiment
-experiment_name = "one_cache";
+experiment_name = "prova";
 
-fixed_data.parallel_processes = 3;
+fixed_data.parallel_processes = 2;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
-fixed_data.utilities = [0, log10(10*1/5), log10(10*2/5), log10(10*3/5), log10(10*4/5), log10(10*5/5)];
-fixed_data.name = "logarithmic";
-data.fixed_datas = [fixed_data];
-
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
@@ -43,7 +39,7 @@ for link_capacity = [490000] % In Kbps
 end % link_capacity
 
 data.seeds = [1];
-data.catalog_sizes = [100];
+data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
@@ -54,7 +50,7 @@ data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we w
 				% all the requested objects at low quality
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"NoCache", "AlwaysLowQuality"};
+
 
 launch_runs(experiment_name, data);
 

@@ -63,16 +63,19 @@ float MaxEgressCapacityAtAS[ASes];
 
 //<aa>
 int MaxQualityLevel;
+int RequestsForEachObject[Objects];
 //</aa>
 
-execute {
+execute 
+{
   for (var as in ASes)
   	MaxEgressCapacityAtAS[as] = 0;
   
   for (var arc in Arcs)
   	MaxEgressCapacityAtAS[arc.sourceAS] += arc.linkCapacity;
   	
-  for (var as in ASes) {
+  for (var as in ASes) 
+  {
     var maxCapacity = 0;
     var maxRate = 0;
     
@@ -89,13 +92,20 @@ execute {
   }
 
   //<aa>
-	// Find the maximum quality level
+	//{ FIND MAX QUALITY LEVEL
 	MaxQualityLevel=0;
 	for (var q in QualityLevels)
 	{
 		if (q> MaxQualityLevel)
 			MaxQualityLevel = q;
 	}
+	//} FIND MAX QUALITY LEVEL
+
+
+	//{ FIND NUMBER OF REQUESTS FOR EACH OBJECT
+		for (var r in ObjRequests )
+			RequestsForEachObject[r.object] += numOfObjectRequests;
+	//} FIND NUMBER OF REQUESTS FOR EACH OBJECT
   //</aa> 	  
 }
 
@@ -103,7 +113,8 @@ execute {
 /*********************************************************
 * Input checks
 *********************************************************/
-execute INPUT_CHECKS{
+execute INPUT_CHECKS
+{
 	for (var q in QualityLevels)
 		if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
 		{
@@ -303,6 +314,27 @@ execute DISPLAY
 	 /************************************
   	 *** Print cached quality levels per rank
   	 ************************************/
+	for (var q in QualityLevels : q!=0)
+	{
+		var f = new IloOplOutputFile("cached_at_q",q,".csv");
+		f.open;
+		f.write("rank");
+		for (var as in ASes) f.write(" AS=",as);
+		f.write("\n");
+
+		for (var o in Objects)
+		{
+			f.write(o);
+			f.write(" ",RequestsForEachObject[o]);
+			for (var as in ASes)
+				f.write(" ",ObjectCached[o][q][as]);
+			f.write("\n");
+		}
+		f.close;
+
+	}
+
+
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
 	f.write("rank");

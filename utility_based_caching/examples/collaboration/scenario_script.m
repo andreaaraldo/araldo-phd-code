@@ -15,7 +15,7 @@ run_ = true;
 % Define an experiment
 experiment_name = "collaboration";
 
-fixed_data.parallel_processes = 22;
+fixed_data.parallel_processes = 7;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -29,12 +29,14 @@ fixed_data.name = "cubic";
 
 fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-data.fixed_datas = [fixed_data];
+%data.fixed_datas = [fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 %data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [fixed_data];
+
 
 data.topologys = [];
 topology.ases = [1, 2, 3];
