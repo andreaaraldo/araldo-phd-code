@@ -227,3 +227,35 @@ Nodefile size = 1680,69 MB (304,71 MB after compression)
  316036 172770     2894,2956    11     2894,2842     2894,5965  5466955    0,01%
  321674 175415     2894,2913     7     2894,2842     2894,5935  5570851    0,01%
  325474 176788     2894,3399    11     2894,2842     2894,5916  5655901    0,01%
+ 330683 179057     2894,5420    13     2894,2842     2894,5865  5746124    0,01%
+ 334098 180559     2894,2882     6     2894,2842     2894,5853  5813655    0,01%
+ 338728 182258     2894,3674     9     2894,2842     2894,5829  5902255    0,01%
+ 342094 183501     2894,3302    16     2894,2842     2894,5814  5964524    0,01%
+ 346507 185119     2894,3115     8     2894,2842     2894,5777  6059721    0,01%
+
+Cover cuts applied:  45
+Implied bound cuts applied:  201
+Flow cuts applied:  19
+Mixed integer rounding cuts applied:  9
+Gomory fractional cuts applied:  46
+
+Root node processing (before b&c):
+  Real time             =    4,00 sec. (4115,39 ticks)
+Parallel b&c, 24 threads:
+  Real time             =  761,79 sec. (368983,43 ticks)
+  Sync time (average)   =    0,28 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =  765,80 sec. (373098,82 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 2894.284
+avg_utility = 0.8861862115737786
+
+<<< post process
+
+
+<<< done
+
