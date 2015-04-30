@@ -11,8 +11,8 @@ MIP Presolve modified 21983 coefficients.
 Aggregator did 38000 substitutions.
 Reduced MIP has 15686 rows, 37078 columns, and 88124 nonzeros.
 Reduced MIP has 9128 binaries, 2268 generals, 0 SOSs, and 0 indicators.
-Presolve time = 4,35 sec. (13295,85 ticks)
-Found incumbent of value 0,000000 after 4,45 sec. (13382,52 ticks)
+Presolve time = 4,36 sec. (13295,85 ticks)
+Found incumbent of value 0,000000 after 4,46 sec. (13382,52 ticks)
 Probing time = 0,01 sec. (3,37 ticks)
 Tried aggregator 4 times.
 MIP Presolve eliminated 0 rows and 4280 columns.
@@ -26,7 +26,7 @@ Clique table members: 478.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 24 threads.
-Root relaxation solution time = 0,34 sec. (340,19 ticks)
+Root relaxation solution time = 0,31 sec. (340,19 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -46,7 +46,7 @@ Root relaxation solution time = 0,34 sec. (340,19 ticks)
       0     0     2065,5321    30        0,0000       Cuts: 9     1177     --- 
       0     0     2065,4813    24        0,0000       Cuts: 6     1228     --- 
       0     2     2065,4813    24        0,0000     2065,4813     1228     --- 
-Elapsed time = 8,27 sec. (18012,15 ticks, tree = 0,01 MB, solutions = 1)
+Elapsed time = 8,34 sec. (18012,15 ticks, tree = 0,01 MB, solutions = 1)
       5     7     2051,5723    21        0,0000     2065,4762     1525     --- 
      23    25     2065,4697    22        0,0000     2065,4689     2267     --- 
      55    57     2046,1604    17        0,0000     2065,4689     4017     --- 
@@ -57,7 +57,7 @@ Elapsed time = 8,27 sec. (18012,15 ticks, tree = 0,01 MB, solutions = 1)
     684   686     2054,4937    19        0,0000     2065,4671    40825     --- 
     687   689     2064,1074    14        0,0000     2065,4671    41762     --- 
    1091  1093     2042,7843     9        0,0000     2065,4671    60119     --- 
-Elapsed time = 15,37 sec. (23305,11 ticks, tree = 4,16 MB, solutions = 1)
+Elapsed time = 15,54 sec. (23305,11 ticks, tree = 4,16 MB, solutions = 1)
 *  1108+ 1108                         2034,6000     2065,4671    60578    1,52%
    1108  1110     2044,8228    17     2034,6000     2065,4671    60578    1,52%
    1962  1814     2063,3066    19     2034,6000     2065,4671   104203    1,52%
@@ -79,7 +79,7 @@ Elapsed time = 15,37 sec. (23305,11 ticks, tree = 4,16 MB, solutions = 1)
    5982    59     2064,6513    25     2064,0000     2065,2343   273463    0,06%
    5990    42     2064,0696    17     2064,0000     2065,0849   274242    0,05%
    5998    28     2064,9345    33     2064,0000     2065,0849   274504    0,05%
-Elapsed time = 38,23 sec. (43546,54 ticks, tree = 0,24 MB, solutions = 68)
+Elapsed time = 38,03 sec. (43546,54 ticks, tree = 0,24 MB, solutions = 68)
    6011    20     2064,8351    34     2064,0000     2065,0849   274695    0,05%
    6032    11     2064,5171    17     2064,0000     2064,9479   275650    0,05%
    6047    15     2064,6872    22     2064,0000     2064,9479   275824    0,05%
@@ -90,7 +90,7 @@ Elapsed time = 38,23 sec. (43546,54 ticks, tree = 0,24 MB, solutions = 68)
    6277    82     2064,3114    12     2064,0000     2064,8329   282149    0,04%
    6631   240     2064,3211    23     2064,0000     2064,8329   290988    0,04%
    7216   463     2064,4268    27     2064,0000     2064,8329   305171    0,04%
-Elapsed time = 49,67 sec. (55804,68 ticks, tree = 0,71 MB, solutions = 68)
+Elapsed time = 48,54 sec. (55804,68 ticks, tree = 0,71 MB, solutions = 68)
    7836   751     2064,3854     8     2064,0000     2064,8329   320984    0,04%
    8616   971     2064,3525    17     2064,0000     2064,8329   339894    0,04%
    9558  1338     2064,4289    14     2064,0000     2064,8329   357860    0,04%
@@ -101,7 +101,7 @@ Elapsed time = 49,67 sec. (55804,68 ticks, tree = 0,71 MB, solutions = 68)
   13808  1543     2064,2627    13     2064,0000     2064,8329   446403    0,04%
   14282  1550     2064,2490     6     2064,0000     2064,8329   456061    0,04%
   15498  1478     2064,3843     7     2064,0000     2064,6000   473471    0,03%
-Elapsed time = 74,57 sec. (66143,63 ticks, tree = 1,41 MB, solutions = 68)
+Elapsed time = 73,51 sec. (66143,63 ticks, tree = 1,41 MB, solutions = 68)
   15873  1579     2064,3000     7     2064,0000     2064,6000   481700    0,03%
   17872  1610     2064,2276    11     2064,0000     2064,5667   507936    0,03%
   17920  1613     2064,2167     8     2064,0000     2064,5667   509357    0,03%
@@ -117,13 +117,13 @@ Zero-half cuts applied:  1
 Gomory fractional cuts applied:  60
 
 Root node processing (before b&c):
-  Real time             =    3,17 sec. (4139,10 ticks)
+  Real time             =    3,24 sec. (4139,10 ticks)
 Parallel b&c, 24 threads:
-  Real time             =   84,56 sec. (55776,26 ticks)
-  Sync time (average)   =    0,09 sec.
+  Real time             =   83,37 sec. (55776,26 ticks)
+  Sync time (average)   =    0,10 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =   87,73 sec. (59915,36 ticks)
+Total (root+branch&cut) =   86,61 sec. (59915,36 ticks)
 
 <<< solve
 

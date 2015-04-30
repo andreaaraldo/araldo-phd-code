@@ -11,8 +11,8 @@ MIP Presolve modified 4283 coefficients.
 Aggregator did 30280 substitutions.
 Reduced MIP has 9421 rows, 17976 columns, and 39376 nonzeros.
 Reduced MIP has 7148 binaries, 2268 generals, 0 SOSs, and 0 indicators.
-Presolve time = 3,14 sec. (12020,60 ticks)
-Found incumbent of value 0,000000 after 3,18 sec. (12043,95 ticks)
+Presolve time = 3,16 sec. (12020,60 ticks)
+Found incumbent of value 0,000000 after 3,20 sec. (12043,95 ticks)
 Probing time = 0,01 sec. (3,95 ticks)
 Tried aggregator 1 time.
 Presolve time = 0,02 sec. (18,06 ticks)
@@ -21,7 +21,7 @@ Clique table members: 478.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 24 threads.
-Root relaxation solution time = 0,07 sec. (37,11 ticks)
+Root relaxation solution time = 0,06 sec. (37,11 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -43,7 +43,7 @@ Presolve time = 0,03 sec. (21,28 ticks)
 Probing time = 0,01 sec. (2,41 ticks)
 Tried aggregator 1 time.
 Presolve time = 0,02 sec. (12,52 ticks)
-Represolve time = 0,09 sec. (66,31 ticks)
+Represolve time = 0,12 sec. (66,31 ticks)
 Probing time = 0,01 sec. (2,41 ticks)
 Clique table members: 536.
 MIP emphasis: balance optimality and feasibility.
@@ -57,7 +57,7 @@ Root relaxation solution time = 0,04 sec. (40,35 ticks)
 *     0+    0                         1981,2000     1981,7214     2364    0,03%
       0     0     1981,7214    16     1981,2000     1981,7214     2364    0,03%
       0     2     1981,7214    16     1981,2000     1981,7214     2364    0,03%
-Elapsed time = 5,64 sec. (14433,10 ticks, tree = 0,01 MB, solutions = 3)
+Elapsed time = 5,63 sec. (14433,10 ticks, tree = 0,01 MB, solutions = 3)
      39    11     1981,4000     7     1981,2000     1981,6000     2510    0,02%
 
 Cover cuts applied:  10
@@ -65,13 +65,13 @@ Implied bound cuts applied:  1
 Gomory fractional cuts applied:  2
 
 Root node processing (before b&c):
-  Real time             =    2,29 sec. (2344,95 ticks)
+  Real time             =    2,28 sec. (2344,95 ticks)
 Parallel b&c, 24 threads:
-  Real time             =    1,05 sec. (454,73 ticks)
-  Sync time (average)   =    0,06 sec.
+  Real time             =    0,90 sec. (454,73 ticks)
+  Sync time (average)   =    0,03 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    3,34 sec. (2799,67 ticks)
+Total (root+branch&cut) =    3,17 sec. (2799,67 ticks)
 
 <<< solve
 
