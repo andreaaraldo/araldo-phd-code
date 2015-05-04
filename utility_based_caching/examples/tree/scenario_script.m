@@ -34,7 +34,7 @@ data.fixed_datas = [fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 %data.fixed_datas = [fixed_data];
 
 
@@ -59,7 +59,7 @@ for link_capacity = [490000] % In Kbps
 	end % peer_link
 end % link_capacity
 
-data.seeds = [1];
+data.seeds = [2,3];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [2/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
