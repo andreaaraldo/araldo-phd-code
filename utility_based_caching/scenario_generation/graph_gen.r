@@ -27,6 +27,6 @@ for (e in E(g))
 	verts = get.edge(g, e);
 	link_str = sprintf("%s,<%d,%d,%d>, <%d,%d,%d>", link_str, verts[1],verts[2], capacity,verts[2],verts[1], capacity );
 }
-link_str = sprintf("%s }", link_str);
+link_str = sprintf("%s };", link_str);
 link_str <- sub('\\{,', "{ ", link_str);
 cat(link_str,"\n")

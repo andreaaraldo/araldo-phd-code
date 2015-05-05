@@ -31,13 +31,13 @@ fixed_data.name = "cubic";
 
 fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-data.fixed_datas = [fixed_data];
+%data.fixed_datas = [fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
-%data.fixed_datas = [fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [fixed_data];
 
 
 data.topologys = [];
@@ -69,8 +69,8 @@ topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [10];
-data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
+data.catalog_sizes = [100];
+data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
 
