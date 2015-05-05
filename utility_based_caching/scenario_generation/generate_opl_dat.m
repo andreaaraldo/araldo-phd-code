@@ -91,13 +91,33 @@ function generate_opl_dat(singledata)
 	% }BUILD MAX_STORAGE_AT_SINGLE_AS
 
 
+	%{OBJECT MAPPING
+	% Each object is published by only one producer
+	randint(singledata.catalog_size, [1:length(singledata.topology.servers )])
+	error("xciao");
+
+	objects_producer_mapping_per_objects = zeros(singledata.catalog_size,length(singledata.topology.ases) );
+	objects_producer_mapping_per_objects_servers = rand(singledata.catalog_size,length(singledata.topology.servers) );
+	objects_producer_mapping_per_objects_servers < 1.0 / length(singledata.topology.servers )
+	
+	error("xciao");
+	objects_producer_mapping_per_objects(1, singledata.topology.servers(1) ) = 1;
+	objects_published_by_producers = repmat(objects_producer_mapping_per_objects, singledata.catalog_size, 1);
+	objects_published_by_producers
+	ObjectsPublishedByProducers = represent_in_opl( 
+				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
+	%}OBJECT MAPPING
+
+
 	
 
 	%{OBJECT MAPPING
 	% Each object is published by only one producer
 	objects_producer_mapping_per_objects = zeros(1,length(singledata.topology.ases) );
-	objects_producer_mapping_per_objects(1, singledata.topology.server) = 1;
+	objects_producer_mapping_per_objects(1, singledata.topology.servers(1) ) = 1;
 	objects_published_by_producers = repmat(objects_producer_mapping_per_objects, singledata.catalog_size, 1);
+	objects_published_by_producers
+	error("xciao");
 	ObjectsPublishedByProducers = represent_in_opl( 
 				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
 	%}OBJECT MAPPING
