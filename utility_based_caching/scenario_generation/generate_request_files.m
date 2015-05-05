@@ -13,7 +13,6 @@ function generate_request_files(run_list)
 				% One child process finished
 				active_children--;
 			endif
-
 			pid = fork();
 			if (pid==0)
 				% I am the child process and I generate the run
@@ -45,6 +44,7 @@ function generate_request_files(run_list)
 				ObjRequests = sprintf("ObjRequests = { ");
 				for as_idx = 1:length(singledata.topology.ASes_with_users)
 					as = singledata.topology.ASes_with_users(as_idx);
+					printf("Ciao, considering as %d", as);
 					fraction_of_requests = ( rnd_matrix(as_idx+1,:) - rnd_matrix(as_idx,:) )';
 					requests_at_as = round( fraction_of_requests .* requests_for_each_object );
 
@@ -76,7 +76,8 @@ function generate_request_files(run_list)
 				error ("Error in forking");
 			endif
 
-
+		else
+			printf("The fgile exists\n")
 
 		% else The request file already exists. Do nothing
 		endif % request_file existence
