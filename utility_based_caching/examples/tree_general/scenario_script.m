@@ -42,7 +42,7 @@ data.fixed_datas = [fixed_data];
 
 data.topologys = [];
 children = 2;
-height = 2; # without considering the root
+height = 4; # without considering the root
 topology.link_capacity = 490000;  % In Kbps
 
 size_ = floor( ( children**(height+1) - 1 ) / (children-1) );
@@ -71,7 +71,7 @@ topology.ases_with_storage = 1:size_;
 topology.ases_with_storage(topology.servers) = [];
 topology.name = sprintf("height_%d-children_%d-capacity_%g-ubiquitous", ...
 		height, children, topology.link_capacity);
-data.topologys = [data.topologys, topology];
+%data.topologys = [data.topologys, topology];
 
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("height_%d-children_%d-capacity_%g-edge", ...
@@ -79,7 +79,7 @@ topology.name = sprintf("height_%d-children_%d-capacity_%g-edge", ...
 data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [100];
+data.catalog_sizes = [1000];
 
 % fraction of catalog we could store in the cache if all 
 % the objects were at maximum quality
