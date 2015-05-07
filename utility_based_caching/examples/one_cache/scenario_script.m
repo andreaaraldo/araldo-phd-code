@@ -15,17 +15,26 @@ run_ = true;
 % Define an experiment
 experiment_name = "one_cache";
 
-fixed_data.parallel_processes = 7;
+fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
-fixed_data.utilities = [0, log10(10*1/5), log10(10*2/5), log10(10*3/5), log10(10*4/5), log10(10*5/5)];
-fixed_data.name = "logarithmic";
+fixed_data.utilities = [sqrt(0)/sqrt(5), sqrt(1)/sqrt(5), sqrt(2)/sqrt(5), sqrt(3)/sqrt(5), sqrt(4)/sqrt(5), sqrt(5)/sqrt(5)];
+fixed_data.name = "sqrt";
+%data.fixed_datas = [fixed_data];
+
+fixed_data.utilities = [0**(1/3)/5**(1/3), 1**(1/3)/5**(1/3), 2**(1/3)/5**(1/3), 3**(1/3)/5**(1/3), 4**(1/3)/5**(1/3), 5**(1/3)/5**(1/3)];
+fixed_data.name = "cubic";
+%data.fixed_datas = [fixed_data];
+
+fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
+fixed_data.name = "power4";
 data.fixed_datas = [fixed_data];
+
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
@@ -54,7 +63,6 @@ data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we w
 				% all the requested objects at low quality
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"RepresentationAware"};
 
 launch_runs(experiment_name, data);
 

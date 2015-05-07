@@ -10,6 +10,7 @@ function generate_scenarios(run_list)
 		end %if
 	end % for idx_run (generating folders)
 
+	printf("Going to genereate request_files\n");
 	generate_request_files(run_list);
 
 	for idx_run = 1:length(run_list)

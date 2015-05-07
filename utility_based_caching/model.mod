@@ -3,7 +3,7 @@
 
 execute PARAMS {
   // cplex.epgap = 0.05;
-  // cplex.tilim = 600;
+  cplex.tilim = 3600;
 }
 
 tuple Arc {
@@ -54,6 +54,7 @@ float MaxCacheStorage = ...;
 // 3 for Always High Quality
 // 4 for All Quality Levels
 // 5 for Dedicated Cache
+// 6 for ProportionalDedicatedCache
 int Strategy = ...;
 //</aa>
 
@@ -62,16 +63,19 @@ float MaxEgressCapacityAtAS[ASes];
 
 //<aa>
 int MaxQualityLevel;
+int RequestsForEachObject[Objects];
 //</aa>
 
-execute {
+execute 
+{
   for (var as in ASes)
   	MaxEgressCapacityAtAS[as] = 0;
   
   for (var arc in Arcs)
   	MaxEgressCapacityAtAS[arc.sourceAS] += arc.linkCapacity;
   	
-  for (var as in ASes) {
+  for (var as in ASes) 
+  {
     var maxCapacity = 0;
     var maxRate = 0;
     
@@ -88,13 +92,20 @@ execute {
   }
 
   //<aa>
-	// Find the maximum quality level
+	//{ FIND MAX QUALITY LEVEL
 	MaxQualityLevel=0;
 	for (var q in QualityLevels)
 	{
 		if (q> MaxQualityLevel)
 			MaxQualityLevel = q;
 	}
+	//} FIND MAX QUALITY LEVEL
+
+
+	//{ FIND NUMBER OF REQUESTS FOR EACH OBJECT
+		for (var r in ObjRequests )
+			RequestsForEachObject[r.object] += r.numOfObjectRequests;
+	//} FIND NUMBER OF REQUESTS FOR EACH OBJECT
   //</aa> 	  
 }
 
@@ -102,7 +113,8 @@ execute {
 /*********************************************************
 * Input checks
 *********************************************************/
-execute INPUT_CHECKS{
+execute INPUT_CHECKS
+{
 	for (var q in QualityLevels)
 		if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
 		{
@@ -121,7 +133,13 @@ execute INPUT_CHECKS{
 			writeln ("ERROR: object ", o, " is published by no AS");
 			exit;
 		}
-	}			
+	}	
+
+	if (Strategy < 0 || Strategy > 6)
+	{
+		writeln("ERROR: Strategy ", Strategy, " is not valid");
+		exit;
+	}
 }
 //<aa>
 
@@ -235,11 +253,26 @@ execute DISPLAY
   	/************************************
   	 *** Print objective function
   	 ************************************/
+	var max_utility = -1000;
+	for (q in QualityLevels)
+		if(UtilityPerQuality[q] > max_utility) max_utility=UtilityPerQuality[q];
+
   	var total_utility = 0; var tot_reqs = 0; var avg_utility = 0; 
   	for (var r in ObjRequests) for (q in QualityLevels)
+	{
   		total_utility += ObjectRequestsServed[r][q] * UtilityPerQuality[q]; 
+	}
 	for (var r in ObjRequests) tot_reqs += r.numOfObjectRequests;
 	avg_utility = total_utility / tot_reqs;
+	//{ CHECK
+		if ( avg_utility > max_utility )
+		{
+			writeln("ERROR: avg_utility > max_utility\n");
+			exit;
+		}else
+			writeln("avg_utility = ", avg_utility);
+	//} CHECK
+
   	var f = new IloOplOutputFile("objective.csv");
   	f.open;
 	f.write("avg_utility\n");
@@ -281,6 +314,29 @@ execute DISPLAY
 	 /************************************
   	 *** Print cached quality levels per rank
   	 ************************************/
+	for (var q in QualityLevels)
+	{
+		if (q!=0)
+		{	
+			var f = new IloOplOutputFile("cached_at_q"+q+".csv");
+			f.open;
+			f.write("#rank requests");
+			for (var as in ASes) f.write(" AS=",as);
+			f.write("\n");
+	
+			for (var o in Objects)
+			{
+				f.write(o);
+				f.write(" ",RequestsForEachObject[o]);
+				for (var as in ASes)
+					f.write(" ",ObjectCached[o][q][as]);
+				f.write("\n");
+			}
+			f.close;
+		}		
+	}
+
+
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
 	f.write("rank");
@@ -305,6 +361,32 @@ execute DISPLAY
 		}
 		f.write("\n");
 	}
+	f.close;
+
+
+	 /************************************
+  	 *** Print intersection
+	  	 ************************************/
+	var f = new IloOplOutputFile("intersection.csv");
+	f.open;
+	f.write("#rank requests intersection\n");
+	for (var o in Objects)
+	{
+		f.write(o," ",RequestsForEachObject[o]," ");
+		var it_is_cached = 1;
+		for (var as in ASes)
+		{	
+			if ( MaxCacheStorageAtSingleAS[as]>0 )
+			{
+				var it_is_cached_in_this_as = 0;
+				for (var q in QualityLevels)
+					it_is_cached_in_this_as += ObjectCached[o][q][as];
+				it_is_cached = it_is_cached * it_is_cached_in_this_as;  
+ 			}
+		}//as loop
+		f.write( it_is_cached>0 ? 1:0);
+		f.write("\n");
+	} //o loop
 	f.close;
 
 

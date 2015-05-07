@@ -1,0 +1,69 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 5346 rows and 7935 columns.
+MIP Presolve modified 54 coefficients.
+Aggregator did 528 substitutions.
+Reduced MIP has 302 rows, 520 columns, and 1288 nonzeros.
+Reduced MIP has 46 binaries, 234 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.04 sec. (12.23 ticks)
+Found incumbent of value 0.000000 after 0.04 sec. (13.34 ticks)
+Probing time = 0.00 sec. (0.12 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 4 rows and 4 columns.
+MIP Presolve modified 14 coefficients.
+Aggregator did 156 substitutions.
+Reduced MIP has 142 rows, 360 columns, and 968 nonzeros.
+Reduced MIP has 46 binaries, 234 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.10 ticks)
+Probing time = 0.00 sec. (0.10 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 142 rows, 360 columns, and 968 nonzeros.
+Reduced MIP has 46 binaries, 234 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.53 ticks)
+Probing time = 0.00 sec. (0.10 ticks)
+Clique table members: 5.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 2 threads.
+Root relaxation solution time = 0.00 sec. (1.32 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000    13666.6000              --- 
+*     0+    0                          335.8000    13666.6000              --- 
+      0     0     1082.0167     4      335.8000     1082.0167      177  222.22%
+*     0+    0                         1079.4000     1082.0167             0.24%
+*     0+    0                         1079.6000     1082.0167             0.22%
+      0     2     1082.0167     4     1079.6000     1082.0167      177    0.22%
+Elapsed time = 0.08 sec. (22.73 ticks, tree = 0.00 MB, solutions = 4)
+*     3+    3                         1080.0000     1082.0167             0.19%
+*    39+   39                         1081.8000     1082.0167             0.02%
+*  3247   132      integral     0     1081.8000     1081.8857     4744    0.01%
+Elapsed time = 0.37 sec. (140.05 ticks, tree = 0.06 MB, solutions = 7)
+
+Root node processing (before b&c):
+  Real time             =    0.08 sec. (23.05 ticks)
+Parallel b&c, 2 threads:
+  Real time             =    0.29 sec. (117.48 ticks)
+  Sync time (average)   =    0.01 sec.
+  Wait time (average)   =    0.02 sec.
+                          ------------
+Total (root+branch&cut) =    0.38 sec. (140.53 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1081.8
+avg_utility = 0.16559
+
+<<< post process
+
+
+<<< done
+

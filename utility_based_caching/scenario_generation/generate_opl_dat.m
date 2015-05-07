@@ -91,17 +91,18 @@ function generate_opl_dat(singledata)
 	% }BUILD MAX_STORAGE_AT_SINGLE_AS
 
 
-	
-
 	%{OBJECT MAPPING
 	% Each object is published by only one producer
-	objects_producer_mapping_per_objects = zeros(1,length(singledata.topology.ases) );
-	objects_producer_mapping_per_objects(1, singledata.topology.server) = 1;
-	objects_published_by_producers = repmat(objects_producer_mapping_per_objects, singledata.catalog_size, 1);
+	obj_srv_assignement = randint(singledata.catalog_size, 1, [1,length(singledata.topology.servers )]);
+	objects_published_by_producers = zeros(singledata.catalog_size,length(singledata.topology.ases) );
+	for server_idx = 1:length(singledata.topology.servers)
+		objects_assigned_to_srv = find(obj_srv_assignement == server_idx);
+		server_id = singledata.topology.servers(server_idx);
+		objects_published_by_producers(objects_assigned_to_srv, server_id ) = 1;
+	end %for
 	ObjectsPublishedByProducers = represent_in_opl( 
 				"ObjectsPublishedByProducers", objects_published_by_producers, false, "array" );
 	%}OBJECT MAPPING
-
 
 	cache_space_at_high_q = max(cache_space_per_quality(2:length(cache_space_per_quality) ) );
 	max_cache_storage = (singledata.catalog_size * singledata.cache_to_ctlg_ratio) ...
