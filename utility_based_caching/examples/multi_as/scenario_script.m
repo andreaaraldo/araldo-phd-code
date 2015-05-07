@@ -41,8 +41,8 @@ data.fixed_datas = [fixed_data];
 
 
 data.topologys = [];
-size_ = 50;
-edge_nodes = 25;
+size_ = 10;
+edge_nodes = 5;
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
 
@@ -69,7 +69,7 @@ topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 %data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [1000];
+data.catalog_sizes = [500];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
