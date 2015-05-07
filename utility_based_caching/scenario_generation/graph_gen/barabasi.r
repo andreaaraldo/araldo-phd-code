@@ -2,7 +2,7 @@
 args <- commandArgs(TRUE);
 
 if(length( args )!= 4 )
-	stop("correct usage:\n\t graph_gen.r <size> <tier3_cardinality> <capacity> <topology_seed>")
+	stop("correct usage:\n\t barabasi.r <size> <tier3_cardinality> <capacity> <topology_seed>")
 
 size = as.numeric(args[1] ); # number of nodes
 tier3_cardinality = as.numeric(args[2] );
