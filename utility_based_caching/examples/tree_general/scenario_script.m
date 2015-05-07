@@ -15,7 +15,7 @@ generate = true;
 run_ = true;
 
 % Define an experiment
-experiment_name = "multi_as";
+experiment_name = "tree_general";
 
 fixed_data.parallel_processes = 1;
 fixed_data.path_base = path_base;
@@ -41,42 +41,49 @@ data.fixed_datas = [fixed_data];
 
 
 data.topologys = [];
-<<<<<<< HEAD
-size_ = 20;
-edge_nodes = 10;
-=======
-size_ = 10;
-edge_nodes = 5;
->>>>>>> 29cf45a0876fc02ef270ee63740e80c059ed7c73
+children = 2;
+height = 4; # without considering the root
 topology.link_capacity = 490000;  % In Kbps
-topology_seed = 1;
 
+size_ = floor( ( children**(height+1) - 1 ) / (children-1) );
 topology.ases = 1:size_;
-command = sprintf("%s/scenario_generation/graph_gen.r %d %d %g %d", path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
+command = sprintf("%s/scenario_generation/graph_gen/tree.r %d %d %g", path_base, children, height, topology.link_capacity);
 [status,output] = system(command);
+if (status!=0) 
+	error("Error in generating the tree");
+end%if
 lines = strsplit(output, del="\n");
+
+topology.servers = [];
+servers_str = strsplit(lines{1}, " ");
+for idx = 1:length(servers_str )-1
+	topology.servers = [topology.servers, str2num( servers_str{idx} ) ];
+end %for
+
 topology.ASes_with_users = [];
-ASes_with_users_str = strsplit(lines{1}, " ");
+ASes_with_users_str = strsplit(lines{2}, " ");
 for idx = 1:length(ASes_with_users_str )-1
 	topology.ASes_with_users = [topology.ASes_with_users, str2num( ASes_with_users_str{idx} ) ];
 end %for
-topology.servers = topology.ASes_with_users;
-topology.arcs = lines{2};
+topology.arcs = lines{3};
 
 topology.ases_with_storage = 1:size_;
-topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
-		size_, edge_nodes, topology.link_capacity, topology_seed);
+topology.ases_with_storage(topology.servers) = [];
+topology.name = sprintf("height_%d-children_%d-capacity_%g-ubiquitous", ...
+		height, children, topology.link_capacity);
 %data.topologys = [data.topologys, topology];
 
 topology.ases_with_storage = topology.ASes_with_users;
-topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
-		size_, edge_nodes, topology.link_capacity, topology_seed);
+topology.name = sprintf("height_%d-children_%d-capacity_%g-edge", ...
+		height, children, topology.link_capacity);
 data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [500];
-data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
-						% the objects were at maximum quality
+data.catalog_sizes = [1000];
+
+% fraction of catalog we could store in the cache if all 
+% the objects were at maximum quality
+data.cache_to_ctlg_ratios = [length(topology.ASes_with_users)/100];	
 data.alphas = [1];
 
 
