@@ -41,18 +41,13 @@ data.fixed_datas = [fixed_data];
 
 
 data.topologys = [];
-<<<<<<< HEAD
-size_ = 20;
-edge_nodes = 10;
-=======
 size_ = 10;
 edge_nodes = 5;
->>>>>>> 29cf45a0876fc02ef270ee63740e80c059ed7c73
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
 
 topology.ases = 1:size_;
-command = sprintf("%s/scenario_generation/graph_gen.r %d %d %g %d", path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
+command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d", path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
 [status,output] = system(command);
 lines = strsplit(output, del="\n");
 topology.ASes_with_users = [];
@@ -66,7 +61,7 @@ topology.arcs = lines{2};
 topology.ases_with_storage = 1:size_;
 topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 		size_, edge_nodes, topology.link_capacity, topology_seed);
-%data.topologys = [data.topologys, topology];
+data.topologys = [data.topologys, topology];
 
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
@@ -74,7 +69,7 @@ topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [500];
+data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];

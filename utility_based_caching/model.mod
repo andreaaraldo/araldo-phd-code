@@ -3,7 +3,7 @@
 
 execute PARAMS {
   // cplex.epgap = 0.05;
-  // cplex.tilim = 600;
+  cplex.tilim = 3600;
 }
 
 tuple Arc {
