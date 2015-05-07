@@ -69,7 +69,7 @@ topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 data.topologys = [data.topologys, topology];
 
 data.seeds = [1];
-data.catalog_sizes = [11];
+data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
