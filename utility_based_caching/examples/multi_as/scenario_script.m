@@ -41,8 +41,8 @@ data.fixed_datas = [fixed_data];
 
 
 data.topologys = [];
-size_ = 50;
-edge_nodes = 25;
+size_ = 20;
+edge_nodes = 10;
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
 
