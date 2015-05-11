@@ -109,6 +109,7 @@ function generate_opl_dat(singledata)
 					* cache_space_at_high_q ; % IN MB
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
+	TimeLimit = sprintf( "TimeLimit = %g ;", singledata.timelimit);
 
 	f = fopen(singledata.dat_filename, "w");
 	if (f==-1)
@@ -126,6 +127,7 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",ObjRequests);
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
+	fprintf(f, "%s\n",TimeLimit);
 	fprintf(f, "%s\n",Strategy);
 	fclose(f);
 

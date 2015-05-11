@@ -75,8 +75,6 @@ function generate_request_files(run_list)
 				error ("Error in forking");
 			endif
 
-		else
-			printf("The fgile exists\n")
 
 		% else The request file already exists. Do nothing
 		endif % request_file existence
