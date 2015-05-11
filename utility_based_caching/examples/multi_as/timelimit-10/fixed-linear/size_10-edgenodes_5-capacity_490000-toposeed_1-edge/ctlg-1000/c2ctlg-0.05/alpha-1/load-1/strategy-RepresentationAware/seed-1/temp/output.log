@@ -1,0 +1,18 @@
+araldo_local@Cranberry-ws:/tmp$ oplrun model.mod scenario.dat 
+
+<<< setup
+
+
+<<< generate
+
+Presolve has eliminated 292297 rows and 548478 columns...
+Aggregator has done 127482 substitutions...
+Aggregator has done 146817 substitutions...
+Aggregator has done 164817 substitutions...
+Presolve time = 99,98 sec. (204714,08 ticks)
+
+<<< solve
+
+
+<<< no solution
+
