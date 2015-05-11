@@ -1,6 +1,10 @@
 
 // Versione cooperativa
 
+execute PARAMS {
+  // cplex.epgap = 0.05;
+  cplex.tilim = 7200;
+}
 
 tuple Arc {
 	key int sourceAS;

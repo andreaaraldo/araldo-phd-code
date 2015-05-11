@@ -1,10 +1,6 @@
 
 // Versione cooperativa
 
-execute PARAMS {
-  // cplex.epgap = 0.05;
-  cplex.tilim = 3600;
-}
 
 tuple Arc {
 	key int sourceAS;
@@ -66,7 +62,8 @@ int MaxQualityLevel;
 int RequestsForEachObject[Objects];
 //</aa>
 
-execute 
+
+execute
 {
   for (var as in ASes)
   	MaxEgressCapacityAtAS[as] = 0;
@@ -142,6 +139,12 @@ execute INPUT_CHECKS
 	}
 }
 //<aa>
+
+
+execute PARAMS {
+  // cplex.epgap = 0.05;
+  cplex.tilim = 7200;
+}
 
 
 /*********************************************************
