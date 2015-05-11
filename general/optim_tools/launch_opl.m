@@ -17,7 +17,9 @@ function launch_opl(working_directory, mod_file, dat_file)
 		endif
 	endif
 
-	command = sprintf("oplrun %s %s > %s", new_model_filename, new_dat_filename, output_file);
+	command = sprintf("oplrun %s %s &>%s", new_model_filename, new_dat_filename, output_file);
+	command
+	printf("Remove it \n");
 	if ( system(command ) != 0)
 		error(sprintf("ERROR in the execution of command %s", command) );
 	endif

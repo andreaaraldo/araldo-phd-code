@@ -4,6 +4,7 @@ function launch_runs(experiment_name, data);
 	run_scenarios(run_list);
 	seeds = unique([run_list.seed] );
 
+	error("I do not want to parse now");
 	##############################
 	##### PARSE OUTPUT ###########
 	##############################
@@ -45,7 +46,7 @@ function launch_runs(experiment_name, data);
 						seed_folder = sprintf("%s/seed-%g",singledata.parent_folder, seed);
 
 						file_to_read = sprintf("%s/objective.csv", seed_folder);
-						if (!length(utility_header))
+						if (!length(utility_header) )
 							f = fopen(file_to_read, "r");
 							utility_header = fgetl(f);
 							fclose(f);
