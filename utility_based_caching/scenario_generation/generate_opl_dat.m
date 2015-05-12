@@ -30,30 +30,6 @@ function generate_opl_dat(singledata)
 	%} RETRIEVE_OBJ_REQUESTS
 
 
-	% GENERATE_STRATEGY{
-	strategy_num = 0;
-	switch (singledata.strategy)
-		 case "RepresentationAware"
-			strategy_num = 0;
-		 case "NoCache"
-			strategy_num = 1;
-		 case "AlwaysLowQuality"
-			strategy_num = 2;
-		 case "AlwaysHighQuality"
-			strategy_num = 3;
-		 case "AllQualityLevels"
-			strategy_num = 4;
-		 case "DedicatedCache"
-			strategy_num = 5;
-		 case "ProportionalDedicatedCache"
-			strategy_num = 6;
-		otherwise
-			error( sprintf("Strategy %s is invalid" ,singledata.strategy) );	
-	end %swictch
-	Strategy = sprintf("Strategy = %d ;", strategy_num);
-	% }GENERATE_STRATEGY
-
-
 	RatePerQuality = represent_in_opl( "RatePerQuality", singledata.fixed_data.rate_per_quality, true, "array" );
 
 	% {BUILD CACHE_SPACE_PER_QUALITY
@@ -109,6 +85,7 @@ function generate_opl_dat(singledata)
 					* cache_space_at_high_q ; % IN MB
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
+	TimeLimit = sprintf( "TimeLimit = %g ;", singledata.timelimit);
 
 	f = fopen(singledata.dat_filename, "w");
 	if (f==-1)
@@ -126,7 +103,7 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",ObjRequests);
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
-	fprintf(f, "%s\n",Strategy);
+	fprintf(f, "%s\n",TimeLimit);
 	fclose(f);
 
 	printf("File %s written\n", singledata.dat_filename);

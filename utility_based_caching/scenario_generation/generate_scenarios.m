@@ -10,7 +10,6 @@ function generate_scenarios(run_list)
 		end %if
 	end % for idx_run (generating folders)
 
-	printf("Going to genereate request_files\n");
 	generate_request_files(run_list);
 
 	for idx_run = 1:length(run_list)
@@ -21,6 +20,8 @@ function generate_scenarios(run_list)
 				generate_opl_dat(singledata);
 		% else Reuse singledata.dat_filename
 		end % if existence
+
+		generate_mod_file(singledata);
 
 	end % idx_run
 end % function

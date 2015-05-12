@@ -49,7 +49,9 @@ function generate_request_files(run_list)
 
 					for obj = 1:singledata.catalog_size
 						req_num = requests_at_as(obj);
-						ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
+						if req_num>0
+							ObjRequests = sprintf("%s <%g,%g,%g>,",ObjRequests, obj, as, req_num);
+						end %if
 					endfor
 				endfor
 				ObjRequests = sprintf("%s};",ObjRequests);
@@ -75,8 +77,6 @@ function generate_request_files(run_list)
 				error ("Error in forking");
 			endif
 
-		else
-			printf("The fgile exists\n")
 
 		% else The request file already exists. Do nothing
 		endif % request_file existence

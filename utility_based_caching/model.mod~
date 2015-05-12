@@ -1,10 +1,6 @@
 
 // Versione cooperativa
 
-execute PARAMS {
-  // cplex.epgap = 0.05;
-  // cplex.tilim = 600;
-}
 
 tuple Arc {
 	key int sourceAS;
@@ -25,17 +21,17 @@ tuple ObjRequest {
 	int numOfObjectRequests;
 }	
 
-/*********************************************************
-* Basic Sets
-*********************************************************/
+//########################################################*
+// Basic Sets
+//########################################################*/
 
 {int} ASes = ...;
 {int} Objects = ...;
 {int} QualityLevels = ...;
 
-/*********************************************************
-* Input Parameters
-*********************************************************/
+//########################################################*
+// Input Parameters
+//########################################################*/
 
 {Arc} Arcs with sourceAS in ASes, targetAS in ASes = ...;
 {ObjRequest} ObjRequests with object in Objects, sourceAS in ASes = ...;
@@ -46,17 +42,8 @@ float UtilityPerQuality[QualityLevels] = ...;
 int   ObjectsPublishedByProducers[Objects][ASes] = ...;
 float MaxCacheStorageAtSingleAS[ASes] = ...;
 float MaxCacheStorage = ...;
+float TimeLimit = ...;
 
-//<aa>
-// 0 for Representation Aware
-// 1 for No Cache
-// 2 for Always Low Quality, 
-// 3 for Always High Quality
-// 4 for All Quality Levels
-// 5 for Dedicated Cache
-// 6 for ProportionalDedicatedCache
-int Strategy = ...;
-//</aa>
 
 
 float MaxEgressCapacityAtAS[ASes];
@@ -66,7 +53,8 @@ int MaxQualityLevel;
 int RequestsForEachObject[Objects];
 //</aa>
 
-execute 
+
+execute
 {
   for (var as in ASes)
   	MaxEgressCapacityAtAS[as] = 0;
@@ -110,43 +98,46 @@ execute
 }
 
 //<aa>
-/*********************************************************
-* Input checks
-*********************************************************/
-execute INPUT_CHECKS
-{
-	for (var q in QualityLevels)
-		if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
-		{
-			writeln ("ERROR: Only quality levels 0:5 are admissible");
-			exit;
-		}
+/*
+	//########################################################
+	// Input checks
+	//########################################################/
+	execute INPUT_CHECKS
+	{
+		for (var q in QualityLevels)
+			if (q != 0 && q!=1 && q!=2 && q!=3 && q!=4 && q!=5)
+			{
+				writeln ("ERROR: Only quality levels 0:5 are admissible");
+				exit;
+			}
 	
-	for (var o in Objects)
-	{
-		var sum_ = 0;
-		for ( var as_ in ASes )
-			sum_ += ObjectsPublishedByProducers[o][as_];
-			
-		if ( sum_ < 1 )
+		for (var o in Objects)
 		{
-			writeln ("ERROR: object ", o, " is published by no AS");
-			exit;
-		}
-	}	
+			var sum_ = 0;
+			for ( var as_ in ASes )
+				sum_ += ObjectsPublishedByProducers[o][as_];
+			
+			if ( sum_ < 1 )
+			{
+				writeln ("ERROR: object ", o, " is published by no AS");
+				exit;
+			}
+		}	
 
-	if (Strategy < 0 || Strategy > 6)
-	{
-		writeln("ERROR: Strategy ", Strategy, " is not valid");
-		exit;
 	}
-}
+*/
 //<aa>
 
 
-/*********************************************************
-* Decision variables
-*********************************************************/
+execute PARAMS {
+  // cplex.epgap = 0.05;
+  cplex.tilim = TimeLimit;
+}
+
+
+//#######################################################*
+// Decision variables
+//########################################################*/
 
 dvar int+    ObjectRequestsServed[ObjRequests][QualityLevels];
 dvar boolean ObjectCached[Objects][QualityLevels][ASes];
@@ -155,9 +146,9 @@ dvar float+  TrafficDemand[ObjRequests][QualityLevels];
 dvar float+  FlowServedByProducers[ObjRequests][QualityLevels][ASes];
 dvar float+  FlowServedByCache[ObjRequests][QualityLevels][ASes];
 
-/*********************************************************
-* ILP MODEL: Objective Function
-*********************************************************/
+//########################################################*
+// ILP MODEL: Objective Function
+//########################################################*/
 
 maximize 
 	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] ) ;
@@ -206,43 +197,53 @@ subject to {
 	ctTotalCacheSize:
 	  	sum ( o in Objects, q in QualityLevels, sourceAS in ASes ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorage;
 
-	// <aa> Different strategies
+
+	// ####### OTHER STRATEGIES ########
+	/*NoCache
 	forall (o in Objects, q in QualityLevels, v in ASes)
 	cNoCache:
-		(Strategy == 1) => ObjectCached[o][q][v] == 0;
+		ObjectCached[o][q][v] == 0;
+	NoCache*/
 
+	/*AlwaysLowQuality
 	forall (o in Objects, v in ASes, q in QualityLevels : q != 1 )
 	cAlwaysLowQuality:
-		(Strategy == 2) => ObjectCached[o][q][v] == 0;
+		ObjectCached[o][q][v] == 0;
+	AlwaysLowQuality*/
 
-
+	/*AlwaysHighQuality
 	forall (o in Objects, v in ASes, q in QualityLevels : q != MaxQualityLevel )
 	cAlwaysHighQuality:
-		(Strategy == 3 ) => ObjectCached[o][q][v] == 0;
+		ObjectCached[o][q][v] == 0;
+	AlwaysHighQuality*/
 
+	/*AllQualityLevels
 	forall (o in Objects, v in ASes, q1 in QualityLevels : q1!=0, q2 in QualityLevels: q2!=0)
 	cAllQualityLevels:
-		(Strategy == 4) => ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
+		ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
+	AllQualityLevels*/
 
-
+	/*DedicatedCache
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cDedicatedCache:
-	  	(Strategy == 5) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
+	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
+	DedicatedCache*/
 
+	/*ProportionalDedicatedCache
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cProportionalDedicatedCache:
-	  	(Strategy == 6) => sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
+	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
+	ProportionalDedicatedCache*/
 
-	// </aa>
 }
 
 
 
-/*********************************************************
-* PRINT RESULTS
-*********************************************************/
+//########################################################
+//######## PRINT RESULTS #################################
+//########################################################
 int RequestsPerQuality[Objects][QualityLevels];
 
 
@@ -250,9 +251,9 @@ int RequestsPerQuality[Objects][QualityLevels];
 
 execute DISPLAY 
 {
-  	/************************************
-  	 *** Print objective function
-  	 ************************************/
+  	//###################################
+  	//### Print objective function
+  	//###################################
 	var max_utility = -1000;
 	for (q in QualityLevels)
 		if(UtilityPerQuality[q] > max_utility) max_utility=UtilityPerQuality[q];
@@ -279,16 +280,19 @@ execute DISPLAY
   	f.write(avg_utility,"\n");
   	f.close;
 
+/*
   	var f = new IloOplOutputFile("total_utility.csv");
   	f.open;
 	f.write("total_utility\n");
   	f.write(total_utility,"\n");
   	f.close;
+*/
 
-  
-  	/************************************
-  	 *** Print cached quality levels *****
-  	 ************************************/
+
+/*
+  	//###################################*
+  	//### Print cached quality levels ###*
+  	//###################################*
 	var f = new IloOplOutputFile("quality_cached.csv");
 	f.open;
 	f.write("AS ");
@@ -309,11 +313,14 @@ execute DISPLAY
 		f.write("\n");
 	}
 	f.close
+*/
+
+
 	
-	
-	 /************************************
-  	 *** Print cached quality levels per rank
-  	 ************************************/
+/*
+	 //########################################**
+  	 //### Print cached quality levels per rank *
+  	 //########################################**
 	for (var q in QualityLevels)
 	{
 		if (q!=0)
@@ -335,8 +342,10 @@ execute DISPLAY
 			f.close;
 		}		
 	}
+*/
 
 
+/*
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
 	f.write("rank");
@@ -362,11 +371,41 @@ execute DISPLAY
 		f.write("\n");
 	}
 	f.close;
+*/
 
 
-	/************************************
-  	 *** Print served quality levels per rank
-  	 ************************************/
+/*
+	//###################################*
+  	//### Print intersection ###########**
+	//###################################*
+	var f = new IloOplOutputFile("intersection.csv");
+	f.open;
+	f.write("#rank requests intersection\n");
+	for (var o in Objects)
+	{
+		f.write(o," ",RequestsForEachObject[o]," ");
+		var it_is_cached = 1;
+		for (var as in ASes)
+		{	
+			if ( MaxCacheStorageAtSingleAS[as]>0 )
+			{
+				var it_is_cached_in_this_as = 0;
+				for (var q in QualityLevels)
+					it_is_cached_in_this_as += ObjectCached[o][q][as];
+				it_is_cached = it_is_cached * it_is_cached_in_this_as;  
+ 			}
+		}//as loop
+		f.write( it_is_cached>0 ? 1:0);
+		f.write("\n");
+	} //o loop
+	f.close;
+*/
+
+
+/*
+	//########################################**
+  	//### Print served quality levels per rank *
+  	//########################################**
   	// Initialize the data structure
   	for (var o in Objects) for (var q in QualityLevels)
   		RequestsPerQuality[o][q] = 0;
@@ -392,12 +431,14 @@ execute DISPLAY
 		var q_avg = q_tot / partial_sum; 
 		f.write(" ",q_avg,"\n");
 	}	
-	
 	f.close;
+*/
 
-	/************************************
-  	 *** Print usatisfied requests
-  	 ************************************/
+
+/*
+	//###################################*
+  	//### Print usatisfied requests ######
+  	//###################################*
   	 var total_requests = 0;
   	 var satisfied_requests = 0;
   	 for (var r in ObjRequests)
@@ -416,10 +457,13 @@ execute DISPLAY
 	f.write("unsatisfied_ratio\n");
 	f.write(unsatisfied_part,"\n");
 	f.close
+*/
 
-	/************************************
-  	 *** Print link load
-  	 ************************************/
+
+/*
+	//####################################
+  	//### Print link load ################
+  	//###################################*
 	var f = new IloOplOutputFile("link_load.csv");
 	f.open;
 	f.write("link load\n");
@@ -433,11 +477,14 @@ execute DISPLAY
 		f.write(a.sourceAS,"-",a.targetAS," ",load,"\n");
 	}
 	f.close
+*/
 
 
-	/************************************
-  	 *** Print cache sizes
-  	 ************************************/
+
+/*
+	//###################################*
+  	//### Print cache sizes ##############
+  	//###################################*
 	var f = new IloOplOutputFile("cache_sizes.csv");
 	f.open;
 	f.write("node size\n");
@@ -450,7 +497,7 @@ execute DISPLAY
 		f.write(a," ",size,"\n");
 	}
 	f.close
-
+*/
 }
 
 
