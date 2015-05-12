@@ -32,7 +32,7 @@ fixed_data.name = "cubic";
 
 fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
@@ -61,7 +61,7 @@ topology.arcs = lines{2};
 topology.ases_with_storage = 1:size_;
 topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 		size_, edge_nodes, topology.link_capacity, topology_seed);
-%data.topologys = [data.topologys, topology];
+data.topologys = [data.topologys, topology];
 
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
