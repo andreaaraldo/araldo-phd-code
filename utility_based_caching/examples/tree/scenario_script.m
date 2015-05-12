@@ -59,6 +59,7 @@ for link_capacity = [490000] % In Kbps
 	end % peer_link
 end % link_capacity
 
+data.timelimits = [1e75]; # default 1e75
 data.seeds = [2,3];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [2/100];	% fraction of catalog we could store in the cache if all 
