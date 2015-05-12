@@ -199,7 +199,7 @@ subject to {
 
 
 	// ####### OTHER STRATEGIES ########
-	/*NoCache
+	 
 	forall (o in Objects, q in QualityLevels, v in ASes)
 	cNoCache:
 		ObjectCached[o][q][v] == 0;

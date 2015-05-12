@@ -199,11 +199,11 @@ subject to {
 
 
 	// ####### OTHER STRATEGIES ########
-	/*NoCache
+	 
 	forall (o in Objects, q in QualityLevels, v in ASes)
 	cNoCache:
 		ObjectCached[o][q][v] == 0;
-	NoCache*/
+	 
 
 	/*AlwaysLowQuality
 	forall (o in Objects, v in ASes, q in QualityLevels : q != 1 )
