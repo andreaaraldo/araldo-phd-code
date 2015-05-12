@@ -17,6 +17,7 @@ run_ = true;
 % Define an experiment
 experiment_name = "tree_general";
 
+data.fixed_datas = [];
 fixed_data.parallel_processes = 1;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
@@ -36,8 +37,7 @@ fixed_data.name = "power4";
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
-data.fixed_datas = [fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 data.topologys = [];
@@ -71,13 +71,14 @@ topology.ases_with_storage = 1:size_;
 topology.ases_with_storage(topology.servers) = [];
 topology.name = sprintf("height_%d-children_%d-capacity_%g-ubiquitous", ...
 		height, children, topology.link_capacity);
-data.topologys = [data.topologys, topology];
+%data.topologys = [data.topologys, topology];
 
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("height_%d-children_%d-capacity_%g-edge", ...
 		height, children, topology.link_capacity);
-%data.topologys = [data.topologys, topology];
+data.topologys = [data.topologys, topology];
 
+data.timelimits = [1e75]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [1000];
 
