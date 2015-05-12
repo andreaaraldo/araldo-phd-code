@@ -68,6 +68,7 @@ topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 		size_, edge_nodes, topology.link_capacity, topology_seed);
 data.topologys = [data.topologys, topology];
 
+data.solutiongaps = [0.99]; # default 0.0001 (0.01%)
 data.timelimits = [1e75]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [1000];

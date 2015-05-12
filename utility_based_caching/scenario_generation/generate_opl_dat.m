@@ -86,6 +86,7 @@ function generate_opl_dat(singledata)
 
 	MaxCacheStorage = sprintf( "MaxCacheStorage = %g ;", max_cache_storage);
 	TimeLimit = sprintf( "TimeLimit = %g ;", singledata.timelimit);
+	SolutionGap = sprintf( "SolutionGap = %g ;", singledata.solutiongap);
 
 	f = fopen(singledata.dat_filename, "w");
 	if (f==-1)
@@ -104,6 +105,7 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",MaxCacheStorageAtSingleAS);
 	fprintf(f, "%s\n",MaxCacheStorage);
 	fprintf(f, "%s\n",TimeLimit);
+	fprintf(f, "%s\n",SolutionGap);
 	fclose(f);
 
 	printf("File %s written\n", singledata.dat_filename);

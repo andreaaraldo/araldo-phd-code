@@ -130,7 +130,7 @@ execute
 
 
 execute PARAMS {
-  // cplex.epgap = 0.05;
+  cplex.epgap = SolutionGap;
   cplex.tilim = TimeLimit;
 }
 
