@@ -1,0 +1,40 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,02 sec. (16,49 ticks)
+Tried aggregator 8 times.
+MIP Presolve eliminated 109411 rows and 299368 columns.
+MIP Presolve modified 33039 coefficients.
+Aggregator did 65219 substitutions.
+Reduced MIP has 76920 rows, 166534 columns, and 484792 nonzeros.
+Reduced MIP has 21422 binaries, 4656 generals, 0 SOSs, and 0 indicators.
+Presolve time = 9,39 sec. (7143,99 ticks)
+Probing time = 0,07 sec. (7,76 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 76920 rows, 166534 columns, and 484792 nonzeros.
+Reduced MIP has 21422 binaries, 4656 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,41 sec. (265,36 ticks)
+
+Root node processing (before b&c):
+  Real time             =   10,03 sec. (7517,08 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =   10,03 sec. (7517,08 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 0
+avg_utility = 0
+
+<<< post process
+
+
+<<< done
+
