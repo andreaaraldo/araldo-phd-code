@@ -43,6 +43,7 @@ int   ObjectsPublishedByProducers[Objects][ASes] = ...;
 float MaxCacheStorageAtSingleAS[ASes] = ...;
 float MaxCacheStorage = ...;
 float TimeLimit = ...;
+float SolutionGap = ...;
 
 
 
