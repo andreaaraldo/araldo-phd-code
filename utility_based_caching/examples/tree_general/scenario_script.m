@@ -32,7 +32,7 @@ fixed_data.name = "cubic";
 
 fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-%data.fixed_datas = [fixed_data];
+data.fixed_datas = [fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
@@ -54,6 +54,8 @@ if (status!=0)
 end%if
 lines = strsplit(output, del="\n");
 
+
+#{TOPOLOGY
 topology.servers = [];
 servers_str = strsplit(lines{1}, " ");
 for idx = 1:length(servers_str )-1
@@ -76,15 +78,17 @@ data.topologys = [data.topologys, topology];
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("height_%d-children_%d-capacity_%g-edge", ...
 		height, children, topology.link_capacity);
-%data.topologys = [data.topologys, topology];
+data.topologys = [data.topologys, topology];
+#}TOPOLOGY
 
+data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
 data.timelimits = [1e75]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [1000];
 
 % fraction of catalog we could store in the cache if all 
 % the objects were at maximum quality
-data.cache_to_ctlg_ratios = [length(topology.ASes_with_users)/100];	
+data.cache_to_ctlg_ratios = [length(topology.ASes_with_users)/100, 1/100];	
 data.alphas = [1];
 
 
