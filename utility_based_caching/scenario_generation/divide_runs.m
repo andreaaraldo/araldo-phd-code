@@ -9,6 +9,7 @@ function run_list = divide_runs(experiment_name, data)
 	for solutiongap = data.solutiongaps
 	for fixed_data = data.fixed_datas
 	for topology = data.topologys
+	for idx_cache_allocation = 1:length(data.cache_allocations)
 	for loadd = data.loadds
 	for idx_strategy = 1:length(data.strategys)
 		strategy = data.strategys{idx_strategy};
@@ -20,6 +21,7 @@ function run_list = divide_runs(experiment_name, data)
 		singledata.solutiongap = solutiongap;
 		singledata.fixed_data = fixed_data;
 		singledata.topology = topology;
+		singledata.cache_allocation = data.cache_allocations{idx_cache_allocation};
 		singledata.loadd = loadd;
 		singledata.strategy = strategy;
 		[singledata.parent_folder, singledata.seed_folder, singledata.request_file] = ...
@@ -30,6 +32,7 @@ function run_list = divide_runs(experiment_name, data)
 		run_list = [run_list, singledata];
 	end % startegy
 	end % loadd
+	end % cache_allocation
 	end % topology
 	end % fixed_data
 	end % solutiongap

@@ -52,7 +52,18 @@ function generate_opl_dat(singledata)
 		cache_space_at_high_q = max(cache_space_per_quality(2:length(cache_space_per_quality) ) );
 		max_cache_storage = (singledata.catalog_size * singledata.cache_to_ctlg_ratio) ...
 							* cache_space_at_high_q ; % IN MB
-		single_cache_storage = max_cache_storage / length(singledata.topology.ases_with_storage);
+		single_cache_storage = [];
+		switch(singledata.cache_allocation)
+			case "free"
+				single_cache_storage = max_cache_storage;
+
+			case "constrained"
+				single_cache_storage = max_cache_storage / length(singledata.topology.ases_with_storage);
+
+			otherwise
+				error(sprintf("%s is not a valid cache allocation", singledata.cache_allocation) );
+		end%switch 
+
 		max_storage_at_single_as = -1 .* ones(1,max(singledata.topology.ases) );
 		for as_ = singledata.topology.ases
 			if (any(singledata.topology.ases_with_storage == as_) )

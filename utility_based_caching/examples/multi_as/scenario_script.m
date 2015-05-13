@@ -37,9 +37,9 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
-
+%{TOPOLOGY
 data.topologys = [];
 size_ = 10;
 edge_nodes = 5;
@@ -66,8 +66,10 @@ data.topologys = [data.topologys, topology];
 topology.ases_with_storage = topology.ASes_with_users;
 topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 		size_, edge_nodes, topology.link_capacity, topology_seed);
-data.topologys = [data.topologys, topology];
+%data.topologys = [data.topologys, topology];
+%}TOPOLOGY
 
+data.cache_allocations = {"free", "constrained"};
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
 data.timelimits = [1e75]; # default 1e75
 data.seeds = [1];
