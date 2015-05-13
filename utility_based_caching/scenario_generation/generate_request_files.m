@@ -13,6 +13,15 @@ function generate_request_files(run_list)
 				% One child process finished
 				active_children--;
 			endif
+
+			% I write a void file just to signal that there is already some guy
+			% taking care of writing it
+			f_req = fopen(singledata.request_file, "w");
+			fprintf(f_req, "\n");
+			fclose(f_req);
+			
+			
+
 			pid = fork();
 			if (pid==0)
 				% I am the child process and I generate the run
