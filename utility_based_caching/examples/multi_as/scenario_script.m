@@ -42,7 +42,7 @@ fixed_data.name = "linear";
 %{TOPOLOGY
 data.topologys = [];
 size_ = 10;
-edge_nodess = [5 10];
+edge_nodess = [10];
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
 
@@ -68,11 +68,11 @@ for edge_nodes = edge_nodess
 	topology.ases_with_storage = topology.ASes_with_users;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	data.topologys = [data.topologys, topology];
+	#data.topologys = [data.topologys, topology];
 end % for edge_nodes
 %}TOPOLOGY
 
-data.cache_allocations = {"constrained"};
+data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
 data.timelimits = [7200]; # default 1e75
 data.seeds = [1];
@@ -90,9 +90,6 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"RepresentationAware"};
-data.strategys = {"NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-
 
 launch_runs(experiment_name, data);
 
