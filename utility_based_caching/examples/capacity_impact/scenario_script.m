@@ -32,12 +32,12 @@ fixed_data.name = "cubic";
 
 fixed_data.utilities = [0**(1/4)/5**(1/4), 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
