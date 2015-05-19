@@ -18,7 +18,7 @@ run_ = true;
 experiment_name = "multi_as";
 
 data.fixed_datas = [];
-fixed_data.parallel_processes = 7;
+fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -42,38 +42,41 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 %{TOPOLOGY
 data.topologys = [];
 size_ = 10;
-edge_nodes = 5;
+edge_nodess = [5 10];
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
 
 topology.ases = 1:size_;
-command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d", path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
-[status,output] = system(command);
-lines = strsplit(output, del="\n");
-topology.ASes_with_users = [];
-ASes_with_users_str = strsplit(lines{1}, " ");
-for idx = 1:length(ASes_with_users_str )-1
-	topology.ASes_with_users = [topology.ASes_with_users, str2num( ASes_with_users_str{idx} ) ];
-end %for
-topology.servers = topology.ASes_with_users;
-topology.arcs = lines{2};
+for edge_nodes = edge_nodess
+	command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d",...
+				 path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
+	[status,output] = system(command);
+	lines = strsplit(output, del="\n");
+	topology.ASes_with_users = [];
+	ASes_with_users_str = strsplit(lines{1}, " ");
+	for idx = 1:length(ASes_with_users_str )-1
+		topology.ASes_with_users = [topology.ASes_with_users, str2num( ASes_with_users_str{idx} ) ];
+	end %for
+	topology.servers = topology.ASes_with_users;
+	topology.arcs = lines{2};
 
-topology.ases_with_storage = 1:size_;
-topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
-		size_, edge_nodes, topology.link_capacity, topology_seed);
-data.topologys = [data.topologys, topology];
+	topology.ases_with_storage = 1:size_;
+	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
+			size_, edge_nodes, topology.link_capacity, topology_seed);
+	%data.topologys = [data.topologys, topology];
 
-topology.ases_with_storage = topology.ASes_with_users;
-topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
-		size_, edge_nodes, topology.link_capacity, topology_seed);
-data.topologys = [data.topologys, topology];
+	topology.ases_with_storage = topology.ASes_with_users;
+	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
+			size_, edge_nodes, topology.link_capacity, topology_seed);
+	data.topologys = [data.topologys, topology];
+end % for edge_nodes
 %}TOPOLOGY
 
-data.cache_allocations = {"free", "constrained"};
+data.cache_allocations = {"constrained"};
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
-data.timelimits = [18000]; # default 1e75
+data.timelimits = [7200]; # default 1e75
 data.seeds = [1];
-data.catalog_sizes = [1000];
+data.catalog_sizes = [10000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];

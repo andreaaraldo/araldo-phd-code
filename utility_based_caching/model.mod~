@@ -318,7 +318,7 @@ execute DISPLAY
 
 
 	
-
+/*
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
@@ -343,10 +343,13 @@ execute DISPLAY
 			f.close;
 		}		
 	}
-
+*/
 
 
 /*
+	 //########################################**
+  	 //### Print avg cached quality levels per rank *
+  	 //########################################**
 	var f = new IloOplOutputFile("quality_cached_per_rank.csv");
 	f.open;
 	f.write("rank");
@@ -403,7 +406,7 @@ execute DISPLAY
 */
 
 
-
+/*
 	//########################################**
   	//### Print served quality levels per rank *
   	//########################################**
@@ -433,7 +436,7 @@ execute DISPLAY
 		f.write(" ",q_avg,"\n");
 	}	
 	f.close;
-
+*/
 
 
 /*
@@ -498,7 +501,7 @@ execute DISPLAY
 		f.write(a," ",size,"\n");
 	}
 	f.close
-/*
+*/
 }
 
 
