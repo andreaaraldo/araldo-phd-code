@@ -1,0 +1,48 @@
+
+<<< setup
+
+
+<<< generate
+
+Aggregator has done 48833 substitutions...
+Tried aggregator 11 times.
+MIP Presolve eliminated 1171331 rows and 860645 columns.
+MIP Presolve modified 53943 coefficients.
+Aggregator did 70019 substitutions.
+Reduced MIP has 119881 rows, 246777 columns, and 724454 nonzeros.
+Reduced MIP has 41341 binaries, 3822 generals, 0 SOSs, and 0 indicators.
+Presolve time = 19,86 sec. (16201,28 ticks)
+Found incumbent of value 293,000000 after 20,36 sec. (16603,64 ticks)
+Probing time = 0,07 sec. (22,16 ticks)
+Tried aggregator 1 time.
+Presolve time = 0,38 sec. (302,01 ticks)
+Probing time = 0,28 sec. (22,16 ticks)
+Clique table members: 1769.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 4,44 sec. (3205,55 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                          293,0000    20277,0000    15488     --- 
+*     0+    0                          833,0000    20277,0000    15488     --- 
+*     0+    0                          923,4000    20277,0000    15488     --- 
+*     0+    0                          972,2000    20277,0000    15488     --- 
+*     0+    0                         1006,6000    20277,0000    15488     --- 
+*     0+    0                         1032,2000    20277,0000    15488     --- 
+*     0+    0                         1055,4000    20277,0000    15488     --- 
+*     0+    0                         1075,4000    20277,0000    15488     --- 
+      0     0     6759,0000   936     1075,4000     6759,0000    15488  528,51%
+*     0+    0                         5991,0000     6759,0000    17377   12,82%
+      0     0     6759,0000   941     5991,0000    Cuts: 2482    17377   12,82%
+      0     0     6723,3405   811     5991,0000    Cuts: 2630    86115   12,22%
+*     0+    0                         6467,0000     6723,3405   157326    3,96%
+      0     0     6713,7177   711     6467,0000    Cuts: 1904   157326    3,82%
+*     0+    0                         6531,4000     6713,7177   157326    2,79%
+      0     0     6713,7177   635     6531,4000    Cuts: 1562   213308    2,79%
+      0     0     6713,7027   480     6531,4000    Cuts: 1506   260023    2,79%
+      0     0     6713,6411   383     6531,4000    Cuts: 1166   266710    2,79%
+      0     0     6712,0105   428     6531,4000     Cuts: 831   294260    2,77%
+      0     0     6685,6395   453     6531,4000     Cuts: 947   309976    2,36%
