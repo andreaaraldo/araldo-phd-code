@@ -37,7 +37,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
@@ -46,7 +46,7 @@ topology.ases_with_storage = [2];
 topology.ASes_with_users = [3];
 topology.servers = [1];
 topology.link_capacity = 490000; %default link cap in Kbps
-incapacity_scales = [0.1, 0.5, 1, 2, 4, 6, 8, 10];
+incapacity_scales = [0.5, 1, 2];
 outcapacity_scales = incapacity_scales;
 for outcapacity_scale = incapacity_scales
 for incapacity_scale = incapacity_scales
@@ -60,9 +60,9 @@ end % outcapacity_scales
 
 data.cache_allocations = {"free"};
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
-data.timelimits = [18000]; # default 1e75
+data.timelimits = [7200]; # default 1e75
 data.seeds = [1];
-data.catalog_sizes = [1000];
+data.catalog_sizes = [10000];
 data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
