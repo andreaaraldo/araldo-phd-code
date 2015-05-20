@@ -22,7 +22,7 @@ Clique table members: 606.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 8 threads.
-Root relaxation solution time = 0,19 sec. (247,41 ticks)
+Root relaxation solution time = 0,14 sec. (247,41 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -37,13 +37,13 @@ Mixed integer rounding cuts applied:  1
 Gomory fractional cuts applied:  1
 
 Root node processing (before b&c):
-  Real time             =    1,78 sec. (2433,04 ticks)
+  Real time             =    1,65 sec. (2433,04 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    1,78 sec. (2433,04 ticks)
+Total (root+branch&cut) =    1,65 sec. (2433,04 ticks)
 
 <<< solve
 

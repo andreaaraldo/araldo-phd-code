@@ -37,13 +37,13 @@ Mixed integer rounding cuts applied:  1
 Gomory fractional cuts applied:  1
 
 Root node processing (before b&c):
-  Real time             =    0,70 sec. (1103,73 ticks)
+  Real time             =    0,82 sec. (1103,73 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    0,70 sec. (1103,73 ticks)
+Total (root+branch&cut) =    0,82 sec. (1103,73 ticks)
 
 <<< solve
 

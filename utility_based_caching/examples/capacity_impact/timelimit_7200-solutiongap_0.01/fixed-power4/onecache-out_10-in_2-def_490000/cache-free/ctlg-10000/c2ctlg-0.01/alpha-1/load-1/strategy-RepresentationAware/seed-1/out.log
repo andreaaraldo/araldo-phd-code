@@ -38,13 +38,13 @@ Flow cuts applied:  2
 Mixed integer rounding cuts applied:  4
 
 Root node processing (before b&c):
-  Real time             =    1,48 sec. (2794,06 ticks)
+  Real time             =    1,50 sec. (2794,06 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    1,48 sec. (2794,06 ticks)
+Total (root+branch&cut) =    1,50 sec. (2794,06 ticks)
 
 <<< solve
 

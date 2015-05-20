@@ -33,20 +33,20 @@ Root relaxation solution time = 0,13 sec. (242,33 ticks)
       0     0     1427,0749     8        0,0000       Cuts: 3      129     --- 
 *     0+    0                         1427,0749     1427,0749             0,00%
 *     0     0      integral     0     1427,0749     1427,0749      129    0,00%
-Elapsed time = 0,66 sec. (807,25 ticks, tree = 0,00 MB, solutions = 2)
+Elapsed time = 0,67 sec. (807,25 ticks, tree = 0,00 MB, solutions = 2)
 
 Cover cuts applied:  1
 Flow cuts applied:  1
 Gomory fractional cuts applied:  2
 
 Root node processing (before b&c):
-  Real time             =    0,67 sec. (815,60 ticks)
+  Real time             =    0,68 sec. (815,60 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    0,67 sec. (815,60 ticks)
+Total (root+branch&cut) =    0,68 sec. (815,60 ticks)
 
 <<< solve
 

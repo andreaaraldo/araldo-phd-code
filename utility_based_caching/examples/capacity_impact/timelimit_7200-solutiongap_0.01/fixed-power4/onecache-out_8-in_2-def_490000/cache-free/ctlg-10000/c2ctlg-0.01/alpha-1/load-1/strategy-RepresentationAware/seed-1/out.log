@@ -37,13 +37,13 @@ Root relaxation solution time = 0,13 sec. (237,64 ticks)
 Mixed integer rounding cuts applied:  3
 
 Root node processing (before b&c):
-  Real time             =    1,15 sec. (1976,81 ticks)
+  Real time             =    1,14 sec. (1976,81 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    1,15 sec. (1976,81 ticks)
+Total (root+branch&cut) =    1,14 sec. (1976,81 ticks)
 
 <<< solve
 

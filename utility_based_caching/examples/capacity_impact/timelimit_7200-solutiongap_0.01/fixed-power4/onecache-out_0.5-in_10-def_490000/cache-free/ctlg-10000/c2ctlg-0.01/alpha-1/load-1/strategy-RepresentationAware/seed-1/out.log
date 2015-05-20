@@ -32,13 +32,13 @@ Root relaxation solution time = 0,09 sec. (163,64 ticks)
 *     0+    0                          545,6918      546,1377             0,08%
 
 Root node processing (before b&c):
-  Real time             =    0,54 sec. (654,46 ticks)
+  Real time             =    0,51 sec. (654,46 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    0,54 sec. (654,46 ticks)
+Total (root+branch&cut) =    0,51 sec. (654,46 ticks)
 
 <<< solve
 

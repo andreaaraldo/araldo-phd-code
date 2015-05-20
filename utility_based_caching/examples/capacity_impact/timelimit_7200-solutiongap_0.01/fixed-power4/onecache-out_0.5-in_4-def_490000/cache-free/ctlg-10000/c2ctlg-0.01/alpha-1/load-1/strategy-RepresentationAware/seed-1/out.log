@@ -11,7 +11,7 @@ MIP Presolve modified 7760 coefficients.
 Aggregator did 7760 substitutions.
 Reduced MIP has 8539 rows, 16296 columns, and 35696 nonzeros.
 Reduced MIP has 7516 binaries, 1020 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,19 sec. (268,65 ticks)
+Presolve time = 0,20 sec. (268,65 ticks)
 Probing time = 0,01 sec. (4,71 ticks)
 Tried aggregator 1 time.
 Reduced MIP has 8539 rows, 16296 columns, and 35696 nonzeros.
@@ -32,13 +32,13 @@ Root relaxation solution time = 0,10 sec. (178,87 ticks)
 *     0+    0                          545,6918      546,1377             0,08%
 
 Root node processing (before b&c):
-  Real time             =    0,54 sec. (693,00 ticks)
+  Real time             =    0,55 sec. (693,00 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    0,54 sec. (693,00 ticks)
+Total (root+branch&cut) =    0,55 sec. (693,00 ticks)
 
 <<< solve
 
