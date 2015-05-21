@@ -30,6 +30,19 @@ function run_list = divide_runs(experiment_name, data)
 		singledata.mod_filename = sprintf("%s/model.mod",singledata.seed_folder);
 		
 		run_list = [run_list, singledata];
+
+
+		%{CHECK
+		admissible_strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality",...
+					 "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
+		if ( !strcmp(singledata.strategy,"RepresentationAware") && !strcmp(singledata.strategy,"NoCache") && ...
+			 !strcmp(singledata.strategy,"AlwaysLowQuality") && ...
+			 !strcmp(singledata.strategy,"AlwaysHighQuality") && !strcmp(singledata.strategy,"AllQualityLevels")...
+			 && !strcmp(singledata.strategy,"DedicatedCache") && !strcmp(singledata.strategy,"PropDedCache") )
+			
+			error(sprintf("ERROR: strategy %s is not valid", singledata.strategy) );
+		end %if
+		%}CHECK
 	end % startegy
 	end % loadd
 	end % cache_allocation

@@ -224,19 +224,19 @@ subject to {
 		ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
 	AllQualityLevels*/
 
-	 
+	/*DedicatedCache
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cDedicatedCache:
 	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
-	 
+	DedicatedCache*/
 
-	/*PropDedCache
+	 
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cPropDedCache:
 	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
-	PropDedCache*/
+	 
 
 }
 
