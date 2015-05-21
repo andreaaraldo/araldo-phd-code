@@ -76,6 +76,7 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
+data.strategys = {"ProportionalDedicatedCache"};
 
 
 launch_runs(experiment_name, data);
