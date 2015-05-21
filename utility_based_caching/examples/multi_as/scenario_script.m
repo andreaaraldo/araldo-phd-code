@@ -18,7 +18,7 @@ run_ = true;
 experiment_name = "multi_as";
 
 data.fixed_datas = [];
-fixed_data.parallel_processes = 7;
+fixed_data.parallel_processes = 22;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -77,7 +77,7 @@ data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
 data.timelimits = [7200]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [10000];
-data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
+data.cache_to_ctlg_ratios = [edge_nodes/100, 1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
 
