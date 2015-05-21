@@ -63,7 +63,7 @@ for edge_nodes = edge_nodess
 	topology.ases_with_storage = 1:size_;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	%data.topologys = [data.topologys, topology];
+	data.topologys = [data.topologys, topology];
 
 	topology.ases_with_storage = topology.ASes_with_users;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
@@ -86,7 +86,6 @@ data.alphas = [1];
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	
-data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
