@@ -46,8 +46,8 @@ topology.ases_with_storage = [2];
 topology.ASes_with_users = [3];
 topology.servers = [1];
 topology.link_capacity = 490000; %default link cap in Kbps
-incapacity_scales = [0.5 1 2 4];
-outcapacity_scales = [4];
+incapacity_scales = [1];
+outcapacity_scales = [1 2 4 8];
 for outcapacity_scale = outcapacity_scales
 for incapacity_scale = incapacity_scales
 		topology.arcs = sprintf("{<1, 2, %g>, <2, 3, %g> };",...
@@ -76,7 +76,6 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-data.strategys = {"RepresentationAware"};
 
 
 launch_runs(experiment_name, data);
