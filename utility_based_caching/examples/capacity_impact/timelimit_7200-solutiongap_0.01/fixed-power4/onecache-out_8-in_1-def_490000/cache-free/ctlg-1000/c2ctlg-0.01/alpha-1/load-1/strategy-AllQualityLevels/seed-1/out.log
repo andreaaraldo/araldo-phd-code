@@ -1,0 +1,59 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.01 sec. (2.43 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 108859 rows and 29313 columns.
+MIP Presolve modified 4645 coefficients.
+Aggregator did 8640 substitutions.
+Reduced MIP has 5107 rows, 7888 columns, and 19488 nonzeros.
+Reduced MIP has 2078 binaries, 1170 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.25 sec. (114.31 ticks)
+Probing time = 0.01 sec. (0.95 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 5107 rows, 7888 columns, and 19488 nonzeros.
+Reduced MIP has 2078 binaries, 1170 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.03 sec. (13.94 ticks)
+Probing time = 0.01 sec. (0.95 ticks)
+Clique table members: 269.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.28 sec. (204.56 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000     7005.3495              --- 
+      0     0     1343.6147    67        0.0000     1343.6147     5555     --- 
+      0     0     1286.5891    26        0.0000     Fract: 15     5618     --- 
+      0     0     1277.0367     2        0.0000       Cuts: 6     5644     --- 
+*     0+    0                         1223.0640     1277.0367             4.41%
+*     0+    0                         1276.9418     1277.0367             0.01%
+
+Mixed integer rounding cuts applied:  4
+Gomory fractional cuts applied:  16
+
+Root node processing (before b&c):
+  Real time             =    1.55 sec. (1081.36 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    1.55 sec. (1081.36 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1276.942
+avg_utility = 0.781961
+
+<<< post process
+
+
+<<< done
+
