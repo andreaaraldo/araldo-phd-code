@@ -17,9 +17,10 @@ function generate_scenarios(run_list)
 
 		% Check if the file exists
 		if ( !exist(singledata.dat_filename) )
-				generate_opl_dat(singledata);
+			generate_opl_dat(singledata);
 		% else Reuse singledata.dat_filename
 		end % if existence
+
 
 		generate_mod_file(singledata);
 

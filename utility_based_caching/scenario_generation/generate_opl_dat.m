@@ -24,8 +24,9 @@ function generate_opl_dat(singledata)
 			fclose(f);
 		endif % request_file existence
 
-		if length(ObjRequests) == 0
-			error("ObjectRequests malformed");
+		if length(ObjRequests) == 0 || ObjRequests == -1
+			error( sprintf("ObjectRequests malformed. Check the file %s",...
+				singledata.request_file) );
 		endif
 	%} RETRIEVE_OBJ_REQUESTS
 
@@ -120,5 +121,5 @@ function generate_opl_dat(singledata)
 	fclose(f);
 
 	printf("File %s written\n", singledata.dat_filename);
-	
+
 endfunction
