@@ -88,8 +88,7 @@ data.alphas = [1];
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	
 
 
-data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
-
+data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
 launch_runs(experiment_name, data);
 
 
