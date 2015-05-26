@@ -1,14 +1,107 @@
 
 <<< setup
 
-*** ERROR[PARSE_001] at 297:6-7 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected (identifier)
-*** ERROR[PARSE_001] at 299:9-10 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected '('
-*** ERROR[PARSE_001] at 300:11-12 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected (identifier), expecting ')'
-*** ERROR[PARSE_001] at 302:9-10 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected '('
-*** ERROR[PARSE_001] at 303:11-13 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected (identifier), expecting ')'
-*** ERROR[PARSE_001] at 306:12-13 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected (identifier), expecting ')'
-*** ERROR[PARSE_001] at 310:14-15 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected (identifier), expecting ')'
-*** ERROR[PARSE_001] at 311:12-13 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected '('
-*** ERROR[PARSE_001] at 313:3-4 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected '}'
-*** ERROR[PARSE_001] at 315:2-3 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/timelimit_7200-solutiongap_0.01/fixed-power4/size_10-edgenodes_10-capacity_490000-toposeed_1-ubiquitous/cache-constrained/ctlg-10000/c2ctlg-0.1/alpha-1/load-1/strategy-DedicatedCache/seed-1/model.mod: syntax error, unexpected '}'
-### OPL exception: Impossible to load model.
+
+<<< generate
+
+Aggregator has done 82098 substitutions...
+Aggregator has done 106209 substitutions...
+Aggregator has done 129998 substitutions...
+Tried aggregator 19 times.
+MIP Presolve eliminated 1147991 rows and 964652 columns.
+MIP Presolve modified 126014 coefficients.
+Aggregator did 143248 substitutions.
+Reduced MIP has 179262 rows, 460741 columns, and 1308142 nonzeros.
+Reduced MIP has 74786 binaries, 7176 generals, 0 SOSs, and 0 indicators.
+Presolve time = 55,75 sec. (36486,85 ticks)
+Found incumbent of value 305,614180 after 56,77 sec. (37301,94 ticks)
+Probing time = 0,16 sec. (45,19 ticks)
+Tried aggregator 1 time.
+Presolve time = 0,64 sec. (406,94 ticks)
+Probing time = 0,44 sec. (45,19 ticks)
+Clique table members: 2840.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 15,95 sec. (8878,91 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                          305,6142    54223,8936    28807     --- 
+*     0+    0                          440,1057    54223,8936    28807     --- 
+*     0+    0                          450,0435    54223,8936    28807     --- 
+*     0+    0                          453,3561    54223,8936    28807     --- 
+*     0+    0                          455,3437    54223,8936    28807     --- 
+*     0+    0                          456,3375    54223,8936    28807     --- 
+*     0+    0                          457,0000    54223,8936    28807     --- 
+      0     0    12640,0000  3390      457,0000    12640,0000    28807     --- 
+      0     0    12529,4581  2958      457,0000    Cuts: 9770   109223     --- 
+      0     0    12468,0248  2808      457,0000    Cuts: 8969   147923     --- 
+      0     0    12396,5876  3097      457,0000    Cuts: 8407   159136     --- 
+*     0+    0                         3424,9337    12396,5876   159136  261,95%
+*     0+    0                         6262,6781    12396,5876   159136   97,94%
+*     0+    0                        10316,6632    12396,5876   159136   20,16%
+*     0+    0                        10320,6632    12396,5876   159136   20,11%
+      0     0    12360,6527  2950    10320,6632    Cuts: 8104   173871   19,77%
+      0     0    12306,6948  2213    10320,6632    Cuts: 7486   196069   19,24%
+      0     0    12287,0786  2257    10320,6632    Cuts: 5841   226002   19,05%
+*     0+    0                        11304,3806    12287,0786   226002    8,69%
+*     0+    0                        11311,2071    12287,0786   226002    8,63%
+      0     0    12275,5911  2145    11311,2071    Cuts: 5309   252342    8,53%
+      0     0    12266,6361  1953    11311,2071    Cuts: 4480   327023    8,45%
+*     0+    0                        11318,4421    12266,6361   354167    8,38%
+      0     0    12259,6383  1663    11318,4421    Cuts: 3511   354167    8,32%
+*     0+    0                        11320,8648    12259,6383   390006    8,29%
+      0     0    12254,0847  1436    11320,8648    Cuts: 3345   390006    8,24%
+*     0+    0                        11357,3897    12254,0847   411264    7,90%
+      0     0    12249,4995  1396    11357,3897    Cuts: 2816   411264    7,85%
+      0     0    12246,1998  1313    11357,3897    Cuts: 2527   452614    7,83%
+*     0+    0                        11358,3783    12246,1998   481491    7,82%
+      0     0    12243,2266   972    11358,3783    Cuts: 2361   481491    7,79%
+*     0+    0                        11469,0773    12243,2266   508579    6,75%
+      0     0    12241,6437   703    11469,0773    Cuts: 1730   508579    6,74%
+*     0+    0                        11474,7132    12241,6437   525964    6,68%
+      0     0    12240,9933   724    11474,7132    Cuts: 1174   525964    6,68%
+*     0+    0                        11511,6495    12240,9933   548796    6,34%
+      0     0    12240,5333   565    11511,6495    Cuts: 1250   548796    6,33%
+*     0+    0                        11514,7704    12240,5333   567854    6,30%
+      0     0    12240,1813   511    11514,7704     Cuts: 927   567854    6,30%
+      0     0    12239,9455   463    11514,7704     Cuts: 829   580599    6,30%
+*     0+    0                        11764,4482    12239,9455   580599    4,04%
+*     0+    0                        11928,8423    12239,9455   580599    2,61%
+*     0+    0                        11981,4060    12239,9455   580599    2,16%
+*     0+    0                        12009,9022    12239,9455   580599    1,92%
+      0     0    12239,6841   575    12009,9022     Cuts: 595   594045    1,91%
+Heuristic still looking.
+Heuristic still looking.
+Heuristic still looking.
+*     0+    0                        12048,4519    12239,6841   594045    1,59%
+*     0+    0                        12133,8001    12239,6841   594045    0,87%
+
+Implied bound cuts applied:  269
+Flow cuts applied:  29805
+Mixed integer rounding cuts applied:  25923
+Flow path cuts applied:  5823
+Gomory fractional cuts applied:  299
+
+Root node processing (before b&c):
+  Real time             = 4350,90 sec. (2768139,03 ticks)
+Parallel b&c, 24 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) = 4350,90 sec. (2768139,03 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 12133.8
+avg_utility = 0.9599525410601396
+
+<<< post process
+
+
+<<< done
+

@@ -1,0 +1,57 @@
+
+<<< setup
+
+
+<<< generate
+
+Aggregator has done 244531 substitutions...
+Tried aggregator 8 times.
+MIP Presolve eliminated 1822259 rows and 1302312 columns.
+MIP Presolve modified 18 coefficients.
+Aggregator did 244531 substitutions.
+Reduced MIP has 3651 rows, 21798 columns, and 76243 nonzeros.
+Reduced MIP has 15372 binaries, 6426 generals, 0 SOSs, and 0 indicators.
+Presolve time = 12,60 sec. (10367,62 ticks)
+Found incumbent of value 1068,000000 after 12,72 sec. (10499,19 ticks)
+Probing time = 0,01 sec. (6,18 ticks)
+Tried aggregator 1 time.
+Presolve time = 0,07 sec. (57,06 ticks)
+Probing time = 0,01 sec. (6,18 ticks)
+Clique table members: 2562.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 24 threads.
+Root relaxation solution time = 0,42 sec. (154,97 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         1068,0000    47889,9703     2722     --- 
+*     0+    0                         3519,3272    47889,9703     2722     --- 
+*     0+    0                         3520,7058    47889,9703     2722     --- 
+*     0+    0                         3521,2351    47889,9703     2722     --- 
+*     0+    0                         3521,5292    47889,9703     2722     --- 
+*     0+    0                         3521,6377    47889,9703     2722     --- 
+      0     0     6342,1553    30     3521,6377     6342,1553     2722   80,09%
+*     0+    0                         6340,3309     6342,1553     2722    0,03%
+
+Root node processing (before b&c):
+  Real time             =    0,77 sec. (390,99 ticks)
+Parallel b&c, 24 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    0,77 sec. (390,99 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 6340.331
+avg_utility = 0.5016084560126562
+
+<<< post process
+
+
+<<< done
+
