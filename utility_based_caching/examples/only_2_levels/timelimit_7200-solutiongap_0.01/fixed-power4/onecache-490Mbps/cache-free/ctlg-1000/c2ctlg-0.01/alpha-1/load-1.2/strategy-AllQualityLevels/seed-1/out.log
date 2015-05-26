@@ -1,0 +1,60 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,00 sec. (0,71 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 20508 rows and 10523 columns.
+MIP Presolve modified 2011 coefficients.
+Aggregator did 2004 substitutions.
+Reduced MIP has 2512 rows, 4016 columns, and 8032 nonzeros.
+Reduced MIP has 1330 binaries, 678 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,02 sec. (26,52 ticks)
+Probing time = 0,00 sec. (0,79 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2512 rows, 4016 columns, and 8032 nonzeros.
+Reduced MIP has 1330 binaries, 678 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,01 sec. (5,08 ticks)
+Probing time = 0,00 sec. (0,79 ticks)
+Clique table members: 276.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,02 sec. (28,65 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     3270,7304              --- 
+      0     0     1567,5915     6        0,0000     1567,5915     2374     --- 
+      0     0     1567,1474     6        0,0000       Cuts: 3     2403     --- 
+*     0+    0                          501,1569     1567,1474           212,71%
+      0     0     1566,8875     4      501,1569       Cuts: 2     2406  212,65%
+*     0+    0                         1566,7944     1566,8875             0,01%
+
+Mixed integer rounding cuts applied:  1
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0,20 sec. (288,26 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    0,20 sec. (288,26 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1566.794
+avg_utility = 0.799385
+
+<<< post process
+
+
+<<< done
+

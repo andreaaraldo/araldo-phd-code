@@ -58,11 +58,9 @@ data.alphas = [1];
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	
-data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"PropDedCache"};
 
 
 launch_runs(experiment_name, data);
