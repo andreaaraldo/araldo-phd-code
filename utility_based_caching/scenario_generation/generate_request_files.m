@@ -8,6 +8,7 @@ function generate_request_files(run_list)
 		singledata = run_list(idx_run);
 		if ( !exist(singledata.request_file) )
 
+			
 			if (active_children == singledata.fixed_data.parallel_processes)
 				waitpid(-1);
 				% One child process finished
@@ -25,6 +26,7 @@ function generate_request_files(run_list)
 			pid = fork();
 			if (pid==0)
 				% I am the child process and I generate the run
+				printf ("\nWriting %s\n",singledata.request_file );
 				f_req = fopen(singledata.request_file, "w");
 				if (f_req==-1)
 					error(sprintf("Error in writing file %s",singledata.request_file) );
