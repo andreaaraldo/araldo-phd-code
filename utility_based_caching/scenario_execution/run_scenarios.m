@@ -7,7 +7,8 @@ function run_scenarios(run_list)
 			% The run has to be done
 			printf("(%d/%d) Running experiment %s\n", idx_run ,length(run_list)  , singledata.seed_folder);
 			time1 = time();
-			launch_opl(singledata.seed_folder, singledata.mod_filename, singledata.dat_filename);
+			launch_opl(singledata.seed_folder, singledata.mod_filename, singledata.dat_filename,...
+				singledata.timelimit);
 			time2 = time();
 			dlmwrite(sprintf("%s/oplrun_time.csv",singledata.seed_folder), time2-time1 );						
 		else

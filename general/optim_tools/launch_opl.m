@@ -1,5 +1,6 @@
 %ciao
-function launch_opl(working_directory, mod_file, dat_file)
+% timeout in seconds
+function launch_opl(working_directory, mod_file, dat_file, timeout)
 	new_model_filename = sprintf("%s/model.mod",working_directory);
 	new_dat_filename = sprintf("%s/scenario.dat",working_directory);
 	output_file = sprintf("%s/out.log",working_directory);
@@ -17,8 +18,12 @@ function launch_opl(working_directory, mod_file, dat_file)
 		endif
 	endif
 
-	command = sprintf("oplrun %s %s > %s 2>&1", new_model_filename, new_dat_filename, output_file);
-	if ( system(command ) != 0)
+	command = sprintf("timeout %ds oplrun %s %s > %s 2>&1", ...
+			timeout, new_model_filename, new_dat_filename, output_file);
+	exit_code = system(command );
+	if (exit_code == 124)
+		printf("Not teminated after %ds\n", timeout);
+	elseif ( exit_code != 0)
 		error(sprintf("ERROR in the execution of command %s", command) );
 	endif
 end
