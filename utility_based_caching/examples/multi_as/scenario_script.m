@@ -74,9 +74,9 @@ end % for edge_nodes
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
-data.timelimits = [2]; # default 1e75
+data.timelimits = [14400]; # default 1e75
 data.seeds = [1];
-data.catalog_sizes = [1000];
+data.catalog_sizes = [500];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
@@ -85,12 +85,10 @@ data.alphas = [1];
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
-data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	
-data.loadds = [1]; 	
+data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"RepresentationAware"};
 
 launch_runs(experiment_name, data);
 
