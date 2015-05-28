@@ -41,7 +41,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
-size_ = 5;
+size_ = 10;
 edge_nodess = [size_];
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
@@ -74,7 +74,7 @@ end % for edge_nodes
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
-data.timelimits = [14400]; # default 1e75
+data.timelimits = [28800]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
@@ -86,6 +86,7 @@ data.alphas = [1];
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
+data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
