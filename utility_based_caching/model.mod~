@@ -444,7 +444,7 @@ execute DISPLAY
 		f.write("q",q, " ");
 	f.write("\n");
 	for (var q in QualityLevels)
-		f.write(q, HowManyRequestsPerQuality[q] / total_requests, "\n");
+		f.write(q, HowManyRequestsPerQuality[q] / total_requests, " ");
 	f.write("\n");
 	f.close;
 
