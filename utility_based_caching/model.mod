@@ -440,11 +440,12 @@ execute DISPLAY
   	// Print to file
 	var f = new IloOplOutputFile("how_many_reqs_per_quality.csv");
 	f.open;
-	f.write("q how_many");
+	for (var q in QualityLevels)
+		f.write("q",q, " ");
 	f.write("\n");
 	for (var q in QualityLevels)
-		f.write(q, " ", HowManyRequestsPerQuality[q] / total_requests, "\n");
-
+		f.write(q, HowManyRequestsPerQuality[q] / total_requests, "\n");
+	f.write("\n");
 	f.close;
 
 

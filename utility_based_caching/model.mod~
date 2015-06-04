@@ -247,7 +247,7 @@ subject to {
 
 
 	/*
-		We may impose an additional constraint to force the system to serve all the requests, whereas, as the model is now, it may prefer to serve some requests at high quality neglecting others
+		We may impose an additional constraint to force the system to serve all the requests, whereas, as the model is now, it may prefer to serve some requests at high quality neglecting others. Or we may impose to serve a percentage of the requests.
 	*/
 
 
@@ -440,11 +440,12 @@ execute DISPLAY
   	// Print to file
 	var f = new IloOplOutputFile("how_many_reqs_per_quality.csv");
 	f.open;
-	f.write("q how_many");
+	for (var q in QualityLevels)
+		f.write("q",q, " ");
 	f.write("\n");
 	for (var q in QualityLevels)
-		f.write(q, " ", HowManyRequestsPerQuality[q] / total_requests, "\n");
-
+		f.write(q, HowManyRequestsPerQuality[q] / total_requests, "\n");
+	f.write("\n");
 	f.close;
 
 
