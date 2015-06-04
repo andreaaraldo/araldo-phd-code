@@ -1,0 +1,29 @@
+
+ASes= { 1, 2 } ;
+
+
+Objects= { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } ;
+
+
+QualityLevels= { 0, 1, 2, 3, 4, 5 } ;
+
+Arcs = {<1, 2, 490000> };
+
+
+RatePerQuality= [ 0  300  700  1500  2500  3500 ] ;
+
+
+CacheSpacePerQuality= [ 10000  11.25  26.25  56.25  93.75  131.25 ] ;
+
+
+UtilityPerQuality= [ 0  0.66874  0.795271  0.880112  0.945742  1 ] ;
+
+
+ObjectsPublishedByProducers=[ [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ]  [ 1  0 ] ];
+
+ObjRequests = {  <1,2,5556>, <2,2,2832>, <3,2,1897>, <4,2,1379>, <5,2,1090>, <6,2,897>, <7,2,802>, <8,2,716>, <9,2,582>, <10,2,582> };
+
+MaxCacheStorageAtSingleAS= [ 0  13.125 ] ;
+
+MaxCacheStorage = 13.125 ;
+SolutionGap = 0.01 ;

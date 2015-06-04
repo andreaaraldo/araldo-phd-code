@@ -1,6 +1,7 @@
 % Called by scenario_script.m
 function generate_opl_dat(singledata)
 
+	pkg load communications; % for randint
 	rand("state",singledata.seed);
 	
 	objects = 1:singledata.catalog_size;

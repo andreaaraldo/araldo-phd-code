@@ -73,7 +73,7 @@ end % for edge_nodes
 %}TOPOLOGY
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.01]; # default 0.0001 (0.01%)
+data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.seeds = [1];
 data.catalog_sizes = [500];

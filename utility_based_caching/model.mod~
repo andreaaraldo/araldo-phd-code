@@ -42,7 +42,6 @@ float UtilityPerQuality[QualityLevels] = ...;
 int   ObjectsPublishedByProducers[Objects][ASes] = ...;
 float MaxCacheStorageAtSingleAS[ASes] = ...;
 float MaxCacheStorage = ...;
-float TimeLimit = ...;
 float SolutionGap = ...;
 
 
@@ -132,7 +131,7 @@ execute
 
 execute PARAMS {
   cplex.epgap = SolutionGap;
-  cplex.tilim = TimeLimit;
+  //cplex.tilim = 3600;
 }
 
 
@@ -246,7 +245,7 @@ subject to {
 //######## PRINT RESULTS #################################
 //########################################################
 int RequestsPerQuality[Objects][QualityLevels];
-
+int HowManyRequestsPerQuality[QualityLevels];
 
 
 
@@ -406,6 +405,38 @@ execute DISPLAY
 */
 
 
+	//########################################**
+  	//### Print how many requests per quality **
+  	//########################################**
+	// It prints the number of served object at each quality
+	var total_requests = 0;
+
+  	// Initialize the data structure
+  	for (var q in QualityLevels)
+  		HowManyRequestsPerQuality[q] = 0;
+  		
+  	// Populate the data structure
+ 	for (var r in ObjRequests)
+		for(var q in QualityLevels)
+		{
+		 	HowManyRequestsPerQuality[q] += ObjectRequestsServed[r][q];
+			total_requests += ObjectRequestsServed[r][q];
+		}
+	  	
+  	// Print to file
+	var f = new IloOplOutputFile("how_many_reqs_per_quality.csv");
+	f.open;
+	f.write("q how_many");
+	f.write("\n");
+	f.write("0 ", HowManyRequestsPerQuality[q], "\n");
+	for (var q in QualityLevels)
+		f.write(q, " ", HowManyRequestsPerQuality[q] / total_requests, "\n");
+
+	f.close;
+
+
+
+
 /*
 	//########################################**
   	//### Print served quality levels per rank *
@@ -437,32 +468,6 @@ execute DISPLAY
 	}	
 	f.close;
 */
-
-
-/*
-	//###################################*
-  	//### Print usatisfied requests ######
-  	//###################################*
-  	 var total_requests = 0;
-  	 var satisfied_requests = 0;
-  	 for (var r in ObjRequests)
-  	 { 
-  	 	for(var q in QualityLevels){
-			total_requests += ObjectRequestsServed[r][q];
-			if (q > 0 )
-				satisfied_requests +=  ObjectRequestsServed[r][q];
-		}		
-	 }
-	 var unsatisfied_part = (total_requests - satisfied_requests) / total_requests;  
-
-
-	var f = new IloOplOutputFile("unsatisfied_ratio.csv");
-	f.open;
-	f.write("unsatisfied_ratio\n");
-	f.write(unsatisfied_part,"\n");
-	f.close
-*/
-
 
 /*
 	//####################################
