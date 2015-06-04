@@ -237,6 +237,20 @@ subject to {
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
 	PropDedCache*/
 
+
+	/*
+		We may try to add this constraint to see if CPLEX goes faster:
+
+		z_{v_s}^{o,q,v_d} , w_{v_s}^{o,q,v_d}, y_e^{o,q,v_d} \le d^{o,q,v_d}
+	The last equation means that: no source $v_s$ can provide to users of $v_d$ more rate than the requested, either in the role of cache or in the role of server. Moreover, in a link, we cannot find more rate directed to $v_d$ than the rate requested by users of $v_d$. I guess this constraint can guide CPLEX to avoid searching solutions that are ``useless''. For example, with this constraint, we immediately tell to CPLEX: look, don't waste your time in allocating traffic at quality 0, because, in any case, its rate is 0.
+	*/
+
+
+	/*
+		We may impose an additional constraint to force the system to serve all the requests, whereas, as the model is now, it may prefer to serve some requests at high quality neglecting others
+	*/
+
+
 }
 
 
@@ -428,7 +442,6 @@ execute DISPLAY
 	f.open;
 	f.write("q how_many");
 	f.write("\n");
-	f.write("0 ", HowManyRequestsPerQuality[q], "\n");
 	for (var q in QualityLevels)
 		f.write(q, " ", HowManyRequestsPerQuality[q] / total_requests, "\n");
 
