@@ -29,7 +29,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
@@ -50,7 +50,7 @@ data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
 data.seeds = [1];
-data.catalog_sizes = [10];
+data.catalog_sizes = [10000];
 data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
@@ -59,7 +59,6 @@ data.alphas = [1];
 
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
-data.loadds = [0.1]; 	% Multiple of link capacity we would use to transmit 
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
