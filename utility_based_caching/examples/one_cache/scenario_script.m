@@ -24,7 +24,7 @@ fixed_data.cache_space_at_low_quality = 11.25;% In MB
 pp = 4;
 fixed_data.utilities = [0**(1/pp)/5**(1/pp), 1**(1/pp)/5**(1/pp), 2**(1/pp)/5**(1/pp), 3**(1/pp)/5**(1/pp), 4**(1/pp)/5**(1/pp), 5**(1/pp)/5**(1/pp)];
 fixed_data.name = "power4";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
@@ -59,7 +59,7 @@ data.alphas = [1];
 
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
-
+data.loadds = [0.8];
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
 
