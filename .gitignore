@@ -8,3 +8,6 @@ ccnSim
 .temp
 packets/*.cc
 packets/*.h
+*javacore.*
+*core.*
+*Snap.*
