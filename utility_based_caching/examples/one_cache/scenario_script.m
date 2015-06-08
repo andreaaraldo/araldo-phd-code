@@ -24,12 +24,12 @@ fixed_data.cache_space_at_low_quality = 11.25;% In MB
 pp = 4;
 fixed_data.utilities = [0**(1/pp)/5**(1/pp), 1**(1/pp)/5**(1/pp), 2**(1/pp)/5**(1/pp), 3**(1/pp)/5**(1/pp), 4**(1/pp)/5**(1/pp), 5**(1/pp)/5**(1/pp)];
 fixed_data.name = "power4";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 data.topologys = [];
 topology.ases = [1, 2];
@@ -47,10 +47,10 @@ for link_capacity = [490000] % In Kbps
 end % link_capacity
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.0001]; # default 0.0001 (that means 0.01%)
+data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
 data.seeds = [1];
-data.catalog_sizes = [10000];
+data.catalog_sizes = [200];
 data.cache_to_ctlg_ratios = [0.01];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
@@ -59,7 +59,7 @@ data.alphas = [1];
 
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2]; 	% Multiple of link capacity we would use to transmit 
 				% all the requested objects at low quality
-data.loadds = [0.8];
+data.loadds = [1];
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
 
