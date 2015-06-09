@@ -20,10 +20,11 @@ function launch_opl(working_directory, mod_file, dat_file, timeout)
 
 	command = sprintf("timeout %ds oplrun %s %s > %s 2>&1", ...
 			timeout, new_model_filename, new_dat_filename, output_file);
-	exit_code = system(command );
+	[exit_code, output] = system(command );
 	if (exit_code == 124)
 		printf("Not teminated after %ds\n", timeout);
 	elseif ( exit_code != 0)
-		error(sprintf("ERROR in the execution of command %s", command) );
+		error(sprintf("ERROR in the execution of command %s\n\nError is %s",
+				command, output) );
 	endif
 end
