@@ -226,11 +226,11 @@ subject to {
 		ObjectCached[o][q][v] == 0;
 	NoCache*/
 
-	/*AlwaysLowQuality
+	 
 	forall (o in Objects, v in ASes, q in QualityLevels : q != 1 )
 	cAlwaysLowQuality:
 		ObjectCached[o][q][v] == 0;
-	AlwaysLowQuality*/
+	 
 
 	/*AlwaysHighQuality
 	forall (o in Objects, v in ASes, q in QualityLevels : q != MaxQualityLevel )
@@ -386,7 +386,8 @@ execute DISPLAY
 			f.write(RateServedByCache/RatePerQuality[q]," ",RateServedByProducers / RatePerQuality[q]," " );
  		}			
 	}
-	f.write(compute_total_requests());
+	compute_total_requests();
+	f.write(total_requests);
 	f.close;
 
 
