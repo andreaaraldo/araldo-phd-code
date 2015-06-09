@@ -386,8 +386,7 @@ execute DISPLAY
 			f.write(RateServedByCache/RatePerQuality[q]," ",RateServedByProducers / RatePerQuality[q]," " );
  		}			
 	}
-	compute_total_requests();
-	f.write(total_requests);
+	f.write(compute_total_requests() );
 	f.close;
 
 
