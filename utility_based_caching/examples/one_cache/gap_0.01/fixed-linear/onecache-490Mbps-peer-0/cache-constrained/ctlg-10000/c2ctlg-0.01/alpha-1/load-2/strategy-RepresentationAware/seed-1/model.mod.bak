@@ -49,8 +49,29 @@ float SolutionGap = ...;
 float MaxEgressCapacityAtAS[ASes];
 
 //<aa>
+// ################################
+// #### COMPUTED QUANTITIES #######
+// ################################
+// Most of them will be computed after execution and will be useful for
+// printing results
 int MaxQualityLevel;
-int RequestsForEachObject[Objects];
+int requests_for_each_object[Objects];
+int is_requests_for_each_object_computed = 0; // 1 if yes, 0 if not
+
+int RequestsPerQuality[Objects][QualityLevels];
+int HowManyRequestsPerQuality[QualityLevels];
+
+
+// TransmissionsFromCache[a][q] is the number of transmissions at quality q
+// arriving at users of AS a.
+float transmissions_from_cache[ASes][QualityLevels];
+
+int total_requests = 0;
+int is_total_requests_computed = 0; // 1 if yes, 0 if not
+
+float total_utility = 0;
+int is_total_utility_computed = 0;
+
 //</aa>
 
 
@@ -90,10 +111,6 @@ execute
 	//} FIND MAX QUALITY LEVEL
 
 
-	//{ FIND NUMBER OF REQUESTS FOR EACH OBJECT
-		for (var r in ObjRequests )
-			RequestsForEachObject[r.object] += r.numOfObjectRequests;
-	//} FIND NUMBER OF REQUESTS FOR EACH OBJECT
   //</aa> 	  
 }
 
@@ -143,7 +160,11 @@ dvar int+    ObjectRequestsServed[ObjRequests][QualityLevels];
 dvar boolean ObjectCached[Objects][QualityLevels][ASes];
 dvar float+  Flow[ObjRequests][QualityLevels][Arcs];
 dvar float+  TrafficDemand[ObjRequests][QualityLevels];
+
+// dvar float+  FlowServedByProducers[r][q][as] is the data-rate at which as serves the request r, 
+// at quality q, under the role of server
 dvar float+  FlowServedByProducers[ObjRequests][QualityLevels][ASes];
+
 dvar float+  FlowServedByCache[ObjRequests][QualityLevels][ASes];
 
 //########################################################*
@@ -253,16 +274,53 @@ subject to {
 
 }
 
+// ################################
+// #### FUNCTION DEFINITIONS ######
+// ################################
+execute DEFINING_FUNCTIONS
+{
+	function compute_requests_for_each_object()
+	{
+		if (!is_requests_for_each_object_computed)	
+		{
+			//{ FIND NUMBER OF REQUESTS FOR EACH OBJECT
+			for (var r in ObjRequests )
+				requests_for_each_object[r.object] += r.numOfObjectRequests;
+				
+			is_requests_for_each_object_computed = 1;
+		}
+		return requests_for_each_object;
+	}
+	
+	function compute_total_requests()
+	{
+		if (!is_total_requests_computed)
+		{
+			total_requests = 0;	
+			for (var r in ObjRequests )
+				total_requests += r.numOfObjectRequests;
+			is_total_requests_computed = 1;
+		}
+		return total_requests;
+			
+	}
+	
+	function compute_total_utility()
+	{
+		if( !is_total_utility_computed)
+		{
+		  	for (var r in ObjRequests) for (q in QualityLevels)
+		  		total_utility += ObjectRequestsServed[r][q] * UtilityPerQuality[q];
+		  	is_total_utility_computed = 1;
+  		}
+  		return total_utility;  		
+	}
+}	
 
 
 //########################################################
 //######## PRINT RESULTS #################################
 //########################################################
-int RequestsPerQuality[Objects][QualityLevels];
-int HowManyRequestsPerQuality[QualityLevels];
-
-
-
 execute DISPLAY 
 {
   	//###################################
@@ -302,6 +360,66 @@ execute DISPLAY
   	f.close;
 */
 
+  	//###################################*
+  	//### Print origin_of_service #######*
+  	//###################################*
+  	// Print, for each quality, how many of the requests served at that quality in all the network
+  	// come from a cache and how many come from e producer
+	var f = new IloOplOutputFile("origin_of_service.csv");
+	f.open;
+	for (var q in QualityLevels) 
+		if (q!= 0) f.write("#q",q,"_cache #q",q,"_prod ");
+	f.write("tot_req\n");
+	   	
+	for (var q in QualityLevels)
+  	{
+  		if (q!=0)  	
+  		{
+	  		var RateServedByCache = 0;
+	  		var RateServedByProducers = 0;
+	  	
+			for (var origin_as in ASes) for (var r in ObjRequests)
+			{
+				RateServedByCache += FlowServedByCache[r][q][origin_as];
+				RateServedByProducers += FlowServedByProducers[r][q][origin_as];
+			}
+			f.write(RateServedByCache/RatePerQuality[q]," ",RateServedByProducers / RatePerQuality[q]," " );
+ 		}			
+	}
+	f.write(compute_total_requests() );
+	f.close;
+
+
+
+  	//###################################*
+  	//### Print utility_contribution ####*
+  	//###################################*
+  	// Print how much utility comes from the set of caches and how much from the producer
+	var f = new IloOplOutputFile("utility_contribution.csv");
+	f.open;
+	f.write("from_cache from_producer tot\n");
+	
+	var UtilityFromCache = 0;
+	var UtilityFromProducers = 0;   	
+	for (var q in QualityLevels)
+  	{
+  		if (q!=0)  	
+  		{
+  			var RateServedByCache = 0;
+  			var RateServedByProducers = 0;
+			for (var origin_as in ASes) for (var r in ObjRequests)
+			{
+				RateServedByCache += FlowServedByCache[r][q][origin_as];
+				RateServedByProducers += FlowServedByProducers[r][q][origin_as];
+			}
+			UtilityFromCache += (RateServedByCache / RatePerQuality[q] ) * UtilityPerQuality[q];
+			UtilityFromProducers += (RateServedByProducers / RatePerQuality[q] ) * UtilityPerQuality[q];  
+ 		}			
+	}
+	f.write(UtilityFromCache," ",UtilityFromProducers, " ", compute_total_utility() );
+	f.close;
+
+
 
 
   	//###################################*
@@ -335,6 +453,9 @@ execute DISPLAY
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
+  	 if (!IsRequestsForEachObjectComputed)
+  	 	compute_requests_for_each_object();
+  	 
 	for (var q in QualityLevels)
 	{
 		if (q!=0)
