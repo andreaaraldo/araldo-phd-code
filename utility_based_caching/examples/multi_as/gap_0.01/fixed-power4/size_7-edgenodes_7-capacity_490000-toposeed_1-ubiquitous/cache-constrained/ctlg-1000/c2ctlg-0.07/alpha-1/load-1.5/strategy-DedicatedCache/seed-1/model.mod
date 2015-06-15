@@ -360,6 +360,7 @@ execute DISPLAY
   	f.close;
 */
 
+/*
   	//###################################*
   	//### Print origin_of_service #######*
   	//###################################*
@@ -388,9 +389,9 @@ execute DISPLAY
 	}
 	f.write(compute_total_requests() );
 	f.close;
+*/
 
-
-
+/*
   	//###################################*
   	//### Print utility_contribution ####*
   	//###################################*
@@ -418,10 +419,10 @@ execute DISPLAY
 	}
 	f.write(UtilityFromCache," ",UtilityFromProducers, " ", compute_total_utility() );
 	f.close;
+*/
 
 
-
-
+/*
   	//###################################*
   	//### Print cached quality levels ###*
   	//###################################*
@@ -445,7 +446,7 @@ execute DISPLAY
 		f.write("\n");
 	}
 	f.close
-
+*/
 
 
 	
@@ -539,7 +540,7 @@ execute DISPLAY
 	f.close;
 */
 
-
+/*
 	//########################################**
   	//### Print how many requests per quality **
   	//########################################**
@@ -568,7 +569,7 @@ execute DISPLAY
 		f.write(HowManyRequestsPerQuality[q] / total_requests, " ");
 	f.write("\n");
 	f.close;
-
+*/
 
 
 
