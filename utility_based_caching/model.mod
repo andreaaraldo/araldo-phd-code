@@ -272,6 +272,20 @@ subject to {
 	*/
 
 
+	/*		
+		\subsection{Non-cooperazione tra gli AS}
+
+		E' facile aggiungere dei vincoli per prevenire la cooperazione tra gli AS. Per farlo basta cambiare il bilanciamento dei flussi, rimuovere (\ref{eq:flowBalance}), ed aggiungere(\ref{eq:flowBalanceNonCoop}).
+
+		\small
+		\begin{flalign}
+			& z^{o,q,v_d}_{v_s} + \sum\limits_{e \in BS(v_s)}{y^{o,q,v_d}_{e}} = \\
+			& \sum\limits_{e \in FS(v_s)}{y^{o,q,v_d}_{e}} & \forall o \in O, q \in Q, v_s \in V, v_d \in V, v_s \neq v_d \label{eq:flowBalanceNonCoop}
+		\end{flalign}
+		\normalsize
+	*/
+
+
 }
 
 // ################################
