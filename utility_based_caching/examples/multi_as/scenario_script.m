@@ -80,7 +80,7 @@ data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
 data.alphas = [1];
-data.customtypes = {"float", "int"}; % float or int
+data.customtypes = {"float"}; % float or int
 
 
 % Load on each AS with users attached
