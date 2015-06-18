@@ -59,7 +59,7 @@ int requests_for_each_object[Objects];
 int is_requests_for_each_object_computed = 0; // 1 if yes, 0 if not
 
 int RequestsPerQuality[Objects][QualityLevels];
-CUSTOMTYPE HowManyRequestsPerQuality[QualityLevels];
+int HowManyRequestsPerQuality[QualityLevels];
 
 
 // TransmissionsFromCache[a][q] is the number of transmissions at quality q
@@ -156,7 +156,7 @@ execute PARAMS {
 // Decision variables
 //########################################################*/
 
-dvar CUSTOMTYPE+   ObjectRequestsServed[ObjRequests][QualityLevels];
+dvar int+   ObjectRequestsServed[ObjRequests][QualityLevels];
 dvar boolean ObjectCached[Objects][QualityLevels][ASes];
 dvar float+  Flow[ObjRequests][QualityLevels][Arcs];
 dvar float+  TrafficDemand[ObjRequests][QualityLevels];
@@ -244,12 +244,12 @@ subject to {
 		ObjectCached[o][q1][v] == ObjectCached[o][q2][v];
 	AllQualityLevels*/
 
-	/*DedicatedCache
+	 
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cDedicatedCache:
 	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] / ( card(QualityLevels) - 1);
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
-	DedicatedCache*/
+	 
 
 	/*PropDedCache
 	forall ( sourceAS in ASes, q in QualityLevels )

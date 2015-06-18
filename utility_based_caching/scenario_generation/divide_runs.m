@@ -12,6 +12,7 @@ function run_list = divide_runs(experiment_name, data)
 	for idx_cache_allocation = 1:length(data.cache_allocations)
 	for loadd = data.loadds
 	for idx_strategy = 1:length(data.strategys)
+	for idx_customtype = 1:length(data.customtypes)
 		strategy = data.strategys{idx_strategy};
 		singledata.seed = seed;
 		singledata.catalog_size = catalog_size;
@@ -24,6 +25,7 @@ function run_list = divide_runs(experiment_name, data)
 		singledata.cache_allocation = data.cache_allocations{idx_cache_allocation};
 		singledata.loadd = loadd;
 		singledata.strategy = strategy;
+		singledata.customtype = data.customtypes{idx_customtype};
 		[singledata.parent_folder, singledata.seed_folder, singledata.request_file] = ...
 			folder_names(fixed_data.path_base, experiment_name, singledata);
 		singledata.dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
@@ -43,6 +45,7 @@ function run_list = divide_runs(experiment_name, data)
 			error(sprintf("ERROR: strategy %s is not valid", singledata.strategy) );
 		end %if
 		%}CHECK
+	end %customtype
 	end % startegy
 	end % loadd
 	end % cache_allocation
