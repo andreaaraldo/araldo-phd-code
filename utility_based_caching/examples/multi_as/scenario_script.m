@@ -41,7 +41,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
-size_ = 10;
+size_ = 15;
 edge_nodess = [size_];
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 1;
@@ -91,7 +91,6 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"AllQualityLevels"};
 
 launch_runs(experiment_name, data);
 
