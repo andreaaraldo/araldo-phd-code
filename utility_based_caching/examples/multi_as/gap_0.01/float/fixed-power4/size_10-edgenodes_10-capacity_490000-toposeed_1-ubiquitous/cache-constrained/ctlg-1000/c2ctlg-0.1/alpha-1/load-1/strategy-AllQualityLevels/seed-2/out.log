@@ -1,0 +1,72 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,09 sec. (32,37 ticks)
+Aggregator has done 116868 substitutions...
+Aggregator has done 146743 substitutions...
+Aggregator has done 171869 substitutions...
+Tried aggregator 17 times.
+MIP Presolve eliminated 298589 rows and 424406 columns.
+MIP Presolve modified 98290 coefficients.
+Aggregator did 175977 substitutions.
+Reduced MIP has 155691 rows, 391778 columns, and 1084585 nonzeros.
+Reduced MIP has 7470 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 157,25 sec. (31811,66 ticks)
+Probing time = 0,25 sec. (14,74 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 155691 rows, 391778 columns, and 1084585 nonzeros.
+Reduced MIP has 7470 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 2,21 sec. (463,72 ticks)
+Probing time = 0,48 sec. (15,41 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 4,81 sec. (787,00 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000    67273,6629              --- 
+      0     0    15677,4464  3442        0,0000    15677,4464     8174     --- 
+      0     0    15314,7015  2545        0,0000    Cuts: 9655    39884     --- 
+      0     0    15012,8478  2949        0,0000    Cuts: 9396    75254     --- 
+      0     0    14717,2481  2767        0,0000    Cuts: 9980   100993     --- 
+*     0+    0                         6027,6258    14717,2481           144,16%
+*     0+    0                         8150,0683    14717,2481            80,58%
+*     0+    0                         8485,4220    14717,2481            73,44%
+      0     0    14508,3442  2723     8485,4220    Cuts: 9995   139023   70,98%
+      0     0    14386,9412  2277     8485,4220    Cuts: 9996   171974   69,55%
+      0     0    14253,3691  2229     8485,4220    Cuts: 9648   213953   67,97%
+*     0+    0                         8939,5356    14253,3691            59,44%
+*     0+    0                         9544,6212    14253,3691            49,33%
+      0     0    14188,5832  2151     9544,6212    Cuts: 9694   261492   48,66%
+      0     0    14132,9519  2093     9544,6212    Cuts: 9763   312128   48,07%
+*     0+    0                        10897,0870    14132,9519            29,69%
+      0     0    14056,0124  1988    10897,0870    Cuts: 9477   356127   28,99%
+*     0+    0                        11365,1959    14056,0124            23,68%
+*     0+    0                        11852,0947    14056,0124            18,60%
+      0     0    13985,4431  1840    11852,0947    Cuts: 9266   401319   18,00%
+*     0+    0                        12088,0500    13985,4431            15,70%
+      0     0    13911,3054  1731    12088,0500    Cuts: 8597   465480   15,08%
+*     0+    0                        12127,6533    13911,3054            14,71%
+      0     0    13853,7782  1621    12127,6533    Cuts: 8395   518423   14,23%
+*     0+    0                        12205,9776    13853,7782            13,50%
+      0     0    13799,7197  1493    12205,9776    Cuts: 8459   568493   13,06%
+*     0+    0                        12257,8336    13799,7197            12,58%
+      0     0    13759,7901  1373    12257,8336    Cuts: 8207   610237   12,25%
+*     0+    0                        12318,5366    13759,7901            11,70%
+      0     0    13724,9407  1328    12318,5366    Cuts: 7052   657226   11,42%
+      0     0    13697,6826  1290    12318,5366    Cuts: 5833   707234   11,20%
+*     0+    0                        12325,8870    13697,6826            11,13%
+      0     0    13672,4860  1177    12325,8870    Cuts: 5344   801868   10,92%
+*     0+    0                        12328,2276    13672,4860            10,90%
+      0     0    13653,1744  1094    12328,2276    Cuts: 4930   874358   10,75%
+*     0+    0                        12351,7975    13653,1744            10,54%
+      0     0    13637,8559  1120    12351,7975    Cuts: 4455   979002   10,41%
+*     0+    0                        12392,4844    13637,8559            10,05%
+      0     0    13622,9153  1009    12392,4844    Cuts: 4815  1044235    9,93%
+*     0+    0                        12395,0506    13622,9153             9,91%
+      0     0    13608,7852   952    12395,0506    Cuts: 3569  1098511    9,79%
