@@ -53,14 +53,9 @@ for edge_nodes = edge_nodess
 	[status,output] = system(command);
 	lines = strsplit(output, del="\n");
 	%{ CHECK
-		status
 		if status!=0
 			error(sprintf("Error in executing command %s", command) );
 		end%if
-	
-		if (lines.length != 2)
-			error(sprintf("Error in launching command \n%s\n",command) );
-		end %if
 	%} CHECK
 
 	topology.ASes_with_users = [];
