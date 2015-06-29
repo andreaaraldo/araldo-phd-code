@@ -52,6 +52,17 @@ for edge_nodes = edge_nodess
 				 path_base, size_, edge_nodes, topology.link_capacity, topology_seed);
 	[status,output] = system(command);
 	lines = strsplit(output, del="\n");
+	%{ CHECK
+		status
+		if status!=0
+			error(sprintf("Error in executing command %s", command) );
+		end%if
+	
+		if (lines.length != 2)
+			error(sprintf("Error in launching command \n%s\n",command) );
+		end %if
+	%} CHECK
+
 	topology.ASes_with_users = [];
 	ASes_with_users_str = strsplit(lines{1}, " ");
 	for idx = 1:length(ASes_with_users_str )-1
