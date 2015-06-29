@@ -1,0 +1,23 @@
+
+<<< setup
+
+
+<<< generate
+
+Tried aggregator 2 times.
+MIP Presolve eliminated 141021 rows and 119018 columns.
+MIP Presolve modified 5002 coefficients.
+Aggregator did 17000 substitutions.
+All rows and columns eliminated.
+Presolve time = 0,34 sec. (164,83 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1500
+
+<<< post process
+
+
+<<< done
+

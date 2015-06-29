@@ -1,0 +1,58 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,00 sec. (0,67 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 13679 rows and 11591 columns.
+MIP Presolve modified 2236 coefficients.
+Aggregator did 1118 substitutions.
+Reduced MIP has 2797 rows, 5031 columns, and 9503 nonzeros.
+Reduced MIP has 1964 binaries, 831 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,02 sec. (19,84 ticks)
+Probing time = 0,00 sec. (0,93 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2797 rows, 5031 columns, and 9503 nonzeros.
+Reduced MIP has 1964 binaries, 831 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,01 sec. (5,94 ticks)
+Probing time = 0,00 sec. (0,93 ticks)
+Clique table members: 282.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,02 sec. (23,33 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000     4088,4130              --- 
+      0     0     1953,9899     2        0,0000     1953,9899      852     --- 
+*     0+    0                          145,7853     1953,9899              --- 
+      0     0     1953,9899     4      145,7853   LiftProj: 1      853     --- 
+      0     0     1953,9899     2      145,7853   LiftProj: 1      854     --- 
+*     0+    0                         1942,8409     1953,9899             0,57%
+
+Lift and project cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0,56 sec. (783,85 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    0,56 sec. (783,85 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1942.841
+avg_utility = 0.792996
+
+<<< post process
+
+
+<<< done
+
