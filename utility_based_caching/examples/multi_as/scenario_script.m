@@ -42,7 +42,7 @@ fixed_data.name = "linear";
 %{TOPOLOGY
 data.topologys = [];
 size_ = 10;
-edge_nodess = [size_];
+edge_nodess = [size_/2];
 topology.link_capacity = 490000;  % In Kbps
 topology_seed = 2;
 
