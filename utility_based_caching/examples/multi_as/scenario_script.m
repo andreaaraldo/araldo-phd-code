@@ -81,7 +81,7 @@ end % for edge_nodes
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
-data.seeds = [1];
+data.seeds = [2];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
