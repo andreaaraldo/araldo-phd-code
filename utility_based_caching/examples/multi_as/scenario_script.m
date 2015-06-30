@@ -69,19 +69,19 @@ for edge_nodes = edge_nodess
 	topology.ases_with_storage = 1:size_;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	data.topologys = [data.topologys, topology];
+	#data.topologys = [data.topologys, topology];
 
 	topology.ases_with_storage = topology.ASes_with_users;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	#data.topologys = [data.topologys, topology];
+	data.topologys = [data.topologys, topology];
 end % for edge_nodes
 %}TOPOLOGY
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
-data.seeds = [2];
+data.seeds = [1];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
 						% the objects were at maximum quality
