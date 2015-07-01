@@ -37,14 +37,14 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
 size_ = 10;
-edge_nodess = [size_];
+edge_nodess = [size_/2];
 topology.link_capacity = 490000;  % In Kbps
-topology_seed = 2;
+topology_seed = 1;
 
 topology.ases = 1:size_;
 for edge_nodes = edge_nodess
@@ -69,22 +69,22 @@ for edge_nodes = edge_nodess
 	topology.ases_with_storage = 1:size_;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	data.topologys = [data.topologys, topology];
+	%data.topologys = [data.topologys, topology];
 
 	topology.ases_with_storage = topology.ASes_with_users;
 	topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
 			size_, edge_nodes, topology.link_capacity, topology_seed);
-	#data.topologys = [data.topologys, topology];
+	data.topologys = [data.topologys, topology];
 end % for edge_nodes
 %}TOPOLOGY
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
-data.seeds = [2];
+data.seeds = [3 4];
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [edge_nodes/100];	% fraction of catalog we could store in the cache if all 
-						% the objects were at maximum quality
+data.cache_to_ctlg_ratios = [size_/(1*100)];	% fraction of catalog we could store in the overall cache space
+											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
 
@@ -97,7 +97,6 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"AllQualityLevels"};
 
 launch_runs(experiment_name, data);
 
