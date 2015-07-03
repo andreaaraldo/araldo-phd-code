@@ -1,0 +1,85 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,02 sec. (16,22 ticks)
+Tried aggregator 8 times.
+MIP Presolve eliminated 110876 rows and 316446 columns.
+MIP Presolve modified 31516 coefficients.
+Aggregator did 78092 substitutions.
+Reduced MIP has 60029 rows, 127223 columns, and 394232 nonzeros.
+Reduced MIP has 13720 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 8,39 sec. (8095,16 ticks)
+Probing time = 0,03 sec. (5,46 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 60029 rows, 127223 columns, and 394232 nonzeros.
+Reduced MIP has 13720 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,27 sec. (212,87 ticks)
+Probing time = 0,03 sec. (5,76 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 1,86 sec. (1379,13 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000    22724,0000              --- 
+      0     0     7852,0000  1461        0,0000     7852,0000     5092     --- 
+      0     0     7199,0566  1264        0,0000    Cuts: 4591    32615     --- 
+      0     0     6855,2109  1170        0,0000    Cuts: 3802    48312     --- 
+      0     0     6555,6701  1220        0,0000    Cuts: 3607    66410     --- 
+*     0+    0                         5169,7943     6555,6701            26,81%
+*     0+    0                         5217,5943     6555,6701            25,65%
+*     0+    0                         5416,5171     6555,6701            21,03%
+*     0+    0                         5416,7171     6555,6701            21,03%
+*     0+    0                         5502,1051     6555,6701            19,15%
+*     0+    0                         5508,3029     6555,6701            19,01%
+*     0+    0                         5508,5029     6555,6701            19,01%
+*     0+    0                         5508,5286     6555,6701            19,01%
+      0     0     6286,4569  1041     5508,5286    Cuts: 3778   123841   14,12%
+      0     0     6190,3071   752     5508,5286    Cuts: 2898   142454   12,38%
+      0     0     6131,1040   560     5508,5286    Cuts: 3010   168306   11,30%
+*     0+    0                         5860,1786     6131,1040             4,62%
+*     0+    0                         5861,9857     6131,1040             4,59%
+*     0+    0                         5881,3639     6131,1040             4,25%
+*     0+    0                         5882,1689     6131,1040             4,23%
+      0     0     6116,4126   431     5882,1689    Cuts: 2336   214143    3,98%
+      0     0     6110,0364   325     5882,1689    Cuts: 1486   256370    3,87%
+      0     0     6102,5706   325     5882,1689    Cuts: 1188   274494    3,75%
+*     0+    0                         6012,0868     6102,5706             1,51%
+*     0+    0                         6016,0465     6102,5706             1,44%
+*     0+    0                         6019,5773     6102,5706             1,38%
+      0     0     6096,9231   314     6019,5773     Cuts: 979   294803    1,28%
+      0     0     6092,9781   270     6019,5773     Cuts: 742   328049    1,22%
+      0     0     6088,9177   223     6019,5773     Cuts: 953   347220    1,15%
+*     0+    0                         6034,7274     6088,9177             0,90%
+
+Implied bound cuts applied:  439
+Flow cuts applied:  18707
+Mixed integer rounding cuts applied:  5168
+Flow path cuts applied:  1562
+Gomory fractional cuts applied:  284
+
+Root node processing (before b&c):
+  Real time             =  647,94 sec. (469192,57 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =  647,94 sec. (469192,57 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 6034.727
+avg_utility = 0.768559
+
+<<< post process
+
+
+<<< done
+
