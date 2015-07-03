@@ -18,7 +18,7 @@ run_ = true;
 experiment_name = "multi_as";
 
 data.fixed_datas = [];
-fixed_data.parallel_processes = 22;
+fixed_data.parallel_processes = 2;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -81,9 +81,9 @@ end % for edge_nodes
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
-data.seeds = [9 10];
+data.seeds = [1];
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [size_/(1*100)];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [size_/(2*100)];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
@@ -93,7 +93,7 @@ data.customtypes = {"float"}; % float or int
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
-data.loadds = [1];
+data.loadds = [1 0.5];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
