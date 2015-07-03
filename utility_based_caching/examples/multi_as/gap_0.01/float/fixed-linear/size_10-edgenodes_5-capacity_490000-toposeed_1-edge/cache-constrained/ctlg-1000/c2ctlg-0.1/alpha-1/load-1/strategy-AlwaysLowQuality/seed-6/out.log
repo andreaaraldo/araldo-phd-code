@@ -1,0 +1,53 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,02 sec. (17,13 ticks)
+Tried aggregator 5 times.
+MIP Presolve eliminated 179716 rows and 393069 columns.
+MIP Presolve modified 6039 coefficients.
+Aggregator did 108257 substitutions.
+Reduced MIP has 15118 rows, 35315 columns, and 113462 nonzeros.
+Reduced MIP has 2756 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5,28 sec. (3986,99 ticks)
+Probing time = 0,01 sec. (1,44 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 15118 rows, 35315 columns, and 113462 nonzeros.
+Reduced MIP has 2756 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,06 sec. (52,42 ticks)
+Probing time = 0,01 sec. (1,49 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,70 sec. (415,05 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         2126,0000    19032,8000           795,24%
+      0     0     4100,0750    17     2126,0000     4100,0750     4577   92,85%
+*     0+    0                         4096,9143     4100,0750             0,08%
+*     0+    0                         4097,6750     4100,0750             0,06%
+
+Root node processing (before b&c):
+  Real time             =    6,55 sec. (4941,53 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    6,55 sec. (4941,53 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 4097.675
+avg_utility = 0.52067
+
+<<< post process
+
+
+<<< done
+
