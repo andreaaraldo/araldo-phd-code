@@ -57,3 +57,35 @@ Root relaxation solution time = 3,16 sec. (2120,26 ticks)
       0     0     6760,5712   195     6482,2813     Cuts: 374   188878    4,29%
       0     0     6759,9090   178     6482,2813     Cuts: 879   190465    4,28%
       0     0     6759,6482   174     6482,2813     Cuts: 351   197197    4,28%
+*     0+    0                         6582,8104     6759,6482             2,69%
+Heuristic still looking.
+*     0+    0                         6665,2069     6759,6482             1,42%
+*     0+    0                         6720,3020     6759,6482             0,59%
+
+Cover cuts applied:  2
+Implied bound cuts applied:  984
+Flow cuts applied:  21844
+Mixed integer rounding cuts applied:  5467
+Flow path cuts applied:  2144
+Gomory fractional cuts applied:  139
+
+Root node processing (before b&c):
+  Real time             =  544,38 sec. (420122,49 ticks)
+Parallel b&c, 24 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =  544,38 sec. (420122,49 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 6720.302
+avg_utility = 0.854131
+
+<<< post process
+
+
+<<< done
+
