@@ -18,18 +18,18 @@ run_ = true;
 experiment_name = "multi_as";
 
 data.fixed_datas = [];
-fixed_data.parallel_processes = 2;
+fixed_data.parallel_processes = 8;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
 
 
-fixed_data.utilities = [-1e10, 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
+fixed_data.utilities = [0, 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
 data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
-fixed_data.utilities = [-1e10, 1/5, 2/5, 3/5, 4/5, 5/5 ];
+fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 %data.fixed_datas = [data.fixed_datas, fixed_data];
 
@@ -75,7 +75,7 @@ end % for edge_nodes
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [14400]; # default 1e75
-data.seeds = [5];
+data.seeds = [2];
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
@@ -91,7 +91,6 @@ data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"AllQualityLevels"};
 
 launch_runs(experiment_name, data);
 
