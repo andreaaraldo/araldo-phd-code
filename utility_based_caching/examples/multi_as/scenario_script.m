@@ -38,7 +38,7 @@ data.topologys = [];
 size_ = 10;
 edge_nodess = [5];
 topology.link_capacity = 490000;  % In Kbps
-topology_seed = 2;
+topology_seed = 3;
 
 topology.ases = 1:size_;
 for edge_nodes = edge_nodess
