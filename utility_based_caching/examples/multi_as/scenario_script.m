@@ -31,14 +31,14 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 %{TOPOLOGY
 data.topologys = [];
 size_ = 10;
 edge_nodess = [5];
 topology.link_capacity = 490000;  % In Kbps
-topology_seed = 3;
+topology_seed = 4;
 
 topology.ases = 1:size_;
 for edge_nodes = edge_nodess
@@ -75,7 +75,7 @@ end % for edge_nodes
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
-data.seeds = 1:5;
+data.seeds = 1;
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
