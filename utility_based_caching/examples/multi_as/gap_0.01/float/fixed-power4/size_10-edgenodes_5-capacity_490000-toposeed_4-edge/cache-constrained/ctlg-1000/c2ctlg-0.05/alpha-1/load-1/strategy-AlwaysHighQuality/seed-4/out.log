@@ -1,0 +1,60 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.05 sec. (16.99 ticks)
+Tried aggregator 4 times.
+MIP Presolve eliminated 179518 rows and 391734 columns.
+MIP Presolve modified 4957 coefficients.
+Aggregator did 109020 substitutions.
+Reduced MIP has 13213 rows, 31087 columns, and 95955 nonzeros.
+Reduced MIP has 2720 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 8.63 sec. (3269.08 ticks)
+Probing time = 0.01 sec. (1.42 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 13213 rows, 31087 columns, and 95955 nonzeros.
+Reduced MIP has 2720 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.11 sec. (45.76 ticks)
+Probing time = 0.03 sec. (1.42 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.50 sec. (221.42 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         1537.0000    27739.4556              --- 
+      0     0     7863.0000  1508     1537.0000     7863.0000     4778  411.58%
+*     0+    0                         6924.5853     7863.0000            13.55%
+      0     0     7274.3188    55     6924.5853    Cuts: 3403    22512    5.05%
+*     0+    0                         7128.4413     7274.3188             2.05%
+
+Implied bound cuts applied:  102
+Flow cuts applied:  2296
+Mixed integer rounding cuts applied:  915
+Flow path cuts applied:  202
+Gomory fractional cuts applied:  220
+
+Root node processing (before b&c):
+  Real time             =   35.79 sec. (21032.77 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =   35.79 sec. (21032.77 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 7128.441
+avg_utility = 0.90658
+
+<<< post process
+
+
+<<< done
+
