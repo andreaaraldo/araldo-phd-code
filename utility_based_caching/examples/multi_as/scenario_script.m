@@ -77,7 +77,7 @@ data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.seeds = 1;
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [1/100, 2/100];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [0.5/100, 1/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
