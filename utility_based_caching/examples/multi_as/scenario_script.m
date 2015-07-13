@@ -36,7 +36,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 data.topology_size = 10;
 data.edge_nodess = [5];
 data.link_capacity = 490000;  % In Kbps
-data.seeds = [3];
+data.seeds = [4];
 
 
 
