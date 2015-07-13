@@ -4,7 +4,7 @@ function launch_runs(experiment_name, data);
 	run_scenarios(run_list);
 	seeds = unique([run_list.seed] );
 
-	error("I do not want to parse now");
+	%error("I do not want to parse now");
 	##############################
 	##### PARSE OUTPUT ###########
 	##############################
