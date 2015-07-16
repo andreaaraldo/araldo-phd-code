@@ -59,7 +59,7 @@ data.loadds = [1 2];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"NoCache", "PropDedCache"};
+data.strategys = {"AlwaysLowQuality"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
