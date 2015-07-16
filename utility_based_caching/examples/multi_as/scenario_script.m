@@ -26,7 +26,7 @@ fixed_data.cache_space_at_low_quality = 11.25;% In MB
 
 fixed_data.utilities = [0, 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
@@ -36,7 +36,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 data.topology_size = 10;
 data.edge_nodess = [5];
 data.link_capacity = 490000;  % In Kbps
-data.seeds = [5];
+data.seeds = [1];
 
 
 
@@ -44,9 +44,9 @@ data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [1/100, 5/100];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
-data.alphas = [1];
+data.alphas = [0.5];
 data.customtypes = {"float"}; % float or int
 data.cache_distributions = {"edge"}; % edge or ubiquitous
 
@@ -55,11 +55,11 @@ data.cache_distributions = {"edge"}; % edge or ubiquitous
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
-data.loadds = [0.5 1 2];
+data.loadds = [1 2];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-
+data.strategys = {"RepresentationAware", "DedicatedCache"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
