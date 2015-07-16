@@ -618,7 +618,7 @@ execute DISPLAY
 	f.close;
 */
 
-/*
+
 	//####################################
   	//### Print link load ################
   	//###################################*
@@ -635,7 +635,7 @@ execute DISPLAY
 		f.write(a.sourceAS,"-",a.targetAS," ",load,"\n");
 	}
 	f.close
-*/
+
 
 
 
