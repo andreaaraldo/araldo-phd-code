@@ -48,18 +48,18 @@ data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the
 											% if all the objects were at maximum quality
 data.alphas = [0.5];
 data.customtypes = {"float"}; % float or int
-data.cache_distributions = {"edge"}; % edge or ubiquitous
+data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 
 
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.1, 0.5, 0.8, 1, 1.2, 1.5, 2];
-data.loadds = [1 2];
+data.loadds = [1];
 
 
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
-data.strategys = {"AllQualityLevels"};
+data.strategys = {"RepresentationAware", "NoCache"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
