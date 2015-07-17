@@ -46,7 +46,7 @@ data.timelimits = [28800]; # default 1e75
 data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
-data.alphas = [0.5];
+data.alphas = [1];
 data.customtypes = {"float"}; % float or int
 data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 
