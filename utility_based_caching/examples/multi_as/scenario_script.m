@@ -55,7 +55,7 @@ data.cache_distributions = {"edge"}; % edge or ubiquitous
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
-data.loadds = [1.00 1.25 1.50];
+data.loadds = [1.75 2.00];
 data.loadds = [1];
 
 
