@@ -31,7 +31,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 data.topology_size = 2;
 data.edge_nodess = [1];
@@ -49,7 +49,7 @@ data.cache_to_ctlg_ratios = [1/10];	% fraction of catalog we could store in the 
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
-data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
+data.cache_distributions = {"edge"}; % edge or ubiquitous
 
 
 % Load on each AS with users attached
