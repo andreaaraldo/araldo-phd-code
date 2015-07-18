@@ -50,8 +50,6 @@ function run_list = divide_runs(experiment_name, data)
 				otherwise
 					error("Server position not recognized");
 			end %switch
-			topology.servers
-			error("ciao");
 			topology.servers = topology.ASes_with_users;
 			topology.arcs = lines{2};
 
