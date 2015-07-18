@@ -21,7 +21,11 @@ Probing time = 0,01 sec. (1,31 ticks)
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 8 threads.
+<<<<<<< HEAD
 Root relaxation solution time = 0,08 sec. (123,95 ticks)
+=======
+Root relaxation solution time = 0,07 sec. (123,95 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -39,13 +43,21 @@ Mixed integer rounding cuts applied:  72
 Gomory fractional cuts applied:  400
 
 Root node processing (before b&c):
+<<<<<<< HEAD
   Real time             =    2,66 sec. (3388,42 ticks)
+=======
+  Real time             =    2,19 sec. (3388,42 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
+<<<<<<< HEAD
 Total (root+branch&cut) =    2,66 sec. (3388,42 ticks)
+=======
+Total (root+branch&cut) =    2,19 sec. (3388,42 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
 
 <<< solve
 
