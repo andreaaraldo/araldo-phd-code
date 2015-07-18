@@ -33,8 +33,8 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.topology_size = 10;
-data.edge_nodess = [5];
+data.topology_size = 1;
+data.edge_nodess = [1];
 data.link_capacity = 490000;  % In Kbps
 data.seeds = [1];
 
@@ -43,8 +43,8 @@ data.seeds = [1];
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
-data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [5/100];	% fraction of catalog we could store in the overall cache space
+data.catalog_sizes = [10];
+data.cache_to_ctlg_ratios = [1/10];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
