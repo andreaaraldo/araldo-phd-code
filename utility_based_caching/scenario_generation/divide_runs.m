@@ -45,8 +45,10 @@ function run_list = divide_runs(experiment_name, data)
 			switch (server_position)
 				case "edge"
 					topology.servers = topology.ASes_with_users;
+					disp "edge"
 				case "complement_to_edge"
 					topology.servers = setdiff(topology.ases, topology.ASes_with_users);
+					disp "complement to edge"
 				othrewise
 					error("Server position not recognized");
 			end %switch
