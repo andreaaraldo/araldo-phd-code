@@ -4,14 +4,22 @@
 
 <<< generate
 
+<<<<<<< HEAD
 Found incumbent of value 0,000000 after 0,06 sec. (55,61 ticks)
+=======
+Found incumbent of value 0,000000 after 0,05 sec. (55,61 ticks)
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 Tried aggregator 2 times.
 MIP Presolve eliminated 2397090 rows and 1216543 columns.
 MIP Presolve modified 5854 coefficients.
 Aggregator did 5839 substitutions.
 Reduced MIP has 15575 rows, 24323 columns, and 63241 nonzeros.
 Reduced MIP has 4865 binaries, 0 generals, 0 SOSs, and 0 indicators.
+<<<<<<< HEAD
 Presolve time = 1,00 sec. (1597,80 ticks)
+=======
+Presolve time = 0,93 sec. (1597,80 ticks)
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 Probing time = 0,01 sec. (1,31 ticks)
 Tried aggregator 1 time.
 Reduced MIP has 15575 rows, 24323 columns, and 63241 nonzeros.
@@ -21,7 +29,15 @@ Probing time = 0,01 sec. (1,31 ticks)
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 8 threads.
+<<<<<<< HEAD
 Root relaxation solution time = 0,10 sec. (123,95 ticks)
+=======
+<<<<<<< HEAD
+Root relaxation solution time = 0,08 sec. (123,95 ticks)
+=======
+Root relaxation solution time = 0,07 sec. (123,95 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -39,13 +55,29 @@ Mixed integer rounding cuts applied:  72
 Gomory fractional cuts applied:  400
 
 Root node processing (before b&c):
+<<<<<<< HEAD
   Real time             =    2,43 sec. (3388,42 ticks)
+=======
+<<<<<<< HEAD
+  Real time             =    2,66 sec. (3388,42 ticks)
+=======
+  Real time             =    2,19 sec. (3388,42 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 Parallel b&c, 8 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
+<<<<<<< HEAD
 Total (root+branch&cut) =    2,43 sec. (3388,42 ticks)
+=======
+<<<<<<< HEAD
+Total (root+branch&cut) =    2,66 sec. (3388,42 ticks)
+=======
+Total (root+branch&cut) =    2,19 sec. (3388,42 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 
 <<< solve
 

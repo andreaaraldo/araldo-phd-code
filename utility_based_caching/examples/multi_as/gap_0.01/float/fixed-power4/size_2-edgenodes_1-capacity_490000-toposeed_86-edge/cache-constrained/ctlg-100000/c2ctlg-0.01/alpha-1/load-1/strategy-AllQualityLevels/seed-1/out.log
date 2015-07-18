@@ -4,7 +4,11 @@
 
 <<< generate
 
+<<<<<<< HEAD
 Found incumbent of value 0,000000 after 0,10 sec. (103,29 ticks)
+=======
+Found incumbent of value 0,000000 after 0,09 sec. (103,29 ticks)
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 Aggregator has done 12825 substitutions...
 Aggregator has done 23665 substitutions...
 Aggregator has done 34825 substitutions...
@@ -30,8 +34,18 @@ MIP Presolve modified 5844 coefficients.
 Aggregator did 405839 substitutions.
 Reduced MIP has 15570 rows, 20431 columns, and 54484 nonzeros.
 Reduced MIP has 973 binaries, 0 generals, 0 SOSs, and 0 indicators.
+<<<<<<< HEAD
 Presolve time = 79,64 sec. (195701,66 ticks)
 Probing time = 0,01 sec. (1,00 ticks)
+=======
+<<<<<<< HEAD
+Presolve time = 75,00 sec. (195701,66 ticks)
+Probing time = 0,00 sec. (1,00 ticks)
+=======
+Presolve time = 74,86 sec. (195701,66 ticks)
+Probing time = 0,01 sec. (1,00 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 Tried aggregator 1 time.
 Reduced MIP has 15570 rows, 20431 columns, and 54484 nonzeros.
 Reduced MIP has 973 binaries, 0 generals, 0 SOSs, and 0 indicators.
@@ -40,7 +54,15 @@ Probing time = 0,01 sec. (1,00 ticks)
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 8 threads.
+<<<<<<< HEAD
 Root relaxation solution time = 0,08 sec. (103,68 ticks)
+=======
+<<<<<<< HEAD
+Root relaxation solution time = 0,07 sec. (103,68 ticks)
+=======
+Root relaxation solution time = 0,05 sec. (103,68 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
@@ -57,7 +79,15 @@ Root relaxation solution time = 0,08 sec. (103,68 ticks)
       0     0     1598,6051   701     1528,1869     Cuts: 761     8464    4,61%
       0     0     1598,6051   702     1528,1869     Cuts: 599     9207    4,61%
       0     2     1598,6051   698     1528,1869     1598,6051     9207    4,61%
+<<<<<<< HEAD
 Elapsed time = 88,42 sec. (201338,61 ticks, tree = 0,00 MB, solutions = 3)
+=======
+<<<<<<< HEAD
+Elapsed time = 82,36 sec. (201338,61 ticks, tree = 0,00 MB, solutions = 3)
+=======
+Elapsed time = 79,98 sec. (201338,61 ticks, tree = 0,00 MB, solutions = 3)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
       2     4     1586,2096   794     1528,1869     1598,6051    10308    4,61%
       4     4        cutoff           1528,1869     1598,5994    14918    4,61%
      10     6        cutoff           1528,1869     1598,5994    24396    4,61%
@@ -68,7 +98,15 @@ Elapsed time = 88,42 sec. (201338,61 ticks, tree = 0,00 MB, solutions = 3)
      20     6        cutoff           1528,1869     1598,5994    47521    4,61%
      22     6        cutoff           1528,1869     1598,5994    51977    4,61%
      28     6        cutoff           1528,1869     1598,5994    63549    4,61%
+<<<<<<< HEAD
 Elapsed time = 116,73 sec. (206859,32 ticks, tree = 0,00 MB, solutions = 3)
+=======
+<<<<<<< HEAD
+Elapsed time = 108,55 sec. (206859,32 ticks, tree = 0,00 MB, solutions = 3)
+=======
+Elapsed time = 106,15 sec. (206859,32 ticks, tree = 0,00 MB, solutions = 3)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
      34     6        cutoff           1528,1869     1598,5994    74398    4,61%
      40     6        cutoff           1528,1869     1598,5994    85480    4,61%
      46     6        cutoff           1528,1869     1598,5994    99584    4,61%
@@ -79,7 +117,15 @@ Elapsed time = 116,73 sec. (206859,32 ticks, tree = 0,00 MB, solutions = 3)
      74     6        cutoff           1528,1869     1598,5994   159629    4,61%
      80     6        cutoff           1528,1869     1598,5994   170827    4,61%
      86     6        cutoff           1528,1869     1598,5994   181030    4,61%
+<<<<<<< HEAD
 Elapsed time = 116,73 sec. (219111,39 ticks, tree = 0,00 MB, solutions = 3)
+=======
+<<<<<<< HEAD
+Elapsed time = 108,55 sec. (219111,39 ticks, tree = 0,00 MB, solutions = 3)
+=======
+Elapsed time = 106,15 sec. (219111,39 ticks, tree = 0,00 MB, solutions = 3)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
      92     6        cutoff           1528,1869     1598,5994   192094    4,61%
      98     6        cutoff           1528,1869     1598,5994   204240    4,61%
     104     6        cutoff           1528,1869     1598,5994   215671    4,61%
@@ -90,7 +136,15 @@ Elapsed time = 116,73 sec. (219111,39 ticks, tree = 0,00 MB, solutions = 3)
     136     6        cutoff           1528,1869     1598,5994   272214    4,61%
     144     6        cutoff           1528,1869     1598,5994   285801    4,61%
     150     6        cutoff           1528,1869     1598,5994   295970    4,61%
+<<<<<<< HEAD
 Elapsed time = 116,74 sec. (231079,02 ticks, tree = 0,00 MB, solutions = 3)
+=======
+<<<<<<< HEAD
+Elapsed time = 108,55 sec. (231079,02 ticks, tree = 0,00 MB, solutions = 3)
+=======
+Elapsed time = 106,15 sec. (231079,02 ticks, tree = 0,00 MB, solutions = 3)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
     160     6        cutoff           1528,1869     1598,5994   310953    4,61%
     170     6        cutoff           1528,1869     1598,5994   325773    4,61%
     180     6        cutoff           1528,1869     1598,5994   340563    4,61%
@@ -101,7 +155,15 @@ Elapsed time = 116,74 sec. (231079,02 ticks, tree = 0,00 MB, solutions = 3)
     243    27        cutoff           1528,1869     1598,5937   412181    4,61%
     259    37        cutoff           1528,1869     1598,5937   420712    4,61%
     736   466        cutoff           1528,1869     1598,5224   451048    4,60%
+<<<<<<< HEAD
 Elapsed time = 123,05 sec. (241877,29 ticks, tree = 1,47 MB, solutions = 3)
+=======
+<<<<<<< HEAD
+Elapsed time = 114,10 sec. (241877,29 ticks, tree = 1,47 MB, solutions = 3)
+=======
+Elapsed time = 111,35 sec. (241877,29 ticks, tree = 1,47 MB, solutions = 3)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
    1019   681        cutoff           1528,1869     1598,5224   481812    4,60%
    1291   879        cutoff           1528,1869     1598,5224   540540    4,60%
    1400   976     1575,9396   699     1528,1869     1598,5224   569460    4,60%
@@ -116,6 +178,7 @@ Mixed integer rounding cuts applied:  5234
 Gomory fractional cuts applied:  282
 
 Root node processing (before b&c):
+<<<<<<< HEAD
   Real time             =   88,42 sec. (201365,62 ticks)
 Parallel b&c, 8 threads:
   Real time             =   68,21 sec. (58007,33 ticks)
@@ -123,6 +186,25 @@ Parallel b&c, 8 threads:
   Wait time (average)   =   31,54 sec.
                           ------------
 Total (root+branch&cut) =  156,63 sec. (259372,94 ticks)
+=======
+<<<<<<< HEAD
+  Real time             =   82,37 sec. (201365,62 ticks)
+Parallel b&c, 8 threads:
+  Real time             =   59,21 sec. (58007,33 ticks)
+  Sync time (average)   =   28,72 sec.
+  Wait time (average)   =   28,76 sec.
+                          ------------
+Total (root+branch&cut) =  141,58 sec. (259372,94 ticks)
+=======
+  Real time             =   79,98 sec. (201365,62 ticks)
+Parallel b&c, 8 threads:
+  Real time             =   59,04 sec. (58007,33 ticks)
+  Sync time (average)   =   28,22 sec.
+  Wait time (average)   =   28,26 sec.
+                          ------------
+Total (root+branch&cut) =  139,02 sec. (259372,94 ticks)
+>>>>>>> de16cc59617ac8beaa7f7a0c6486ca03d8202c0a
+>>>>>>> 5747679d8ba424b8488babbedae345be8e6ce9a5
 
 <<< solve
 
