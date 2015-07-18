@@ -14,9 +14,11 @@ function run_list = divide_runs(experiment_name, data)
 	for idx_customtype = 1:length(data.customtypes)
 	for edge_nodes = data.edge_nodess
 	for idx_cache_distribution = 1:length(data.cache_distributions)
-		cache_distribution = data.cache_distributions{idx_cache_distribution};
+	for idx_server_position = 1:length(data.server_positions)
 
 		%{TOPOLOGY
+		cache_distribution = data.cache_distributions{idx_cache_distribution};
+		server_position = data.server_positions(idx_server_position);
 		data.topologys = [];
 		size_ = data.topology_size;
 		topology.link_capacity = data.link_capacity;  % In Kbps
@@ -38,6 +40,17 @@ function run_list = divide_runs(experiment_name, data)
 			for idx = 1:length(ASes_with_users_str )-1
 				topology.ASes_with_users = [topology.ASes_with_users, str2num( ASes_with_users_str{idx} ) ];
 			end %for
+
+			switch (server_position)
+				case "edge"
+					topology.servers = topology.ASes_with_users;
+				case "complement_to_edge"
+					topology.servers = setdiff(topology.ases, topology.ASes_with_users);
+				default
+					error("Server position not recognized");
+			end %switch
+			topology.servers
+			error("ciao");
 			topology.servers = topology.ASes_with_users;
 			topology.arcs = lines{2};
 
@@ -92,6 +105,7 @@ function run_list = divide_runs(experiment_name, data)
 			error(sprintf("ERROR: strategy %s is not valid", singledata.strategy) );
 		end %if
 		%}CHECK
+	end % sever_position
 	end % cache_distribution
 	end % edge_nodes
 	end %customtype
