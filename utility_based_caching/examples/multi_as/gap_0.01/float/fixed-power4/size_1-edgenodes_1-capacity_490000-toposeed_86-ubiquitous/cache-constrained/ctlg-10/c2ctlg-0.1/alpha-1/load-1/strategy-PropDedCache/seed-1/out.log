@@ -1,0 +1,32 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,00 sec. (0,01 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 258 rows and 301 columns.
+All rows and columns eliminated.
+Presolve time = 0,00 sec. (0,21 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0,00 sec. (0,23 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =    0,00 sec. (0,23 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 1633
+avg_utility = 1
+
+<<< post process
+
+
+<<< done
+
