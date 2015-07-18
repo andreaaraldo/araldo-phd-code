@@ -42,6 +42,7 @@ function run_list = divide_runs(experiment_name, data)
 			end %for
 
 			topology.servers = [];
+			server_position
 			switch (server_position)
 				case "edge"
 					topology.servers = topology.ASes_with_users;
