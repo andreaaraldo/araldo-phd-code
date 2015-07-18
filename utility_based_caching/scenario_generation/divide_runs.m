@@ -18,7 +18,7 @@ function run_list = divide_runs(experiment_name, data)
 
 		%{TOPOLOGY
 		cache_distribution = data.cache_distributions{idx_cache_distribution};
-		server_position = data.server_positions(idx_server_position);
+		server_position = data.server_positions{idx_server_position};
 		data.topologys = [];
 		size_ = data.topology_size;
 		topology.link_capacity = data.link_capacity;  % In Kbps
