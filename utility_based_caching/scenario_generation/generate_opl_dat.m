@@ -119,6 +119,4 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",SolutionGap);
 	fclose(f);
 
-	printf("File %s written\n", singledata.dat_filename);
-
 endfunction
