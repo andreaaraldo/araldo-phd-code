@@ -1,4 +1,4 @@
-% Called by scenario_script.m
+% Called by generate_scenarios.m
 function generate_opl_dat(singledata)
 
 	pkg load communications; % for randint
@@ -118,7 +118,5 @@ function generate_opl_dat(singledata)
 	fprintf(f, "%s\n",MaxCacheStorage);
 	fprintf(f, "%s\n",SolutionGap);
 	fclose(f);
-
-	printf("File %s written\n", singledata.dat_filename);
 
 endfunction

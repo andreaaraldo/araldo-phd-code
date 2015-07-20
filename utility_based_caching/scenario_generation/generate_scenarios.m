@@ -18,8 +18,13 @@ function generate_scenarios(run_list)
 		% Check if the file exists
 		if ( !exist(singledata.dat_filename) )
 			generate_opl_dat(singledata);
-		% else Reuse singledata.dat_filename
+			printf(	"(%d/%d) File %s written\n", idx_run, length(run_list), ...\
+					singledata.dat_filename);
+		else
+			printf(	"(%d/%d) File %s already written\n", idx_run, length(run_list), ...\
+					singledata.dat_filename);
 		end % if existence
+
 
 
 		generate_mod_file(singledata);
