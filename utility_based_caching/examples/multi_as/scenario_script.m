@@ -37,7 +37,7 @@ data.topology_size = 2;
 data.edge_nodess = [1];
 data.server_positions = {"complement_to_edges"}; %"complement_to_edges" or "edges" 
 data.link_capacity = 490000;  % In Kbps
-data.seeds = [3 4 5];
+data.seeds = [3 5];
 
 
 
