@@ -1,4 +1,4 @@
-% Called by scenario_script.m
+% Called by generate_scenarios.m
 function generate_opl_dat(singledata)
 
 	pkg load communications; % for randint
