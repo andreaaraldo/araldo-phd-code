@@ -57,8 +57,8 @@ data.cache_distributions = {"edge"}; % edge or ubiquitous
 % all the requested objects at low quality
 data.loadds = [0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00];
 
-
-data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "DedicatedCache", "PropDedCache"};
+% DedicatedCache excluded
+data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
