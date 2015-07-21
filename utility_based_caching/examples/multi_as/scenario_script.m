@@ -33,29 +33,30 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 %data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.topology_size = 2;
-data.edge_nodess = [1];
+data.topology_size = 10;
+data.edge_nodess = [10];
 data.server_positions = {"complement_to_edges"}; %"complement_to_edges" or "edges" 
 data.link_capacity = 490000;  % In Kbps
-data.seeds = [3 5];
+data.seeds = [1];
 
 
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
-data.catalog_sizes = [100000];
-data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the overall cache space
+data.catalog_sizes = [1000];
+data.cache_to_ctlg_ratios = [10/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int
-data.cache_distributions = {"edge"}; % edge or ubiquitous
+data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 
 
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00];
+data.loads = [1]
 
 % DedicatedCache excluded
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
