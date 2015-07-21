@@ -32,7 +32,6 @@ function run_list = divide_runs(experiment_name, data)
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
 		else
-			disp 'sono qui'
 			command = sprintf("cat %s", data.topofile);
 		end%if
 
@@ -48,6 +47,10 @@ function run_list = divide_runs(experiment_name, data)
 		lines = strsplit(topodescription, del="\n");
 		topology.ASes_with_users = [];
 		ASes_with_users_str = strsplit(lines{1}, " ");
+ 		if ( !strcmp(data.topofile,"") )
+			topology.ases = ASes_with_users_str;
+		end %end
+
 		for idx = 1:length(ASes_with_users_str )-1
 			topology.ASes_with_users = [topology.ASes_with_users, ...
 			str2num( ASes_with_users_str{idx} ) ];
