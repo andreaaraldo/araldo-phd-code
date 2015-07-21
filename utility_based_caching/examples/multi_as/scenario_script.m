@@ -35,7 +35,7 @@ fixed_data.name = "linear";
 
 data.topology_size = 10;
 data.edge_nodess = [10];
-data.server_positions = {"complement_to_edges"}; %"complement_to_edges" or "edges" 
+data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
 data.link_capacity = 490000;  % In Kbps
 data.seeds = [2];
 
