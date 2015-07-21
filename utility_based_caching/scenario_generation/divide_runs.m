@@ -86,7 +86,7 @@ function run_list = divide_runs(experiment_name, data)
 		else
 			topology.servers = topology.ASes_with_users;
 			topology.ases_with_storage = topology.ASes_with_users;
-			topology_name = data.topofile;
+			topology.name = data.topofile;
 		end%if
 		topology.arcs = lines{2};
 
