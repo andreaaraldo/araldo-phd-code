@@ -36,9 +36,9 @@ function run_list = divide_runs(experiment_name, data)
 			command = sprintf("cat %s", data.topofile);
 		end%if
 
+		[status,topodescription] = system(command);
 		topodescription
 		exit('ciao');
-		[status,topodescription] = system(command);
 		%{ CHECK
 			if status!=0
 				error(sprintf("Error in executing command %s", command) );
