@@ -20,55 +20,66 @@ function run_list = divide_runs(experiment_name, data)
 		cache_distribution = data.cache_distributions{idx_cache_distribution};
 		server_position = data.server_positions{idx_server_position};
 		data.topologys = [];
-		size_ = data.topology_size;
-		topology.link_capacity = data.link_capacity;  % In Kbps
-		topology_seed = randint(1,1,range=100,seed)(1,1);
+		command="";
+		if (data.topofile == "")
+			%{ GENERATE TOPO
+			size_ = data.topology_size;
+			topology.link_capacity = data.link_capacity;  % In Kbps
+			topology_seed = randint(1,1,range=100,seed)(1,1);
 
-		topology.ases = 1:size_;
+			topology.ases = 1:size_;
 			command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d",...
-						 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
-			[status,output] = system(command);
-			lines = strsplit(output, del="\n");
-			%{ CHECK
-				if status!=0
-					error(sprintf("Error in executing command %s", command) );
-				end%if
-			%} CHECK
+					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
+			%} GENERATE_TOPO
+		else
+			command = sprintf("cat %s", data.topofile);
+		end%if
 
-			topology.ASes_with_users = [];
-			ASes_with_users_str = strsplit(lines{1}, " ");
-			for idx = 1:length(ASes_with_users_str )-1
-				topology.ASes_with_users = [topology.ASes_with_users, str2num( ASes_with_users_str{idx} ) ];
-			end %for
+		[status,topodescription] = system(command);
+		%{ CHECK
+			if status!=0
+				error(sprintf("Error in executing command %s", command) );
+			end%if
+		%} CHECK
 
-			topology.servers = [];
-			switch (server_position)
-				case "edges"
-					topology.servers = topology.ASes_with_users;
-				case "complement_to_edges"
-					topology.servers = setdiff(topology.ases, topology.ASes_with_users);
-				otherwise
-					error("Server position not recognized");
-			end %switch
-			topology.arcs = lines{2};
 
-			switch (cache_distribution)
-				case "ubiquitous"
-					topology.ases_with_storage = 1:size_;
-					topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
-							size_, edge_nodes, topology.link_capacity, topology_seed);
-					singledata.topology = topology;
 
-				case "edge"
-					topology.ases_with_storage = topology.ASes_with_users;
-					topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
-							size_, edge_nodes, topology.link_capacity, topology_seed);
-					singledata.topology = topology;
+		lines = strsplit(topodescription, del="\n");
+		topology.ASes_with_users = [];
+		ASes_with_users_str = strsplit(lines{1}, " ");
+		for idx = 1:length(ASes_with_users_str )-1
+			topology.ASes_with_users = [topology.ASes_with_users, ...
+			str2num( ASes_with_users_str{idx} ) ];
+		end %for
 
-				otherwise
-					error("Unrecognized cache distribution");
+		topology.servers = [];
+		switch (server_position)
+			case "edges"
+				topology.servers = topology.ASes_with_users;
+			case "complement_to_edges"
+				topology.servers = setdiff(topology.ases, topology.ASes_with_users);
+			otherwise
+				error("Server position not recognized");
+		end %switch
+		topology.arcs = lines{2};
+
+		switch (cache_distribution)
+			case "ubiquitous"
+				topology.ases_with_storage = 1:size_;
+				topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
+						size_, edge_nodes, topology.link_capacity, topology_seed);
+				singledata.topology = topology;
+
+			case "edge"
+				topology.ases_with_storage = topology.ASes_with_users;
+				topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
+						size_, edge_nodes, topology.link_capacity, topology_seed);
+				singledata.topology = topology;
+
+			otherwise
+				error("Unrecognized cache distribution");
 					
-			endswitch
+		endswitch
 		%}TOPOLOGY
 
 
