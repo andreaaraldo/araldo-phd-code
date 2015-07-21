@@ -70,6 +70,8 @@ function run_list = divide_runs(experiment_name, data)
 
 		switch (cache_distribution)
 			case "ubiquitous"
+				size_
+				error('ciao');
 				topology.ases_with_storage = 1:size_;
 				topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
 						size_, edge_nodes, topology.link_capacity, topology_seed);
