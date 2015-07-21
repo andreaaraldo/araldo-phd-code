@@ -32,7 +32,7 @@ function run_list = divide_runs(experiment_name, data)
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
 		else
-			command = sprintf("cat %s", data.topofile);
+			command = sprintf("cat %s/topofiles/%s.net", data.path_base, data.topofile);
 		end%if
 
 		[status,topodescription] = system(command);
@@ -58,33 +58,39 @@ function run_list = divide_runs(experiment_name, data)
 		end %for
 
 		topology.servers = [];
-		switch (server_position)
-			case "edges"
-				topology.servers = topology.ASes_with_users;
-			case "complement_to_edges"
-				topology.servers = setdiff(topology.ases, topology.ASes_with_users);
-			otherwise
-				error("Server position not recognized");
-		end %switch
+		if ( strcmp(data.topofile,"") )
+			switch (server_position)
+				case "edges"
+					topology.servers = topology.ASes_with_users;
+				case "complement_to_edges"
+					topology.servers = setdiff(topology.ases, topology.ASes_with_users);
+				otherwise
+					error("Server position not recognized");
+			end %switch
+
+			switch (cache_distribution)
+				case "ubiquitous"
+					topology.ases_with_storage = 1:size_;
+
+				case "edge"
+					topology.ases_with_storage = topology.ASes_with_users;
+
+				otherwise
+					error("Unrecognized cache distribution");					
+			endswitch
+	
+			topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-%s", ...
+						size_, edge_nodes, topology.link_capacity, topology_seed, ...
+						cache_distribution);
+		else
+			topology.servers = topology.ASes_with_users;
+			topology.ases_with_storage = topology.ASes_with_users;
+			topology_name = data.topofile;
+		end%if
 		topology.arcs = lines{2};
 
-		switch (cache_distribution)
-			case "ubiquitous"
-				topology.ases_with_storage = 1:size_;
-				topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-ubiquitous", ...
-						size_, edge_nodes, topology.link_capacity, topology_seed);
-				singledata.topology = topology;
 
-			case "edge"
-				topology.ases_with_storage = topology.ASes_with_users;
-				topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-edge", ...
-						size_, edge_nodes, topology.link_capacity, topology_seed);
-				singledata.topology = topology;
-
-			otherwise
-				error("Unrecognized cache distribution");
-					
-		endswitch
+		singledata.topology = topology;
 		%}TOPOLOGY
 
 

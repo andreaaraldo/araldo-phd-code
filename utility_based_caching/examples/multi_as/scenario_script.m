@@ -46,15 +46,15 @@ data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
 
 %{ TOPOLOGY
-	data.topofile=sprintf("%s/topofiles/abilene.net", path_base);
+	data.topofile="abilene";
 	if (!strcmp(data.topofile,"") )
 		data.topology_size = 10;
 		data.edge_nodess = [10];
 		data.link_capacity = 490000;  % In Kbps
+		data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
+		data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
 	end%if
 
-	data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
-	data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
 
 %} TOPOLOGY
 
