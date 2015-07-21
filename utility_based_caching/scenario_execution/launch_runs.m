@@ -1,7 +1,10 @@
 function launch_runs(experiment_name, data);
 	run_list = divide_runs(experiment_name, data);
+	disp 'runs divided'
 	generate_scenarios(run_list);
+	disp 'runs generated'
 	run_scenarios(run_list);
+	disp 'runs ran'
 	seeds = unique([run_list.seed] );
 
 	error("I do not want to parse now");
