@@ -48,9 +48,9 @@ data.catalog_sizes = [11];
 data.cache_to_ctlg_ratios = [10/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
-data.customtypes = {"float"}; % float or int
+data.customtypes = {"float"}; % float or int	
 data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
-data.topofile="";
+data.topofile=sprintf("%s/topofiles/abilene.net", path_base);
 
 
 % Load on each AS with users attached
