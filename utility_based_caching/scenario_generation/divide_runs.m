@@ -32,6 +32,7 @@ function run_list = divide_runs(experiment_name, data)
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
 		else
+			disp 'sono qui'
 			command = sprintf("cat %s", data.topofile);
 		end%if
 
