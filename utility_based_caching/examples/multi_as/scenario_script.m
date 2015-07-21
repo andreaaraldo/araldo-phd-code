@@ -49,17 +49,16 @@ data.customtypes = {"float"}; % float or int
 	data.topofile="";
 	strcmp(data.topofile,"")
 	if ( strcmp(data.topofile,"") )
-		disp 'no vero'
-		data.edge_nodess = [0];
-		data.cache_distributions = {"nothing"};
-		data.server_positions = {"nothing"};
-	else
-		disp 'SONO QUI'
+		% You did not specify a file. You want to generate it
 		data.topology_size = 10;
 		data.edge_nodess = [10];
 		data.link_capacity = 490000;  % In Kbps
 		data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 		data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
+	else
+		data.edge_nodess = [0];
+		data.cache_distributions = {"nothing"};
+		data.server_positions = {"nothing"};
 	end%if
 	data.topology_size
 	error('ciao');
