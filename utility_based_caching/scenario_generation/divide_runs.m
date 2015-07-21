@@ -49,6 +49,7 @@ function run_list = divide_runs(experiment_name, data)
 		ASes_with_users_str = strsplit(lines{1}, " ");
  		if ( !strcmp(data.topofile,"") )
 			topology.ases = ASes_with_users_str;
+			size_ = topology.ases;
 		end %end
 
 		for idx = 1:length(ASes_with_users_str )-1
