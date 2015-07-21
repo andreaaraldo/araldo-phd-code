@@ -46,7 +46,7 @@ data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
 
 %{ TOPOLOGY
-	data.topofile="abilene";
+	data.topofile="";
 	if (!strcmp(data.topofile,"") )
 		data.topology_size = 10;
 		data.edge_nodess = [10];
