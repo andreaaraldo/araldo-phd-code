@@ -54,7 +54,6 @@ function opl_representation = represent_in_opl( variable_name, data, purge, stru
             end
         end
         v
-		error ('ciao');
         opl_representation = sprintf('%s %g ', opl_representation, data(v));
         
         for k=1:size(varDimensions,2)-1
