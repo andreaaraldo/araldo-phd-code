@@ -47,7 +47,7 @@ data.customtypes = {"float"}; % float or int
 
 %{ TOPOLOGY
 	data.topofile="merda";
-
+	strcmp(data.topofile,"merda")
 	if ( !strcmp(data.topofile,"merda") )
 		disp 'SONO QUI'
 		data.topology_size = 10;
