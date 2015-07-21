@@ -58,6 +58,8 @@ data.customtypes = {"float"}; % float or int
 		data.cache_distributions = {"nothing"};
 		data.server_positions = {"nothing"};
 	end%if
+	data.topology_size = 10;
+	error('ciao');
 
 
 %} TOPOLOGY
