@@ -21,7 +21,7 @@ function run_list = divide_runs(experiment_name, data)
 		server_position = data.server_positions{idx_server_position};
 		data.topologys = [];
 		command="";
-		if (data.topofile == "")
+		if ( strcmp(data.topofile,"") )
 			%{ GENERATE TOPO
 			size_ = data.topology_size;
 			topology.link_capacity = data.link_capacity;  % In Kbps
