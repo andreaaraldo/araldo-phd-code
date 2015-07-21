@@ -33,12 +33,7 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 %data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.topology_size = 10;
-data.edge_nodess = [10];
-data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
-data.link_capacity = 490000;  % In Kbps
 data.seeds = [2];
-
 
 
 data.cache_allocations = {"constrained"}; # constrained or free
@@ -49,8 +44,19 @@ data.cache_to_ctlg_ratios = [10/100];	% fraction of catalog we could store in th
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
-data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
-data.topofile=sprintf("%s/topofiles/abilene.net", path_base);
+
+%{ TOPOLOGY
+	data.topofile=sprintf("%s/topofiles/abilene.net", path_base);
+	if (!strcmp(data.topofile,"") )
+		data.topology_size = 10;
+		data.edge_nodess = [10];
+		data.link_capacity = 490000;  % In Kbps
+	end%if
+
+	data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
+	data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
+
+%} TOPOLOGY
 
 
 % Load on each AS with users attached
