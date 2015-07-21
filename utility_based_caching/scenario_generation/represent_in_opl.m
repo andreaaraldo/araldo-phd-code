@@ -53,6 +53,7 @@ function opl_representation = represent_in_opl( variable_name, data, purge, stru
                 break;
             end
         end
+		opl_representation
         v
         opl_representation = sprintf('%s %g ', opl_representation, data(v));
         
