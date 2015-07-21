@@ -58,6 +58,7 @@ function run_list = divide_runs(experiment_name, data)
 		end %for
 
 		topology.servers = [];
+		topology_name = [];
 		if ( strcmp(data.topofile,"") )
 			switch (server_position)
 				case "edges"
