@@ -48,7 +48,7 @@ data.customtypes = {"float"}; % float or int
 %{ TOPOLOGY
 	data.topofile="";
 
-	if (!strcmp(data.topofile,"") )
+	if ( !strcmp(data.topofile,"") )
 		disp 'SONO QUI'
 		data.topology_size = 10;
 		data.edge_nodess = [10];
