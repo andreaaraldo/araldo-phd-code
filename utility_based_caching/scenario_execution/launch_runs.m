@@ -1,4 +1,5 @@
 function launch_runs(experiment_name, data);
+	disp 'launching runs'
 	run_list = divide_runs(experiment_name, data);
 	disp 'runs divided'
 	generate_scenarios(run_list);
