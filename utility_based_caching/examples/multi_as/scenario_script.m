@@ -46,20 +46,20 @@ data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
 
 %{ TOPOLOGY
-	data.topofile="merda";
-	strcmp(data.topofile,"merda")
-	if ( !strcmp(data.topofile,"merda") )
+	data.topofile="";
+	strcmp(data.topofile,"")
+	if ( strcmp(data.topofile,"") )
+		disp 'no vero'
+		data.edge_nodess = [0];
+		data.cache_distributions = {"nothing"};
+		data.server_positions = {"nothing"};
+	else
 		disp 'SONO QUI'
 		data.topology_size = 10;
 		data.edge_nodess = [10];
 		data.link_capacity = 490000;  % In Kbps
 		data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 		data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
-	else
-		disp 'no vero'
-		data.edge_nodess = [0];
-		data.cache_distributions = {"nothing"};
-		data.server_positions = {"nothing"};
 	end%if
 	data.topology_size
 	error('ciao');
