@@ -89,8 +89,6 @@ function run_list = divide_runs(experiment_name, data)
 			topology_name = data.topofile;
 		end%if
 		topology.arcs = lines{2};
-		topology_name
-		error('ciao');
 
 
 		singledata.topology = topology;
