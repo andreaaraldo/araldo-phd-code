@@ -59,6 +59,7 @@ data.customtypes = {"float"}; % float or int
 		data.edge_nodess = [0];
 		data.cache_distributions = {"nothing"};
 		data.server_positions = {"nothing"};
+		data.link_capacity = 490000;  % In Kbps
 	end%if
 
 
