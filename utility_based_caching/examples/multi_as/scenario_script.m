@@ -56,6 +56,7 @@ data.customtypes = {"float"}; % float or int
 		data.cache_distributions = {"ubiquitous"}; % edge or ubiquitous
 		data.server_positions = {"edges"}; %"complement_to_edges" or "edges" 
 	else
+		disp 'no vero'
 		data.edge_nodess = [0];
 		data.cache_distributions = {"nothing"};
 		data.server_positions = {"nothing"};
