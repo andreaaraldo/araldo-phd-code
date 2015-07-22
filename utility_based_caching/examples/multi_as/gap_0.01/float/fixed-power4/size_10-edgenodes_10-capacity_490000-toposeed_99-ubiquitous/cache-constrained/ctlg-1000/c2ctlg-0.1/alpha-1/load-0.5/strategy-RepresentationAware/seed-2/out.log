@@ -1,0 +1,47 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.05 sec. (18.73 ticks)
+Aggregator has done 81601 substitutions...
+Tried aggregator 12 times.
+MIP Presolve eliminated 94264 rows and 301111 columns.
+MIP Presolve modified 47403 coefficients.
+Aggregator did 120821 substitutions.
+Reduced MIP has 57838 rows, 185749 columns, and 579372 nonzeros.
+Reduced MIP has 30300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 73.69 sec. (19146.03 ticks)
+Probing time = 0.12 sec. (8.42 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 57838 rows, 185749 columns, and 579372 nonzeros.
+Reduced MIP has 30300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.80 sec. (230.02 ticks)
+Probing time = 0.18 sec. (9.16 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 7.86 sec. (5224.11 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000    90224.0204              --- 
+*     0+    0                            6.0000    90224.0204              --- 
+      0     0     7435.0000  2162        6.0000     7435.0000     7728     --- 
+      0     0     7362.5193  1883        6.0000    Cuts: 5774    29087     --- 
+      0     0     7315.1233  2020        6.0000    Cuts: 6789   156906     --- 
+      0     0     7229.7067  2065        6.0000    Cuts: 6947   164815     --- 
+*     0+    0                         1147.1085     7229.7067           530.25%
+*     0+    0                         2834.2405     7229.7067           155.08%
+*     0+    0                         3702.4341     7229.7067            95.27%
+      0     0     7153.8142  1938     3702.4341    Cuts: 6930   176355   93.22%
+      0     0     7083.1083  2012     3702.4341    Cuts: 6802   186595   91.31%
+      0     0     7048.2894  1954     3702.4341    Cuts: 6789   198517   90.37%
+      0     0     6984.2902  1962     3702.4341    Cuts: 7025   209946   88.64%
+      0     0     6931.6187  1905     3702.4341    Cuts: 6931   221022   87.22%
+      0     0     6887.3848  1773     3702.4341    Cuts: 6804   233348   86.02%
+      0     0     6845.9724  1700     3702.4341    Cuts: 6350   245036   84.90%
+      0     0     6807.2897  1781     3702.4341    Cuts: 5562   255153   83.86%
+      0     0     6771.4812  1841     3702.4341    Cuts: 5641   268491   82.89%
