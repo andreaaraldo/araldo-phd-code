@@ -54,7 +54,7 @@ function run_list = divide_runs(experiment_name, data)
 		end %for
 
  		if ( !strcmp(data.topofile,"") )
-			topology.ases = ASes_with_users;
+			topology.ases = topology.ASes_with_users;
 			size_ = length(topology.ases);
 		end %end
 
