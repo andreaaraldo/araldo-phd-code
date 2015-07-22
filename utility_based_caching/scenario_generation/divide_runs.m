@@ -82,6 +82,10 @@ function run_list = divide_runs(experiment_name, data)
 						cache_distribution);
 		else
 			topology.ases = topology.ASes_with_users;
+
+			disp 'ciao'
+			topology.ases
+
 			size_ = length(topology.ases);
 			topology.servers = topology.ASes_with_users;
 			topology.ases_with_storage = topology.ASes_with_users;
