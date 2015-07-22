@@ -47,6 +47,8 @@ function run_list = divide_runs(experiment_name, data)
 		lines = strsplit(topodescription, del="\n");
 		topology.ASes_with_users = [];
 		ASes_with_users_str = strsplit(lines{1}, " ");
+		ASes_with_users_str
+		error("ciao");
 
 		for idx = 1:length(ASes_with_users_str )-1
 			topology.ASes_with_users = [topology.ASes_with_users, ...
