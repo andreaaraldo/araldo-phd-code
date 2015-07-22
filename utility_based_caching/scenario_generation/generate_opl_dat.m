@@ -9,10 +9,6 @@ function generate_opl_dat(singledata)
 	quality_levels = 0:quality_level_num;
 
 	ASes = represent_in_opl( "ASes", singledata.topology.ases, true, "set" );
-	singledata.topology.ases
-	ASes
-	error('ciao');
-
 
 	Objects = represent_in_opl( "Objects", objects, true, "set" );
 	QualityLevels = represent_in_opl( "QualityLevels", quality_levels, true, "set" );
