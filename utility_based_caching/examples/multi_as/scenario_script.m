@@ -46,7 +46,7 @@ data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
 
 %{ TOPOLOGY
-	data.topofile="abilene";
+	data.topofile="";
 	strcmp(data.topofile,"")
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
