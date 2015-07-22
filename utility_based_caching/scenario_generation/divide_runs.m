@@ -83,7 +83,7 @@ function run_list = divide_runs(experiment_name, data)
 		else
 			topology.ases = topology.ASes_with_users;
 
-			disp 'ciao'
+			disp 'File is not generated'
 			topology.ases
 
 			size_ = length(topology.ases);
