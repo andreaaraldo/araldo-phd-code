@@ -91,8 +91,6 @@ function run_list = divide_runs(experiment_name, data)
 
 
 		singledata.topology = topology;
-		topology
-		error('ciao');
 		%}TOPOLOGY
 
 
@@ -115,6 +113,9 @@ function run_list = divide_runs(experiment_name, data)
 
 		run_list = [run_list, singledata];
 
+
+		singledata
+		error('ciao');
 
 		%{CHECK
 		admissible_strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality",...
