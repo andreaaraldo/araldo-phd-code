@@ -58,9 +58,6 @@ function run_list = divide_runs(experiment_name, data)
 			size_ = length(topology.ases);
 		end %end
 
-		topology.ASes_with_users
-		topology.ases
-		error("ciao");
 
 		topology.servers = [];
 		topology_name = [];
