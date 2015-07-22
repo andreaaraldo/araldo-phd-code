@@ -51,15 +51,12 @@ function run_list = divide_runs(experiment_name, data)
 			str2num( ASes_with_users_str{idx} ) ];
 		end %for
 
- 		if ( !strcmp(data.topofile,"") )
-			topology.ases = topology.ASes_with_users;
-			size_ = length(topology.ases);
-		end %end
-
 
 		topology.servers = [];
 		topology_name = [];
+
 		if ( strcmp(data.topofile,"") )
+			% Topology has been generated
 			switch (server_position)
 				case "edges"
 					topology.servers = topology.ASes_with_users;
@@ -84,6 +81,8 @@ function run_list = divide_runs(experiment_name, data)
 						size_, edge_nodes, topology.link_capacity, topology_seed, ...
 						cache_distribution);
 		else
+			topology.ases = topology.ASes_with_users;
+			size_ = length(topology.ases);
 			topology.servers = topology.ASes_with_users;
 			topology.ases_with_storage = topology.ASes_with_users;
 			topology.name = data.topofile;
