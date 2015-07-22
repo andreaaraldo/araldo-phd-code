@@ -114,6 +114,7 @@ function run_list = divide_runs(experiment_name, data)
 
 		disp("ciao, inside divide runs:");
 		topology
+		error('ciao');
 		
 		run_list = [run_list, singledata];
 
