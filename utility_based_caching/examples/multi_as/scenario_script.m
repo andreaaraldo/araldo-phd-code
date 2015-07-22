@@ -33,13 +33,13 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 %data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.seeds = [2];
+data.seeds = [1];
 
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
-data.catalog_sizes = [11];
+data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [10/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
@@ -74,7 +74,6 @@ data.loadds = [1];
 
 % DedicatedCache excluded
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
-data.strategys = {"RepresentationAware"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
