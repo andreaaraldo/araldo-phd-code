@@ -70,11 +70,7 @@ data.customtypes = {"float"}; % float or int
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00];
-<<<<<<< HEAD
-data.loads = [1];
-=======
 data.loadds = [1];
->>>>>>> 1f1cecdf453ad2b6f89124d3eb1a248c0ffbfadc
 
 % DedicatedCache excluded
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
