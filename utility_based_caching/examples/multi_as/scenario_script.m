@@ -40,7 +40,7 @@ data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.catalog_sizes = [1000];
-data.cache_to_ctlg_ratios = [10/100];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [11/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
