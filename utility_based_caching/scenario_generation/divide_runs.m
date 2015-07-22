@@ -113,10 +113,6 @@ function run_list = divide_runs(experiment_name, data)
 
 		run_list = [run_list, singledata];
 
-
-		singledata
-		error('ciao');
-
 		%{CHECK
 		admissible_strategies = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality",...
 					 "AllQualityLevels", "DedicatedCache", "ProportionalDedicatedCache"};
