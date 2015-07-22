@@ -1,0 +1,75 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0,000000 after 0,09 sec. (102,22 ticks)
+Aggregator has done 8777 substitutions...
+Aggregator has done 19617 substitutions...
+Aggregator has done 30777 substitutions...
+Aggregator has done 42297 substitutions...
+Aggregator has done 54177 substitutions...
+Aggregator has done 66497 substitutions...
+Aggregator has done 79257 substitutions...
+Aggregator has done 92537 substitutions...
+Aggregator has done 106417 substitutions...
+Aggregator has done 120977 substitutions...
+Aggregator has done 136337 substitutions...
+Aggregator has done 152657 substitutions...
+Aggregator has done 170137 substitutions...
+Aggregator has done 189017 substitutions...
+Aggregator has done 209737 substitutions...
+Aggregator has done 233017 substitutions...
+Aggregator has done 260057 substitutions...
+Aggregator has done 293617 substitutions...
+Aggregator has done 344217 substitutions...
+Tried aggregator 3 times.
+MIP Presolve eliminated 7000589 rows and 807912 columns.
+MIP Presolve modified 1762 coefficients.
+Aggregator did 401760 substitutions.
+Reduced MIP has 3223 rows, 4393 columns, and 11713 nonzeros.
+Reduced MIP has 0 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 74,55 sec. (195944,44 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 3132 rows and 4280 columns.
+Aggregator did 25 substitutions.
+Reduced MIP has 66 rows, 88 columns, and 233 nonzeros.
+Reduced MIP has 0 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,06 sec. (83,68 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 66 rows, 88 columns, and 233 nonzeros.
+Reduced MIP has 0 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0,05 sec. (76,52 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0,00 sec. (0,05 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0,0000      654,7399              --- 
+*     0     0      integral     0      408,0000      408,0000        6    0,00%
+Elapsed time = 74,79 sec. (196301,73 ticks, tree = 0,00 MB, solutions = 1)
+
+Root node processing (before b&c):
+  Real time             =   74,84 sec. (196345,38 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0,00 sec. (0,00 ticks)
+  Sync time (average)   =    0,00 sec.
+  Wait time (average)   =    0,00 sec.
+                          ------------
+Total (root+branch&cut) =   74,84 sec. (196345,38 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 408
+avg_utility = 1
+
+<<< post process
+
+
+<<< done
+
