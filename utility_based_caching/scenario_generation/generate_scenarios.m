@@ -17,10 +17,6 @@ function generate_scenarios(run_list)
 
 		% Check if the file exists
 		if ( !exist(singledata.dat_filename) )
-
-			singledata
-			error('ciao');
-
 			generate_opl_dat(singledata);
 			printf(	"(%d/%d) File %s written\n", idx_run, length(run_list), ...\
 					singledata.dat_filename);
