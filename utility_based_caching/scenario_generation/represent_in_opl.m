@@ -3,9 +3,6 @@ function opl_representation = represent_in_opl( variable_name, data, purge, stru
 %<aa> variable_name: the name that will be printed in the file</aa>
 %APPENDVARIABLETOOPLDAT Write variable in opl-like format
 
-	disp 'Representing in OPL:'
-	variable_name
-	data
 
 	left_delimiter = "[";
 	right_delimiter = "]";
@@ -56,9 +53,6 @@ function opl_representation = represent_in_opl( variable_name, data, purge, stru
                 break;
             end
         end
-		disp('eccoti');
-		opl_representation
-        v
         opl_representation = sprintf('%s %g ', opl_representation, data(v));
         
         for k=1:size(varDimensions,2)-1
