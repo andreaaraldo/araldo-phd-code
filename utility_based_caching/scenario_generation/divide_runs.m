@@ -82,10 +82,6 @@ function run_list = divide_runs(experiment_name, data)
 						cache_distribution);
 		else
 			topology.ases = topology.ASes_with_users;
-
-			disp 'File is not generated'
-			topology.ases
-
 			size_ = length(topology.ases);
 			topology.servers = topology.ASes_with_users;
 			topology.ases_with_storage = topology.ASes_with_users;
@@ -115,10 +111,6 @@ function run_list = divide_runs(experiment_name, data)
 		singledata.dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
 		singledata.mod_filename = sprintf("%s/model.mod",singledata.seed_folder);
 
-		disp("ciao, inside divide runs:");
-		topology
-		error('ciao');
-		
 		run_list = [run_list, singledata];
 
 
