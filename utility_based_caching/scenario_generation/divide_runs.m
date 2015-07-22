@@ -43,7 +43,7 @@ function run_list = divide_runs(experiment_name, data)
 		%} CHECK
 
 		disp ('topodescription');
-		cat(topodescription);
+		disp(topodescription);
 		error('ciao');
 
 		lines = strsplit(topodescription, del="\n");
