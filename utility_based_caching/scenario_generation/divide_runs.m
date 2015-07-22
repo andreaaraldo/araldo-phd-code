@@ -42,10 +42,6 @@ function run_list = divide_runs(experiment_name, data)
 			end%if
 		%} CHECK
 
-		disp ('topodescription');
-		disp(topodescription);
-		error('ciao');
-
 		lines = strsplit(topodescription, del="\n");
 		topology.ASes_with_users = [];
 		ASes_with_users_str = strsplit(lines{1}, " ");
