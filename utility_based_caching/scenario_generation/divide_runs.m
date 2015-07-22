@@ -111,6 +111,9 @@ function run_list = divide_runs(experiment_name, data)
 			folder_names(fixed_data.path_base, experiment_name, singledata);
 		singledata.dat_filename = sprintf("%s/scenario.dat",singledata.seed_folder);
 		singledata.mod_filename = sprintf("%s/model.mod",singledata.seed_folder);
+
+		disp("ciao, inside divide runs:");
+		topology
 		
 		run_list = [run_list, singledata];
 
