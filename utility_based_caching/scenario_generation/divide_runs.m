@@ -91,6 +91,8 @@ function run_list = divide_runs(experiment_name, data)
 
 
 		singledata.topology = topology;
+		topology
+		error('ciao');
 		%}TOPOLOGY
 
 
