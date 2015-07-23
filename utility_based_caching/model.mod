@@ -463,7 +463,7 @@ execute DISPLAY
 
 
 	
-/*
+
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
@@ -491,10 +491,10 @@ execute DISPLAY
 			f.close;
 		}		
 	}
-*/
 
 
-/*
+
+
 	 //########################################**
   	 //### Print avg cached quality levels per rank *
   	 //########################################**
@@ -523,7 +523,6 @@ execute DISPLAY
 		f.write("\n");
 	}
 	f.close;
-*/
 
 
 /*
@@ -586,7 +585,7 @@ execute DISPLAY
 
 
 
-/*
+
 	//########################################**
   	//### Print served quality levels per rank *
   	//########################################**
@@ -616,7 +615,7 @@ execute DISPLAY
 		f.write(" ",q_avg,"\n");
 	}	
 	f.close;
-*/
+
 
 
 	//####################################

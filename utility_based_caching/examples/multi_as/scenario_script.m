@@ -69,10 +69,12 @@ data.customtypes = {"float"}; % float or int
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
-data.loadds = [0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00];
+data.loadds = [1];
 
 % DedicatedCache excluded
 data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
+data.strategys = {"RepresentationAware"};
+
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
