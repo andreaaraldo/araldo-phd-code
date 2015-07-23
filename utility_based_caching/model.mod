@@ -58,7 +58,7 @@ int MaxQualityLevel;
 int requests_for_each_object[Objects];
 int is_requests_for_each_object_computed = 0; // 1 if yes, 0 if not
 
-int RequestsPerQuality[Objects][QualityLevels];
+float RequestsPerQuality[Objects][QualityLevels];
 CUSTOMTYPE HowManyRequestsPerQuality[QualityLevels];
 
 
@@ -467,8 +467,7 @@ execute DISPLAY
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
-  	 if (!IsRequestsForEachObjectComputed)
-  	 	compute_requests_for_each_object();
+ 	compute_requests_for_each_object();
   	 
 	for (var q in QualityLevels)
 	{
@@ -483,7 +482,7 @@ execute DISPLAY
 			for (var o in Objects)
 			{
 				f.write(o);
-				f.write(" ",RequestsForEachObject[o]);
+				f.write(" ",requests_for_each_object[o]);
 				for (var as in ASes)
 					f.write(" ",ObjectCached[o][q][as]);
 				f.write("\n");
