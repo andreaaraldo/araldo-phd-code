@@ -37,7 +37,7 @@ data.seeds = [1 2 3 4 5];
 
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
+data.solutiongaps = [0.0100001]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.catalog_sizes = [10000];
 data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the overall cache space
@@ -72,8 +72,7 @@ data.customtypes = {"float"}; % float or int
 data.loadds = [1];
 
 % DedicatedCache excluded
-data.strategys = {"RepresentationAware", "NoCache", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
-data.strategys = {"RepresentationAware"};
+data.strategys = {"RepresentationAware", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
 
 
 data.path_base= path_base;
