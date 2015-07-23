@@ -59,7 +59,7 @@ int requests_for_each_object[Objects];
 int is_requests_for_each_object_computed = 0; // 1 if yes, 0 if not
 
 int RequestsPerQuality[Objects][QualityLevels];
-CUSTOMTYPE HowManyRequestsPerQuality[QualityLevels];
+float HowManyRequestsPerQuality[QualityLevels];
 
 
 // TransmissionsFromCache[a][q] is the number of transmissions at quality q
@@ -156,7 +156,7 @@ execute PARAMS {
 // Decision variables
 //########################################################*/
 
-dvar CUSTOMTYPE+   ObjectRequestsServed[ObjRequests][QualityLevels];
+dvar float+   ObjectRequestsServed[ObjRequests][QualityLevels];
 dvar boolean ObjectCached[Objects][QualityLevels][ASes];
 dvar float+  Flow[ObjRequests][QualityLevels][Arcs];
 dvar float+  TrafficDemand[ObjRequests][QualityLevels];
@@ -463,7 +463,7 @@ execute DISPLAY
 
 
 	
-/*
+
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
@@ -491,10 +491,10 @@ execute DISPLAY
 			f.close;
 		}		
 	}
-*/
 
 
-/*
+
+
 	 //########################################**
   	 //### Print avg cached quality levels per rank *
   	 //########################################**
@@ -523,7 +523,6 @@ execute DISPLAY
 		f.write("\n");
 	}
 	f.close;
-*/
 
 
 /*
@@ -586,7 +585,7 @@ execute DISPLAY
 
 
 
-/*
+
 	//########################################**
   	//### Print served quality levels per rank *
   	//########################################**
@@ -616,7 +615,7 @@ execute DISPLAY
 		f.write(" ",q_avg,"\n");
 	}	
 	f.close;
-*/
+
 
 
 	//####################################
