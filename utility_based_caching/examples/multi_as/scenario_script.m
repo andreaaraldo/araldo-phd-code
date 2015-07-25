@@ -37,16 +37,20 @@ data.seeds = [1];
 
 
 data.cache_allocations = {"constrained"}; # constrained or free
+<<<<<<< HEAD
 data.solutiongaps = [0.00009]; # default 0.0001 (that means 0.01%)
+=======
+data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
+>>>>>>> 02e82b75eaec86f3b656095d6d8cad3c934b8ac1
 data.timelimits = [28800]; # default 1e75
-data.catalog_sizes = [10000];
-data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the overall cache space
+data.catalog_sizes = [500];
+data.cache_to_ctlg_ratios = [11/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
 
 %{ TOPOLOGY
-	data.topofile="";
+	data.topofile="abilene";
 	strcmp(data.topofile,"")
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
@@ -61,18 +65,17 @@ data.customtypes = {"float"}; % float or int
 		data.server_positions = {"nothing"};
 		data.link_capacity = 490000;  % In Kbps
 	end%if
-
-
 %} TOPOLOGY
 
 
 % Load on each AS with users attached
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
+data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
 data.loadds = [1];
 
 % DedicatedCache excluded
-data.strategys = {"RepresentationAware", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
+data.strategys = {"NoCache", "RepresentationAware", "AlwaysLowQuality", "AlwaysHighQuality", "AllQualityLevels", "PropDedCache"};
 
 
 data.path_base= path_base;
