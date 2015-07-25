@@ -255,7 +255,6 @@ subject to {
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cPropDedCache:
 	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
-		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
 	PropDedCache*/
 
 
