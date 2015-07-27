@@ -15,10 +15,15 @@ function run_list = divide_runs(experiment_name, data)
 	for edge_nodes = data.edge_nodess
 	for idx_cache_distribution = 1:length(data.cache_distributions)
 	for idx_server_position = 1:length(data.server_positions)
+	for idx_user_distribution = 1:length(data.user_distributions)
+	for idx_arcs = 1:length(data.arcss)
+
 
 		%{TOPOLOGY
 		cache_distribution = data.cache_distributions{idx_cache_distribution};
 		server_position = data.server_positions{idx_server_position};
+		user_distribution = data.user_distributions{idx_user_distribution};
+		arcs = data.arcss{idx_arcs};
 		data.topologys = [];
 		command="";
 		topology.link_capacity = data.link_capacity;  % In Kbps
@@ -43,13 +48,21 @@ function run_list = divide_runs(experiment_name, data)
 		%} CHECK
 
 		lines = strsplit(topodescription, del="\n");
-		topology.ASes_with_users = [];
-		ASes_with_users_str = strsplit(lines{1}, " ");
 
-		for idx = 1:length(ASes_with_users_str )-1
-			topology.ASes_with_users = [topology.ASes_with_users, ...
-			str2num( ASes_with_users_str{idx} ) ];
-		end %for
+		topology.ASes_with_users = [];
+		switch (user_distribution)
+			case "edge"
+					ASes_with_users_str = strsplit(lines{1}, " ");
+
+					for idx = 1:length(ASes_with_users_str )-1
+						topology.ASes_with_users = [topology.ASes_with_users, ...
+						str2num( ASes_with_users_str{idx} ) ];
+					end %for
+			case "specific"
+					topology.ASes_with_users = data.ASes_with_users;
+			otherwise
+					error("user distribution not valid");
+		end%switch
 
 
 		topology.servers = [];
@@ -62,6 +75,8 @@ function run_list = divide_runs(experiment_name, data)
 					topology.servers = topology.ASes_with_users;
 				case "complement_to_edges"
 					topology.servers = setdiff(topology.ases, topology.ASes_with_users);
+				case "specific"
+					topology.servers = data.servers;
 				otherwise
 					error("Server position not recognized");
 			end %switch
@@ -69,9 +84,10 @@ function run_list = divide_runs(experiment_name, data)
 			switch (cache_distribution)
 				case "ubiquitous"
 					topology.ases_with_storage = 1:size_;
-
 				case "edge"
 					topology.ases_with_storage = topology.ASes_with_users;
+				case "specific"
+					topology.ases_with_storage = data.ases_with_storage;
 
 				otherwise
 					error("Unrecognized cache distribution");					
@@ -87,8 +103,13 @@ function run_list = divide_runs(experiment_name, data)
 			topology.ases_with_storage = topology.ASes_with_users;
 			topology.name = data.topofile;
 		end%if
-		topology.arcs = lines{2};
 
+		if (strcmp(arcs,"") )
+			% We need to automatically generate arcs
+			topology.arcs = lines{2};
+		else
+			topology.arcs = arcs;
+		end
 
 		singledata.topology = topology;
 		%}TOPOLOGY
@@ -124,6 +145,8 @@ function run_list = divide_runs(experiment_name, data)
 			error(sprintf("ERROR: strategy %s is not valid", singledata.strategy) );
 		end %if
 		%}CHECK
+	end % arcs
+	end % user_distribution
 	end % sever_position
 	end % cache_distribution
 	end % edge_nodes
