@@ -40,7 +40,7 @@ data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001 (that means 0.01%)
 data.timelimits = [28800]; # default 1e75
 data.catalog_sizes = [10000];
-data.cache_to_ctlg_ratios = [1/100];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [1/10, 1/100, 1/1000];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int	
@@ -52,7 +52,7 @@ data.customtypes = {"float"}; % float or int
 		data.edge_nodess = [1]; % How many edge nodes
 		data.link_capacity = 490000;  % In Kbps
 
-		data.arcss={sprintf("{ <1,2,490000>, <2,3,%d>};", data.link_capacity) };
+		data.arcss={"{ <1,2,490000>, <2,3,3920000>};" };
 
 		data.user_distributions = {"specific"}; % edge or specific
 		if ( strcmp(data.user_distributions, "specific")  )
