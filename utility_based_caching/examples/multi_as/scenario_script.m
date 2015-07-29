@@ -33,7 +33,7 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.seeds = [4];
+data.seeds = [5];
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.0100002]; # default 0.0001 (that means 0.01%)
