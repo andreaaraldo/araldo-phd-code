@@ -251,11 +251,11 @@ subject to {
 		// I substract -1 from the cardinality of QualityLevels because q=0 is not a real quality level
 	DedicatedCache*/
 
-	/*PropDedCache
+	 
 	forall ( sourceAS in ASes, q in QualityLevels )
 	cPropDedCache:
 	  	sum ( o in Objects ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorageAtSingleAS[sourceAS] * CacheSpacePerQuality[q] / sum ( qq in QualityLevels : qq!=0 ) CacheSpacePerQuality[qq];
-	PropDedCache*/
+	 
 
 
 	/*
@@ -462,7 +462,7 @@ execute DISPLAY
 
 
 	
-
+/*
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
@@ -489,7 +489,7 @@ execute DISPLAY
 			f.close;
 		}		
 	}
-
+*/
 
 
 /*
