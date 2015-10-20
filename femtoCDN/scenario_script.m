@@ -6,37 +6,34 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 %pkg load communications; % for randint
 
 
+% SETTINGS
 rounding = false;
+boost =  false;
+only_plausible_updates = false
 
-alpha=[1.2; 1.1];
+alpha=[0.1; 1.2];
 R = [1e6; 1e6 ];
 catalog=[1e3; 1e3];
 
 N = length(alpha); %num CPs
 K = 10; %cache slots
-boost =  1;
 
 %{INITIALIZATION
 	Lc = LM = zeros(N,1);
-	c=repmat( round(K*1.0/N), N-1,1 ); %configuration
-	c = [c; K-sum(c)];
+	vc=repmat( K*1.0/N, N,1 ); %virtual configuration
 
 	lambda=[];
 	for j=1:N
 		lambda = [lambda; (ZipfPDF(alpha(j), catalog(j)) )' .* R(j) ];
 	end
+
+	disp(lambda(:,1:10) )
 %}INITIALIZATION
 
 
-for i=1:10000
-	%{CHECK
-	if(severe_debug)
-		if ( sum( round(c) < ones(N,1) ) != 0 )
-			c
-			error("Inconsistent c")
-		end	
-	end
-	%}CHECK
+for i=1:1000
+	c = round(vc);
+
 
 	%{REQUEST GENERATION
 	requests = [];
@@ -48,84 +45,121 @@ for i=1:10000
 	end%for
 	%}REQUEST GENERATION
 
-	m = sum(requests(:,round(c)+1 : size(requests,2) ) , 2); % misses
+	m = sum(requests(:,c+1 : size(requests,2) ) , 2); % misses
 
 	f = sum(requests, 2 ); % total requests
 	M = m*1.0./f; M(isnan(M) )=0; % Current miss ratio
 
-	% This is the original formula
-	M_prime = (M .- LM)*1.0 ./ (round(c) .- round(Lc) ); % derivative of miss ratio
+	M_prime = (M .- LM)*1.0 ./ (c .- Lc ); % derivative of miss ratio
 
-	F = f / sum(f); % request frequency
-	r = (1.0/sqrt(N) ) * ones(N,1);
-	s = -F .* M_prime; % direction of steepest discent 
-	delta_c = s .- (s'*r) * r;
-	delta_c = boost * delta_c;
+	if all(M_prime>=0) || !only_plausible_updates
 
-	Nc = (c .+ delta_c);
+		F = f / sum(f); % request frequency
+		r = (1.0/sqrt(N) ) * ones(N,1);
+		s = -F .* M_prime; % direction of steepest discent 
+		delta_vc = s .- (s'*r) * r;
 
-	%{COPE WITH DISCRETE VALUES AND INCONSISTENCIES
-		if (rounding) 
-			Nc = round(Nc);
+		if (boost && any(delta_vc)!=0 )
+			boost_factor = 1.0/max(abs(delta_vc) );
+			delta_vc = boost_factor * delta_vc;
 		end
 
-		while ( any( round(Nc) < ones(N,1) ) != 0 )
-			unlucky = unidrnd(N);
-			if (Nc(unlucky)>1 )
-				Nc(unlucky) = Nc(unlucky ) - 1;
+		nvc = (vc .+ delta_vc);
+
+		%{COPE WITH DISCRETE VALUES AND INCONSISTENCIES
+			if (rounding) 
+				nvc = round(nvc);
 			end
-			lucky = min(find( round(Nc) < ones(N,1)) );
-			Nc(lucky) = Nc(lucky)+1;
-		end
 
-		difference = sum(round(Nc) ) - K;
-		while (difference > 0)
-			for d=1:difference
-				unlucky_candidates = find( round(Nc)>1 );
-				unlucky = unlucky_candidates(unidrnd( length(unlucky_candidates) ) );
-				if (Nc(unlucky)>1 )
-					Nc(unlucky) = Nc(unlucky ) - 1;
-					difference--;
+			% Guarantee that each CP has at least 1 cache slot
+			while ( any( round(nvc) < ones(N,1) ) )
+				error("Danger to loose one slot")
+				lucky = max(find( round(nvc) < ones(N,1)) );
+				unlucky_candidates = find( round(nvc) > ones(N,1) );
+				unlucky = unlucky_candidates( unidrnd( length(unlucky_candidates) ) );
+				nvc(unlucky) = nvc(unlucky ) - 1;
+				nvc(lucky) = nvc(lucky)+1;
+			end
+
+			difference = sum(round(nvc) ) - K;
+			while (difference > 0)
+				error("Danger to assign too many slots")
+				for d=1:difference
+					unlucky_candidates = find( round(nvc)>1 );
+					unlucky = unlucky_candidates(unidrnd( length(unlucky_candidates) ) );
+					nvc(unlucky) = nvc(unlucky ) - 1;
 				end
 			end
-		end
-		while (difference<0)
-			lucky = unidrnd(N);
-			Nc(lucky) = Nc(lucky ) + 1;
-			difference++;
-		end
+			while (difference<0)
+				error("Danger to unuse slots")
+				lucky = unidrnd(N);
+				nvc(lucky) = nvc(lucky ) + 1;
+				difference++;
+			end
 
-	%}COPE WITH DISCRETE VALUES AND INCONSISTENCIES
+		%}COPE WITH DISCRETE VALUES AND INCONSISTENCIES
 
-	%{CHECK
-	if (severe_debug)
-		delta_c_2 = (1.0/N ) * (F' * M_prime) * ones(N,1) .- (F .* M_prime);
-		delta_c_2 = boost * delta_c_2;
-		if ( abs(delta_c - delta_c_2) > 1e-6 )
-			delta_c
-			delta_c_2
-			error("Error");
-		end
+		%{CHECK
+		if (severe_debug)
+			if (any(isnan(delta_vc) ) )
+				delta_vc
+				error("Error: delta_vc cannot be nan")
+			end
 
-		if (sum(delta_c) > 1e-7 )
-			delta_c
-			sum(delta_c)
-			error("Error");
-		end
+			delta_vc_2 = (1.0/N ) * (F' * M_prime) * ones(N,1) .- (F .* M_prime);
+			if (boost  && any(delta_vc_2)!=0 )
+				boost_factor = 1.0/max(abs(delta_vc_2) );
+				delta_vc_2 = boost_factor * delta_vc_2;
+			end
 
-		if (sum(Nc) < K-N)
-			error("error")
+			if ( abs(delta_vc - delta_vc_2) > 1e-6 )
+				delta_vc
+				delta_vc_2
+				error("Error");
+			end
+
+			if (sum(delta_vc) > 1e-7 )
+				delta_vc
+				sum(delta_vc)
+				error("Error");
+			end
+
+			if (sum(nvc) < K-N)
+				error("error")
+			end
+
+			if  any( c == Lc) 
+				Lc
+				c
+				error("Error")
+			endif
+
+			if ( any( round(vc)!= c ) )
+				vc
+				c
+				error("Error")
+			end
 		end
+		%}CHECK
+
+
+
+		updated_CPs = round(nvc) != c;
+		if updated_CPs
+			disp("updating")
+			M_prime
+		end
+		Lc(updated_CPs) = c (updated_CPs);
+		LM(updated_CPs) = M (updated_CPs);
+		vc = nvc;
+
+	else
+		"I do not trust you"
+		M
+		LM
+		c
+		Lc
 	end
-	%}CHECK
-
-
-
-	updated_CPs = round(Nc) != round(c);
-	Lc(updated_CPs) = c (updated_CPs);
-	LM(updated_CPs) = M (updated_CPs);
-	c = Nc;
-
-	disp(c')
 
 end%for
+
