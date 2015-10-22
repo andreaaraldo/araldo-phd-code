@@ -1,44 +1,23 @@
-function cumulative_steepest_descent(in)
+function cumulative_steepest_descent(in, settings)
 	% SETTINGS
 	boost =  false;
 	only_plausible_updates = false;
 	global severe_debug
 	severe_debug
 
-	N = length(in.alpha); %num CPs
+	N = in.N; %num CPs
 
 	%{INITIALIZATION
 		Lc = LM = zeros(N,1);
 		vc=repmat( in.K*1.0/N, N,1 ); %virtual configuration
-
-		lambda=[];
-		for j=1:N
-			lambda = [lambda; (ZipfPDF(in.alpha(j), in.catalog(j)) )' .* in.R(j) ];
-		end
 	%}INITIALIZATION
 
 
-	for i=1:10000
+	for i=1:settings.epochs
 		c = round(vc);
 
-		%{REQUEST GENERATION
-		requests = [];
-		max_catalog = max(in.catalog);
-		for j=1:N
-			these_requests = zeros(1,max_catalog);
-			these_requests(1:in.catalog(j) ) = poissrnd(lambda(j,:) );
-			requests = [requests; these_requests ];
-		end%for
-		%}REQUEST GENERATION
+		[m, f] = compute_miss(in, c, in.lambda);
 
-		ordinal = repmat(1:max_catalog, N, 1);
-		cache_indicator_negated = ordinal > repmat(c,1,max_catalog);
-		m = [];
-		for j=1:N
-			m = [m; requests(j,:) * cache_indicator_negated(j,:)'];
-		end
-
-		f = sum(requests, 2 ); % total requests
 		M = m*1.0./f; M(isnan(M) )=0; % Current miss ratio
 
 		M_prime = (M .- LM)*1.0 ./ (c .- Lc ); % derivative of miss ratio

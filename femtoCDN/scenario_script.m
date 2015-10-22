@@ -12,5 +12,20 @@ in.R = [1e6; 1e6 ];
 in.catalog=[1e3; 1e3];
 in.K = 1e1; %cache slots
 
+% SETTINGS
+settings.epochs = 1000;
 
-cumulative_steepest_descent(in)
+	in.N = length(in.alpha); %num CPs
+	if mod(in.N,2) != 0
+		error("Only an even number of CPs are accepted")
+	end
+
+	in.lambda=[];
+	for j=1:in.N
+		in.lambda = [in.lambda; (ZipfPDF(in.alpha(j), in.catalog(j)) )' .* in.R(j) ];
+	end
+
+%"cumulative_steepest_descent"
+%cumulative_steepest_descent(in, settings)
+"dspsa"
+dspsa(in, settings)
