@@ -3,13 +3,16 @@ function cumulative_steepest_descent(in, settings)
 	boost =  false;
 	only_plausible_updates = false;
 	global severe_debug
-	severe_debug
 
 	N = in.N; %num CPs
 
 	%{INITIALIZATION
 		Lc = LM = zeros(N,1);
 		vc=repmat( in.K*1.0/N, N,1 ); %virtual configuration
+		hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
+		hist_f = []; % historical tot_requests
+		hist_vc = vc;
+
 	%}INITIALIZATION
 
 
@@ -17,6 +20,9 @@ function cumulative_steepest_descent(in, settings)
 		c = round(vc);
 
 		[m, f] = compute_miss(in, c, in.lambda);
+
+		% Historical data
+		hist_m = [hist_m, sum(m,2) ]; hist_f = [hist_f, sum(f,2) ];
 
 		M = m*1.0./f; M(isnan(M) )=0; % Current miss ratio
 
@@ -111,10 +117,12 @@ function cumulative_steepest_descent(in, settings)
 			Lc(updated_CPs) = c (updated_CPs);
 			LM(updated_CPs) = M (updated_CPs);
 			vc = nvc;
-			disp(vc(2)/sum(vc) )
+			hist_vc = [hist_vc, vc];
+
 
 		end
 
 	end%for
 
+	save(settings.outfile);
 end%function

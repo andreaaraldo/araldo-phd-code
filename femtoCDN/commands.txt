@@ -1,0 +1,5 @@
+# Allocation
+clear; load dspsa_enhanced-2000_req.mdat ; hist_c = round(hist_vc); hist_all=hist_c(2,:)/in.K; dlmwrite("/tmp/hist_c_dpsa_enhanced.dat", hist_all, "\n");
+
+# Cumulative hit
+clear; load dspsa_enhanced-2000_req.mdat;          cum_m = zeros(N,settings.epochs+1); for t=1:settings.epochs; cum_m(:,t+1) = cum_m(:,t) + hist_m(:,t); endfor;                    cum_f = zeros(N,settings.epochs+1); for t=1:settings.epochs; cum_f(:,t+1) = cum_f(:,t) + hist_f(:,t); endfor;   hist_cum_hit = 1- sum(cum_m,1) ./ sum(cum_f,1); dlmwrite("/tmp/hist_cum_hit_dspsa_enhanced.dat", hist_cum_hit, "\n");

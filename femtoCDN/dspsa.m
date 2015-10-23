@@ -4,10 +4,17 @@
 function dspsa(in, settings)
 	% SETTINGS
 	global severe_debug
-	enhanced = false;
+	enhanced = settings.enhanced;
+
+	%fraction of the time spent on trying a new configuration
+	exploration_effort = settings.exploration_effort; 
+
 	N = in.N;
 	vc=repmat( in.K*1.0/N, N,1 ); %virtual configuration
 
+	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
+	hist_f = []; % historical tot_requests
+	hist_vc = vc;
 
 	for i=1:settings.epochs
 		%{DELTA GENERATION
@@ -16,23 +23,29 @@ function dspsa(in, settings)
 			Delta2 = -Delta(ordering);
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
+
 		pi_ = round(vc);
 		test_c = pi_ + Delta;
 		test_c = [test_c, pi_ - Delta];
-		if enhanced
-			test_c = [test_c, pi_];
-		end
+		test_c = [test_c, pi_];
 
-		f = m = [];
+		% fraction of time dedicated to eacj test;
+		test_duration = [exploration_effort/2, exploration_effort/2, 1-exploration_effort ];
+
+		% f: tot requests; m: number of misses
+		f = m = []; % one row per each CP, one columns per each test
 		for test = 1:length(test_c)
 			c = test_c(:,test);
 
 			% We divide lambda by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
-			[cm, cf] = compute_miss(in, c, in.lambda/2);
+			[cm, cf] = compute_miss(in, c, in.lambda * test_duration(test) );
 			m = [m, cm];
 			f = [f, cf];
 		end%test
+
+		% Historical data
+		hist_m = [hist_m, sum(m,2) ]; hist_f = [hist_f, sum(f,2) ];
 
 		if !enhanced
 			M = sum(m, 1) ./ sum(f, 1); % miss stream for each epoch
@@ -44,10 +57,14 @@ function dspsa(in, settings)
 			% With Delta>0 we are selecting the CPs that received th additional slot in the 
 			% first test and who lost a slot in the second test. 
 			% With Delta<0 we select the rest
-			improvement(Delta>0 ) = m(Delta>0, 3) - m(Delta>0, 1);
-			loose(Delta>0) = m(Delta>0, 2) - m(Delta>0, 3);
-			improvement(Delta<0 ) = m(Delta<0, 3) - m(Delta<0, 2);
-			loose(Delta<0) = m(Delta<0, 1) - m(Delta<0, 3);
+			improvement(Delta>0 ) = ...
+				m(Delta>0, 3) / sum(f(Delta>0, 3) ) - m(Delta>0, 1) / sum( f(Delta>0, 1) );
+			loose(Delta>0) = ...
+				m(Delta>0, 2) / sum(f(Delta>0, 2) ) - m(Delta>0, 3) / sum(f(Delta>0, 3) );
+			improvement(Delta<0 ) = ...
+				m(Delta<0, 3) / sum(f(Delta<0, 3) ) - m(Delta<0, 2) / sum(f(Delta<0, 2) );
+			loose(Delta<0) = ...
+				m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
 
 			permutations = perms(Delta)';
 			winning_permutation = [];
@@ -66,9 +83,6 @@ function dspsa(in, settings)
 			end
 		end
 
-		real_c = round(vc);
-		disp(real_c(2)/sum(real_c) )
-
 		%{CHECK
 			if sum(Delta) != 0 && sum(delta_vc)!=0
 				Delta
@@ -81,7 +95,9 @@ function dspsa(in, settings)
 				error("test_c is uncorrect")
 			end
 		%}CHECK
+		hist_vc = [hist_vc, vc];
 
 	end%for
 
+	save(settings.outfile);
 end%function
