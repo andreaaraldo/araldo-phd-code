@@ -100,5 +100,8 @@ function dspsa(in, settings)
 
 	end%for
 
+	[hist_allocation, hist_cum_observed_req, hist_cum_hit] = compute_metrics(...
+		in, settings, hist_vc, hist_m, hist_f);
+
 	save(settings.outfile);
 end%function

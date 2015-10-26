@@ -4,68 +4,88 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced","optimum"};
-requestss = [1e3];
+requests_per_epochs = [1e2 1e4 1e6];
+total_requests=1e9;
 catalogs = [1e5];
+epsilons = [0.5];
 Ks = [1e3]; %cache slots
-settings.epochs = 10000;
 seeds = 1 ;
 
 for seed = seeds
 	rand("state",seed);
-
-	for catalog=catalogs
-		in.alpha=[0.4; 0.8; 1; 1.2];
-		in.N = length(in.alpha); %num CPs
-		in.catalog=repmat(catalog, in.N, 1);
+	for epsilon = epsilons
+		for catalog=catalogs
+			in.alpha=[1-epsilon; 1+epsilon];
+			in.N = length(in.alpha); %num CPs
+			in.catalog=repmat(catalog, in.N, 1);
+			zipf=[];
 
 			if mod(in.N,2) != 0
 				error("Only an even number of CPs are accepted")
 			end
 
-			zipf=[];
-			for j=1:in.N
-				zipf = [zipf; (ZipfPDF(in.alpha(j), in.catalog(j)) )'];
-			end
 
-		for requests=requestss
-			in.R = repmat(requests/in.N, in.N, 1);
+			for requests_per_epoch = requests_per_epochs
+				in.R = repmat(requests_per_epoch/in.N, in.N, 1);
+				settings.epochs = round(total_requests/requests_per_epoch);
 
-			in.lambda=[];
-			for j=1:in.N
-				in.lambda = [in.lambda;  zipf(j,:) .* in.R(j) ];
-			end
+				%{CHECK
+				if settings.epochs < 1
+					error("error");
+				end
+				%}CHECK
 
-			for K=Ks
-				in.K = K;
+				for K=Ks
+					in.K = K;
 
-				for i=1:length(methods_)
-					method = methods_{i};
-					settings.outfile = sprintf("%s/ctlg_%g-req_%g-K_%g-%s-seed_%d.mdat",...
-						mdat_folder,catalog,requests, K, method, seed);
+					for i=1:length(methods_)
+						method = methods_{i};
+						settings.outfile = ...
+							sprintf("%s/ctlg_%g-eps_%g-req_per_epoch_%g-K_%g-%s-seed_%d.mdat",...
+							mdat_folder,catalog,epsilon,requests_per_epoch, K, method, seed);
 
-					switch method
-						case "descent"
-							cumulative_steepest_descent(in, settings);
+						if !exist(settings.outfile)
+							%{GENERATE lambda
+							if length(zipf)==0
+								for j=1:in.N
+									zipf = [zipf; (ZipfPDF(in.alpha(j), in.catalog(j)) )'];
+								end
+							%else it means that the zipf has already been generated
+							end
 
-						case "dspsa_orig"
-							settings.enhanced = false;
-							dspsa(in, settings);
+							in.lambda=[];
+							for j=1:in.N
+								in.lambda = [in.lambda;  zipf(j,:) .* in.R(j) ];
+							end
+							%}GENERATE lambda
 
-						case "dspsa_enhanced"
-							settings.enhanced = true;
-							dspsa(in, settings);
 
-						case "optimum"
-							optimum(in,settings);
+							switch method
+								case "descent"
+									cumulative_steepest_descent(in, settings);
 
-						otherwise
-							method
-							error("method not recognised");
-					end%switch
+								case "dspsa_orig"
+									settings.enhanced = false;
+									dspsa(in, settings);
 
-					disp (sprintf("%s written", settings.outfile) );
-				end%methods for
-			end%K for
-		end%request for
-	end%catalog for
+								case "dspsa_enhanced"
+									settings.enhanced = true;
+									dspsa(in, settings);
+
+								case "optimum"
+									optimum(in,settings);
+
+								otherwise
+									method
+									error("method not recognised");
+							end%switch
+							disp (sprintf("%s written", settings.outfile) );
+						else
+							disp (sprintf("%s exists", settings.outfile) );
+						end
+					end%methods for
+				end%K for
+			end%request for
+		end%catalog for
+	end%epsilon for
 end%seed for
