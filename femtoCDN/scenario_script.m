@@ -4,11 +4,10 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced","optimum"};
-methods_ = {"optimum"};
 requestss = [1e3];
-catalogs = [1e2];
-Ks = [10]; %cache slots
-settings.epochs = 10;
+catalogs = [1e5];
+Ks = [1e3]; %cache slots
+settings.epochs = 10000;
 seeds = 1 ;
 
 for seed = seeds
