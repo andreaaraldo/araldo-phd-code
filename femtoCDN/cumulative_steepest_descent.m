@@ -12,9 +12,7 @@ function cumulative_steepest_descent(in, settings)
 		hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 		hist_f = []; % historical tot_requests
 		hist_vc = vc;
-
 	%}INITIALIZATION
-
 
 	for i=1:settings.epochs
 		c = round(vc);
@@ -41,36 +39,13 @@ function cumulative_steepest_descent(in, settings)
 			end
 
 			nvc = (vc .+ delta_vc);
-
-			%{COPE WITH DISCRETE VALUES AND INCONSISTENCIES
-				% Guarantee that each CP has at least 1 cache slot
-				while ( any( round(nvc) < ones(N,1) ) )
-					lucky = max(find( round(nvc) < ones(N,1)) );
-					unlucky_candidates = find( round(nvc) > ones(N,1) );
-					unlucky = unlucky_candidates( unidrnd( length(unlucky_candidates) ) );
-					nvc(unlucky) = nvc(unlucky ) - 1;
-					nvc(lucky) = nvc(lucky)+1;
-				end
-
-				difference = sum(round(nvc) ) - in.K;
-				while (difference > 0)
-					for d=1:difference
-						unlucky_candidates = find( round(nvc)>1 );
-						unlucky = unlucky_candidates(unidrnd( length(unlucky_candidates) ) );
-						nvc(unlucky) = nvc(unlucky ) - 1;
-					end
-				end
-				while (difference<0)
-					lucky = unidrnd(N);
-					nvc(lucky) = nvc(lucky ) + 1;
-					difference++;
-				end
-
-			%}COPE WITH DISCRETE VALUES AND INCONSISTENCIES
+			nvc = correct_vc(nvc, in);
 
 			%{CHECK
 			if (severe_debug)
 				if (any(isnan(delta_vc) ) )
+					c
+					Lc
 					delta_vc
 					error("Error: delta_vc cannot be nan")
 				end

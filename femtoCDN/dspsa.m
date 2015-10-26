@@ -6,9 +6,6 @@ function dspsa(in, settings)
 	global severe_debug
 	enhanced = settings.enhanced;
 
-	%fraction of the time spent on trying a new configuration
-	exploration_effort = settings.exploration_effort; 
-
 	N = in.N;
 	vc=repmat( in.K*1.0/N, N,1 ); %virtual configuration
 
@@ -24,17 +21,21 @@ function dspsa(in, settings)
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
 
+		vc = correct_vc(vc, in);
 		pi_ = round(vc);
 		test_c = pi_ + Delta;
 		test_c = [test_c, pi_ - Delta];
-		test_c = [test_c, pi_];
 
-		% fraction of time dedicated to eacj test;
-		test_duration = [exploration_effort/2, exploration_effort/2, 1-exploration_effort ];
+		if(enhanced)
+			test_c = [test_c, pi_];
+		end
 
+		% fraction of time dedicated to each test;
+		test_duration = repmat(1/size(test_c,2), 1, size(test_c,2) );
+		
 		% f: tot requests; m: number of misses
 		f = m = []; % one row per each CP, one columns per each test
-		for test = 1:length(test_c)
+		for test = 1:size(test_c,2)
 			c = test_c(:,test);
 
 			% We divide lambda by 2, because at each epoch for half of the time we evaluate 
@@ -90,7 +91,7 @@ function dspsa(in, settings)
 				error("Zero-sum property does not hold")
 			end
 
-			if sum( test_c(:,1) ) > in.K || sum( test_c(:,2) ) > in.K
+			if any( sum(test_c, 1)>in.K )
 				test_c
 				error("test_c is uncorrect")
 			end
