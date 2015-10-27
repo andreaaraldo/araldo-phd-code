@@ -5,9 +5,9 @@ mdat_folder = "data/rawdata";
 max_parallel = 8;
 overwrite = true;
 
-methods_ = {"descent", "dspsa_orig","dspsa_enhanced","optimum"};
-requests_per_epochs = [1e3 1e6];
-total_requests=1e7;
+methods_ = {"descent", "dspsa_orig","optimum"};
+requests_per_epochs = [1e2 1e3];
+total_requests=1e5;
 catalogs = [1e5];
 epsilons = [0.5];
 Ks = [1e3]; %cache slots
