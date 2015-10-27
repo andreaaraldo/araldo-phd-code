@@ -3,6 +3,7 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 max_parallel = 8;
+overwrite = true;
 
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced","optimum"};
 requests_per_epochs = [1e3 1e6];
@@ -51,7 +52,7 @@ for seed = seeds
 						settings.logfile = sprintf("%s.log",settings.simname);
 						settings.infile = sprintf("%s.in",settings.simname);
 
-						if !exist(settings.outfile)
+						if !exist(settings.outfile) || overwrite
 							%{GENERATE lambda
 							if length(zipf)==0
 								for j=1:in.N
