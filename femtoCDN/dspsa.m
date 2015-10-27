@@ -1,7 +1,12 @@
 %Modified version of [1]
 
 % [1] Wang, Spall - "Discrete simultaneous perturbation stochastic approximation on loss function with noisy measurements"	
-function dspsa(in, settings)
+function dspsa(in, settings, infile)
+	if length(in)==0 && length(settings)==0
+		load (infile);
+	end
+
+
 	% SETTINGS
 	global severe_debug
 	enhanced = settings.enhanced;
@@ -14,6 +19,8 @@ function dspsa(in, settings)
 	hist_vc = vc;
 
 	for i=1:settings.epochs
+		printf("%g/%g; ",i,settings.epochs);
+
 		%{DELTA GENERATION
 			Delta = round(unidrnd(2,N/2,1) - 1.5);
 			ordering = randperm(N/2);
@@ -104,4 +111,5 @@ function dspsa(in, settings)
 		in, settings, hist_vc, hist_m, hist_f);
 
 	save(settings.outfile);
+	disp (sprintf("%s written", settings.outfile) );
 end%function

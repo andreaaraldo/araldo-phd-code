@@ -1,4 +1,8 @@
-function cumulative_steepest_descent(in, settings)
+function cumulative_steepest_descent(in, settings, infile)
+	if length(in)==0 && length(settings)==0
+		load (infile);
+	end
+
 	% SETTINGS
 	boost =  false;
 	only_plausible_updates = false;
@@ -15,6 +19,8 @@ function cumulative_steepest_descent(in, settings)
 	%}INITIALIZATION
 
 	for i=1:settings.epochs
+		printf("%g/%g; ",i,settings.epochs);
+
 		c = round(vc);
 
 		[m, f] = compute_miss(in, c, in.lambda);
@@ -104,4 +110,5 @@ function cumulative_steepest_descent(in, settings)
 
 
 	save(settings.outfile);
+	disp (sprintf("%s written", settings.outfile) );
 end%function
