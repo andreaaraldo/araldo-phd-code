@@ -1,4 +1,9 @@
-function optimum(in, settings)
+function optimum(in, settings, infile)
+        if length(in)==0 && length(settings)==0
+                load (infile);
+        end
+
+
 	% SETTINGS
 	global severe_debug
 
@@ -20,4 +25,5 @@ function optimum(in, settings)
 	value = compute_value(in, c);
 
 	save(settings.outfile);
+        disp (sprintf("%s written", settings.outfile) );
 end%function
