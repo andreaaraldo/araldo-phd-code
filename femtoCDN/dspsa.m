@@ -56,7 +56,7 @@ function dspsa(in, settings, infile)
 		hist_m = [hist_m, sum(m,2) ]; hist_f = [hist_f, sum(f,2) ];
 
 		if !enhanced
-			M = sum(m, 1) ./ sum(f, 1); % miss stream for each epoch
+			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
 			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
 			vc = vc - delta_vc;
 		else
@@ -73,6 +73,8 @@ function dspsa(in, settings, infile)
 				m(Delta<0, 3) / sum(f(Delta<0, 3) ) - m(Delta<0, 2) / sum(f(Delta<0, 2) );
 			loose(Delta<0) = ...
 				m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
+
+			error("This is wrong")
 
 			permutations = perms(Delta)';
 			winning_permutation = [];
