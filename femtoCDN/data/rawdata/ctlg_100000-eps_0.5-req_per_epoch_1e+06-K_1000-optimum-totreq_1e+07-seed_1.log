@@ -1,3 +1,1 @@
-error: null_matrix cannot be indexed with .
-error: called from:
-error:   /home/andrea/software/araldo-phd-code/femtoCDN/optimum.m at line 5, column 4
+data/rawdata/ctlg_100000-eps_0.5-req_per_epoch_1e+06-K_1000-optimum-totreq_1e+07-seed_1.mdat written

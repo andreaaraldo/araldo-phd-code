@@ -110,6 +110,7 @@ for seed = seeds
 									error(sprintf("ERROR in executing %s\n\nError is %s. See %s",
 											command, output, settings.logfile) );
 								end
+								quit;
 							elseif pid>0
 								printf("Sim %s launched with pid %g\n", settings.simname, pid);
 								active_processes++;
@@ -127,3 +128,8 @@ for seed = seeds
 		end%catalog for
 	end%epsilon for
 end%seed for
+
+while active_processes > 0
+	waitpid(-1);
+	active_processes--;
+end
