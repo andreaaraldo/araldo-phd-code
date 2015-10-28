@@ -23,7 +23,7 @@ function cumulative_steepest_descent(in, settings, infile)
 
 		c = round(vc);
 
-		[m, f] = compute_miss(in, c, in.lambda);
+		[m, f] = compute_miss(in, c, in.lambdatau);
 
 		% Historical data
 		hist_m = [hist_m, sum(m,2) ]; hist_f = [hist_f, sum(f,2) ];

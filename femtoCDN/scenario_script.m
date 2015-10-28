@@ -7,8 +7,8 @@ max_parallel = 8;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"dspsa_orig"};
-requests_per_epochs = [1e2 1e3 1e4 1e5];
-total_requests=1e8;
+epochss = [10];
+avg_overall_req=1e8;
 catalogs = [1e5];
 epsilons = [0.5];
 Ks = [1e3]; %cache slots
@@ -29,9 +29,9 @@ for seed = seeds
 			end
 
 
-			for requests_per_epoch = requests_per_epochs
-				in.R = repmat(requests_per_epoch/in.N, in.N, 1);
-				settings.epochs = round(total_requests/requests_per_epoch);
+			for epochs = epochss
+				settings.epochs = epochs;
+				in.R = repmat(avg_overall_req/(epochs*in.N), in.N, 1); % avg #req per epoch per CP
 
 				%{CHECK
 				if settings.epochs < 1
@@ -47,14 +47,14 @@ for seed = seeds
 						settings.simname = ...
 							sprintf("%s/ctlg_%g-eps_%g-req_per_epoch_%g-K_%g-%s-totreq_%g-seed_%d",...
 							mdat_folder,catalog,epsilon,requests_per_epoch, K, method, ...
-							total_requests, seed);
+							avg_overall_req, seed);
 
 						settings.outfile = sprintf("%s.mdat",settings.simname);
 						settings.logfile = sprintf("%s.log",settings.simname);
 						settings.infile = sprintf("%s.in",settings.simname);
 
 						if !exist(settings.outfile) || overwrite
-							%{GENERATE lambda
+							%{GENERATE lambdatau
 							if length(zipf)==0
 								for j=1:in.N
 									zipf = [zipf; (ZipfPDF(in.alpha(j), in.catalog(j)) )'];
@@ -62,11 +62,11 @@ for seed = seeds
 							%else it means that the zipf has already been generated
 							end
 
-							in.lambda=[];
+							in.lambdatau=[]; %avg #req per each object
 							for j=1:in.N
-								in.lambda = [in.lambda;  zipf(j,:) .* in.R(j) ];
+								in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
 							end
-							%}GENERATE lambda
+							%}GENERATE lambdatau
 
 
 							function_name = [];
@@ -125,7 +125,7 @@ for seed = seeds
 						end
 					end%methods for
 				end%K for
-			end%request for
+			end%epochs for
 		end%catalog for
 	end%epsilon for
 end%seed for

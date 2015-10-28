@@ -45,9 +45,9 @@ function dspsa(in, settings, infile)
 		for test = 1:size(test_c,2)
 			c = test_c(:,test);
 
-			% We divide lambda by 2, because at each epoch for half of the time we evaluate 
+			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
-			[cm, cf] = compute_miss(in, c, in.lambda * test_duration(test) );
+			[cm, cf] = compute_miss(in, c, in.lambdatau * test_duration(test) );
 			m = [m, cm];
 			f = [f, cf];
 		end%test
