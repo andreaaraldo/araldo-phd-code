@@ -17,7 +17,7 @@ file2 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s
 	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
 
 epochs="1e+03"
-file2 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
+file3 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
 	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
 
 

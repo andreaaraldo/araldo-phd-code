@@ -6,23 +6,37 @@ max_parallel = 8;
 
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig"};
-epochss = [1e1 1e2 1e3];
+methods_ = {"optimum"};
+epochss = [1e6];
 avg_overall_req=1e8;
 catalogs = [1e5];
-alpha0s = [0.7];
-epsilons = [0.2];
-Ks = [1e2]; %cache slots
+alpha0s = [0.7 1];
+alpha_epss = [0.2 0.4];
+req_epss = [0.2 0.4];
+Ns = [2 4 8];
+Ks = [1e1 1e2 1e3]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
 for seed = seeds
 	rand("state",seed);
 	for alpha0 = alpha0s
-	for epsilon = epsilons
+	for alpha_eps = alpha_epss
+	for req_eps = req_epss
 	for catalog=catalogs
-		in.alpha=[1-epsilon; 1+epsilon];
-		in.N = length(in.alpha); %num CPs
+	for N = Ns
+		in.N = N;
+		in.alpha0 = alpha0;
+		in.alpha_eps = alpha_eps;
+		in.req_eps = req_eps;
+
+		%{BUILD alpha
+		delta_alpha = 2*alpha_eps / (N-1);
+		in.alpha = repmat(alpha0-alpha_eps, N,1);
+		for j=2:in.N
+			in.alpha(j,1) = in.alpha(j,1) + (j-1)*delta_alpha;
+		end
+		%}BUILD alpha
 		in.catalog=repmat(catalog, in.N, 1);
 		zipf=[];
 
@@ -32,24 +46,37 @@ for seed = seeds
 
 
 		for epochs = epochss
-					settings.epochs = epochs;
-					in.R = repmat(avg_overall_req/(epochs*in.N), in.N, 1); % avg #req per epoch per CP
+			settings.epochs = epochs;
 
-					%{CHECK
-					if settings.epochs < 1
-						error("error");
-					end
-					%}CHECK
+			%{CHECK
+			if settings.epochs < 1
+				error("error");
+			end
+			%}CHECK
 
-					for K=Ks
+			%{BUILD R_perms
+			% avg #req per epoch per CP
+			avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
+			delta_R = 2*avg_req_per_epoch_per_CP*req_eps / (N-1) ;
+			R = repmat( (1-req_eps)*avg_req_per_epoch_per_CP, in.N, 1); 
+			for j=2:in.N
+				R(j,1) = R(j,1) + (j-1)*delta_R;
+			end
+			R_perms = [R, flipud(R)];
+			%}BUILD R_perms 
+
+			for perm=1:size(R_perms, 2)
+				in.perm = perm;
+				in.R = R_perms(:,perm);
+				for K=Ks
 						in.K = K;
 
 						for i=1:length(methods_)
 							method = methods_{i};
 							settings.simname = ...
-								sprintf("%s/ctlg_%.1g-alpha0_%g-eps_%g-epochs_%.1g-K_%.1g-%s-totreq_%.1g-seed_%d",...
-								mdat_folder,catalog,alpha0,epsilon,epochs, K, method, ...
-								avg_overall_req, seed);
+								sprintf("%s/N_%d-ctlg_%.1g-alpha0_%g-alpha_eps_%g-req_eps_%g-perm_%d-epochs_%.1g-K_%.1g-%s-totreq_%.1g-seed_%d",...
+								mdat_folder,N,catalog,alpha0,alpha_eps,req_eps,perm, epochs, K,...
+								method, avg_overall_req, seed);
 
 							settings.outfile = sprintf("%s.mdat",settings.simname);
 							settings.logfile = sprintf("%s.log",settings.simname);
@@ -126,10 +153,13 @@ for seed = seeds
 							
 							end
 						end%methods for
-					end%K for
+				end%K for
+			end%perm for
 		end%epochs for
+	end%N for
 	end%catalog for
-	end%epsilon for
+	end%eps for
+	end%alpha_eps for
 	end%alpha0 for
 end%seed for
 

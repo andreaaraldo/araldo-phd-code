@@ -1,0 +1,15 @@
+#improvement = hit_ratio_with_equal_splitting - hit_ratio_with_optimum
+#
+#catalog cache_size alpha0 epsilon improvement
+1e+05 1e+01 0.7 0.2 2
+1e+05 1e+02 0.7 0.2 1
+1e+05 1e+03 0.7 0.2 0.7
+1e+05 1e+01 0.7 0.5 4
+1e+05 1e+02 0.7 0.5 3
+1e+05 1e+03 0.7 0.5 1
+1e+05 1e+01 1 0.2 2
+1e+05 1e+02 1 0.2 0.3
+1e+05 1e+03 1 0.2 0.07
+1e+05 1e+01 1 0.5 4
+1e+05 1e+02 1 0.5 0.8
+1e+05 1e+03 1 0.5 0.2
