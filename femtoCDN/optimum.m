@@ -24,13 +24,25 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	c = border .- ones(N,1);
 	value = compute_value(in, c);
 
+
 	%{HIT RATIO IMPROVEMENT
-	c_unif = repmat(round(in.K/N), N,1 );
+	vc_unif = repmat(in.K/N, N,1 ); 
+	c_unif = round (correct_vc(vc_unif, in) );
+	
 	value_unif = compute_value(in, c_unif);
 	hit_ratio_improvement = value - value_unif;
 	printf("improvement %d %.1g %.1g %g %g %g %d %.1g\n",...
 		in.catalog(1), in.N, in.K, in.alpha0, in.alpha_eps, in.req_eps, in.perm, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
+
+
+	%{CHECK
+	if sum(c) != in.K || sum(c_unif) != in.K
+		c
+		c_unif
+		error("configuration is wrong")
+	end
+	%}CHECK
 
 	save(settings.outfile);
 	disp (sprintf("%s written", settings.outfile) );
