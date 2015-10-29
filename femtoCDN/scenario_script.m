@@ -4,7 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 max_parallel = 8;
 
-overwrite = false;
+overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e6];
