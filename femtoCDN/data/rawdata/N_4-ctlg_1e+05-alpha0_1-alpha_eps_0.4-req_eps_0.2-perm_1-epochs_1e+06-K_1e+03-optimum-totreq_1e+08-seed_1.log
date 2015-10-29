@@ -1,3 +1,3 @@
-improvement 100000 4 1e+03 1 0.4 0.2 1 0.4
+improvement 1e+05 4 1e+03 1 0.4 0.2 1 0.442588 0.555271 0.550845
 data/rawdata/N_4-ctlg_1e+05-alpha0_1-alpha_eps_0.4-req_eps_0.2-perm_1-epochs_1e+06-K_1e+03-optimum-totreq_1e+08-seed_1.mdat written
 ans =  0.0044259
