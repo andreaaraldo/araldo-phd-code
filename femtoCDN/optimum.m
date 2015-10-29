@@ -28,6 +28,9 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	c_unif = repmat(round(in.K/N), N,1 );
 	value_unif = compute_value(in, c_unif);
 	hit_ratio_improvement = value - value_unif;
+	if hit_ratio_improvement < 0
+		error("The improvement cannot be negative");
+	else
 	printf("improvement %d %.1g %.1g %g %g %g %d %.1g\n",...
 		in.catalog(1), in.N, in.K, in.alpha0, in.alpha_eps, in.req_eps, in.perm, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
