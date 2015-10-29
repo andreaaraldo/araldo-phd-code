@@ -8,4 +8,6 @@ set xlabel "configuration"
 set grid y
 set ytics 10
 
-plot "< sort  -k8,8 maximum_improvement.dat" using 0:8 notitle
+plot "< sort  -k8,8 maximum_improvement.dat" using 0:8 notitle,\
+ "" using 0:9, \
+ "" using 0:10
