@@ -84,7 +84,8 @@ for seed = seeds
 									% the appropriate zipf has not been yet generated
 									zipf = zeros(N, max(in.catalog) );
 									for j=1:in.N
-										zipf(j, 1:in.catalog(j)) = (ZipfPDF(in.alpha(j), in.catalog(j)) )';
+										zipf(j, 1:in.catalog(j)) = ...
+											(ZipfPDF(in.alpha(j), in.catalog(j)) )';
 									end
 								%else it means that the zipf has already been generated
 								end

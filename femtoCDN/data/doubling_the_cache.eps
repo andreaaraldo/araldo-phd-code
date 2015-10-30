@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: doubling_the_cache.eps
 %%Creator: gnuplot 4.6 patchlevel 4
-%%CreationDate: Fri Oct 30 14:57:17 2015
+%%CreationDate: Fri Oct 30 16:09:18 2015
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -420,6 +420,34 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+/MFshow {
+   { dup 5 get 3 ge
+     { 5 get 3 eq {gsave} {grestore} ifelse }
+     {dup dup 0 get findfont exch 1 get scalefont setfont
+     [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
+     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
+     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     pop aload pop M} ifelse }ifelse }ifelse }
+     ifelse }
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
+/MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
+ {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
+/MLshow { currentpoint stroke M
+  0 exch R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MRshow { currentpoint stroke M
+  exch dup MFwidth neg 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MCshow { currentpoint stroke M
+  exch dup MFwidth -2 div 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/XYsave    { [( ) 1 2 true false 3 ()] } bind def
+/XYrestore { [( ) 1 2 true false 4 ()] } bind def
 Level1 SuppressPDFMark or 
 {} {
 /SDict 10 dict def
@@ -433,7 +461,7 @@ SDict begin [
   /Author (andrea)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Fri Oct 30 14:57:17 2015)
+  /CreationDate (Fri Oct 30 16:09:18 2015)
   /DOCINFO pdfmark
 end
 } ifelse
@@ -451,7 +479,8 @@ newpath
 BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 LCb setrgbcolor
 3600 4900 M
-(Gain achieved doubling the cache size) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (Gain achieved doubling the cache)]
+] -46.7 MCshow
 LTb
 1.000 UL
 LTb
@@ -460,8 +489,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
+stroke
 434 448 M
-( 0) Rshow
+[ [(Helvetica) 140.0 0.0 true true 0 ( 0)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -469,8 +500,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
+stroke
 434 952 M
-( 1) Rshow
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -478,8 +511,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 2) Rshow
+stroke
+434 1456 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 2)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -487,8 +522,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 3) Rshow
+stroke
+434 1960 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 3)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -496,8 +533,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 4) Rshow
+stroke
+434 2464 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 4)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -505,8 +544,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 5) Rshow
+stroke
+434 2967 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 5)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -514,8 +555,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 6) Rshow
+stroke
+434 3471 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 6)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -523,8 +566,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 7) Rshow
+stroke
+434 3975 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 7)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -532,8 +577,10 @@ LCb setrgbcolor
 63 0 V
 1566 0 R
 -63 0 V
--1650 0 R
-( 8) Rshow
+stroke
+434 4479 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 8)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -541,8 +588,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
+stroke
 518 308 M
-( 100000) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 ( 100000)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -582,8 +631,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+06) Cshow
+stroke
+1061 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+06)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -623,8 +674,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+07) Cshow
+stroke
+1604 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+07)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -664,8 +717,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+08) Cshow
+stroke
+2147 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+08)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -680,16 +735,22 @@ LCb setrgbcolor
 Z stroke
 LCb setrgbcolor
 112 2463 M
-currentpoint gsave translate -270 rotate 0 0 M
-(gain%) Cshow
+currentpoint gsave translate -270 rotate 0 0 moveto
+[ [(Helvetica) 140.0 0.0 true true 0 (Gain G\(S,)]
+[(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 112.0 -42.0 true true 0 (1)]
+[(Helvetica) 140.0 0.0 true true 0 (,k\) \(%\))]
+] -32.7 MCshow
 grestore
 LTb
 LCb setrgbcolor
 1332 98 M
-(catalog size) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (catalog size S)]
+] -46.7 MCshow
 LTb
 1332 4689 M
-(c2ctlg 1e-4) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (k=S * 1e-4)]
+] -46.7 MCshow
 1.000 UP
 1.000 UL
 LTb
@@ -700,7 +761,9 @@ LT0
 LC0 setrgbcolor
 LCb setrgbcolor
 1496 4346 M
-(alpha 0) Rshow
+[ [(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 140.0 0.0 true true 0 (= 0)]
+] -46.7 MRshow
 LT0
 1580 4346 M
 399 0 V
@@ -715,7 +778,9 @@ LT1
 LC1 setrgbcolor
 LCb setrgbcolor
 1496 4206 M
-(alpha 0.5) Rshow
+[ [(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 140.0 0.0 true true 0 (= 0.5)]
+] -46.7 MRshow
 LT1
 1580 4206 M
 399 0 V
@@ -730,7 +795,9 @@ LT2
 LC2 setrgbcolor
 LCb setrgbcolor
 1496 4066 M
-(alpha 0.8) Rshow
+[ [(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 140.0 0.0 true true 0 (= 0.8)]
+] -46.7 MRshow
 LT2
 1580 4066 M
 399 0 V
@@ -745,7 +812,9 @@ LT3
 LC3 setrgbcolor
 LCb setrgbcolor
 1496 3926 M
-(alpha 1) Rshow
+[ [(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 140.0 0.0 true true 0 (= 1)]
+] -46.7 MRshow
 LT3
 1580 3926 M
 399 0 V
@@ -760,7 +829,9 @@ LT4
 LC4 setrgbcolor
 LCb setrgbcolor
 1496 3786 M
-(alpha 1.2) Rshow
+[ [(Symbol) 140.0 0.0 true true 0 (a)]
+[(Helvetica) 140.0 0.0 true true 0 (= 1.2)]
+] -46.7 MRshow
 LT4
 1580 3786 M
 399 0 V
@@ -789,8 +860,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 0) Rshow
+stroke
+2694 448 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 0)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -798,8 +871,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 1) Rshow
+stroke
+2694 1120 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -807,8 +882,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 2) Rshow
+stroke
+2694 1792 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 2)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -816,8 +893,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 3) Rshow
+stroke
+2694 2464 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 3)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -825,8 +904,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 4) Rshow
+stroke
+2694 3135 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 4)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -834,8 +915,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 5) Rshow
+stroke
+2694 3807 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 5)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -843,8 +926,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 6) Rshow
+stroke
+2694 4479 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 6)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -852,8 +937,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 100000) Cshow
+stroke
+2778 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 100000)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -893,8 +980,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+06) Cshow
+stroke
+3368 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+06)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -934,8 +1023,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+07) Cshow
+stroke
+3957 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+07)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -975,8 +1066,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+08) Cshow
+stroke
+4547 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+08)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -991,10 +1084,12 @@ LCb setrgbcolor
 Z stroke
 LCb setrgbcolor
 3662 98 M
-(catalog size) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (catalog size S)]
+] -46.7 MCshow
 LTb
 3662 4689 M
-(c2ctlg 1e-3) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (k=S * 1e-3)]
+] -46.7 MCshow
 1.000 UP
 1.000 UL
 LTb
@@ -1064,8 +1159,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 0) Rshow
+stroke
+5094 448 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 0)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1073,8 +1170,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 1) Rshow
+stroke
+5094 1024 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1082,8 +1181,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 2) Rshow
+stroke
+5094 1600 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 2)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1091,8 +1192,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 3) Rshow
+stroke
+5094 2176 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 3)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1100,8 +1203,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 4) Rshow
+stroke
+5094 2751 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 4)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1109,8 +1214,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 5) Rshow
+stroke
+5094 3327 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 5)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1118,8 +1225,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 6) Rshow
+stroke
+5094 3903 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 6)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1127,8 +1236,10 @@ LCb setrgbcolor
 63 0 V
 1706 0 R
 -63 0 V
--1790 0 R
-( 7) Rshow
+stroke
+5094 4479 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 7)]
+] -46.7 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1136,8 +1247,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 100000) Cshow
+stroke
+5178 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 100000)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1177,8 +1290,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+06) Cshow
+stroke
+5768 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+06)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1218,8 +1333,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+07) Cshow
+stroke
+6357 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+07)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1259,8 +1376,10 @@ LCb setrgbcolor
 0 63 V
 0 3968 R
 0 -63 V
-0 -4108 R
-( 1e+08) Cshow
+stroke
+6947 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 1e+08)]
+] -46.7 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -1275,10 +1394,12 @@ LCb setrgbcolor
 Z stroke
 LCb setrgbcolor
 6062 98 M
-(catalog size) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (catalog size S)]
+] -46.7 MCshow
 LTb
 6062 4689 M
-(c2ctlg 1e-2) Cshow
+[ [(Helvetica) 140.0 0.0 true true 0 (k=S * 1e-2)]
+] -46.7 MCshow
 1.000 UP
 1.000 UL
 LTb
@@ -1346,4 +1467,4 @@ grestore
 end
 showpage
 %%Trailer
-%%DocumentFonts: Helvetica
+%%DocumentFonts: Symbol Helvetica
