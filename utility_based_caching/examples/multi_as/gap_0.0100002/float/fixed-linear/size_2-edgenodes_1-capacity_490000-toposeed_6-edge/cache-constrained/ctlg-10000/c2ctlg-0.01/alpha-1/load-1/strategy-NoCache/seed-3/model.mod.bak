@@ -462,7 +462,7 @@ execute DISPLAY
 
 
 	
-/*
+
 	 //########################################**
   	 //### Print cached quality levels per rank *
   	 //########################################**
@@ -489,7 +489,7 @@ execute DISPLAY
 			f.close;
 		}		
 	}
-*/
+
 
 
 /*
