@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
-max_parallel = 8;
+max_parallel = 22;
 
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
@@ -15,7 +15,7 @@ alpha0s = [0.4 0.7 1];
 alpha_epss = [0.4 0 0.2];
 req_epss = [0.2 0.4];
 Ns = [2 4 8];
-Ks = [1e3]; %cache slots
+Ks = [1e4]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
