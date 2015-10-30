@@ -4,25 +4,18 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 max_parallel = 8;
 
-overwrite = true;
+overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [2e1 1e5 1e6 1e7];
-overall_ctlgs = [2e1];
+overall_ctlgs = [1e5 1e6 1e7];
 ctlg_epss = [0 0.2 0.4];
-ctlg_epss = [0.4];
-alpha0s = [1 0.7];
-alpha0s = [1];
+alpha0s = [0.4 0.7 1];
 alpha_epss = [0.4 0 0.2];
-alpha_epss = [0.2];
 req_epss = [0.2 0.4];
-req_epss = [0.4];
 Ns = [2 4 8];
-Ns = [2];
 Ks = [1e1 1e2 1e3 1e4]; %cache slots
-Ks = [1e1]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
