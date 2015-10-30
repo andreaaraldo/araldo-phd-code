@@ -34,8 +34,8 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	if hit_ratio_improvement < 0
 		error("The improvement cannot be negative");
 	else
-	printf("improvement %.1g %g %.1g %g %g %g %d %g %g %g\n",...
-		in.catalog(1), in.N, in.K, in.alpha0, in.alpha_eps, in.req_eps, in.perm, hit_ratio_improvement*100, value, value_unif );
+	printf("improvement %d %g %g %d %.1g %g %g %g %d %g %g %g\n",...
+		in.N, in.overall_ctlg, in.ctlg_eps, in.ctlg_perm, in.K, in.alpha0, in.alpha_eps, in.req_eps, in.R_perm, value*100, value_unif*100, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
 
 
