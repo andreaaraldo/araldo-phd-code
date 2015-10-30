@@ -15,7 +15,7 @@ alpha0s = [0.4 0.7 1];
 alpha_epss = [0.4 0 0.2];
 req_epss = [0.2 0.4];
 Ns = [2 4 8];
-Ks = [1e1]; %cache slots
+Ks = [1e2]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
