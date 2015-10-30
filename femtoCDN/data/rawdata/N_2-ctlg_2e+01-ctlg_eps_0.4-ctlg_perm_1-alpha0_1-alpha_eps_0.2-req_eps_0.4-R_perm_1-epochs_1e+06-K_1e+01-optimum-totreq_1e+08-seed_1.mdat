@@ -1,0 +1,433 @@
+# Created by Octave 3.8.1, Fri Oct 30 11:56:52 2015 CET <andrea@andrea-kth>
+# name: K
+# type: scalar
+10
+
+
+# name: Ks
+# type: scalar
+10
+
+
+# name: N
+# type: scalar
+2
+
+
+# name: Ns
+# type: scalar
+2
+
+
+# name: R
+# type: matrix
+# rows: 2
+# columns: 1
+ 30
+ 70
+
+
+# name: R_perm
+# type: scalar
+1
+
+
+# name: R_perms
+# type: matrix
+# rows: 2
+# columns: 2
+ 30 70
+ 70 30
+
+
+# name: active_processes
+# type: scalar
+0
+
+
+# name: alpha0
+# type: scalar
+1
+
+
+# name: alpha0s
+# type: scalar
+1
+
+
+# name: alpha_eps
+# type: scalar
+0.2
+
+
+# name: alpha_epss
+# type: scalar
+0.2
+
+
+# name: ans
+# type: scalar
+6
+
+
+# name: argn
+# type: sq_string
+# elements: 3
+# length: 150
+[]                                                                                                                                                    
+# length: 150
+[]                                                                                                                                                    
+# length: 150
+'data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1.in'
+
+
+# name: avg_ctlg
+# type: scalar
+10
+
+
+# name: avg_overall_req
+# type: scalar
+100000000
+
+
+# name: avg_req_per_epoch_per_CP
+# type: scalar
+50
+
+
+# name: border
+# type: matrix
+# rows: 2
+# columns: 1
+ 5
+ 7
+
+
+# name: border_lambdatau
+# type: matrix
+# rows: 2
+# columns: 1
+ 2.92118531355214
+ 2.544657673840948
+
+
+# name: c
+# type: matrix
+# rows: 2
+# columns: 1
+ 4
+ 6
+
+
+# name: c_unif
+# type: matrix
+# rows: 2
+# columns: 1
+ 5
+ 5
+
+
+# name: ctlg
+# type: matrix
+# rows: 2
+# columns: 1
+ 6
+ 14
+
+
+# name: ctlg_eps
+# type: scalar
+0.4
+
+
+# name: ctlg_epss
+# type: scalar
+0.4
+
+
+# name: ctlg_perm
+# type: scalar
+1
+
+
+# name: ctlg_perms
+# type: matrix
+# rows: 2
+# columns: 2
+ 6 14
+ 14 6
+
+
+# name: epochs
+# type: scalar
+1000000
+
+
+# name: epochss
+# type: scalar
+1000000
+
+
+# name: function_name
+# type: string
+# elements: 1
+# length: 7
+optimum
+
+
+# name: hit_ratio_improvement
+# type: scalar
+0.001405349861854366
+
+
+# name: i
+# type: scalar
+10
+
+
+# name: idx
+# type: scalar
+2
+
+
+# name: in
+# type: scalar struct
+# ndims: 2
+ 1 1
+# length: 13
+# name: ctlg_eps
+# type: scalar
+0.4
+
+
+# name: overall_ctlg
+# type: scalar
+20
+
+
+# name: N
+# type: scalar
+2
+
+
+# name: alpha0
+# type: scalar
+1
+
+
+# name: alpha_eps
+# type: scalar
+0.2
+
+
+# name: req_eps
+# type: scalar
+0.4
+
+
+# name: alpha
+# type: matrix
+# rows: 2
+# columns: 1
+ 0.8
+ 1.2
+
+
+# name: ctlg_perm
+# type: scalar
+1
+
+
+# name: catalog
+# type: matrix
+# rows: 2
+# columns: 1
+ 6
+ 14
+
+
+# name: R_perm
+# type: scalar
+1
+
+
+# name: R
+# type: matrix
+# rows: 2
+# columns: 1
+ 30
+ 70
+
+
+# name: K
+# type: scalar
+10
+
+
+# name: lambdatau
+# type: matrix
+# rows: 2
+# columns: 14
+ 10.58607854548272 6.080105505532702 4.395801857769285 3.492103596206915 2.92118531355214 2.524725181456243 0 0 0 0 0 0 0 0
+ 26.28736250350067 11.44223911749596 7.033986143539151 4.980523854552525 3.810509150852175 3.061720299737569 2.544657673840948 2.167898923545242 1.882157674088147 1.658620443859698 1.479366540782233 1.332691165795859 1.210639922730796 1.107626585679021
+
+
+
+
+# name: infile
+# type: sq_string
+# elements: 1
+# length: 148
+data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1.in
+
+
+# name: j
+# type: scalar
+2
+
+
+# name: max_parallel
+# type: scalar
+8
+
+
+# name: mdat_folder
+# type: string
+# elements: 1
+# length: 12
+data/rawdata
+
+
+# name: method
+# type: string
+# elements: 1
+# length: 7
+optimum
+
+
+# name: methods_
+# type: cell
+# rows: 1
+# columns: 1
+# name: <cell-element>
+# type: string
+# elements: 1
+# length: 7
+optimum
+
+
+
+
+
+# name: new_value
+# type: scalar
+3.061720299737569
+
+
+# name: overall_ctlg
+# type: scalar
+20
+
+
+# name: overall_ctlgs
+# type: scalar
+20
+
+
+# name: overwrite
+# type: bool
+1
+
+
+# name: req_eps
+# type: scalar
+0.4
+
+
+# name: req_epss
+# type: scalar
+0.4
+
+
+# name: seed
+# type: scalar
+1
+
+
+# name: seeds
+# type: scalar
+1
+
+
+# name: settings
+# type: scalar struct
+# ndims: 2
+ 1 1
+# length: 5
+# name: epochs
+# type: scalar
+1000000
+
+
+# name: simname
+# type: string
+# elements: 1
+# length: 145
+data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1
+
+
+# name: outfile
+# type: string
+# elements: 1
+# length: 150
+data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1.mdat
+
+
+# name: logfile
+# type: string
+# elements: 1
+# length: 149
+data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1.log
+
+
+# name: infile
+# type: string
+# elements: 1
+# length: 148
+data/rawdata/N_2-ctlg_2e+01-ctlg_eps_0.4-ctlg_perm_1-alpha0_1-alpha_eps_0.2-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+01-optimum-totreq_1e+08-seed_1.in
+
+
+
+
+# name: severe_debug
+# type: global scalar
+1
+
+
+# name: value
+# type: scalar
+0.8117043057466968
+
+
+# name: value_unif
+# type: scalar
+0.8102989558848425
+
+
+# name: vc_unif
+# type: matrix
+# rows: 2
+# columns: 1
+ 5
+ 5
+
+
+# name: zipf
+# type: matrix
+# rows: 2
+# columns: 14
+ 0.3528692848494239 0.2026701835177567 0.1465267285923095 0.1164034532068972 0.09737284378507133 0.08415750604854146 0 0 0 0 0 0 0 0
+ 0.3755337500500096 0.1634605588213709 0.1004855163362736 0.07115034077932179 0.05443584501217393 0.04373886142482242 0.03635225248344212 0.03096998462207489 0.02688796677268781 0.02369457776942426 0.02113380772546047 0.01903844522565513 0.01729485603901136 0.01582323693827173
+
+
