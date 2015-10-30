@@ -9,12 +9,13 @@ methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e6];
 avg_overall_req=1e8;
-catalogs = [1e5];
+catalogs = [1e5 1e6 1e7];
+ctlg_eps = [0 0.2 0.4]
 alpha0s = [0.7 1];
-alpha_epss = [0.2 0.4];
+alpha_epss = [0 0.2 0.4];
 req_epss = [0.2 0.4];
 Ns = [2 4 8];
-Ks = [1e1 1e2 1e3]; %cache slots
+Ks = [1e1 1e2 1e3 1e4]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
