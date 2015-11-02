@@ -48,6 +48,9 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	end
 	%}CHECK
 
-%	save(settings.outfile);
-	disp (sprintf("%s written", settings.outfile) );
+	if settings.save_mdat_file
+		save(settings.outfile);
+		disp (sprintf("%s written", settings.outfile) );
+	end
+	printf("\nsuccess\n");
 end%function

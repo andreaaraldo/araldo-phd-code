@@ -4,19 +4,23 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 max_parallel = 22;
 
+settings.save_mdat_file = false;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig"};
-epochss = [1e1 1e2 1e3];
+methods_ = {"optimum"};
+epochss = [1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [1e6];
-ctlg_epss = [0.4];
-alpha0s = [1];
-alpha_epss = [0.4];
-req_epss = [0.4];
-Ns = [2];
-Ks = [1e1]; %cache slots
+overall_ctlgs = [1e5 1e6 1e7];
+ctlg_epss = [0 0.2 0.4];
+alpha0s = [0.4 0.7 1];
+alpha_epss = [0 0.2 0.4];
+req_epss = [0 0.2 0.4];
+Ns = [2 4 8];
+Ks = [1e1 1e2 1e3 1e4]; %cache slots
 seeds = 1 ;
+
+ctlg_perms_to_consider = [1 2];
+R_perms_to_consider = [1 2];
 
 active_processes = 0;
 for seed = seeds
@@ -44,7 +48,7 @@ for seed = seeds
 		ctlg = round(differentiated_vector(N, avg_ctlg, ctlg_eps) );
 		ctlg_perms = [ctlg, flipud(ctlg)];
 
-		for ctlg_perm=1:size(ctlg_perms, 2)
+		for ctlg_perm=ctlg_perms_to_consider
 			in.ctlg_perm = ctlg_perm;
 			in.catalog = ctlg_perms(:,ctlg_perm);
 			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
@@ -63,7 +67,7 @@ for seed = seeds
 				R_perms = [R, flipud(R)];
 				%}BUILD R_perms 
 
-				for R_perm=1:size(R_perms, 2)
+				for R_perm=R_perms_to_consider
 					in.R_perm = R_perm;
 					in.R = R_perms(:,R_perm);
 					for K=Ks
@@ -100,22 +104,19 @@ for seed = seeds
 								function_name = [];
 								switch method
 									case "descent"
-										%cumulative_steepest_descent(in, settings);
 										function_name = "cumulative_steepest_descent";
 
 									case "dspsa_orig"
 										settings.enhanced = false;
-										%dspsa(in, settings);
 										function_name = "dspsa";
 
 
 									case "dspsa_enhanced"
 										settings.enhanced = true;
-										%dspsa(in, settings);
 										function_name = "dspsa";
 
 									case "optimum"
-										%optimum(in,settings);
+										settings.epochs = 1e6;
 										function_name = "optimum";
 
 									otherwise

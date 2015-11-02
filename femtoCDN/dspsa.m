@@ -113,6 +113,9 @@ function dspsa(in, settings, infile)
 	[hist_allocation, hist_cum_observed_req, hist_cum_hit] = compute_metrics(...
 		in, settings, hist_vc, hist_m, hist_f);
 
-	save(settings.outfile);
-	disp (sprintf("%s written", settings.outfile) );
+	if settings.save_mdat_file
+		save(settings.outfile);
+		disp (sprintf("%s written", settings.outfile) );
+	end
+	printf("\nsuccess\n");
 end%function
