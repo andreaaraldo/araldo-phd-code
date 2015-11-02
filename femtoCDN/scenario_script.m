@@ -16,7 +16,7 @@ alpha0s = [1];
 alpha_epss = [0];
 req_epss = [0];
 Ns = [2];
-Ks = [2e3]; %cache slots
+Ks = [1e3]; %cache slots
 seeds = 1 ;
 
 ctlg_perms_to_consider = [1];
