@@ -1,6 +1,7 @@
 function cumulative_steepest_descent(in, settings, infile)
 	if length(in)==0 && length(settings)==0
 		load (infile);
+		delete(infile);
 	end
 
 	% SETTINGS

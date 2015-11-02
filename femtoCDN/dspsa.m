@@ -4,6 +4,7 @@
 function dspsa(in, settings, infile)
 	if length(in)==0 && length(settings)==0
 		load (infile);
+		delete(infile);
 	end
 
 
