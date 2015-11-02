@@ -1,8 +1,8 @@
 %
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-ctlgs = [1e5 1e6 1e7 1e8];
-c2ctlgs = [1e-4 1e-3 1e-2];
-alphas = [0 0.5 0.8 1 1.2];
+ctlgs = [1e1];
+c2ctlgs = [1e-1];
+alphas = [1];
 
 for ctlg=ctlgs
 for alpha=alphas
