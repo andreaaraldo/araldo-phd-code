@@ -4,10 +4,11 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
 max_parallel = 22;
 
+settings.save_mdat_file = false;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
-epochss = [1e2];
+epochss = [1e6];
 avg_overall_req=1e8;
 overall_ctlgs = [1e5 1e6 1e7];
 ctlg_epss = [0 0.2 0.4];
@@ -103,22 +104,19 @@ for seed = seeds
 								function_name = [];
 								switch method
 									case "descent"
-										%cumulative_steepest_descent(in, settings);
 										function_name = "cumulative_steepest_descent";
 
 									case "dspsa_orig"
 										settings.enhanced = false;
-										%dspsa(in, settings);
 										function_name = "dspsa";
 
 
 									case "dspsa_enhanced"
 										settings.enhanced = true;
-										%dspsa(in, settings);
 										function_name = "dspsa";
 
 									case "optimum"
-										%optimum(in,settings);
+										settings.epochs = 1e6;
 										function_name = "optimum";
 
 									otherwise

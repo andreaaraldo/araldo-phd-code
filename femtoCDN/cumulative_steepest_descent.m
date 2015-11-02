@@ -110,6 +110,9 @@ function cumulative_steepest_descent(in, settings, infile)
 		in, settings, hist_vc, hist_m, hist_f);
 
 
-	save(settings.outfile);
-	disp (sprintf("%s written", settings.outfile) );
+	if settings.save_mdat_file
+		save(settings.outfile);
+		disp (sprintf("%s written", settings.outfile) );
+	end
+	printf("\nsuccess\n");
 end%function
