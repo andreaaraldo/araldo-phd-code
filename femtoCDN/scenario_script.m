@@ -1,8 +1,8 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata";
-max_parallel = 4;
+mdat_folder = "data/rawdata/varying_req";
+max_parallel = 8;
 
 settings.save_mdat_file = false;
 overwrite = false;
@@ -10,16 +10,16 @@ methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [1e5 1e6 1e7];
-ctlg_epss = [0 0.2 0.4];
-alpha0s = [0.4 0.7 1];
-alpha_epss = [0 0.2 0.4];
-req_epss = [0 0.2 0.4];
-Ns = [2 4 8];
-Ks = [1e1 1e2 1e3 1e4]; %cache slots
+overall_ctlgs = [2e5];
+ctlg_epss = [0];
+alpha0s = [1];
+alpha_epss = [0];
+req_epss = [0 0.2 0.4 0.6 0.8 1];
+Ns = [2];
+Ks = [1e3]; %cache slots
 seeds = 1 ;
 
-ctlg_perms_to_consider = [1 2];
+ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1 2];
 
 active_processes = 0;
