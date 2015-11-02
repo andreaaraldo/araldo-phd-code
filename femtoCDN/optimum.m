@@ -33,6 +33,8 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	value_unif = compute_value(in, c_unif);
 	hit_ratio_improvement = value - value_unif;
 	if hit_ratio_improvement < 0
+		value_unif
+		value
 		error("The improvement cannot be negative");
 	else
 	printf("improvement %d %g %g %d %.1g %g %g %g %d %g %g %g\n",...
