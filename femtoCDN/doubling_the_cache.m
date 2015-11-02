@@ -10,8 +10,10 @@ for alpha=alphas
 	
 	for c2ctlg=c2ctlgs
 		K = ctlg*c2ctlg;
+		single_hit = sum( zipf(1:K) );
 		gain = sum( zipf(K+1:2*K) );
-		printf("%.1g %g %.1g %g\n", ctlg, alpha, c2ctlg, gain*100);
+		double_hit = single_hit+gain;
+		printf("%.1g %g %.1g %g %g %g\n", ctlg, alpha, c2ctlg, gain*100, single_hit, double_hit);
 	end%K
 end%alpha
 end%alpha
