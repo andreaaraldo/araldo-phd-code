@@ -1,0 +1,5 @@
+error: null_matrix cannot be indexed with .
+error: called from:
+error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/optimum.m at line 10, column 4
+error: writing file '/home/araldo_local/.octave_hist': No space left on device
+error: ignoring octave_execution_exception while preparing to exit

@@ -1,6 +1,7 @@
 function hit_ratio_improvement = optimum(in, settings, infile)
         if length(in)==0 && length(settings)==0
                 load (infile);
+		delete(infile);
         end
 
 
@@ -47,6 +48,6 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	end
 	%}CHECK
 
-	save(settings.outfile);
+%	save(settings.outfile);
 	disp (sprintf("%s written", settings.outfile) );
 end%function
