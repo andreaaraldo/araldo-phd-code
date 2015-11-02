@@ -2,24 +2,24 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
-max_parallel = 1;
+max_parallel = 22;
 
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e2];
 avg_overall_req=1e8;
-overall_ctlgs = [1e6];
-ctlg_epss = [0.4];
-alpha0s = [1];
-alpha_epss = [0.4];
-req_epss = [0.4];
-Ns = [2];
-Ks = [1e1]; %cache slots
+overall_ctlgs = [1e5 1e6 1e7];
+ctlg_epss = [0 0.2 0.4];
+alpha0s = [0.4 0.7 1];
+alpha_epss = [0 0.2 0.4];
+req_epss = [0 0.2 0.4];
+Ns = [2 4 8];
+Ks = [1e1 1e2 1e3 1e4]; %cache slots
 seeds = 1 ;
 
-ctlg_perms_to_consider = [2];
-R_perms_to_consider = [1];
+ctlg_perms_to_consider = [1 2];
+R_perms_to_consider = [1 2];
 
 active_processes = 0;
 for seed = seeds
