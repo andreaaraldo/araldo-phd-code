@@ -9,13 +9,13 @@ methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [1e5 1e6 1e7];
-ctlg_epss = [0 0.2 0.4];
-alpha0s = [0.4 0.7 1];
-alpha_epss = [0.4 0 0.2];
-req_epss = [0.2 0.4];
-Ns = [2 4 8];
-Ks = [1e1 1e2 1e3]; %cache slots
+overall_ctlgs = [1e6];
+ctlg_epss = [0.4];
+alpha0s = [1];
+alpha_epss = [0.4];
+req_epss = [0.4];
+Ns = [2];
+Ks = [1e1]; %cache slots
 seeds = 1 ;
 
 active_processes = 0;
@@ -78,7 +78,7 @@ for seed = seeds
 							settings.logfile = sprintf("%s.log",settings.simname);
 							settings.infile = sprintf("%s.in",settings.simname);
 
-							if !exist(settings.logfile) || overwrite
+							if !exist(settings.outfile) || overwrite
 								%{GENERATE lambdatau
 								if length(zipf)==0
 									% the appropriate zipf has not been yet generated

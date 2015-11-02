@@ -9,16 +9,16 @@ set ylabel "Hit ratio (%)"
 set xlabel "configuration"
 
 set grid y
-set ytics 10
 
 set title "With cache size 1e1, 1e2, 1e3"
 
 plot \
- "< sort  -k9,9 maximum_improvement.dat" using 0:($9*100) with lines title "opt", \
- "" using 0:($10*100) with lines title "unif" 
+ "< sort  -k12,12 maximum_improvement.dat" using 0:($12) with lines title "opt"
+#, \
+# "" using 0:($11*100) with lines title "unif" 
 
-set title "With cache size 1e2, 1e3"
+#set title "With cache size 1e2, 1e3"
 
-plot \
- "< sort  -k9,9 maximum_improvement.dat  | awk '{if ($3!=1e+01) print $0; }' " using 0:($9*100) with lines title "opt", \
- "" using 0:($10*100) with lines title "unif"
+#plot \
+# "< sort  -k10,10 maximum_improvement.dat  | awk '{if ($5!=1e+01) print $0; }' " using 0:($10*100) with lines title "opt", \
+# "" using 0:($11*100) with lines title "unif"
