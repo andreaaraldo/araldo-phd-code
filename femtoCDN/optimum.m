@@ -32,7 +32,7 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	
 	value_unif = compute_value(in, c_unif);
 	hit_ratio_improvement = value - value_unif;
-	if hit_ratio_improvement < 0
+	if hit_ratio_improvement < -1e-5
 		value_unif
 		value
 		error("The improvement cannot be negative");
