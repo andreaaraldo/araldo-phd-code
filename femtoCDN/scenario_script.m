@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
-max_parallel = 22;
+max_parallel = 4;
 
 settings.save_mdat_file = false;
 overwrite = false;
