@@ -6,7 +6,7 @@ max_parallel = 1;
 
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig", "descent"};
+methods_ = {"dspsa_orig"};
 epochss = [1e6];
 avg_overall_req=1e8;
 overall_ctlgs = [1e6 1e5 1e4];
