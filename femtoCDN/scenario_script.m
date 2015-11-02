@@ -2,14 +2,14 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata";
-max_parallel = 22;
+max_parallel = 1;
 
 overwrite = false;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"dspsa_orig", "descent"};
-epochss = [1e6 1e4 1e5 1e3];
+epochss = [1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [1e6];
+overall_ctlgs = [1e6 1e5 1e4];
 ctlg_epss = [0.4];
 alpha0s = [1];
 alpha_epss = [0.4];

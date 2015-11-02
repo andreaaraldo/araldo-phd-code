@@ -1,4 +1,17 @@
-1/1e+06; error: compute_miss: A(I) = X: X must have the same size as I
-error: called from:
-error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/compute_miss.m at line 10, column 37
-error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/dspsa.m at line 50, column 11
+1/1e+06; ans = no problem
+ans = no problem
+2/1e+06; ans = no problem
+ans = no problem
+3/1e+06; ans = no problem
+ans = no problem
+4/1e+06; ans = no problem
+ans = no problem
+5/1e+06; ans = no problem
+ans = no problem
+6/1e+06; ans = no problem
+ans = no problem
+7/1e+06; ans = no problem
+ans = no problem
+8/1e+06; panic: Interrupt -- stopping myself...
+attempting to save variables to 'octave-workspace'...
+save to 'octave-workspace' complete

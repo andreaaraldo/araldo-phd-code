@@ -1,4 +1,10 @@
-1/1e+06; error: compute_miss: A(I) = X: X must have the same size as I
+1/1e+06; parse error near line 9 of file /home/andrea/software/araldo-phd-code/femtoCDN/compute_miss.m
+
+  syntax error
+
+>>> 			these_requests = poissrnd(lambdatau(j,:);
+                                               ^
+
+error: parse error while reading file /home/andrea/software/araldo-phd-code/femtoCDN/compute_miss.m
 error: called from:
-error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/compute_miss.m at line 10, column 37
-error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/dspsa.m at line 50, column 11
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 51, column 11
