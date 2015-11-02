@@ -1,0 +1,3 @@
+improvement 8 1e+07 0.2 2 1e+03 0.7 0.4 0.4 1 14.9171 13.1319 1.78524
+data/rawdata/N_8-ctlg_1e+07-ctlg_eps_0.2-ctlg_perm_2-alpha0_0.7-alpha_eps_0.4-req_eps_0.4-R_perm_1-epochs_1e+06-K_1e+03-optimum-totreq_1e+08-seed_1.mdat written
+ans =  0.017852
