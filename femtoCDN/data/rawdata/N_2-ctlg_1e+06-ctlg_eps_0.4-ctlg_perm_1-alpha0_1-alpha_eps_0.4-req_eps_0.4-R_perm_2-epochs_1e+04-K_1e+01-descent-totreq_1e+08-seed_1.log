@@ -1,0 +1,4 @@
+1/10000; error: compute_miss: A(I) = X: X must have the same size as I
+error: called from:
+error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/compute_miss.m at line 10, column 37
+error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/cumulative_steepest_descent.m at line 26, column 8
