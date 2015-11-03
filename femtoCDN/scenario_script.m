@@ -10,13 +10,13 @@ methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
 methods_ = {"optimum"};
 epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
 avg_overall_req=1e8;
-overall_ctlgs = [1e5];
-ctlg_epss = [0.4];
-alpha0s = [0.7];
+overall_ctlgs = [2e6];
+ctlg_epss = [0.99];
+alpha0s = [1];
 alpha_epss = [0.4];
 req_epss = [0.4];
 Ns = [2];
-Ks = [1e2]; %cache slots
+Ks = [2e2]; %cache slots
 seeds = 1 ;
 
 ctlg_perms_to_consider = [2];
