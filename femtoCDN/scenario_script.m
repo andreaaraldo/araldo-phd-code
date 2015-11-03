@@ -2,22 +2,22 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/";
-max_parallel = 1;
+max_parallel = 8;
 
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"optimum"};
+methods_ = {"descent", "dspsa_orig"};
 epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
-avg_overall_req=1e8;
+avg_overall_reqs=[1e8 1e16];
 overall_ctlgs = [2e6];
-ctlg_epss = [0.99];
+ctlg_epss = [0];
 alpha0s = [1];
-alpha_epss = [0.4];
-req_epss = [0.4];
+alpha_epss = [0];
+req_epss = [0.99];
 Ns = [2];
 Ks = [2e2]; %cache slots
-seeds = 1 ;
+seeds = [1];
 
 ctlg_perms_to_consider = [2];
 R_perms_to_consider = [1];
@@ -60,6 +60,7 @@ for seed = seeds
 				end
 				%}CHECK
 
+				for avg_overall_req=avg_overall_reqs
 				%{BUILD R_perms
 				% avg #req per epoch per CP
 				avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
@@ -156,6 +157,7 @@ for seed = seeds
 						end%methods for
 					end%K for
 				end%R_perm for
+				end%avg_over_req for
 			end%epochs for
 		end%ctlg_perm for
 	end%N for
