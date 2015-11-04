@@ -7,15 +7,15 @@ max_parallel = 7;
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"descent"};
-epochss = [1e1 1e2 1e3 1e4 1e5];
+methods_ = {"optimum"};
+epochss = [1e3];
 avg_overall_reqs=[1e16];
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1];
-req_proportion=[2.8 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08];
+req_proportion=[0.64 0.04 0.04 0.04 0.04 0.04 0.04 0.04 0.04 0.04];
 Ns = [10];
 Ks = [1e2]; %cache slots
 seeds = [1];
@@ -35,6 +35,9 @@ for seed = seeds
 		if mod(N,2) != 0; error("Only an even number of CPs are accepted"); end
 		if req_eps==-1; 
 			if length(req_proportion)!=N; disp(req_proportion);disp(N);error("error"); end; 
+			if abs( sum(req_proportion) - 1) > 1e-5; 
+				disp(req_proportion); disp(sum(req_proportion)); error("error"); 
+			end; 
 		end;
 		%}CHECKS
 
@@ -62,16 +65,26 @@ for seed = seeds
 
 				for avg_overall_req=avg_overall_reqs
 				%{BUILD R_perms
-				% avg #req per epoch per CP
-				avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
+				avg_req_per_epoch = avg_overall_req/epochs;
 				if req_eps != -1
+					avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
 					R = differentiated_vector(N, avg_req_per_epoch_per_CP, req_eps); 
 					R_perms = [R, flipud(R)];
 				else
-					R = avg_req_per_epoch_per_CP * req_proportion';
+					R = avg_req_per_epoch * req_proportion';
 					R_perms_to_consider = [1];
 					R_perms = R;
 				end
+					%{CHECK
+					if  severe_debug && ...
+						any(abs(sum(R_perms*epochs,1) != avg_overall_req )>1e-5)
+							sum(R_perms*epochs,1)
+							R_perms
+							epochs
+							avg_overall_req
+							error("error");
+					end
+					%}CHECK
 				%}BUILD R_perms 
 
 				for R_perm=R_perms_to_consider
