@@ -1,44 +1,15 @@
-metric = "hist_allocation"
-ctlg="1e+05";
-alpha0="0.7"
-eps= "0.2"
-K="1e+02";
-totreq="1e+08";
-seed="1";
-method="dspsa_orig";
-
-
-epochs="1e+01"
-file1 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
-	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
-
-epochs="1e+02"
-file2 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
-	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
-
-epochs="1e+03"
-file3 = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
-	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
-
-
-method="optimum";
-fileopt = sprintf("%s-ctlg_%s-alpha0_%s-eps_%s-epochs_%s-K_%s-%s-totreq_%s-seed_%s.dat", \
-	metric, ctlg, alpha0, eps, epochs, K, method, totreq, seed);
-
-
 set terminal postscript eps color
-set output sprintf("%s.eps", file1)
+set output "comparison.eps"
 set key outside
 
-print sprintf("%s.eps", file1);
 
-set xlabel "Epoch"
-set ylabel metric
+set xlabel "minutes"
 
 
-plot \
-file1 using 1:2 title "dspsa 1e1 epochs" with linespoints, \
-file2 using 1:2 title "dspsa 1e2 epochs" with linespoints,\
-file3 using 1:2 title "dspsa 1e3 epochs" with linespoints,\
-fileopt using 1:2 title "optimum" with linespoints
+plot "descent.dat"\
+	using ($1/(9259.26*60 )):2 title "descent T=1080s" with points, \
+""	using ($3/(9259.26*60 )):4 title "descent T=108s" with points, \
+""	using ($5/(9259.26*60 )):6 title "descent T=10.8s" with points, \
+""	using ($7/(9259.26*60 )):8 title "descent T=1.08s" with points, \
+
 
