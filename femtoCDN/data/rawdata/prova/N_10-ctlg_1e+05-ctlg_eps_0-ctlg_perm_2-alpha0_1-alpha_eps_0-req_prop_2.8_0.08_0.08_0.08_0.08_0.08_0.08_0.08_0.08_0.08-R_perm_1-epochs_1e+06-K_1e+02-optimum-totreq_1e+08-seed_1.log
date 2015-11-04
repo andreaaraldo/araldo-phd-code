@@ -1,0 +1,5 @@
+improvement 10 100000 0 2 1e+02 1 0 2.8_0.08_0.08_0.08_0.08_0.08_0.08_0.08_0.08_0.08 1 43.6895 29.9253 13.7642
+data/rawdata/prova/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_2-alpha0_1-alpha_eps_0-req_prop_2.8_0.08_0.08_0.08_0.08_0.08_0.08_0.08_0.08_0.08-R_perm_1-epochs_1e+06-K_1e+02-optimum-totreq_1e+08-seed_1.mdat written
+
+success
+ans =  0.13764

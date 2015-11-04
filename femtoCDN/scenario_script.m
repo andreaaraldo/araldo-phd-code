@@ -1,27 +1,27 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/";
-max_parallel = 8;
+mdat_folder = "data/rawdata/prova";
+max_parallel = 1;
 
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"descent", "dspsa_orig"};
-epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
-avg_overall_reqs=[1e8 1e16];
-overall_ctlgs = [2e6];
+methods_ = {"dspsa_orig"};
+epochss = [1e1 1e2 1e3];
+avg_overall_reqs=[1e16];
+overall_ctlgs = [1e5];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
-req_epss = [0.99];
-Ns = [2];
-Ks = [2e2]; %cache slots
+req_epss = [-1];
+req_proportion=[2.8 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08];
+Ns = [10];
+Ks = [1e2]; %cache slots
 seeds = [1];
 
-ctlg_perms_to_consider = [2];
+ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
-
 active_processes = 0;
 for seed = seeds
 	rand("state",seed);
@@ -31,9 +31,12 @@ for seed = seeds
 	for overall_ctlg=overall_ctlgs
 	for ctlg_eps = ctlg_epss
 	for N = Ns
-		if mod(N,2) != 0
-			error("Only an even number of CPs are accepted")
-		end
+		%{CHECKS
+		if mod(N,2) != 0; error("Only an even number of CPs are accepted"); end
+		if req_eps==-1; 
+			if length(req_proportion)!=N; disp(req_proportion);disp(N);error("error"); end; 
+		end;
+		%}CHECKS
 
 		in.ctlg_eps = ctlg_eps;
 		in.overall_ctlg = overall_ctlg;
@@ -41,7 +44,6 @@ for seed = seeds
 		in.alpha0 = alpha0;
 		in.alpha_eps = alpha_eps;
 		in.req_eps = req_eps;
-
 		in.alpha = differentiated_vector(N, alpha0, alpha_eps);
 
 		avg_ctlg = overall_ctlg/N;
@@ -55,17 +57,21 @@ for seed = seeds
 			for epochs = epochss
 				settings.epochs = epochs;
 				%{CHECK
-				if settings.epochs < 1
-					error("error");
-				end
+				if settings.epochs < 1; error("error");	end;
 				%}CHECK
 
 				for avg_overall_req=avg_overall_reqs
 				%{BUILD R_perms
 				% avg #req per epoch per CP
 				avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
-				R = differentiated_vector(N, avg_req_per_epoch_per_CP, req_eps); 
-				R_perms = [R, flipud(R)];
+				if req_eps != -1
+					R = differentiated_vector(N, avg_req_per_epoch_per_CP, req_eps); 
+					R_perms = [R, flipud(R)];
+				else
+					R = avg_req_per_epoch_per_CP * req_proportion';
+					R_perms_to_consider = [1];
+					R_perms = R;
+				end
 				%}BUILD R_perms 
 
 				for R_perm=R_perms_to_consider
@@ -76,12 +82,32 @@ for seed = seeds
 
 						for i=1:length(methods_)
 							method = methods_{i};
+
+							%{NAME
+							if method=="optimum"
+								% These parameters do not influence the result and thus I 
+								% keep a unique name
+								settings.epochs = 1e6;
+								avg_overall_req=1e8;
+							end
+
+							req_str=[];in.req_str_inner=[];
+							if req_eps == -1
+								in.req_str_inner = strrep(strrep(strrep(mat2str(req_proportion,2), "[", ""), "]","")," ","_");
+								req_str = sprintf("req_prop_%s",in.req_str_inner);
+							else
+								in.req_str_inner = sprintf("%g", req_eps);
+								req_str = sprintf("req_eps_%s", in.req_str_inner);
+							end
+
+
 							settings.simname = ...
-								sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-req_eps_%g-R_perm_%d-epochs_%.1g-K_%.1g-%s-totreq_%.1g-seed_%d",...
-								mdat_folder,N,overall_ctlg,  ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   req_eps,   R_perm,   epochs,     K,method, avg_overall_req, seed);
+								sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-%s-R_perm_%d-epochs_%.1g-K_%.1g-%s-totreq_%.1g-seed_%d",...
+								mdat_folder,N,overall_ctlg,  ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   req_str,   R_perm,   epochs,     K,method, avg_overall_req, seed);
 							settings.outfile = sprintf("%s.mdat",settings.simname);
 							settings.logfile = sprintf("%s.log",settings.simname);
 							settings.infile = sprintf("%s.in",settings.simname);
+							%{NAME
 
 							if !exist(settings.outfile) || overwrite
 								%{GENERATE lambdatau
@@ -117,7 +143,6 @@ for seed = seeds
 										function_name = "dspsa";
 
 									case "optimum"
-										settings.epochs = 1e6;
 										function_name = "optimum";
 
 									otherwise
