@@ -84,7 +84,7 @@ for seed = seeds
 							method = methods_{i};
 
 							%{NAME
-							if method=="optimum"
+							if strcmp(method,"optimum")
 								% These parameters do not influence the result and thus I 
 								% keep a unique name
 								settings.epochs = 1e6;
