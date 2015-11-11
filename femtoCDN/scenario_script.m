@@ -7,18 +7,24 @@ max_parallel = 7;
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig", "descent"};
-epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
-avg_overall_reqs=[1e6];
+methods_ = {"dspsa_orig"};
+lambdas = [1e4]; %req/s
+tot_times = [3 30 300]; %total time(hours)
+Ts = [1e2]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
-req_epss = [-1];
+req_epss = [-1]; % if -1, req_proportion must be explicitely set
 req_proportion=[0.64 0.04 0.04 0.04 0.04 0.04 0.04 0.04 0.04 0.04];
 Ns = [10];
 Ks = [1e2]; %cache slots
 seeds = [1];
+
+%%%%%
+%avg_overall_reqs=[1e6];
+%epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
+%%%%%%
 
 ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
@@ -57,15 +63,16 @@ for seed = seeds
 			in.ctlg_perm = ctlg_perm;
 			in.catalog = ctlg_perms(:,ctlg_perm);
 			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
-			for epochs = epochss
-				settings.epochs = epochs;
+			for tot_time = tot_times
+			for T = Ts
+				settings.epochs = round(tot_time*3600/T);
 				%{CHECK
 				if settings.epochs < 1; error("error");	end;
 				%}CHECK
 
-				for avg_overall_req=avg_overall_reqs
+				for lambda = lambdas
 				%{BUILD R_perms
-				avg_req_per_epoch = avg_overall_req/epochs;
+				avg_req_per_epoch = lambda * T;
 				if req_eps != -1
 					avg_req_per_epoch_per_CP = avg_overall_req/(epochs*in.N);
 					R = differentiated_vector(N, avg_req_per_epoch_per_CP, req_eps); 
@@ -77,7 +84,7 @@ for seed = seeds
 				end
 					%{CHECK
 					if  severe_debug && ...
-						any(abs(sum(R_perms*epochs,1) != avg_overall_req )>1e-5)
+						any(abs(sum(R_perms*settings.epochs,1) != lambda*tot_time*3600 )>1e-5)
 							sum(R_perms*epochs,1)
 							R_perms
 							epochs
@@ -115,8 +122,8 @@ for seed = seeds
 
 
 							settings.simname = ...
-								sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-%s-R_perm_%d-epochs_%.1g-K_%.1g-%s-totreq_%.1g-seed_%d",...
-								mdat_folder,N,overall_ctlg,  ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   req_str,   R_perm,   epochs,     K,method, avg_overall_req, seed);
+								sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-tot_time_%g-seed_%d",...
+								mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method,tot_time,   seed);
 							settings.outfile = sprintf("%s.mdat",settings.simname);
 							settings.logfile = sprintf("%s.log",settings.simname);
 							settings.infile = sprintf("%s.in",settings.simname);
@@ -195,8 +202,9 @@ for seed = seeds
 						end%methods for
 					end%K for
 				end%R_perm for
-				end%avg_over_req for
-			end%epochs for
+				end%lambda for
+			end%T for
+			end%tot_time for
 		end%ctlg_perm for
 	end%N for
 	end%ctlg_eps for

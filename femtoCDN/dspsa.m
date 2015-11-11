@@ -18,6 +18,7 @@ function dspsa(in, settings, infile)
 	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 	hist_f = []; % historical tot_requests
 	hist_vc = vc;
+	hist_delta_vc = [];
 
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
@@ -60,6 +61,7 @@ function dspsa(in, settings, infile)
 			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
 			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
 			vc = vc - delta_vc;
+			hist_delta_vc = [hist_delta_vc, delta_vc];
 		else
 			improvement = loose = zeros(N,1);
 
