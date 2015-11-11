@@ -18,7 +18,7 @@ function dspsa(in, settings, infile)
 	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 	hist_f = []; % historical tot_requests
 	hist_vc = vc;
-	hist_delta_vc = [];
+	hist_delta_vc = zeros(N,1) ;
 
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
@@ -77,23 +77,10 @@ function dspsa(in, settings, infile)
 			loose(Delta<0) = ...
 				m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
 
-			error("This is wrong")
 
-			permutations = perms(Delta)';
-			winning_permutation = [];
-			gain = 0;
-			for i=1:size(permutations)
-				permutation = permutations(:,i);
-				this_gain = sum(improvement(permutation>0) ) - sum(loose(permutation<0) );
-				if this_gain > gain
-					winning_permutation = permutation;
-					gain = this_gain;
-				end
-			end
-			if gain>0
-				vc = vc + winning_permutation;
-			% else no changes
-			end
+			delta_vc = compute_enhanced_delta_vc(improvement, loose);
+			vc = vc + delta_vc;
+			hist_delta_vc = [hist_delta_vc, delta_vc];
 		end
 
 		%{CHECK
