@@ -60,7 +60,11 @@ function dspsa(in, settings, infile)
 		if !enhanced
 			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
 			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
-			vc = vc - delta_vc;
+			alpha_i = 1;
+			if settings.coefficients == true
+				alpha_i = 1.0/i;
+			end
+			vc = vc - alpha_i * delta_vc;
 			hist_delta_vc = [hist_delta_vc, delta_vc];
 		else
 			improvement = loose = zeros(N,1);

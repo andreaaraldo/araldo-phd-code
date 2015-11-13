@@ -7,9 +7,9 @@ max_parallel = 7;
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig","dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_enhanced"};
+methods_ = {"dspsa_orig_coeff", "dspsa_orig_nocoeff"};
 lambdas = [1e4]; %req/s
-tot_times = [300]; %total time(hours)
+tot_times = [3e3, 3e4, 3e5]; %total time(hours)
 Ts = [1e2]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -153,13 +153,18 @@ for seed = seeds
 									case "descdata/rawdata/with10/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_10000-req_prop_0.64_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04-R_perm_1-T_1e+02-K_1e+02-dspsa_orig-tot_time_3-seed_1.inent"
 										function_name = "cumulative_steepest_descent";
 
-									case "dspsa_orig"
-										settings.enhanced = false;
-										function_name = "dspsa";
-
-
 									case "dspsa_enhanced"
 										settings.enhanced = true;
+										function_name = "dspsa";
+
+									case "dspsa_orig_coeff"
+										settings.enhanced = false;
+										settings.coefficients = true;
+										function_name = "dspsa";
+
+									case "dspsa_orig_nocoeff"
+										settings.enhanced = false;
+										settings.coefficients = false;
 										function_name = "dspsa";
 
 									case "optimum"
