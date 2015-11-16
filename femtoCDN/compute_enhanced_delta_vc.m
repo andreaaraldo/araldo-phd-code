@@ -7,7 +7,7 @@ function delta_vc = compute_enhanced_delta_vc(improvement, loose)
 	do
 		s++;
 		gain = i_sorted(s) - d_sorted(s);
-		gain
+		gain;
 	until gain <= 0 || s > N
 	delta_vc = zeros(N,1 );
 	for z=1:s

@@ -30,10 +30,25 @@ function dspsa(in, settings, infile)
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
 
+		if severe_debug; vc_before_correction = vc; end
+
 		vc = correct_vc(vc, in);
 		pi_ = round(vc);
 		test_c = pi_ + Delta;
 		test_c = [test_c, pi_ - Delta];
+
+		%{CHECK CONFIG
+		if severe_debug && any( sum(test_c, 1)>in.K )
+				vc
+				vc_before_correction
+				pi_
+				test_c
+				slots_of_pi_ = sum(pi_)
+				slot_of_C = sum(c)
+				slots_of_test_c = sum(test_c, 1)
+				error("test_c is uncorrect")
+		end
+		%}CHECK CONFIG
 
 		if(enhanced)
 			test_c = [test_c, pi_];
@@ -95,14 +110,6 @@ function dspsa(in, settings, infile)
 				Delta
 				delta_vc
 				error("Zero-sum property does not hold")
-			end
-
-			if any( sum(test_c, 1)>in.K )
-				test_c
-				c
-				slot_of_C = sum(c)
-				slots_of_test_c = sum(test_c, 1)
-				error("test_c is uncorrect")
 			end
 
 			if enhanced && settings.normalize
