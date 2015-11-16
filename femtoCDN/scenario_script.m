@@ -24,10 +24,6 @@ Ns = [10];
 Ks = [1e2]; %cache slots
 seeds = [1];
 
-%%%%%
-%avg_overall_reqs=[1e6];
-%epochss = [1e1 1e2 1e3 1e4 1e5 1e6];
-%%%%%%
 
 ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
