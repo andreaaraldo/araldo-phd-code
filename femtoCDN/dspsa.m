@@ -99,6 +99,9 @@ function dspsa(in, settings, infile)
 
 			if any( sum(test_c, 1)>in.K )
 				test_c
+				c
+				slot_of_C = sum(c)
+				slots_of_test_c = sum(test_c, 1)
 				error("test_c is uncorrect")
 			end
 
