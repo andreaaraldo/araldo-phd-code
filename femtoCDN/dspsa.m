@@ -65,15 +65,7 @@ function dspsa(in, settings, infile)
 				delta_vc = normalize_delta_vc(delta_vc);
 			end
 
-			alpha_i = 1;
-			switch settings.coefficients
-				case "simple"
-					alpha_i = 1.0/i;
-				case "no"
-					alpha_i = 1;
-				otherwise
-					error("Coefficients not recognised");
-			end%switch
+			alpha_i =  compute_coefficient(settings, i);
 			vc = vc - alpha_i * delta_vc;
 			hist_delta_vc = [hist_delta_vc, delta_vc];
 		else
