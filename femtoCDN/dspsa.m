@@ -60,10 +60,20 @@ function dspsa(in, settings, infile)
 		if !enhanced
 			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
 			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
-			alpha_i = 1;
-			if settings.coefficients == true
-				alpha_i = 1.0/i;
+
+			if settings.normalize
+				delta_vc = normalize_delta_vc(delta_vc);
 			end
+
+			alpha_i = 1;
+			switch settings.coefficients
+				case "simple"
+					alpha_i = 1.0/i;
+				case "no"
+					alpha_i = 1;
+				otherwise
+					error("Coefficients not recognised");
+			end%switch
 			vc = vc - alpha_i * delta_vc;
 			hist_delta_vc = [hist_delta_vc, delta_vc];
 		else
@@ -88,6 +98,7 @@ function dspsa(in, settings, infile)
 		end
 
 		%{CHECK
+		if severe_debug
 			if sum(Delta) != 0 && sum(delta_vc)!=0
 				Delta
 				delta_vc
@@ -98,6 +109,11 @@ function dspsa(in, settings, infile)
 				test_c
 				error("test_c is uncorrect")
 			end
+
+			if enhanced && settings.normalize
+				error("You cannot normilize in the enhanced version");
+			end
+		end
 		%}CHECK
 		hist_vc = [hist_vc, vc];
 

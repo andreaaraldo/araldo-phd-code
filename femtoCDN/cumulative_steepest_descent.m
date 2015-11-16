@@ -5,7 +5,6 @@ function cumulative_steepest_descent(in, settings, infile)
 	end
 
 	% SETTINGS
-	boost =  false;
 	only_plausible_updates = false;
 	global severe_debug
 
@@ -40,12 +39,20 @@ function cumulative_steepest_descent(in, settings, infile)
 			s = -F .* M_prime; % direction of steepest discent 
 			delta_vc = s .- (s'*r) * r;
 
-			if (boost && any(delta_vc)!=0 )
-				boost_factor = 1.0/max(abs(delta_vc) );
-				delta_vc = boost_factor * delta_vc;
+			if settings.normalize
+				delta_vc = normalize_delta_vc(delta_vc);
 			end
 
-			nvc = (vc .+ delta_vc);
+			switch settings.coefficients
+				case "simple"
+					alpha_i = 1.0/i;
+				case "no"
+					alpha_i = 1;
+				otherwise
+					error("Coefficients not recognised");
+			end%switch
+
+			nvc = (vc .+ alpha_i * delta_vc);
 			nvc = correct_vc(nvc, in);
 
 			%{CHECK
