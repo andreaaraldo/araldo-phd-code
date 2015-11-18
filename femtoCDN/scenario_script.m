@@ -2,16 +2,16 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/coeff";
-max_parallel = 7;
+max_parallel = 8;
 
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig", "dspsa_enhanced", "descent"};
+methods_ = {"dspsa_orig", "dspsa_enhanced"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"every100"};
-lambdas = [1e1 1e2 1e3]; %req/s
+lambdas = [1 1e1 1e2 1e3]; %req/s
 tot_times = [300]; %total time(hours)
 Ts = [1e2]; % epoch duration (s)
 overall_ctlgs = [1e5];
