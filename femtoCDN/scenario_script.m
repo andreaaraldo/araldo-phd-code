@@ -4,6 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/coeff";
 max_parallel = 8;
 
+parse=true;
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "optimum"};
@@ -160,7 +161,7 @@ for seed = seeds
 								settings.infile = sprintf("%s.in",settings.simname);
 								%{NAME
 
-								if !exist(settings.outfile) || overwrite
+								if !exist(settings.outfile) || overwrite || parse
 									%{GENERATE lambdatau
 									if length(zipf)==0
 										% the appropriate zipf has not been yet generated
@@ -200,30 +201,34 @@ for seed = seeds
 											error("method not recognized");
 									end%switch
 
-									save(settings.infile);
-									command = ...
-										sprintf("octave --quiet --eval \"%s([], [], '%s') \" > %s 2>&1",...
-										function_name, settings.infile, settings.logfile);
-									if active_processes >= max_parallel
-										waitpid(-1);
-										active_processes--;
-									end
-									pid = fork();
-									if pid==0
-										% I am the child
-										[exit_code, output] = system(command );
-										if ( exit_code != 0)
-											error(sprintf("ERROR in executing %s\n\nError is %s. See %s",
-													command, output, settings.logfile) );
+									if !parse %so I want to run the experiment
+										save(settings.infile);
+										command = ...
+											sprintf("octave --quiet --eval \"%s([], [], '%s') \" > %s 2>&1",...
+											function_name, settings.infile, settings.logfile);
+										if active_processes >= max_parallel
+											waitpid(-1);
+											active_processes--;
 										end
-										quit;
-									elseif pid>0
-										printf("Sim %s launched with pid %g\n", settings.simname, pid);
-										active_processes++;
-									else
-										pid
-										error "Error in the fork";
-									end%pid if
+										pid = fork();
+										if pid==0
+											% I am the child
+											[exit_code, output] = system(command );
+											if ( exit_code != 0)
+												error(sprintf("ERROR in executing %s\n\nError is %s. See %s",
+														command, output, settings.logfile) );
+											end
+											quit;
+										elseif pid>0
+											printf("Sim %s launched with pid %g\n", settings.simname, pid);
+											active_processes++;
+										else
+											pid
+											error "Error in the fork";
+										end%pid if
+									else % I want to parse the experiment
+										parse_result(in, settings);
+									end % parse
 								else
 									disp (sprintf("%s exists", settings.outfile) );
 							
