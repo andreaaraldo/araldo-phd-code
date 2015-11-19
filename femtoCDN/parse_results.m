@@ -1,5 +1,5 @@
 function parse_results(in, settings)
-	mdatfile =  = sprintf("%s.mdat",settings.infile);
+	mdatfile = sprintf("%s.mdat",settings.infile);
 	outfilename = sprintf("%s.out",settings.infile);
 	load(mdatfile);
 	hist_value = [0];
