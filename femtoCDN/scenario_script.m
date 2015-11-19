@@ -68,7 +68,7 @@ for seed = seeds
 				settings.epochs = round(tot_time*3600/T);
  				%{CHECK
 				if settings.epochs < 1; error("error");	end;
-				%}CHECK
+				%}CHECKdata/rawdata/coeff/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_1-req_prop_0.64_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04-R_perm_1-T_1e+02-K_1e+02-dspsa_enhanced-norm_0-coeff_no-tot_time_300-seed_1.mdat
 
 				for lambda = lambdas
 				%{BUILD R_perms
