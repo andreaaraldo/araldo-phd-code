@@ -5,7 +5,7 @@ mdat_folder = "data/rawdata/coeff";
 max_parallel = 8;
 
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "optimum"};
 methods_ = {"dspsa_orig", "dspsa_enhanced"};
 normalizes = [true];
