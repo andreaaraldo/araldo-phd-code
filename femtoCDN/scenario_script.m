@@ -227,7 +227,7 @@ for seed = seeds
 											error "Error in the fork";
 										end%pid if
 									else % I want to parse the experiment
-										parse_result(in, settings);
+										parse_results(in, settings);
 									end % parse
 								else
 									disp (sprintf("%s exists", settings.outfile) );
