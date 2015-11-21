@@ -18,6 +18,7 @@ function dspsa(in, settings, infile)
 	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 	hist_f = []; % historical tot_requests
 	hist_vc = vc;
+	hist_delta_vc = zeros(N,1) ;
 
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
@@ -29,10 +30,25 @@ function dspsa(in, settings, infile)
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
 
+		if severe_debug; vc_before_correction = vc; end
+
 		vc = correct_vc(vc, in);
 		pi_ = round(vc);
 		test_c = pi_ + Delta;
 		test_c = [test_c, pi_ - Delta];
+
+		%{CHECK CONFIG
+		if severe_debug && any( sum(test_c, 1)>in.K )
+				vc
+				vc_before_correction
+				pi_
+				test_c
+				slots_of_pi_ = sum(pi_)
+				slot_of_C = sum(c)
+				slots_of_test_c = sum(test_c, 1)
+				error("test_c is uncorrect")
+		end
+		%}CHECK CONFIG
 
 		if(enhanced)
 			test_c = [test_c, pi_];
@@ -59,7 +75,14 @@ function dspsa(in, settings, infile)
 		if !enhanced
 			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
 			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
-			vc = vc - delta_vc;
+
+			if settings.normalize
+				delta_vc = normalize_delta_vc(delta_vc);
+			end
+
+			alpha_i =  compute_coefficient(settings, i);
+			vc = vc - alpha_i * delta_vc;
+			hist_delta_vc = [hist_delta_vc, delta_vc];
 		else
 			improvement = loose = zeros(N,1);
 
@@ -75,36 +98,24 @@ function dspsa(in, settings, infile)
 			loose(Delta<0) = ...
 				m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
 
-			error("This is wrong")
 
-			permutations = perms(Delta)';
-			winning_permutation = [];
-			gain = 0;
-			for i=1:size(permutations)
-				permutation = permutations(:,i);
-				this_gain = sum(improvement(permutation>0) ) - sum(loose(permutation<0) );
-				if this_gain > gain
-					winning_permutation = permutation;
-					gain = this_gain;
-				end
-			end
-			if gain>0
-				vc = vc + winning_permutation;
-			% else no changes
-			end
+			delta_vc = compute_enhanced_delta_vc(improvement, loose);
+			vc = vc + delta_vc;
+			hist_delta_vc = [hist_delta_vc, delta_vc];
 		end
 
 		%{CHECK
+		if severe_debug
 			if sum(Delta) != 0 && sum(delta_vc)!=0
 				Delta
 				delta_vc
 				error("Zero-sum property does not hold")
 			end
 
-			if any( sum(test_c, 1)>in.K )
-				test_c
-				error("test_c is uncorrect")
+			if enhanced && settings.normalize
+				error("You cannot normilize in the enhanced version");
 			end
+		end
 		%}CHECK
 		hist_vc = [hist_vc, vc];
 

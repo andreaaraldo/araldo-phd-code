@@ -43,10 +43,16 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 
 
 	%{CHECK
-	if sum(c) != in.K || sum(c_unif) != in.K
-		c
-		c_unif
-		error("configuration is wrong")
+	if severe_debug
+		if enhanced && settings.normalize
+			error("You cannot normilize in the enhanced version");
+		end
+
+		if sum(c) != in.K || sum(c_unif) != in.K
+			c
+			c_unif
+			error("configuration is wrong")
+		end
 	end
 	%}CHECK
 
