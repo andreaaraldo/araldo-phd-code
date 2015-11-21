@@ -49,7 +49,7 @@ function dspsa(in, settings, infile)
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			[cm, cf] = compute_miss(in, c, in.lambdatau * test_duration(test) );
-			m = [m, cm];
+			m = [m, cm]; % m is the number of misses
 			f = [f, cf];
 		end%test
 

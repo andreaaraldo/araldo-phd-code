@@ -1,4 +1,4 @@
-%
+% Compute the number of misses
 function [miss, tot_requests] = compute_miss(in, c, lambdatau)
 		N = length(c);
 
