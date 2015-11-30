@@ -7,13 +7,37 @@ function dspsa(in, settings, infile)
 		delete(infile);
 	end
 
+	variant = [];
+	ORIG = 1; ENHANCED = 2; SUM = 3;
+	switch settings.method
+		case "dspsa_orig"
+			variant = ORIG;
+
+		case "dspsa_enhanced"
+			variant = ENHANCED;
+
+		case "dspsa_sum"
+			variant = SUM;
+
+		otherwise
+			method
+			error("variant not recognised");
+	end %switch
+
+
 
 	% SETTINGS
 	global severe_debug
-	enhanced = settings.enhanced;
 
 	N = in.N;
-	vc=repmat( in.K*1.0/N, N,1 ); %virtual configuration
+
+	unit = [];
+	if variant == ORIG || variant == ENHANCED
+		unit = in.K*1.0/N;
+	elseif variant == SUM
+		unit = (in.K - 0.5*N)/N;		
+	end
+	vc=repmat( unit, N,1 ); %virtual configuration
 
 	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 	hist_f = []; % historical tot_requests
@@ -30,33 +54,42 @@ function dspsa(in, settings, infile)
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
 
-		if severe_debug; vc_before_correction = vc; end
 
-		vc = correct_vc(vc, in);
-		pi_ = round(vc);
-		test_c = pi_ + Delta;
-		test_c = [test_c, pi_ - Delta];
+		%{ BUILD TEST CONFIGURATIONS
+			test_c = [];
+			if variant==ORIG || variant == ENHANCED
+				if severe_debug; vc_before_correction = vc; end
+				vc = correct_vc(vc, in);
+				pi_ = round(vc);
+				test_c = [pi_ + Delta, pi_ - Delta];
 
-		%{CHECK CONFIG
-		if severe_debug && any( sum(test_c, 1)>in.K )
-				vc
-				vc_before_correction
-				pi_
-				test_c
-				slots_of_pi_ = sum(pi_)
-				slot_of_C = sum(c)
-				slots_of_test_c = sum(test_c, 1)
-				error("test_c is uncorrect")
-		end
-		%}CHECK CONFIG
+				if variant == ENHANCED
+					test_c = [test_c, pi_];
+				end
 
-		if(enhanced)
-			test_c = [test_c, pi_];
-		end
+			elseif variant == SUM
+				pi_ = floor(vc) + 1/2;
+				c_plus = pi_ + 0.5*Delta;
+				c_minus = pi_ - 0.5*Delta;
+				test_c = [c_plus, c_minus];
+			end
+			%{CHECK CONFIG
+			if severe_debug && any( sum(test_c, 1)>in.K )
+					vc
+					pi_
+					test_c
+					slots_of_pi_ = sum(pi_)
+					slots_of_test_c = sum(test_c, 1)
+					error("test_c is uncorrect")
+			end
+			%}CHECK CONFIG
+		%} BUILD TEST CONFIGURATIONS
+
 
 		% fraction of time dedicated to each test;
 		test_duration = repmat(1/size(test_c,2), 1, size(test_c,2) );
-		
+
+		%{ RUN TESTS		
 		% f: tot requests; m: number of misses
 		f = m = []; % one row per each CP, one columns per each test
 		for test = 1:size(test_c,2)
@@ -65,44 +98,56 @@ function dspsa(in, settings, infile)
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			[cm, cf] = compute_miss(in, c, in.lambdatau * test_duration(test) );
-			m = [m, cm]; % m is the number of misses
-			f = [f, cf];
+			m = [m, cm]; 	%each column of m is related to a test. Each cell of that column 
+							% is the number of misses during that test
+
+			f = [f, cf];	%f: number of requests, structured as m
 		end%test
+		%} RUN TESTS
 
 		% Historical data
 		hist_m = [hist_m, sum(m,2) ]; hist_f = [hist_f, sum(f,2) ];
 
-		if !enhanced
-			M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
-			delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
+		%{ COMPUTE delta_vc
+		switch variant
+			case SUM
+				tot_req = repmat(sum(f, 1), N, 1);
+				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
+				pre_delta_vc = ( mi(:,1) -  mi(:,2) ) .* Delta;
+				delta_vc = pre_delta_vc .- repmat(sum(pre_delta_vc)/N, N, 1);
 
-			if settings.normalize
-				delta_vc = normalize_delta_vc(delta_vc);
-			end
+			case ORIG
+				M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
+				delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
 
-			alpha_i =  compute_coefficient(settings, i);
-			vc = vc - alpha_i * delta_vc;
-			hist_delta_vc = [hist_delta_vc, delta_vc];
-		else
-			improvement = loose = zeros(N,1);
+			case ENHANCED
+				improvement = loose = zeros(N,1);
 
-			% With Delta>0 we are selecting the CPs that received th additional slot in the 
-			% first test and who lost a slot in the second test. 
-			% With Delta<0 we select the rest
-			improvement(Delta>0 ) = ...
-				m(Delta>0, 3) / sum(f(Delta>0, 3) ) - m(Delta>0, 1) / sum( f(Delta>0, 1) );
-			loose(Delta>0) = ...
-				m(Delta>0, 2) / sum(f(Delta>0, 2) ) - m(Delta>0, 3) / sum(f(Delta>0, 3) );
-			improvement(Delta<0 ) = ...
-				m(Delta<0, 3) / sum(f(Delta<0, 3) ) - m(Delta<0, 2) / sum(f(Delta<0, 2) );
-			loose(Delta<0) = ...
-				m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
+				% With Delta>0 we are selecting the CPs that received th additional slot in the 
+				% first test and who lost a slot in the second test. 
+				% With Delta<0 we select the rest
+				improvement(Delta>0 ) = ...
+					m(Delta>0, 3) / sum(f(Delta>0, 3) ) - m(Delta>0, 1) / sum( f(Delta>0, 1) );
+				loose(Delta>0) = ...
+					m(Delta>0, 2) / sum(f(Delta>0, 2) ) - m(Delta>0, 3) / sum(f(Delta>0, 3) );
+				improvement(Delta<0 ) = ...
+					m(Delta<0, 3) / sum(f(Delta<0, 3) ) - m(Delta<0, 2) / sum(f(Delta<0, 2) );
+				loose(Delta<0) = ...
+					m(Delta<0, 1) / sum(f(Delta<0, 1) ) - m(Delta<0, 3) / sum(f(Delta<0, 3) );
 
 
-			delta_vc = compute_enhanced_delta_vc(improvement, loose);
-			vc = vc + delta_vc;
-			hist_delta_vc = [hist_delta_vc, delta_vc];
+				delta_vc = -1 * compute_enhanced_delta_vc(improvement, loose);
+
+		end % switch
+
+		if settings.normalize
+			delta_vc = normalize_delta_vc(delta_vc);
 		end
+		%} COMPUTE delta_vc
+
+		alpha_i =  compute_coefficient(settings, i);
+		vc = vc - alpha_i * delta_vc;
+		hist_delta_vc = [hist_delta_vc, delta_vc];
 
 		%{CHECK
 		if severe_debug
@@ -112,7 +157,7 @@ function dspsa(in, settings, infile)
 				error("Zero-sum property does not hold")
 			end
 
-			if enhanced && settings.normalize
+			if variant == ENHANCED && settings.normalize
 				error("You cannot normilize in the enhanced version");
 			end
 		end

@@ -1,19 +1,19 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/coeff";
-max_parallel = 8;
+mdat_folder = "data/rawdata/prova";
+max_parallel = 1;
 
-parse=true;
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = false;
-methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "optimum"};
-methods_ = {"dspsa_orig", "dspsa_enhanced"};
+overwrite = true;
+methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "optimum"};
+methods_ = {"dspsa_sum", "dspsa_orig"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
-coefficientss = {"every100"};
-lambdas = [1 1e1 1e2 1e3]; %req/s
-tot_times = [300]; %total time(hours)
+coefficientss = {"no"};
+lambdas = [1e8]; %req/s
+tot_times = [10]; %total time(hours)
 Ts = [1e2]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -118,10 +118,11 @@ for seed = seeds
 
 						for i=1:length(methods_)
 							method = methods_{i};
+							settings.method = method;
 
 							%{NORMALIZE AND COEFF ONLY WHEN IT MATTERS
 							active_normalizes = normalizes;
-							if !strcmp(method,"dspsa_orig")
+							if !strcmp(method,"dspsa_orig") && !strcmp(method,"dspsa_sum")
 								active_normalizes = [false];
 							end
 
@@ -186,11 +187,12 @@ for seed = seeds
 											function_name = "cumulative_steepest_descent";
 
 										case "dspsa_enhanced"
-											settings.enhanced = true;
 											function_name = "dspsa";
 
 										case "dspsa_orig"
-											settings.enhanced = false;
+											function_name = "dspsa";
+
+										case "dspsa_sum"
 											function_name = "dspsa";
 
 										case "optimum"
