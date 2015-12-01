@@ -199,7 +199,7 @@ function dspsa(in, settings, infile)
 		in, settings, hist_vc, hist_m, hist_f);
 
 	if settings.save_mdat_file
-		save(settings.outfile);
+		save("-binary", settings.outfile);
 		disp (sprintf("%s written", settings.outfile) );
 	end
 	printf("\nsuccess\n");
