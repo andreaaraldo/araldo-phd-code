@@ -117,13 +117,19 @@ function dspsa(in, settings, infile)
 		switch variant
 			case SUM
 				tot_req = repmat(sum(f, 1), N, 1);
-				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
+				mi = zeros(size(m,2) );
+				if !any(tot_req==0)
+					mi = m ./ tot_req; % miss intensity: one column per test, one row per CP
+				end
 				pre_delta_vc = ( mi(:,1) -  mi(:,2) ) .* Delta;
 				delta_vc = pre_delta_vc .- repmat(sum(pre_delta_vc)/N, N, 1);
 
 			case RED
 				tot_req = repmat(sum(f, 1), N, 1);
-				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
+				mi = zeros(size(m,2) );
+				if !any(tot_req==0)
+					mi = m ./ tot_req; % miss intensity: one column per test, one row per CP
+				end
 				%{BUILD THE CUMULATIVE delta_vc
 				cumulative_delta_vc = zeros(N,1);
 				for j=1:N
@@ -143,7 +149,11 @@ function dspsa(in, settings, infile)
 				%}BUILD THE CUMULATIVE delta_vc
 
 			case ORIG
-				M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
+				M = 0;
+				if !any( sum(f, 1)==0 )
+					M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
+				end
+
 				delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
 
 			case ENHANCED
