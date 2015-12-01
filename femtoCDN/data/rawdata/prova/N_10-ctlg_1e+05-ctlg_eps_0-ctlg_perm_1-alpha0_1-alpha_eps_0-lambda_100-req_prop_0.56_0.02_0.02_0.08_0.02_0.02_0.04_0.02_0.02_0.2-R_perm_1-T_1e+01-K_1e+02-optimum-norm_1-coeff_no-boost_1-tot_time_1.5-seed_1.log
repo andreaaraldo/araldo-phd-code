@@ -1,0 +1,4 @@
+improvement 10 100000 0 1 1e+02 1 0 0.56_0.02_0.02_0.08_0.02_0.02_0.04_0.02_0.02_0.2 1 38.6482 29.9253 8.72291
+error: 'enhanced' undefined near line 47 column 6
+error: called from:
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/optimum.m at line 47, column 3
