@@ -4,7 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/prova";
 max_parallel = 1;
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_sum", "optimum"};
