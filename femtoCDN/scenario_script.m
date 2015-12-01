@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/prova";
+mdat_folder = "data/rawdata/convergence";
 max_parallel = 8;
 
 parse=false; % false if you want to run the experiment.
@@ -12,9 +12,9 @@ methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
-lambdas = [1e2]; %req/s
-tot_times = [10]; %total time(hours)
-Ts = [1e1 1e2 1e3]; % epoch duration (s)
+lambdas = [1e1 1e2 1e3 1e5]; %req/s
+tot_times = [3]; %total time(hours)
+Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
 alpha0s = [1];
