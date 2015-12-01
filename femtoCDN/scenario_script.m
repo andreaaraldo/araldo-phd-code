@@ -1,19 +1,20 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/convergence";
-max_parallel = 8;
+mdat_folder = "data/rawdata/prova";
+max_parallel = 1;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_red", "optimum"};
 methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
-lambdas = [1e1 1e2 1e3 1e8]; %req/s
-tot_times = [3]; %total time(hours)
+boosts = [5];
+lambdas = [1e2]; %req/s
+tot_times = [0.5]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -116,6 +117,7 @@ for seed = seeds
 					for K=Ks
 						in.K = K;
 
+						for settings.boost = boosts
 						for i=1:length(methods_)
 							method = methods_{i};
 							settings.method = method;
@@ -155,8 +157,8 @@ for seed = seeds
 
 
 								settings.simname = ...
-									sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%g-coeff_%s-tot_time_%g-seed_%d",...
-									mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method,settings.normalize, settings.coefficients, tot_time,   seed);
+									sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%g-coeff_%s-boost_%g-tot_time_%g-seed_%d",...
+									mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method,settings.normalize, settings.coefficients, settings.boost, tot_time,   seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -239,6 +241,7 @@ for seed = seeds
 							
 								end
 
+							end%boost for
 							end%methods for
 						end%coefficient end
 						end%normalize for

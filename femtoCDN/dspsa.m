@@ -151,10 +151,12 @@ function dspsa(in, settings, infile)
 			case ORIG
 				M = 0;
 				if !any( sum(f, 1)==0 )
-					M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
+					M = sum(m, 1) ./ sum(f, 1); % miss ratio per test
 				end
 
 				delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
+				delta_vc
+				error "ciao"
 
 			case ENHANCED
 				improvement = loose = zeros(N,1);
@@ -179,6 +181,8 @@ function dspsa(in, settings, infile)
 		if settings.normalize
 			delta_vc = normalize_delta_vc(delta_vc);
 		end
+
+		delta_vc = delta_vc * settings.boost;
 
 		%} COMPUTE delta_vc
 
