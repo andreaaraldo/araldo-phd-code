@@ -2,18 +2,18 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/prova";
-max_parallel = 1;
+max_parallel = 8;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_sum", "optimum"};
-methods_ = {"dspsa_red"};
+methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 lambdas = [1e8]; %req/s
-tot_times = [10]; %total time(hours)
+tot_times = [3]; %total time(hours)
 Ts = [1e2]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -122,7 +122,7 @@ for seed = seeds
 
 							%{NORMALIZE AND COEFF ONLY WHEN IT MATTERS
 							active_normalizes = normalizes;
-							if !strcmp(method,"dspsa_orig") && !strcmp(method,"dspsa_sum")
+							if strcmp(method,"dspsa_enhanced") && strcmp(method,"optimum")
 								active_normalizes = [false];
 							end
 

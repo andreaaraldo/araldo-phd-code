@@ -158,6 +158,8 @@ function dspsa(in, settings, infile)
 		if settings.normalize
 			delta_vc = normalize_delta_vc(delta_vc);
 		end
+		delta_vc'
+
 		%} COMPUTE delta_vc
 
 		alpha_i =  compute_coefficient(settings, i);
