@@ -125,8 +125,9 @@ function dspsa(in, settings, infile)
 				tot_req = repmat(sum(f, 1), N, 1);
 				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
 				%{ BUILD THE REDUCTION
-					mu = mi(N,:) / (N-1);
-					L = mi(1:(N-1),:) + repmat(mu, N-1, 1);
+					mu =  mi(N,:) ./ sum(f(1:N-1,:) ,1) ;
+					mu = mu .* f(1:N-1,:);
+					L = mi(1:(N-1),:) .+ mu;
 				%} BUILD THE REDUCTION
 				reduced_delta_vc = ( L(:,1) - L(:,2) ) ./ Delta(1:N-1);
 				delta_vc = [reduced_delta_vc; -1 * sum(reduced_delta_vc) ];
