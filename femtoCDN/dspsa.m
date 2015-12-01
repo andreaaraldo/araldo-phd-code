@@ -155,8 +155,6 @@ function dspsa(in, settings, infile)
 				end
 
 				delta_vc = ( M(1)-M(2) ) * Delta; % gradient, g in [1]
-				delta_vc
-				error "ciao"
 
 			case ENHANCED
 				improvement = loose = zeros(N,1);

@@ -1,0 +1,16 @@
+1/180; delta_vc =
+
+   0.010237
+  -0.010237
+  -0.010237
+  -0.010237
+  -0.010237
+   0.010237
+   0.010237
+   0.010237
+  -0.010237
+   0.010237
+
+error: ciao
+error: called from:
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 159, column 5
