@@ -1,4 +1,5 @@
 function delta_vc = compute_enhanced_delta_vc(improvement, loose)
+	error("I think you should weight the improvement and loose based on the CP worth");
 	[i_sorted, i_idx] = sort (improvement, "descend");
 	[d_sorted, d_idx] = sort (loose, "ascend");
 

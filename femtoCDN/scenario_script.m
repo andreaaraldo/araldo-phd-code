@@ -4,15 +4,16 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/convergence";
 max_parallel = 8;
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_sum", "optimum"};
 methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
 normalizes = [true];
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 lambdas = [1e1 1e2 1e3 1e5]; %req/s
+lambdas = [1e2]; %req/s
 tot_times = [3]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
