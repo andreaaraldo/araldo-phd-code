@@ -8,7 +8,7 @@ function dspsa(in, settings, infile)
 	end
 
 	variant = [];
-	ORIG = 1; ENHANCED = 2; SUM = 3;
+	ORIG = 1; ENHANCED = 2; SUM = 3; RED=4;
 	switch settings.method
 		case "dspsa_orig"
 			variant = ORIG;
@@ -18,6 +18,9 @@ function dspsa(in, settings, infile)
 
 		case "dspsa_sum"
 			variant = SUM;
+
+		case "dspsa_red" % reduction
+			variant = RED;
 
 		otherwise
 			method
@@ -31,13 +34,15 @@ function dspsa(in, settings, infile)
 
 	N = in.N;
 
-	unit = [];
-	if variant == ORIG || variant == ENHANCED
-		unit = in.K*1.0/N;
-	elseif variant == SUM
-		unit = (in.K - 0.5*N)/N;		
-	end
-	vc=repmat( unit, N,1 ); %virtual configuration
+	%{ INIT
+		unit = [];
+		if variant == ORIG || variant == ENHANCED
+			unit = in.K*1.0/N;
+		elseif variant == SUM || variant == RED
+			unit = (in.K - 0.5*N)/N;		
+		end
+		vc=repmat( unit, N,1 ); %virtual configuration
+	%} INIT
 
 	hist_m = []; % Historical miss stream. One row per each CP, one column per each epoch
 	hist_f = []; % historical tot_requests
@@ -67,7 +72,7 @@ function dspsa(in, settings, infile)
 					test_c = [test_c, pi_];
 				end
 
-			elseif variant == SUM
+			elseif variant == SUM || variant == RED
 				pi_ = floor(vc) + 1/2;
 				c_plus = pi_ + 0.5*Delta;
 				c_minus = pi_ - 0.5*Delta;
@@ -115,6 +120,16 @@ function dspsa(in, settings, infile)
 				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
 				pre_delta_vc = ( mi(:,1) -  mi(:,2) ) .* Delta;
 				delta_vc = pre_delta_vc .- repmat(sum(pre_delta_vc)/N, N, 1);
+
+			case RED
+				tot_req = repmat(sum(f, 1), N, 1);
+				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
+				%{ BUILD THE REDUCTION
+					mu = mi(N,:) / (N-1);
+					L = mi(1:(N-1),:) + repmat(mu, N-1, 1);
+				%} BUILD THE REDUCTION
+				reduced_delta_vc = ( L(:,1) - L(:,2) ) ./ Delta(1:N-1);
+				delta_vc = [reduced_delta_vc; -1 * sum(reduced_delta_vc) ];
 
 			case ORIG
 				M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
