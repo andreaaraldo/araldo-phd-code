@@ -14,7 +14,7 @@ lambda=1e2;
 
 set yrange [0:70]
 set ylabel "slots to CP 1\n {/Symbol l}=10 req/s"
-plot "boost5_coeff10.dat"\
+plot "boost2_coeff10.dat"\
    u ($1/(lambda*3600 )):2 title "original " with lines ls 1,\
 "" u ($1/(lambda*3600 )):5 title "improved not proved" with lines ls 2,\
 "" u ($1/(lambda*3600 )):8 title "improved proved" with lines ls 3,\
