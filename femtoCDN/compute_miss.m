@@ -12,9 +12,9 @@ function [miss, tot_requests] = compute_miss(in, c, lambdatau)
 			m = [m; requests(j,:) * cache_indicator_negated(j,:)'];
 		end
 
-		m(c<0) = realmax;
-
 		f = sum(requests, 2 ); % total requests
+
+		m(c<0) = sum(f) * 1e5;
 
 		miss = m;
 		tot_requests = f;
