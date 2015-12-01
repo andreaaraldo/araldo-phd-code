@@ -1,1190 +1,542 @@
-1/108; warning: product: automatic broadcasting operation applied
+1/108; here
 ans =
 
- Columns 1 through 7:
+   11    9    9    9    9    9    9    9    9    9
 
-  -0.657721  -0.040656  -0.044801  -0.040749  -0.041612  -0.044499  -0.040894
-
- Columns 8 through 10:
-
-  -0.044083  -0.044986   1.000000
-
-2/108; warning: product: automatic broadcasting operation applied
+2/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.633240  -0.048671  -0.048072  -0.047806  -0.043400  -0.043389  -0.043558
 
- Columns 8 through 10:
+   12    9    9    9    9    9    9    9    9    9
 
-  -0.047988  -0.043877   1.000000
-
-3/108; warning: product: automatic broadcasting operation applied
+3/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.660931  -0.041047  -0.040746  -0.045227  -0.045077  -0.040126  -0.045319
+   13    9    9    9    9    9    9    9    9    9
 
- Columns 8 through 10:
-
-  -0.040817  -0.040711   1.000000
-
-4/108; warning: product: automatic broadcasting operation applied
+4/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.644321  -0.047934  -0.042468  -0.047803  -0.042566  -0.042656  -0.042032
+   14    9    9    9    9    9    9    9    9    9
 
- Columns 8 through 10:
-
-  -0.042125  -0.048095   1.000000
-
-5/108; warning: product: automatic broadcasting operation applied
+5/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.584529  -0.048362  -0.055599  -0.047895  -0.055916  -0.055270  -0.055219
-
- Columns 8 through 10:
 
-  -0.048003  -0.049208   1.000000
+   15    9    9    9    9    9    9    9    9    9
 
-6/108; warning: product: automatic broadcasting operation applied
+6/108; here
 ans =
 
- Columns 1 through 7:
+   16    9    9    9    9    9    9    9    9    9
 
-  -0.635296  -0.050540  -0.043085  -0.042757  -0.050096  -0.050919  -0.042197
-
- Columns 8 through 10:
-
-  -0.042931  -0.042179   1.000000
-
-7/108; warning: product: automatic broadcasting operation applied
+7/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.548444  -0.062346  -0.050600  -0.050047  -0.051077  -0.063108  -0.062118
 
- Columns 8 through 10:
+   17    9    9    9    9    9    9    9    9    9
 
-  -0.049912  -0.062349   1.000000
-
-8/108; warning: product: automatic broadcasting operation applied
+8/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.534372  -0.065750  -0.050378  -0.066175  -0.065705  -0.067108  -0.049832
+   18    9    9    9    9    9    9    9    9    9
 
- Columns 8 through 10:
-
-  -0.049962  -0.050717   1.000000
-
-9/108; warning: product: automatic broadcasting operation applied
+9/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.478250  -0.051429  -0.079088  -0.078874  -0.051586  -0.051032  -0.079021
+   19    9    8    8    9    8    8    8    8    9
 
- Columns 8 through 10:
-
-  -0.051926  -0.078793   1.000000
-
-10/108; warning: product: automatic broadcasting operation applied
+10/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.331278  -0.048430  -0.117644  -0.118270  -0.118414  -0.048879  -0.050220
-
- Columns 8 through 10:
 
-  -0.049204  -0.117660   1.000000
+   20    8    8    8    8    8    8    8    8    8
 
-11/108; warning: product: automatic broadcasting operation applied
+11/108; here
 ans =
 
- Columns 1 through 7:
+   21    8    8    8    8    8    8    8    8    8
 
-  -0.576179  -0.052381  -0.052916  -0.052082  -0.052797  -0.052135  -0.052106
-
- Columns 8 through 10:
-
-  -0.057872  -0.051532   1.000000
-
-12/108; warning: product: automatic broadcasting operation applied
+12/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.577582  -0.051795  -0.052777  -0.053184  -0.052808  -0.052710  -0.053385
 
- Columns 8 through 10:
+   22    8    8    8    8    8    8    8    8    8
 
-  -0.052709  -0.053050   1.000000
-
-13/108; warning: product: automatic broadcasting operation applied
+13/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.564789  -0.054330  -0.054627  -0.055019  -0.054755  -0.053627  -0.054101
+   23    8    8    8    8    8    8    8    8    8
 
- Columns 8 through 10:
-
-  -0.054917  -0.053835   1.000000
-
-14/108; warning: product: automatic broadcasting operation applied
+14/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.562908  -0.054203  -0.055106  -0.054781  -0.053717  -0.054817  -0.054850
+   24    8    8    8    8    8    8    8    8    8
 
- Columns 8 through 10:
-
-  -0.055035  -0.054582   1.000000
-
-15/108; warning: product: automatic broadcasting operation applied
+15/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.550829  -0.056445  -0.056552  -0.056098  -0.055908  -0.056022  -0.055697
-
- Columns 8 through 10:
 
-  -0.056055  -0.056394   1.000000
+   25    8    8    8    8    8    8    8    8    8
 
-16/108; warning: product: automatic broadcasting operation applied
+16/108; here
 ans =
 
- Columns 1 through 7:
+   26    8    8    8    8    8    8    8    8    8
 
-  -0.537566  -0.057335  -0.058387  -0.058387  -0.057235  -0.057918  -0.057474
-
- Columns 8 through 10:
-
-  -0.058054  -0.057644   1.000000
-
-17/108; warning: product: automatic broadcasting operation applied
+17/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.536745  -0.057994  -0.057259  -0.058095  -0.057873  -0.057624  -0.058386
 
- Columns 8 through 10:
+   27    8    8    8    8    8    8    8    8    8
 
-  -0.057200  -0.058825   1.000000
-
-18/108; warning: product: automatic broadcasting operation applied
+18/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.523550  -0.060004  -0.058819  -0.058816  -0.059661  -0.059099  -0.060148
+   28    8    7    8    8    7    7    7    7    8
 
- Columns 8 through 10:
-
-  -0.059891  -0.060012   1.000000
-
-19/108; warning: product: automatic broadcasting operation applied
+19/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.524528  -0.058898  -0.059468  -0.059101  -0.059007  -0.060446  -0.059258
+   29    7    7    7    7    7    7    7    7    7
 
- Columns 8 through 10:
-
-  -0.059596  -0.059697   1.000000
-
-20/108; warning: product: automatic broadcasting operation applied
+20/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.509974  -0.061554  -0.060981  -0.061407  -0.061376  -0.061369  -0.060639
-
- Columns 8 through 10:
 
-  -0.061651  -0.061049   1.000000
+   30    7    7    7    7    7    7    7    7    7
 
-21/108; warning: product: automatic broadcasting operation applied
+21/108; here
 ans =
 
- Columns 1 through 7:
+   31    7    7    7    7    7    7    7    7    7
 
-  -0.510482  -0.060631  -0.060340  -0.062171  -0.061048  -0.060596  -0.061278
-
- Columns 8 through 10:
-
-  -0.061578  -0.061878   1.000000
-
-22/108; warning: product: automatic broadcasting operation applied
+22/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.502095  -0.061687  -0.062310  -0.062714  -0.061922  -0.062308  -0.062925
 
- Columns 8 through 10:
+   32    7    7    7    7    7    7    7    7    7
 
-  -0.062151  -0.061888   1.000000
-
-23/108; warning: product: automatic broadcasting operation applied
+23/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.499971  -0.062406  -0.062492  -0.062869  -0.062348  -0.062204  -0.061863
+   33    7    7    7    7    7    7    7    7    7
 
- Columns 8 through 10:
-
-  -0.062902  -0.062947   1.000000
-
-24/108; warning: product: automatic broadcasting operation applied
+24/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.491773  -0.062708  -0.063971  -0.063750  -0.064088  -0.063921  -0.063576
+   34    7    7    7    7    7    7    7    7    7
 
- Columns 8 through 10:
-
-  -0.063168  -0.063046   1.000000
-
-25/108; warning: product: automatic broadcasting operation applied
+25/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.489531  -0.063884  -0.064519  -0.063578  -0.063330  -0.063433  -0.063710
-
- Columns 8 through 10:
 
-  -0.063925  -0.064089   1.000000
+   35    7    7    7    7    7    7    7    7    7
 
-26/108; warning: product: automatic broadcasting operation applied
+26/108; here
 ans =
 
- Columns 1 through 7:
+   36    7    7    7    7    7    7    7    7    7
 
-  -0.478157  -0.064926  -0.065620  -0.064545  -0.064951  -0.064980  -0.065787
-
- Columns 8 through 10:
-
-  -0.065288  -0.065747   1.000000
-
-27/108; warning: product: automatic broadcasting operation applied
+27/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.486754  -0.067448  -0.061423  -0.061857  -0.062091  -0.066403  -0.066782
-
- Columns 8 through 10:
 
-  -0.065838  -0.061403   1.000000
+   37    7    6    7    7    6    6    6    6    7
 
-28/108; warning: product: automatic broadcasting operation applied
+28/108; here
 ans =
 
- Columns 1 through 7:
+   38    6    6    6    6    6    6    6    6    6
 
-  -0.486054  -0.063664  -0.062952  -0.064051  -0.063279  -0.062093  -0.063328
-
- Columns 8 through 10:
-
-  -0.069976  -0.064602   1.000000
-
-29/108; warning: product: automatic broadcasting operation applied
+29/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.491430  -0.064548  -0.063178  -0.063507  -0.062960  -0.063878  -0.063961
 
- Columns 8 through 10:
+   39    6    6    6    6    6    6    6    6    6
 
-  -0.063071  -0.063468   1.000000
-
-30/108; warning: product: automatic broadcasting operation applied
+30/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.481031  -0.064689  -0.064376  -0.065075  -0.065702  -0.065360  -0.064271
+   40    6    6    6    6    6    6    6    6    6
 
- Columns 8 through 10:
-
-  -0.064284  -0.065212   1.000000
-
-31/108; warning: product: automatic broadcasting operation applied
+31/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.480574  -0.065160  -0.064754  -0.065221  -0.065538  -0.065942  -0.065015
+   41    6    6    6    6    6    6    6    6    6
 
- Columns 8 through 10:
-
-  -0.063927  -0.063868   1.000000
-
-32/108; warning: product: automatic broadcasting operation applied
+32/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.472221  -0.066088  -0.066460  -0.066638  -0.065260  -0.066363  -0.065207
-
- Columns 8 through 10:
 
-  -0.065777  -0.065986   1.000000
+   42    6    6    6    6    6    6    6    6    6
 
-33/108; warning: product: automatic broadcasting operation applied
+33/108; here
 ans =
 
- Columns 1 through 7:
+   43    6    6    6    6    6    6    6    6    6
 
-  -0.470128  -0.066098  -0.067183  -0.066498  -0.066912  -0.065854  -0.066484
-
- Columns 8 through 10:
-
-  -0.065518  -0.065325   1.000000
-
-34/108; warning: product: automatic broadcasting operation applied
+34/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.461312  -0.067053  -0.067031  -0.067873  -0.067617  -0.067256  -0.067763
 
- Columns 8 through 10:
+   44    6    6    6    6    6    6    6    6    6
 
-  -0.066866  -0.067229   1.000000
-
-35/108; warning: product: automatic broadcasting operation applied
+35/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.460577  -0.067734  -0.068344  -0.067324  -0.067807  -0.067418  -0.066702
+   45    6    6    6    6    6    6    6    6    6
 
- Columns 8 through 10:
-
-  -0.066934  -0.067162   1.000000
-
-36/108; warning: product: automatic broadcasting operation applied
+36/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.460455  -0.067071  -0.066437  -0.067644  -0.067770  -0.067829  -0.067181
+   46    6    6    6    5    6    5    6    5    6
 
- Columns 8 through 10:
-
-  -0.067368  -0.068246   1.000000
-
-37/108; warning: product: automatic broadcasting operation applied
+37/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.454702  -0.068391  -0.068308  -0.068026  -0.068113  -0.067309  -0.068289
-
- Columns 8 through 10:
 
-  -0.068073  -0.068790   1.000000
+   47    5    5    5    5    5    5    5    5    5
 
-38/108; warning: product: automatic broadcasting operation applied
+38/108; here
 ans =
 
- Columns 1 through 7:
+   48    5    5    5    5    5    5    5    5    5
 
-  -0.453065  -0.067668  -0.068374  -0.069184  -0.068494  -0.068214  -0.068284
-
- Columns 8 through 10:
-
-  -0.067490  -0.069227   1.000000
-
-39/108; warning: product: automatic broadcasting operation applied
+39/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.444761  -0.069292  -0.070271  -0.068922  -0.069090  -0.070131  -0.070885
 
- Columns 8 through 10:
+   49    5    5    5    5    5    5    5    5    5
 
-  -0.068157  -0.068491   1.000000
-
-40/108; warning: product: automatic broadcasting operation applied
+40/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.446175  -0.069091  -0.069519  -0.070015  -0.068581  -0.069555  -0.068807
+   50    5    5    5    5    5    5    5    5    5
 
- Columns 8 through 10:
-
-  -0.069770  -0.068487   1.000000
-
-41/108; warning: product: automatic broadcasting operation applied
+41/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.435718  -0.070897  -0.070819  -0.070002  -0.072304  -0.069443  -0.070097
+   51    5    5    5    5    5    5    5    5    5
 
- Columns 8 through 10:
-
-  -0.070229  -0.070491   1.000000
-
-42/108; warning: product: automatic broadcasting operation applied
+42/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.445247  -0.073454  -0.067274  -0.066352  -0.065913  -0.072353  -0.070266
-
- Columns 8 through 10:
 
-  -0.073009  -0.066131   1.000000
+   52    5    5    5    5    5    5    5    5    5
 
-43/108; warning: product: automatic broadcasting operation applied
+43/108; here
 ans =
 
- Columns 1 through 7:
+   53    5    5    5    5    5    5    5    5    5
 
-  -0.443339  -0.068555  -0.068999  -0.069451  -0.069376  -0.069194  -0.068381
-
- Columns 8 through 10:
-
-  -0.073366  -0.069339   1.000000
-
-44/108; warning: product: automatic broadcasting operation applied
+44/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.447527  -0.069391  -0.067831  -0.070393  -0.068599  -0.068602  -0.068923
 
- Columns 8 through 10:
+   54    5    5    4    5    5    5    5    5    5
 
-  -0.069867  -0.068866   1.000000
-
-45/108; warning: product: automatic broadcasting operation applied
+45/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.449208  -0.068667  -0.068995  -0.069239  -0.068681  -0.068521  -0.069232
+   55    5    5    4    4    5    4    5    5    5
 
- Columns 8 through 10:
-
-  -0.069495  -0.067961   1.000000
-
-46/108; warning: product: automatic broadcasting operation applied
+46/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.440163  -0.069622  -0.069360  -0.070029  -0.070039  -0.070651  -0.070702
+   56    4    4    4    4    4    4    4    4    4
 
- Columns 8 through 10:
-
-  -0.069695  -0.069738   1.000000
-
-47/108; warning: product: automatic broadcasting operation applied
+47/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.439500  -0.069752  -0.072278  -0.068915  -0.069958  -0.068927  -0.071191
-
- Columns 8 through 10:
 
-  -0.070087  -0.069392   1.000000
+   57    4    4    4    4    4    4    4    4    4
 
-48/108; warning: product: automatic broadcasting operation applied
+48/108; here
 ans =
 
- Columns 1 through 7:
+   58    4    4    4    4    4    4    4    4    4
 
-  -0.431645  -0.070592  -0.070079  -0.070967  -0.070772  -0.072259  -0.070763
-
- Columns 8 through 10:
-
-  -0.071369  -0.071555   1.000000
-
-49/108; warning: product: automatic broadcasting operation applied
+49/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.433749  -0.070796  -0.071641  -0.070896  -0.071270  -0.070778  -0.069594
 
- Columns 8 through 10:
+   59    4    4    4    4    4    4    4    4    4
 
-  -0.070024  -0.071253   1.000000
-
-50/108; warning: product: automatic broadcasting operation applied
+50/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.424866  -0.072170  -0.070781  -0.072742  -0.071963  -0.072452  -0.071860
+   60    4    4    5    5    4    4    4    4    4
 
- Columns 8 through 10:
-
-  -0.071641  -0.071524   1.000000
-
-51/108; warning: product: automatic broadcasting operation applied
+51/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.424868  -0.072896  -0.071491  -0.071657  -0.071880  -0.072607  -0.072110
+   60    4    4    4    4    4    4    4    4    4
 
- Columns 8 through 10:
-
-  -0.070490  -0.072000   1.000000
-
-52/108; warning: product: automatic broadcasting operation applied
+52/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.422074  -0.072532  -0.071178  -0.071877  -0.073987  -0.072565  -0.072118
-
- Columns 8 through 10:
 
-  -0.071888  -0.071781   1.000000
+   61    4    3    4    4    4    4    4    4    4
 
-53/108; warning: product: automatic broadcasting operation applied
+53/108; here
 ans =
 
- Columns 1 through 7:
+   61    3    4    4    4    3    5    5    3    3
 
-  -0.417958  -0.071495  -0.073720  -0.072468  -0.073228  -0.073271  -0.073014
-
- Columns 8 through 10:
-
-  -0.072259  -0.072587   1.000000
-
-54/108; warning: product: automatic broadcasting operation applied
+54/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.419580  -0.071626  -0.072255  -0.072666  -0.072427  -0.072398  -0.072627
-
- Columns 8 through 10:
 
-  -0.072959  -0.073461   1.000000
+   62    4    4    3    3    4    4    4    4    4
 
-55/108; warning: product: automatic broadcasting operation applied
+55/108; here
 ans =
 
- Columns 1 through 7:
+   63    4    3    3    3    4    4    4    4    4
 
-  -0.412828  -0.074033  -0.072629  -0.074565  -0.073241  -0.073277  -0.073053
-
- Columns 8 through 10:
-
-  -0.072996  -0.073378   1.000000
-
-56/108; warning: product: automatic broadcasting operation applied
+56/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.421393  -0.074667  -0.068510  -0.069980  -0.069268  -0.075574  -0.075082
 
- Columns 8 through 10:
+   64    3    3    3    3    3    4    3    5    4
 
-  -0.075782  -0.069745   1.000000
-
-57/108; warning: product: automatic broadcasting operation applied
+57/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.421502  -0.070418  -0.070734  -0.070741  -0.070979  -0.072895  -0.071316
+   64    4    3    3    4    3    4    3    4    4
 
- Columns 8 through 10:
-
-  -0.080307  -0.071108   1.000000
-
-58/108; warning: product: automatic broadcasting operation applied
+58/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.420743  -0.071314  -0.072991  -0.071973  -0.070504  -0.072961  -0.073943
+   64    4    2    4    3    3    4    4    4    4
 
- Columns 8 through 10:
-
-  -0.072968  -0.072604   1.000000
-
-59/108; warning: product: automatic broadcasting operation applied
+59/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.423867  -0.071410  -0.072223  -0.072921  -0.071607  -0.071958  -0.072073
-
- Columns 8 through 10:
 
-  -0.072458  -0.071483   1.000000
+   64    4    3    3    3    4    4    4    4    4
 
-60/108; warning: product: automatic broadcasting operation applied
+60/108; here
 ans =
 
- Columns 1 through 7:
+   64    4    3    3    4    4    3    3    3    4
 
-  -0.421760  -0.072641  -0.072539  -0.072399  -0.071836  -0.071368  -0.073204
-
- Columns 8 through 10:
-
-  -0.070874  -0.073381   1.000000
-
-61/108; warning: product: automatic broadcasting operation applied
+61/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.416570  -0.072895  -0.072689  -0.073355  -0.073930  -0.072219  -0.072864
 
- Columns 8 through 10:
+   65    3    3    3    4    3    3    3    3    4
 
-  -0.072568  -0.072910   1.000000
-
-62/108; warning: product: automatic broadcasting operation applied
+62/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.411139  -0.074731  -0.072729  -0.072395  -0.074174  -0.072841  -0.074070
+   64    3    4    3    4    2    4    4    3    3
 
- Columns 8 through 10:
-
-  -0.072823  -0.075099   1.000000
-
-63/108; warning: product: automatic broadcasting operation applied
+63/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.412168  -0.074063  -0.074730  -0.073753  -0.073264  -0.072830  -0.073104
+   64    3    4    3    4    3    4    4    3    4
 
- Columns 8 through 10:
-
-  -0.073831  -0.072257   1.000000
-
-64/108; warning: product: automatic broadcasting operation applied
+64/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.405442  -0.073243  -0.075698  -0.074329  -0.073279  -0.074500  -0.073757
-
- Columns 8 through 10:
 
-  -0.074217  -0.075535   1.000000
+   64    3    3    4    3    3    4    4    3    4
 
-65/108; warning: product: automatic broadcasting operation applied
+65/108; here
 ans =
 
- Columns 1 through 7:
+   64    4    4    3    3    3    3    4    4    3
 
-  -0.405909  -0.073807  -0.075696  -0.073659  -0.074893  -0.072174  -0.074052
-
- Columns 8 through 10:
-
-  -0.074221  -0.075588   1.000000
-
-66/108; warning: product: automatic broadcasting operation applied
+66/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.408211  -0.073433  -0.074089  -0.075213  -0.074714  -0.074044  -0.072462
 
- Columns 8 through 10:
+   63    4    4    3    4    3    3    4    4    4
 
-  -0.074527  -0.073307   1.000000
-
-67/108; warning: product: automatic broadcasting operation applied
+67/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.397135  -0.074625  -0.074917  -0.076369  -0.074538  -0.075373  -0.074913
+   63    4    3    3    4    4    3    4    4    4
 
- Columns 8 through 10:
-
-  -0.076602  -0.075528   1.000000
-
-68/108; warning: product: automatic broadcasting operation applied
+68/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.401397  -0.074686  -0.074129  -0.075224  -0.073776  -0.075379  -0.075401
+   63    3    4    2    4    4    4    3    4    4
 
- Columns 8 through 10:
-
-  -0.075290  -0.074717   1.000000
-
-69/108; warning: product: automatic broadcasting operation applied
+69/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.394547  -0.076609  -0.074792  -0.077127  -0.074373  -0.076270  -0.075914
-
- Columns 8 through 10:
 
-  -0.074816  -0.075553   1.000000
+   63    3    4    3    4    4    4    3    4    3
 
-70/108; warning: product: automatic broadcasting operation applied
+70/108; here
 ans =
 
- Columns 1 through 7:
+   64    3    4    3    5    3    4    3    3    4
 
-  -0.400196  -0.078568  -0.073016  -0.072549  -0.072290  -0.076427  -0.076315
-
- Columns 8 through 10:
-
-  -0.078391  -0.072248   1.000000
-
-71/108; warning: product: automatic broadcasting operation applied
+71/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.410566  -0.071963  -0.074930  -0.074073  -0.073138  -0.074397  -0.072990
 
- Columns 8 through 10:
+   64    4    3    4    4    3    3    4    3    4
 
-  -0.074966  -0.072977   1.000000
-
-72/108; warning: product: automatic broadcasting operation applied
+72/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.407634  -0.074679  -0.074731  -0.074172  -0.071701  -0.075275  -0.072774
+   64    4    3    4    4    3    3    3    4    3
 
- Columns 8 through 10:
-
-  -0.074792  -0.074241   1.000000
-
-73/108; warning: product: automatic broadcasting operation applied
+73/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.406526  -0.073669  -0.074930  -0.076246  -0.072590  -0.074656  -0.073873
+   65    3    3    3    4    3    3    3    4    3
 
- Columns 8 through 10:
-
-  -0.074201  -0.073309   1.000000
-
-74/108; warning: product: automatic broadcasting operation applied
+74/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.399195  -0.074005  -0.074831  -0.075077  -0.074079  -0.074764  -0.077487
-
- Columns 8 through 10:
 
-  -0.075480  -0.075081   1.000000
+   65    3    3    3    4    4    3    3    4    3
 
-75/108; warning: product: automatic broadcasting operation applied
+75/108; here
 ans =
 
- Columns 1 through 7:
+   65    3    4    3    3    4    3    3    3    3
 
-  -0.401721  -0.075211  -0.074412  -0.074096  -0.076044  -0.075542  -0.074673
-
- Columns 8 through 10:
-
-  -0.073317  -0.074984   1.000000
-
-76/108; warning: product: automatic broadcasting operation applied
+76/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.398582  -0.074770  -0.075263  -0.075090  -0.076853  -0.075163  -0.075516
 
- Columns 8 through 10:
+   64    3    4    3    3    4    4    3    3    3
 
-  -0.074792  -0.073971   1.000000
-
-77/108; warning: product: automatic broadcasting operation applied
+77/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.395480  -0.075202  -0.077178  -0.075515  -0.075972  -0.073976  -0.076876
+   63    3    4    3    3    4    4    4    4    3
 
- Columns 8 through 10:
-
-  -0.074232  -0.075569   1.000000
-
-78/108; warning: product: automatic broadcasting operation applied
+78/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.391184  -0.076269  -0.075234  -0.077364  -0.075589  -0.074676  -0.076153
+   63    3    4    3    3    4    3    4    4    4
 
- Columns 8 through 10:
-
-  -0.075809  -0.077723   1.000000
-
-79/108; warning: product: automatic broadcasting operation applied
+79/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.390146  -0.075543  -0.075700  -0.076412  -0.076172  -0.075019  -0.077268
-
- Columns 8 through 10:
 
-  -0.076312  -0.077428   1.000000
+   63    3    4    4    3    4    3    4    3    4
 
-80/108; warning: product: automatic broadcasting operation applied
+80/108; here
 ans =
 
- Columns 1 through 7:
+   63    4    4    4    3    4    3    3    3    4
 
-  -0.393448  -0.075541  -0.075460  -0.076883  -0.076043  -0.074975  -0.075654
-
- Columns 8 through 10:
-
-  -0.076299  -0.075697   1.000000
-
-81/108; warning: product: automatic broadcasting operation applied
+81/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.389279  -0.076815  -0.076109  -0.076410  -0.076574  -0.075561  -0.076708
-
- Columns 8 through 10:
 
-  -0.076837  -0.075707   1.000000
+   62    4    4    4    3    4    3    4    4    4
 
-82/108; warning: product: automatic broadcasting operation applied
+82/108; here
 ans =
 
- Columns 1 through 7:
+   62    3    4    4    4    4    4    4    4    3
 
-  -0.381897  -0.078712  -0.077874  -0.076617  -0.076216  -0.077571  -0.076839
-
- Columns 8 through 10:
-
-  -0.078449  -0.075825   1.000000
-
-83/108; warning: product: automatic broadcasting operation applied
+83/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.385655  -0.079753  -0.073752  -0.072854  -0.078811  -0.080060  -0.078010
 
- Columns 8 through 10:
+   63    3    4    4    4    4    3    4    4    3
 
-  -0.079208  -0.071895   1.000000
-
-84/108; warning: product: automatic broadcasting operation applied
+84/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.400609  -0.075529  -0.074718  -0.072903  -0.076137  -0.075806  -0.074315
+   63    4    3    3    3    4    3    4    3    4
 
- Columns 8 through 10:
-
-  -0.075328  -0.074653   1.000000
-
-85/108; warning: product: automatic broadcasting operation applied
+85/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.394297  -0.075088  -0.075943  -0.075763  -0.075168  -0.075975  -0.075013
+   62    4    3    3    3    3    4    4    3    4
 
- Columns 8 through 10:
-
-  -0.077280  -0.075472   1.000000
-
-86/108; warning: product: automatic broadcasting operation applied
+86/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.395145  -0.076197  -0.074630  -0.075854  -0.075010  -0.076134  -0.076270
-
- Columns 8 through 10:
 
-  -0.074283  -0.076477   1.000000
+   63    3    4    4    4    4    4    4    4    3
 
-87/108; warning: product: automatic broadcasting operation applied
+87/108; here
 ans =
 
- Columns 1 through 7:
+   64    3    4    3    3    3    3    3    4    4
 
-  -0.390771  -0.077216  -0.075449  -0.075760  -0.077191  -0.076735  -0.075131
-
- Columns 8 through 10:
-
-  -0.076123  -0.075624   1.000000
-
-88/108; warning: product: automatic broadcasting operation applied
+88/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.387510  -0.078559  -0.074803  -0.077128  -0.075082  -0.077776  -0.076743
 
- Columns 8 through 10:
+   63    3    4    3    3    3    4    3    4    4
 
-  -0.077556  -0.074843   1.000000
-
-89/108; warning: product: automatic broadcasting operation applied
+89/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.387499  -0.075328  -0.075956  -0.077024  -0.078119  -0.077440  -0.076082
+   63    4    3    3    3    3    4    4    4    3
 
- Columns 8 through 10:
-
-  -0.076452  -0.076099   1.000000
-
-90/108; warning: product: automatic broadcasting operation applied
+90/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.384324  -0.077966  -0.075774  -0.077087  -0.076846  -0.077551  -0.076921
+   63    4    3    4    3    4    3    4    3    4
 
- Columns 8 through 10:
-
-  -0.078249  -0.075282   1.000000
-
-91/108; warning: product: automatic broadcasting operation applied
+91/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.391155  -0.076782  -0.074621  -0.076465  -0.077579  -0.075420  -0.075079
-
- Columns 8 through 10:
 
-  -0.076074  -0.076825   1.000000
+   62    4    3    4    3    4    4    5    3    3
 
-92/108; warning: product: automatic broadcasting operation applied
+92/108; here
 ans =
 
- Columns 1 through 7:
+   62    3    3    4    3    4    4    4    3    4
 
-  -0.381784  -0.078129  -0.076435  -0.077966  -0.076049  -0.077223  -0.077213
-
- Columns 8 through 10:
-
-  -0.077158  -0.078044   1.000000
-
-93/108; warning: product: automatic broadcasting operation applied
+93/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.379955  -0.076728  -0.077345  -0.076415  -0.077054  -0.077892  -0.078733
 
- Columns 8 through 10:
+   63    4    3    4    4    4    4    3    3    4
 
-  -0.078000  -0.077879   1.000000
-
-94/108; warning: product: automatic broadcasting operation applied
+94/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.383453  -0.078542  -0.075974  -0.076382  -0.076293  -0.077088  -0.077073
+   64    4    3    4    3    4    4    3    3    4
 
- Columns 8 through 10:
-
-  -0.077057  -0.078138   1.000000
-
-95/108; warning: product: automatic broadcasting operation applied
+95/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.377906  -0.077745  -0.078067  -0.077083  -0.079252  -0.076744  -0.076968
+   63    4    4    4    3    4    4    3    3    4
 
- Columns 8 through 10:
-
-  -0.076866  -0.079368   1.000000
-
-96/108; warning: product: automatic broadcasting operation applied
+96/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.380037  -0.077763  -0.078710  -0.072993  -0.077505  -0.079194  -0.078426
-
- Columns 8 through 10:
 
-  -0.080791  -0.074582   1.000000
+   62    4    4    4    3    3    4    3    4    4
 
-97/108; warning: product: automatic broadcasting operation applied
+97/108; here
 ans =
 
- Columns 1 through 7:
+   63    4    4    4    3    3    3    3    4    4
 
-  -0.382375  -0.078423  -0.077477  -0.078227  -0.077268  -0.075489  -0.076661
-
- Columns 8 through 10:
-
-  -0.077681  -0.076400   1.000000
-
-98/108; warning: product: automatic broadcasting operation applied
+98/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.381478  -0.076789  -0.078129  -0.077497  -0.077240  -0.078280  -0.077799
 
- Columns 8 through 10:
+   63    4    3    4    4    4    3    3    4    3
 
-  -0.076052  -0.076736   1.000000
-
-99/108; warning: product: automatic broadcasting operation applied
+99/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.384753  -0.076971  -0.076462  -0.075946  -0.077780  -0.076235  -0.077584
+   63    4    3    4    4    4    3    4    3    3
 
- Columns 8 through 10:
-
-  -0.078154  -0.076116   1.000000
-
-100/108; warning: product: automatic broadcasting operation applied
+100/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.383915  -0.076585  -0.078490  -0.076102  -0.076005  -0.076443  -0.076978
+   63    3    3    4    4    4    4    4    3    3
 
- Columns 8 through 10:
-
-  -0.078622  -0.076861   1.000000
-
-101/108; warning: product: automatic broadcasting operation applied
+101/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.386144  -0.074290  -0.077188  -0.076811  -0.076214  -0.076766  -0.078113
-
- Columns 8 through 10:
 
-  -0.076882  -0.077592   1.000000
+   63    3    3    3    4    4    4    4    3    3
 
-102/108; warning: product: automatic broadcasting operation applied
+102/108; here
 ans =
 
- Columns 1 through 7:
+   63    3    3    3    5    4    4    4    4    3
 
-  -0.379866  -0.076377  -0.077671  -0.076292  -0.076842  -0.076725  -0.079130
-
- Columns 8 through 10:
-
-  -0.080158  -0.076938   1.000000
-
-103/108; warning: product: automatic broadcasting operation applied
+103/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.375673  -0.077133  -0.078740  -0.078525  -0.077791  -0.078337  -0.077593
 
- Columns 8 through 10:
+   63    4    3    4    4    4    3    4    4    3
 
-  -0.078192  -0.078016   1.000000
-
-104/108; warning: product: automatic broadcasting operation applied
+104/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.378183  -0.077897  -0.078434  -0.079081  -0.077237  -0.076740  -0.077467
+   63    4    3    4    3    4    4    4    4    3
 
- Columns 8 through 10:
-
-  -0.076394  -0.078566   1.000000
-
-105/108; warning: product: automatic broadcasting operation applied
+105/108; here
 ans =
-
- Columns 1 through 7:
 
-  -0.373392  -0.076354  -0.077478  -0.078925  -0.078075  -0.078548  -0.078155
+   64    4    3    4    3    3    3    4    3    3
 
- Columns 8 through 10:
-
-  -0.078524  -0.080549   1.000000
-
-106/108; warning: product: automatic broadcasting operation applied
+106/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.372080  -0.079054  -0.078603  -0.077846  -0.078368  -0.078404  -0.080104
-
- Columns 8 through 10:
 
-  -0.077797  -0.077745   1.000000
+   64    4    3    3    3    3    3    4    4    4
 
-107/108; warning: product: automatic broadcasting operation applied
+107/108; here
 ans =
 
- Columns 1 through 7:
+   63    4    4    4    3    3    3    4    4    4
 
-  -0.376087  -0.077154  -0.079169  -0.078988  -0.077626  -0.077834  -0.077473
-
- Columns 8 through 10:
-
-  -0.077572  -0.078097   1.000000
-
-108/108; warning: product: automatic broadcasting operation applied
+108/108; here
 ans =
-
- Columns 1 through 7:
-
-  -0.370060  -0.081535  -0.078682  -0.076396  -0.076788  -0.080351  -0.078565
-
- Columns 8 through 10:
 
-  -0.079098  -0.078524   1.000000
+   63    4    4    4    3    3    3    3    4    4
 
 data/rawdata/prova/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_1e+08-req_prop_0.64_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04-R_perm_1-T_1e+02-K_1e+02-dspsa_red-norm_1-coeff_no-tot_time_3-seed_1.mdat written
 

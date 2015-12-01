@@ -124,13 +124,23 @@ function dspsa(in, settings, infile)
 			case RED
 				tot_req = repmat(sum(f, 1), N, 1);
 				mi = m ./ tot_req; % miss intensity: one column per epoch, one row per CP
-				%{ BUILD THE REDUCTION
-					mu =  mi(N,:) ./ sum(f(1:N-1,:) ,1) ;
-					mu = mu .* f(1:N-1,:);
-					L = mi(1:(N-1),:) .+ mu;
-				%} BUILD THE REDUCTION
-				reduced_delta_vc = ( L(:,1) - L(:,2) ) ./ Delta(1:N-1);
-				delta_vc = [reduced_delta_vc; -1 * sum(reduced_delta_vc) ];
+				%{BUILD THE CUMULATIVE delta_vc
+				cumulative_delta_vc = zeros(N,1);
+				for j=1:N
+					%{ BUILD THE REDUCTION
+						cut_mi = mi;
+						cut_mi(j,:) = zeros(1,2);
+						mu = mi(j,:) ./ (N-1);
+						mu = repmat(mu,N,1);
+						L = mi .+ mu;
+						L(j,:) = zeros(1,2);
+					%} BUILD THE REDUCTION
+					reduced_delta_vc = ( L(:,1) - L(:,2) ) ./ Delta;
+					reduced_delta_vc(j) =  -1 * sum(reduced_delta_vc) ;
+					cumulative_delta_vc += reduced_delta_vc;
+				end
+				delta_vc = cumulative_delta_vc / N;
+				%}BUILD THE CUMULATIVE delta_vc
 
 			case ORIG
 				M = sum(m, 1) ./ sum(f, 1); % miss ratio per each epoch
@@ -159,7 +169,6 @@ function dspsa(in, settings, infile)
 		if settings.normalize
 			delta_vc = normalize_delta_vc(delta_vc);
 		end
-		delta_vc'
 
 		%} COMPUTE delta_vc
 
@@ -181,6 +190,8 @@ function dspsa(in, settings, infile)
 		end
 		%}CHECK
 		hist_vc = [hist_vc, vc];
+
+
 
 	end%for
 
