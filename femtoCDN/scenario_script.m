@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/prova";
+mdat_folder = "data/rawdata/norm_norm";
 max_parallel = 1;
 
 parse=false; % false if you want to run the experiment.
@@ -15,7 +15,7 @@ coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 boosts = [1];
 lambdas = [1e2]; %req/s
-tot_times = [0.1]; %total time(hours)
+tot_times = [3]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
