@@ -2,6 +2,10 @@
 
 % [1] Wang, Spall - "Discrete simultaneous perturbation stochastic approximation on loss function with noisy measurements"	
 function dspsa(in, settings, infile)
+
+	% SETTINGS
+	global severe_debug
+
 	if length(in)==0 && length(settings)==0
 		load (infile);
 		delete(infile);
@@ -176,9 +180,7 @@ function dspsa(in, settings, infile)
 
 		end % switch
 
-		if settings.normalize
-			delta_vc = normalize_delta_vc(delta_vc);
-		end
+		delta_vc = normalize_delta_vc(delta_vc, settings);
 
 		delta_vc = delta_vc * settings.boost;
 

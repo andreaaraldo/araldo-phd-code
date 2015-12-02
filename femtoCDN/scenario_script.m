@@ -2,19 +2,20 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/prova";
-max_parallel = 8;
+max_parallel = 1;
 
 parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_red", "optimum"};
-methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
-normalizes = [true];
+methods_ = {"dspsa_orig"};
+normalizes = {"no", "max", "norm"};
+normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 boosts = [1];
 lambdas = [1e2]; %req/s
-tot_times = [1.5]; %total time(hours)
+tot_times = [0.1]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -26,6 +27,10 @@ Ns = [10];
 Ks = [1e2]; %cache slots
 seeds = [1];
 
+%{ CONSTANTS
+global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
+global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
+%} CONSTANTS
 
 ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
@@ -123,21 +128,41 @@ for seed = seeds
 							settings.method = method;
 
 							%{NORMALIZE AND COEFF ONLY WHEN IT MATTERS
-							active_normalizes = normalizes;
-							if strcmp(method,"dspsa_enhanced") && strcmp(method,"optimum")
-								active_normalizes = [false];
-							end
-
 							active_coefficientss = coefficientss;
 							if strcmp(method,"optim") || strcmp(method,"dspsa_enhanced")
 								active_coefficientss = {"no"};
 							end
 							%}NORMALIZE AND COEFF ONLY WHEN IT MATTERS
 
-							for settings.normalize = active_normalizes
+							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
-								settings.coefficients = active_coefficientss{idx_coefficient};
-				
+								coefficients = active_coefficientss{idx_coefficient};
+								normalize = normalizes(idx_normalize);
+
+								switch coefficients
+									case "no"
+										settings.coefficients = COEFF_NO;
+									case "simple"
+										settings.coefficients = COEFF_SIMPLE;
+									case "every10"
+										settings.coefficients = COEFF_10;
+									case "every100"
+										settings.coefficients = COEFF_100;
+									otherwise
+										error "coefficients incorrect";
+								end
+
+								switch
+									case "no"
+										settings.normalize = NORM_NO;
+									case "max"
+										settings.normalize = NORM_MAX;
+									case "norm"
+										settings.normalize = NORM_NORM;
+									otherwise
+										error "normalize not recognized"
+								end
+
 								%{NAME
 								if strcmp(method,"optimum")
 									% These parameters do not influence the result and thus I 
@@ -158,7 +183,7 @@ for seed = seeds
 
 								settings.simname = ...
 									sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%g-coeff_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method,settings.normalize, settings.coefficients, settings.boost, tot_time,   seed);
+									mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method,normalize, coefficients, settings.boost, tot_time,   seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
