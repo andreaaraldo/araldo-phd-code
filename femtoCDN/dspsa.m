@@ -180,7 +180,7 @@ function dspsa(in, settings, infile)
 
 		end % switch
 
-		delta_vc = normalize_delta_vc(delta_vc, settings);
+		delta_vc = normalize_delta_vc(delta_vc, settings.normalize);
 
 		delta_vc = delta_vc * settings.boost;
 
