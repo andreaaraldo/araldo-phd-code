@@ -6,6 +6,7 @@ function  new_delta_vc = normalize_delta_vc(old_delta_vc, normalize)
 	elseif normalize == NORM_MAX
 		new_delta_vc =  old_delta_vc / max(abs(old_delta_vc) );
 	elseif normalize == NORM_NORM
-		new_delta_vc = old_delta_vc / vectorNorm(old_delta_vc) ;
+		norma = sqrt(sum(old_delta_vc .** 2) );
+		new_delta_vc = old_delta_vc / norma ;
 	end
 end

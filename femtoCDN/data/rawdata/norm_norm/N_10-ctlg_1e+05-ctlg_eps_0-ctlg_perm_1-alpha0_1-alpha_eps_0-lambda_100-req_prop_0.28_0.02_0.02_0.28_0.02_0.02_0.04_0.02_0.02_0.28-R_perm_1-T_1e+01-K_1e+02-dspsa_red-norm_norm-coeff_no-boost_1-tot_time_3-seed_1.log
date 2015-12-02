@@ -1,4 +1,30 @@
-1/1080; error: 'vectorNorm' undefined near line 9 column 33
+1/1080; old_delta_vc =
+
+  -8.9099e-03
+   9.5756e-05
+   4.0020e-03
+  -1.6646e-02
+   9.3750e-03
+   7.4295e-03
+  -1.7814e-03
+  -3.6783e-04
+   1.9597e-02
+  -1.2793e-02
+
+new_delta_vc =
+
+  -0.2728164
+   0.0029320
+   0.1225393
+  -0.5097040
+   0.2870576
+   0.2274866
+  -0.0545447
+  -0.0112626
+   0.6000378
+  -0.3917256
+
+error: here
 error: called from:
-error:   /home/andrea/software/araldo-phd-code/femtoCDN/normalize_delta_vc.m at line 9, column 16
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/normalize_delta_vc.m at line 13, column 3
 error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 183, column 12
