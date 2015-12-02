@@ -1,0 +1,4 @@
+1/1080; error: 'vectorNorm' undefined near line 9 column 33
+error: called from:
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/normalize_delta_vc.m at line 9, column 16
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 183, column 12
