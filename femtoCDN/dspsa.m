@@ -136,7 +136,6 @@ function dspsa(in, settings, infile)
 					mi = m ./ tot_req; % miss intensity: one column per test, one row per CP
 				end
 				%{BUILD THE CUMULATIVE delta_vc
-				big_delta = [];
 				cumulative_delta_vc = zeros(N,1);
 				for j=1:N
 					%{ BUILD THE REDUCTION
@@ -146,12 +145,9 @@ function dspsa(in, settings, infile)
 						L(j,:) = zeros(1,2);
 					reduced_delta_vc = ( L(:,1) - L(:,2) ) ./ Delta;
 					reduced_delta_vc(j) =  -1 * sum(reduced_delta_vc) ;
-					big_delta = [big_delta, reduced_delta_vc];
 					cumulative_delta_vc = cumulative_delta_vc .+ reduced_delta_vc;
 				end
 				delta_vc = cumulative_delta_vc / N;
-				dlmwrite("/tmp/bigdelta.dat", big_delta, " ");
-				delta_vc'
 				%}BUILD THE CUMULATIVE delta_vc
 
 				error "ciao"
@@ -220,6 +216,5 @@ function dspsa(in, settings, infile)
 		save("-binary", settings.outfile);
 		disp (sprintf("%s written", settings.outfile) );
 	end
-	c'
 	printf("\nsuccess\n");
 end%function
