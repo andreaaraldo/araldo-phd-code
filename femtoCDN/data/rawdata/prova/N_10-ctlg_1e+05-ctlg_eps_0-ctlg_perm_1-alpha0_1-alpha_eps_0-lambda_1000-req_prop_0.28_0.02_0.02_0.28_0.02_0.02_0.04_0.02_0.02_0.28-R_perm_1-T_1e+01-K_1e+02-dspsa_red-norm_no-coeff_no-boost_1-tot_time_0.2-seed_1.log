@@ -1,0 +1,13 @@
+1/72; ans =
+
+ Columns 1 through 6:
+
+  -4.5874e-03   1.9774e-03  -3.1635e-04  -2.9135e-03   7.0618e-04  -6.4694e-04
+
+ Columns 7 through 10:
+
+   3.8769e-05   4.7524e-03   3.5877e-03  -2.5983e-03
+
+error: ciao
+error: called from:
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 157, column 5

@@ -1,21 +1,21 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/norm_norm";
-max_parallel = 8;
+mdat_folder = "data/rawdata/prova";
+max_parallel = 1;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_red", "optimum"};
-methods_ = {"dspsa_orig", "dspsa_sum", "dspsa_red"};
+methods_ = {"dspsa_red"};
 normalizes = {"no", "max", "norm"};
-normalizes = {"norm"};
+normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 boosts = [1];
 lambdas = [1e3]; %req/s
-tot_times = [3]; %total time(hours)
+tot_times = [0.2]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
 overall_ctlgs = [1e5];
 ctlg_epss = [0];
@@ -23,7 +23,8 @@ alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 req_proportion=[0.28 0.02 0.02 0.28 0.02 0.02 0.04 0.02 0.02 0.28];
-Ns = [10];
+req_proportion=[0.6 0.2 0.1 0.1];
+Ns = [4];
 Ks = [1e2]; %cache slots
 seeds = [1];
 
@@ -36,7 +37,8 @@ ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
 active_processes = 0;
 for seed = seeds
-	rand("state",seed);
+	settings.seed = seed;
+	rand("seed",seed);
 	for alpha0 = alpha0s
 	for alpha_eps = alpha_epss
 	for req_eps = req_epss
