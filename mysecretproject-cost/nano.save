@@ -1,0 +1,13 @@
+OMNeT++ Discrete Event Simulation (C) 1992-2014 Andras Varga, OpenSim Ltd. Version: 4.6, build: 141202-f785492, edition: Academic Public License -- NOT FOR COMMERCIAL USE See the 
+license for distribution terms and warranty disclaimer Setting up Cmdenv... Loading NED files from .: 53 Preparing for running configuration General, run #0... Scenario: 
+$net=video_simple_scenario, $rep=0, $a=1, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $window=60, $variance=0.05, $mytime=180000, $repetition=0 Assigned 
+runID=General-0-20150625-11:55:14-15106 Setting up network `networks.video_simple_scenario_network'... Initializing... Initializing Zipf... Zipf initialization completed 
+src/content/content_distribution.cc 433: DEBUG : The repositories are in the following nodes 0 src/content/content_distribution.cc 457: DEBUG : Prices are 0 Start content 
+initialization... Content initialized Running simulation... ** Event #1 T=0 Elapsed: 0.000s (0m 00s)
+     Speed: ev/sec=0 simsec/sec=0 ev/simsec=0
+     Messages: created: 5 present: 5 in FES: 3 ciao: inserted 1 slots ciao: occupied after shrink 1 src/node/core_layer.cc 325: DEBUG : sending representation two. It should only 
+happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It should only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It should 
+only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It should only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It 
+should only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It should only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. 
+It should only happen once src/node/core_layer.cc 325: DEBUG : sending representation two. It should only happen once src/node/core_layer.cc 325: DEBUG : sending representation 
+two. It should only happen once

@@ -1,0 +1,1261 @@
+version 2
+run General-0-20150725-13:04:57-12330
+attr C 1e2
+attr D lce
+attr F spr
+attr R lru_repr
+attr a 1
+attr brates 0.3_0.7_1.5_2.5_3.5
+attr configname General
+attr ctlg 1e4
+attr datetime 20150725-13:04:57
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e4, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e2, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e4, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e2, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e4, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e2, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net barabasi_100nodes
+attr network networks.${net=barabasi_100nodes}_network
+attr processid 12330
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	C 	1e2
+scalar . 	a 	1
+scalar . 	ctlg 	1e4
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar barabasi_100nodes_network.content_distribution 	repo-0 	37
+scalar barabasi_100nodes_network.content_distribution 	client-0 	12
+scalar barabasi_100nodes_network.content_distribution 	repo-0_card 	10000
+scalar barabasi_100nodes_network.content_distribution 	repo-0_price 	0
+scalar barabasi_100nodes_network.statistics 	p_hit 	0.14787378686296
+scalar barabasi_100nodes_network.statistics 	interests 	4479.09
+scalar barabasi_100nodes_network.statistics 	data 	3053.37
+scalar barabasi_100nodes_network.statistics 	hdistance 	2.1702127659574
+scalar barabasi_100nodes_network.statistics 	avg_time 	0
+scalar barabasi_100nodes_network.statistics 	downloads 	117030
+scalar barabasi_100nodes_network.statistics 	total_cost 	0
+scalar barabasi_100nodes_network.statistics 	total_replicas 	10000
+scalar barabasi_100nodes_network.statistics 	"representations_downloaded 0.527642:0.052337:0.0392634:0.0330172:0.34774:" 	0
+scalar barabasi_100nodes_network.statistics 	"slots_per_representation 100:233:500:833:1167:" 	0
+scalar barabasi_100nodes_network.statistics 	inner_hit 	0.34773135093566
+scalar barabasi_100nodes_network.statistics 	execution_time 	9
+scalar barabasi_100nodes_network.node[0].core_layer 	interests[0] 	76335
+scalar barabasi_100nodes_network.node[0].core_layer 	data[0] 	76335
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[1]->client[0]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[2]->node[1]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[3]->node[2]] 	19031405
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[4]->node[5]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[5]->node[10]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[6]->node[11]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[7]->node[15]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[8]->node[21]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[9]->node[22]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[10]->node[28]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[11]->node[37]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[12]->node[44]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[13]->node[58]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[14]->node[73]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[15]->node[74]] 	0
+scalar barabasi_100nodes_network.node[0].core_layer 	slots_sent[face$o[16]->node[93]] 	0
+scalar barabasi_100nodes_network.node[0].content_store 	p_hit[0] 	0
+scalar barabasi_100nodes_network.node[0].content_store 	hits[0] 	0
+scalar barabasi_100nodes_network.node[0].content_store 	misses[0] 	76335
+scalar barabasi_100nodes_network.node[0].content_store 	decision_yes[0] 	76335
+scalar barabasi_100nodes_network.node[0].content_store 	decision_no[0] 	0
+scalar barabasi_100nodes_network.node[0].content_store 	decision_ratio[0] 	1
+scalar barabasi_100nodes_network.node[0].content_store 	"representation_breakdown[0] 371:57:20:17:36:" 	0
+scalar barabasi_100nodes_network.node[1].core_layer 	interests[1] 	0
+scalar barabasi_100nodes_network.node[1].core_layer 	data[1] 	0
+scalar barabasi_100nodes_network.node[1].core_layer 	slots_sent[face$o[1]->client[1]] 	0
+scalar barabasi_100nodes_network.node[1].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	p_hit[1] 	-nan
+scalar barabasi_100nodes_network.node[1].content_store 	hits[1] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	misses[1] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	decision_yes[1] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	decision_no[1] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	decision_ratio[1] 	0
+scalar barabasi_100nodes_network.node[1].content_store 	"representation_breakdown[1] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	interests[2] 	76335
+scalar barabasi_100nodes_network.node[2].core_layer 	data[2] 	76334
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[1]->client[2]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[3]->node[3]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[4]->node[4]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[5]->node[6]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[6]->node[7]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[7]->node[8]] 	19031305
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[8]->node[13]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[9]->node[16]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[10]->node[18]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[11]->node[25]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[12]->node[26]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[13]->node[29]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[14]->node[32]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[15]->node[33]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[16]->node[34]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[17]->node[36]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[18]->node[41]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[19]->node[45]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[20]->node[59]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[21]->node[62]] 	0
+scalar barabasi_100nodes_network.node[2].core_layer 	slots_sent[face$o[22]->node[79]] 	0
+scalar barabasi_100nodes_network.node[2].content_store 	p_hit[2] 	0
+scalar barabasi_100nodes_network.node[2].content_store 	hits[2] 	0
+scalar barabasi_100nodes_network.node[2].content_store 	misses[2] 	76335
+scalar barabasi_100nodes_network.node[2].content_store 	decision_yes[2] 	76334
+scalar barabasi_100nodes_network.node[2].content_store 	decision_no[2] 	0
+scalar barabasi_100nodes_network.node[2].content_store 	decision_ratio[2] 	1
+scalar barabasi_100nodes_network.node[2].content_store 	"representation_breakdown[2] 370:58:20:17:36:" 	0
+scalar barabasi_100nodes_network.node[3].core_layer 	interests[3] 	0
+scalar barabasi_100nodes_network.node[3].core_layer 	data[3] 	0
+scalar barabasi_100nodes_network.node[3].core_layer 	slots_sent[face$o[1]->client[3]] 	0
+scalar barabasi_100nodes_network.node[3].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[3].core_layer 	slots_sent[face$o[3]->node[52]] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	p_hit[3] 	-nan
+scalar barabasi_100nodes_network.node[3].content_store 	hits[3] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	misses[3] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	decision_yes[3] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	decision_no[3] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	decision_ratio[3] 	0
+scalar barabasi_100nodes_network.node[3].content_store 	"representation_breakdown[3] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	interests[4] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	data[4] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	slots_sent[face$o[1]->client[4]] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	slots_sent[face$o[3]->node[27]] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	slots_sent[face$o[4]->node[30]] 	0
+scalar barabasi_100nodes_network.node[4].core_layer 	slots_sent[face$o[5]->node[85]] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	p_hit[4] 	-nan
+scalar barabasi_100nodes_network.node[4].content_store 	hits[4] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	misses[4] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	decision_yes[4] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	decision_no[4] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	decision_ratio[4] 	0
+scalar barabasi_100nodes_network.node[4].content_store 	"representation_breakdown[4] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	interests[5] 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	data[5] 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	slots_sent[face$o[1]->client[5]] 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	slots_sent[face$o[3]->node[9]] 	0
+scalar barabasi_100nodes_network.node[5].core_layer 	slots_sent[face$o[4]->node[35]] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	p_hit[5] 	-nan
+scalar barabasi_100nodes_network.node[5].content_store 	hits[5] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	misses[5] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	decision_yes[5] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	decision_no[5] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	decision_ratio[5] 	0
+scalar barabasi_100nodes_network.node[5].content_store 	"representation_breakdown[5] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[6].core_layer 	interests[6] 	0
+scalar barabasi_100nodes_network.node[6].core_layer 	data[6] 	0
+scalar barabasi_100nodes_network.node[6].core_layer 	slots_sent[face$o[1]->client[6]] 	0
+scalar barabasi_100nodes_network.node[6].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	p_hit[6] 	-nan
+scalar barabasi_100nodes_network.node[6].content_store 	hits[6] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	misses[6] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	decision_yes[6] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	decision_no[6] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	decision_ratio[6] 	0
+scalar barabasi_100nodes_network.node[6].content_store 	"representation_breakdown[6] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	interests[7] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	data[7] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[1]->client[7]] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[3]->node[23]] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[4]->node[31]] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[5]->node[49]] 	0
+scalar barabasi_100nodes_network.node[7].core_layer 	slots_sent[face$o[6]->node[90]] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	p_hit[7] 	-nan
+scalar barabasi_100nodes_network.node[7].content_store 	hits[7] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	misses[7] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	decision_yes[7] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	decision_no[7] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	decision_ratio[7] 	0
+scalar barabasi_100nodes_network.node[7].content_store 	"representation_breakdown[7] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	interests[8] 	76335
+scalar barabasi_100nodes_network.node[8].core_layer 	data[8] 	76334
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[1]->client[8]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[3]->node[12]] 	19031305
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[4]->node[14]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[5]->node[17]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[6]->node[39]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[7]->node[61]] 	0
+scalar barabasi_100nodes_network.node[8].core_layer 	slots_sent[face$o[8]->node[66]] 	0
+scalar barabasi_100nodes_network.node[8].content_store 	p_hit[8] 	0
+scalar barabasi_100nodes_network.node[8].content_store 	hits[8] 	0
+scalar barabasi_100nodes_network.node[8].content_store 	misses[8] 	76335
+scalar barabasi_100nodes_network.node[8].content_store 	decision_yes[8] 	76334
+scalar barabasi_100nodes_network.node[8].content_store 	decision_no[8] 	0
+scalar barabasi_100nodes_network.node[8].content_store 	decision_ratio[8] 	1
+scalar barabasi_100nodes_network.node[8].content_store 	"representation_breakdown[8] 370:58:20:17:36:" 	0
+scalar barabasi_100nodes_network.node[9].core_layer 	interests[9] 	0
+scalar barabasi_100nodes_network.node[9].core_layer 	data[9] 	0
+scalar barabasi_100nodes_network.node[9].core_layer 	slots_sent[face$o[1]->client[9]] 	0
+scalar barabasi_100nodes_network.node[9].core_layer 	slots_sent[face$o[2]->node[5]] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	p_hit[9] 	-nan
+scalar barabasi_100nodes_network.node[9].content_store 	hits[9] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	misses[9] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	decision_yes[9] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	decision_no[9] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	decision_ratio[9] 	0
+scalar barabasi_100nodes_network.node[9].content_store 	"representation_breakdown[9] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[10].core_layer 	interests[10] 	0
+scalar barabasi_100nodes_network.node[10].core_layer 	data[10] 	0
+scalar barabasi_100nodes_network.node[10].core_layer 	slots_sent[face$o[1]->client[10]] 	0
+scalar barabasi_100nodes_network.node[10].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[10].core_layer 	slots_sent[face$o[3]->node[71]] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	p_hit[10] 	-nan
+scalar barabasi_100nodes_network.node[10].content_store 	hits[10] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	misses[10] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	decision_yes[10] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	decision_no[10] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	decision_ratio[10] 	0
+scalar barabasi_100nodes_network.node[10].content_store 	"representation_breakdown[10] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[11].core_layer 	interests[11] 	0
+scalar barabasi_100nodes_network.node[11].core_layer 	data[11] 	0
+scalar barabasi_100nodes_network.node[11].core_layer 	slots_sent[face$o[1]->client[11]] 	0
+scalar barabasi_100nodes_network.node[11].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	p_hit[11] 	-nan
+scalar barabasi_100nodes_network.node[11].content_store 	hits[11] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	misses[11] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	decision_yes[11] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	decision_no[11] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	decision_ratio[11] 	0
+scalar barabasi_100nodes_network.node[11].content_store 	"representation_breakdown[11] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[12].core_layer 	interests[12] 	142569
+scalar barabasi_100nodes_network.node[12].core_layer 	data[12] 	76334
+scalar barabasi_100nodes_network.node[12].core_layer 	slots_sent[face$o[1]->client[12]] 	60610569
+scalar barabasi_100nodes_network.node[12].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[12].content_store 	p_hit[12] 	0.46457504787156
+scalar barabasi_100nodes_network.node[12].content_store 	hits[12] 	66234
+scalar barabasi_100nodes_network.node[12].content_store 	misses[12] 	76335
+scalar barabasi_100nodes_network.node[12].content_store 	decision_yes[12] 	76334
+scalar barabasi_100nodes_network.node[12].content_store 	decision_no[12] 	0
+scalar barabasi_100nodes_network.node[12].content_store 	decision_ratio[12] 	1
+scalar barabasi_100nodes_network.node[12].content_store 	"representation_breakdown[12] 370:58:20:17:36:" 	0
+scalar barabasi_100nodes_network.node[12].proactive_component 	hdistance[12].proactive_component 	5
+scalar barabasi_100nodes_network.node[12].proactive_component 	downloads[12].proactive_component 	25538
+scalar barabasi_100nodes_network.node[12].proactive_component 	avg_time[12].proactive_component 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	interests[13] 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	data[13] 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	slots_sent[face$o[1]->client[13]] 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	slots_sent[face$o[3]->node[67]] 	0
+scalar barabasi_100nodes_network.node[13].core_layer 	slots_sent[face$o[4]->node[78]] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	p_hit[13] 	-nan
+scalar barabasi_100nodes_network.node[13].content_store 	hits[13] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	misses[13] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	decision_yes[13] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	decision_no[13] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	decision_ratio[13] 	0
+scalar barabasi_100nodes_network.node[13].content_store 	"representation_breakdown[13] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[14].core_layer 	interests[14] 	0
+scalar barabasi_100nodes_network.node[14].core_layer 	data[14] 	0
+scalar barabasi_100nodes_network.node[14].core_layer 	slots_sent[face$o[1]->client[14]] 	0
+scalar barabasi_100nodes_network.node[14].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	p_hit[14] 	-nan
+scalar barabasi_100nodes_network.node[14].content_store 	hits[14] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	misses[14] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	decision_yes[14] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	decision_no[14] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	decision_ratio[14] 	0
+scalar barabasi_100nodes_network.node[14].content_store 	"representation_breakdown[14] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	interests[15] 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	data[15] 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	slots_sent[face$o[1]->client[15]] 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	slots_sent[face$o[3]->node[40]] 	0
+scalar barabasi_100nodes_network.node[15].core_layer 	slots_sent[face$o[4]->node[56]] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	p_hit[15] 	-nan
+scalar barabasi_100nodes_network.node[15].content_store 	hits[15] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	misses[15] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	decision_yes[15] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	decision_no[15] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	decision_ratio[15] 	0
+scalar barabasi_100nodes_network.node[15].content_store 	"representation_breakdown[15] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	interests[16] 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	data[16] 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	slots_sent[face$o[1]->client[16]] 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	slots_sent[face$o[3]->node[19]] 	0
+scalar barabasi_100nodes_network.node[16].core_layer 	slots_sent[face$o[4]->node[20]] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	p_hit[16] 	-nan
+scalar barabasi_100nodes_network.node[16].content_store 	hits[16] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	misses[16] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	decision_yes[16] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	decision_no[16] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	decision_ratio[16] 	0
+scalar barabasi_100nodes_network.node[16].content_store 	"representation_breakdown[16] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[17].core_layer 	interests[17] 	0
+scalar barabasi_100nodes_network.node[17].core_layer 	data[17] 	0
+scalar barabasi_100nodes_network.node[17].core_layer 	slots_sent[face$o[1]->client[17]] 	0
+scalar barabasi_100nodes_network.node[17].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	p_hit[17] 	-nan
+scalar barabasi_100nodes_network.node[17].content_store 	hits[17] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	misses[17] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	decision_yes[17] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	decision_no[17] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	decision_ratio[17] 	0
+scalar barabasi_100nodes_network.node[17].content_store 	"representation_breakdown[17] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	interests[18] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	data[18] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	slots_sent[face$o[1]->client[18]] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	slots_sent[face$o[3]->node[53]] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	slots_sent[face$o[4]->node[68]] 	0
+scalar barabasi_100nodes_network.node[18].core_layer 	slots_sent[face$o[5]->node[72]] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	p_hit[18] 	-nan
+scalar barabasi_100nodes_network.node[18].content_store 	hits[18] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	misses[18] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	decision_yes[18] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	decision_no[18] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	decision_ratio[18] 	0
+scalar barabasi_100nodes_network.node[18].content_store 	"representation_breakdown[18] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	interests[19] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	data[19] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[1]->client[19]] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[2]->node[16]] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[3]->node[63]] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[4]->node[70]] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[5]->node[80]] 	0
+scalar barabasi_100nodes_network.node[19].core_layer 	slots_sent[face$o[6]->node[89]] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	p_hit[19] 	-nan
+scalar barabasi_100nodes_network.node[19].content_store 	hits[19] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	misses[19] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	decision_yes[19] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	decision_no[19] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	decision_ratio[19] 	0
+scalar barabasi_100nodes_network.node[19].content_store 	"representation_breakdown[19] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[20].core_layer 	interests[20] 	0
+scalar barabasi_100nodes_network.node[20].core_layer 	data[20] 	0
+scalar barabasi_100nodes_network.node[20].core_layer 	slots_sent[face$o[1]->client[20]] 	0
+scalar barabasi_100nodes_network.node[20].core_layer 	slots_sent[face$o[2]->node[16]] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	p_hit[20] 	-nan
+scalar barabasi_100nodes_network.node[20].content_store 	hits[20] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	misses[20] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	decision_yes[20] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	decision_no[20] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	decision_ratio[20] 	0
+scalar barabasi_100nodes_network.node[20].content_store 	"representation_breakdown[20] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	interests[21] 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	data[21] 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	slots_sent[face$o[1]->client[21]] 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	slots_sent[face$o[3]->node[24]] 	0
+scalar barabasi_100nodes_network.node[21].core_layer 	slots_sent[face$o[4]->node[57]] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	p_hit[21] 	-nan
+scalar barabasi_100nodes_network.node[21].content_store 	hits[21] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	misses[21] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	decision_yes[21] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	decision_no[21] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	decision_ratio[21] 	0
+scalar barabasi_100nodes_network.node[21].content_store 	"representation_breakdown[21] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[22].core_layer 	interests[22] 	0
+scalar barabasi_100nodes_network.node[22].core_layer 	data[22] 	0
+scalar barabasi_100nodes_network.node[22].core_layer 	slots_sent[face$o[1]->client[22]] 	0
+scalar barabasi_100nodes_network.node[22].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	p_hit[22] 	-nan
+scalar barabasi_100nodes_network.node[22].content_store 	hits[22] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	misses[22] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	decision_yes[22] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	decision_no[22] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	decision_ratio[22] 	0
+scalar barabasi_100nodes_network.node[22].content_store 	"representation_breakdown[22] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	interests[23] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	data[23] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[1]->client[23]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[2]->node[7]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[3]->node[46]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[4]->node[47]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[5]->node[51]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[6]->node[83]] 	0
+scalar barabasi_100nodes_network.node[23].core_layer 	slots_sent[face$o[7]->node[86]] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	p_hit[23] 	-nan
+scalar barabasi_100nodes_network.node[23].content_store 	hits[23] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	misses[23] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	decision_yes[23] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	decision_no[23] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	decision_ratio[23] 	0
+scalar barabasi_100nodes_network.node[23].content_store 	"representation_breakdown[23] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[24].core_layer 	interests[24] 	0
+scalar barabasi_100nodes_network.node[24].core_layer 	data[24] 	0
+scalar barabasi_100nodes_network.node[24].core_layer 	slots_sent[face$o[1]->client[24]] 	0
+scalar barabasi_100nodes_network.node[24].core_layer 	slots_sent[face$o[2]->node[21]] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	p_hit[24] 	-nan
+scalar barabasi_100nodes_network.node[24].content_store 	hits[24] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	misses[24] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	decision_yes[24] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	decision_no[24] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	decision_ratio[24] 	0
+scalar barabasi_100nodes_network.node[24].content_store 	"representation_breakdown[24] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[25].core_layer 	interests[25] 	0
+scalar barabasi_100nodes_network.node[25].core_layer 	data[25] 	0
+scalar barabasi_100nodes_network.node[25].core_layer 	slots_sent[face$o[1]->client[25]] 	0
+scalar barabasi_100nodes_network.node[25].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[25].core_layer 	slots_sent[face$o[3]->node[38]] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	p_hit[25] 	-nan
+scalar barabasi_100nodes_network.node[25].content_store 	hits[25] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	misses[25] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	decision_yes[25] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	decision_no[25] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	decision_ratio[25] 	0
+scalar barabasi_100nodes_network.node[25].content_store 	"representation_breakdown[25] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	interests[26] 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	data[26] 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	slots_sent[face$o[1]->client[26]] 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	slots_sent[face$o[3]->node[77]] 	0
+scalar barabasi_100nodes_network.node[26].core_layer 	slots_sent[face$o[4]->node[91]] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	p_hit[26] 	-nan
+scalar barabasi_100nodes_network.node[26].content_store 	hits[26] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	misses[26] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	decision_yes[26] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	decision_no[26] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	decision_ratio[26] 	0
+scalar barabasi_100nodes_network.node[26].content_store 	"representation_breakdown[26] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[27].core_layer 	interests[27] 	0
+scalar barabasi_100nodes_network.node[27].core_layer 	data[27] 	0
+scalar barabasi_100nodes_network.node[27].core_layer 	slots_sent[face$o[1]->client[27]] 	0
+scalar barabasi_100nodes_network.node[27].core_layer 	slots_sent[face$o[2]->node[4]] 	0
+scalar barabasi_100nodes_network.node[27].core_layer 	slots_sent[face$o[3]->node[99]] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	p_hit[27] 	-nan
+scalar barabasi_100nodes_network.node[27].content_store 	hits[27] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	misses[27] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	decision_yes[27] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	decision_no[27] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	decision_ratio[27] 	0
+scalar barabasi_100nodes_network.node[27].content_store 	"representation_breakdown[27] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[28].core_layer 	interests[28] 	0
+scalar barabasi_100nodes_network.node[28].core_layer 	data[28] 	0
+scalar barabasi_100nodes_network.node[28].core_layer 	slots_sent[face$o[1]->client[28]] 	0
+scalar barabasi_100nodes_network.node[28].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	p_hit[28] 	-nan
+scalar barabasi_100nodes_network.node[28].content_store 	hits[28] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	misses[28] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	decision_yes[28] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	decision_no[28] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	decision_ratio[28] 	0
+scalar barabasi_100nodes_network.node[28].content_store 	"representation_breakdown[28] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[29].core_layer 	interests[29] 	0
+scalar barabasi_100nodes_network.node[29].core_layer 	data[29] 	0
+scalar barabasi_100nodes_network.node[29].core_layer 	slots_sent[face$o[1]->client[29]] 	0
+scalar barabasi_100nodes_network.node[29].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	p_hit[29] 	-nan
+scalar barabasi_100nodes_network.node[29].content_store 	hits[29] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	misses[29] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	decision_yes[29] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	decision_no[29] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	decision_ratio[29] 	0
+scalar barabasi_100nodes_network.node[29].content_store 	"representation_breakdown[29] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[30].core_layer 	interests[30] 	0
+scalar barabasi_100nodes_network.node[30].core_layer 	data[30] 	0
+scalar barabasi_100nodes_network.node[30].core_layer 	slots_sent[face$o[1]->client[30]] 	0
+scalar barabasi_100nodes_network.node[30].core_layer 	slots_sent[face$o[2]->node[4]] 	0
+scalar barabasi_100nodes_network.node[30].core_layer 	slots_sent[face$o[3]->node[88]] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	p_hit[30] 	-nan
+scalar barabasi_100nodes_network.node[30].content_store 	hits[30] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	misses[30] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	decision_yes[30] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	decision_no[30] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	decision_ratio[30] 	0
+scalar barabasi_100nodes_network.node[30].content_store 	"representation_breakdown[30] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[31].core_layer 	interests[31] 	0
+scalar barabasi_100nodes_network.node[31].core_layer 	data[31] 	0
+scalar barabasi_100nodes_network.node[31].core_layer 	slots_sent[face$o[1]->client[31]] 	0
+scalar barabasi_100nodes_network.node[31].core_layer 	slots_sent[face$o[2]->node[7]] 	0
+scalar barabasi_100nodes_network.node[31].core_layer 	slots_sent[face$o[3]->node[65]] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	p_hit[31] 	-nan
+scalar barabasi_100nodes_network.node[31].content_store 	hits[31] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	misses[31] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	decision_yes[31] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	decision_no[31] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	decision_ratio[31] 	0
+scalar barabasi_100nodes_network.node[31].content_store 	"representation_breakdown[31] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	interests[32] 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	data[32] 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	slots_sent[face$o[1]->client[32]] 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	slots_sent[face$o[3]->node[43]] 	0
+scalar barabasi_100nodes_network.node[32].core_layer 	slots_sent[face$o[4]->node[64]] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	p_hit[32] 	-nan
+scalar barabasi_100nodes_network.node[32].content_store 	hits[32] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	misses[32] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	decision_yes[32] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	decision_no[32] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	decision_ratio[32] 	0
+scalar barabasi_100nodes_network.node[32].content_store 	"representation_breakdown[32] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[33].core_layer 	interests[33] 	0
+scalar barabasi_100nodes_network.node[33].core_layer 	data[33] 	0
+scalar barabasi_100nodes_network.node[33].core_layer 	slots_sent[face$o[1]->client[33]] 	0
+scalar barabasi_100nodes_network.node[33].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	p_hit[33] 	-nan
+scalar barabasi_100nodes_network.node[33].content_store 	hits[33] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	misses[33] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	decision_yes[33] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	decision_no[33] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	decision_ratio[33] 	0
+scalar barabasi_100nodes_network.node[33].content_store 	"representation_breakdown[33] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[34].core_layer 	interests[34] 	0
+scalar barabasi_100nodes_network.node[34].core_layer 	data[34] 	0
+scalar barabasi_100nodes_network.node[34].core_layer 	slots_sent[face$o[1]->client[34]] 	0
+scalar barabasi_100nodes_network.node[34].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	p_hit[34] 	-nan
+scalar barabasi_100nodes_network.node[34].content_store 	hits[34] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	misses[34] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	decision_yes[34] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	decision_no[34] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	decision_ratio[34] 	0
+scalar barabasi_100nodes_network.node[34].content_store 	"representation_breakdown[34] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[35].core_layer 	interests[35] 	0
+scalar barabasi_100nodes_network.node[35].core_layer 	data[35] 	0
+scalar barabasi_100nodes_network.node[35].core_layer 	slots_sent[face$o[1]->client[35]] 	0
+scalar barabasi_100nodes_network.node[35].core_layer 	slots_sent[face$o[2]->node[5]] 	0
+scalar barabasi_100nodes_network.node[35].core_layer 	slots_sent[face$o[3]->node[50]] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	p_hit[35] 	-nan
+scalar barabasi_100nodes_network.node[35].content_store 	hits[35] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	misses[35] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	decision_yes[35] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	decision_no[35] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	decision_ratio[35] 	0
+scalar barabasi_100nodes_network.node[35].content_store 	"representation_breakdown[35] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[36].core_layer 	interests[36] 	0
+scalar barabasi_100nodes_network.node[36].core_layer 	data[36] 	0
+scalar barabasi_100nodes_network.node[36].core_layer 	slots_sent[face$o[1]->client[36]] 	0
+scalar barabasi_100nodes_network.node[36].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[36].core_layer 	slots_sent[face$o[3]->node[75]] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	p_hit[36] 	-nan
+scalar barabasi_100nodes_network.node[36].content_store 	hits[36] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	misses[36] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	decision_yes[36] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	decision_no[36] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	decision_ratio[36] 	0
+scalar barabasi_100nodes_network.node[36].content_store 	"representation_breakdown[36] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[37].core_layer 	interests[37] 	76335
+scalar barabasi_100nodes_network.node[37].core_layer 	repo_load[37] 	76335
+scalar barabasi_100nodes_network.node[37].core_layer 	data[37] 	0
+scalar barabasi_100nodes_network.node[37].core_layer 	slots_sent[face$o[1]->client[37]] 	0
+scalar barabasi_100nodes_network.node[37].core_layer 	slots_sent[face$o[2]->node[0]] 	19031405
+scalar barabasi_100nodes_network.node[37].content_store 	p_hit[37] 	0
+scalar barabasi_100nodes_network.node[37].content_store 	hits[37] 	0
+scalar barabasi_100nodes_network.node[37].content_store 	misses[37] 	76335
+scalar barabasi_100nodes_network.node[37].content_store 	decision_yes[37] 	0
+scalar barabasi_100nodes_network.node[37].content_store 	decision_no[37] 	76335
+scalar barabasi_100nodes_network.node[37].content_store 	decision_ratio[37] 	0
+scalar barabasi_100nodes_network.node[37].content_store 	"representation_breakdown[37] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[38].core_layer 	interests[38] 	0
+scalar barabasi_100nodes_network.node[38].core_layer 	data[38] 	0
+scalar barabasi_100nodes_network.node[38].core_layer 	slots_sent[face$o[1]->client[38]] 	0
+scalar barabasi_100nodes_network.node[38].core_layer 	slots_sent[face$o[2]->node[25]] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	p_hit[38] 	-nan
+scalar barabasi_100nodes_network.node[38].content_store 	hits[38] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	misses[38] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	decision_yes[38] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	decision_no[38] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	decision_ratio[38] 	0
+scalar barabasi_100nodes_network.node[38].content_store 	"representation_breakdown[38] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[39].core_layer 	interests[39] 	0
+scalar barabasi_100nodes_network.node[39].core_layer 	data[39] 	0
+scalar barabasi_100nodes_network.node[39].core_layer 	slots_sent[face$o[1]->client[39]] 	0
+scalar barabasi_100nodes_network.node[39].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[39].core_layer 	slots_sent[face$o[3]->node[60]] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	p_hit[39] 	-nan
+scalar barabasi_100nodes_network.node[39].content_store 	hits[39] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	misses[39] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	decision_yes[39] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	decision_no[39] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	decision_ratio[39] 	0
+scalar barabasi_100nodes_network.node[39].content_store 	"representation_breakdown[39] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[40].core_layer 	interests[40] 	0
+scalar barabasi_100nodes_network.node[40].core_layer 	data[40] 	0
+scalar barabasi_100nodes_network.node[40].core_layer 	slots_sent[face$o[1]->client[40]] 	0
+scalar barabasi_100nodes_network.node[40].core_layer 	slots_sent[face$o[2]->node[15]] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	p_hit[40] 	-nan
+scalar barabasi_100nodes_network.node[40].content_store 	hits[40] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	misses[40] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	decision_yes[40] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	decision_no[40] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	decision_ratio[40] 	0
+scalar barabasi_100nodes_network.node[40].content_store 	"representation_breakdown[40] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	interests[41] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	data[41] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[1]->client[41]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[3]->node[42]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[4]->node[48]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[5]->node[54]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[6]->node[55]] 	0
+scalar barabasi_100nodes_network.node[41].core_layer 	slots_sent[face$o[7]->node[69]] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	p_hit[41] 	-nan
+scalar barabasi_100nodes_network.node[41].content_store 	hits[41] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	misses[41] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	decision_yes[41] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	decision_no[41] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	decision_ratio[41] 	0
+scalar barabasi_100nodes_network.node[41].content_store 	"representation_breakdown[41] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[42].core_layer 	interests[42] 	0
+scalar barabasi_100nodes_network.node[42].core_layer 	data[42] 	0
+scalar barabasi_100nodes_network.node[42].core_layer 	slots_sent[face$o[1]->client[42]] 	0
+scalar barabasi_100nodes_network.node[42].core_layer 	slots_sent[face$o[2]->node[41]] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	p_hit[42] 	-nan
+scalar barabasi_100nodes_network.node[42].content_store 	hits[42] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	misses[42] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	decision_yes[42] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	decision_no[42] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	decision_ratio[42] 	0
+scalar barabasi_100nodes_network.node[42].content_store 	"representation_breakdown[42] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[43].core_layer 	interests[43] 	0
+scalar barabasi_100nodes_network.node[43].core_layer 	data[43] 	0
+scalar barabasi_100nodes_network.node[43].core_layer 	slots_sent[face$o[1]->client[43]] 	0
+scalar barabasi_100nodes_network.node[43].core_layer 	slots_sent[face$o[2]->node[32]] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	p_hit[43] 	-nan
+scalar barabasi_100nodes_network.node[43].content_store 	hits[43] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	misses[43] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	decision_yes[43] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	decision_no[43] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	decision_ratio[43] 	0
+scalar barabasi_100nodes_network.node[43].content_store 	"representation_breakdown[43] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[44].core_layer 	interests[44] 	0
+scalar barabasi_100nodes_network.node[44].core_layer 	data[44] 	0
+scalar barabasi_100nodes_network.node[44].core_layer 	slots_sent[face$o[1]->client[44]] 	0
+scalar barabasi_100nodes_network.node[44].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	p_hit[44] 	-nan
+scalar barabasi_100nodes_network.node[44].content_store 	hits[44] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	misses[44] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	decision_yes[44] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	decision_no[44] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	decision_ratio[44] 	0
+scalar barabasi_100nodes_network.node[44].content_store 	"representation_breakdown[44] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[45].core_layer 	interests[45] 	0
+scalar barabasi_100nodes_network.node[45].core_layer 	data[45] 	0
+scalar barabasi_100nodes_network.node[45].core_layer 	slots_sent[face$o[1]->client[45]] 	0
+scalar barabasi_100nodes_network.node[45].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	p_hit[45] 	-nan
+scalar barabasi_100nodes_network.node[45].content_store 	hits[45] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	misses[45] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	decision_yes[45] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	decision_no[45] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	decision_ratio[45] 	0
+scalar barabasi_100nodes_network.node[45].content_store 	"representation_breakdown[45] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[46].core_layer 	interests[46] 	0
+scalar barabasi_100nodes_network.node[46].core_layer 	data[46] 	0
+scalar barabasi_100nodes_network.node[46].core_layer 	slots_sent[face$o[1]->client[46]] 	0
+scalar barabasi_100nodes_network.node[46].core_layer 	slots_sent[face$o[2]->node[23]] 	0
+scalar barabasi_100nodes_network.node[46].core_layer 	slots_sent[face$o[3]->node[82]] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	p_hit[46] 	-nan
+scalar barabasi_100nodes_network.node[46].content_store 	hits[46] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	misses[46] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	decision_yes[46] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	decision_no[46] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	decision_ratio[46] 	0
+scalar barabasi_100nodes_network.node[46].content_store 	"representation_breakdown[46] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[47].core_layer 	interests[47] 	0
+scalar barabasi_100nodes_network.node[47].core_layer 	data[47] 	0
+scalar barabasi_100nodes_network.node[47].core_layer 	slots_sent[face$o[1]->client[47]] 	0
+scalar barabasi_100nodes_network.node[47].core_layer 	slots_sent[face$o[2]->node[23]] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	p_hit[47] 	-nan
+scalar barabasi_100nodes_network.node[47].content_store 	hits[47] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	misses[47] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	decision_yes[47] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	decision_no[47] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	decision_ratio[47] 	0
+scalar barabasi_100nodes_network.node[47].content_store 	"representation_breakdown[47] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[48].core_layer 	interests[48] 	0
+scalar barabasi_100nodes_network.node[48].core_layer 	data[48] 	0
+scalar barabasi_100nodes_network.node[48].core_layer 	slots_sent[face$o[1]->client[48]] 	0
+scalar barabasi_100nodes_network.node[48].core_layer 	slots_sent[face$o[2]->node[41]] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	p_hit[48] 	-nan
+scalar barabasi_100nodes_network.node[48].content_store 	hits[48] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	misses[48] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	decision_yes[48] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	decision_no[48] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	decision_ratio[48] 	0
+scalar barabasi_100nodes_network.node[48].content_store 	"representation_breakdown[48] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[49].core_layer 	interests[49] 	0
+scalar barabasi_100nodes_network.node[49].core_layer 	data[49] 	0
+scalar barabasi_100nodes_network.node[49].core_layer 	slots_sent[face$o[1]->client[49]] 	0
+scalar barabasi_100nodes_network.node[49].core_layer 	slots_sent[face$o[2]->node[7]] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	p_hit[49] 	-nan
+scalar barabasi_100nodes_network.node[49].content_store 	hits[49] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	misses[49] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	decision_yes[49] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	decision_no[49] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	decision_ratio[49] 	0
+scalar barabasi_100nodes_network.node[49].content_store 	"representation_breakdown[49] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[50].core_layer 	interests[50] 	0
+scalar barabasi_100nodes_network.node[50].core_layer 	data[50] 	0
+scalar barabasi_100nodes_network.node[50].core_layer 	slots_sent[face$o[1]->client[50]] 	0
+scalar barabasi_100nodes_network.node[50].core_layer 	slots_sent[face$o[2]->node[35]] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	p_hit[50] 	-nan
+scalar barabasi_100nodes_network.node[50].content_store 	hits[50] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	misses[50] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	decision_yes[50] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	decision_no[50] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	decision_ratio[50] 	0
+scalar barabasi_100nodes_network.node[50].content_store 	"representation_breakdown[50] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[51].core_layer 	interests[51] 	0
+scalar barabasi_100nodes_network.node[51].core_layer 	data[51] 	0
+scalar barabasi_100nodes_network.node[51].core_layer 	slots_sent[face$o[1]->client[51]] 	0
+scalar barabasi_100nodes_network.node[51].core_layer 	slots_sent[face$o[2]->node[23]] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	p_hit[51] 	-nan
+scalar barabasi_100nodes_network.node[51].content_store 	hits[51] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	misses[51] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	decision_yes[51] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	decision_no[51] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	decision_ratio[51] 	0
+scalar barabasi_100nodes_network.node[51].content_store 	"representation_breakdown[51] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[52].core_layer 	interests[52] 	0
+scalar barabasi_100nodes_network.node[52].core_layer 	data[52] 	0
+scalar barabasi_100nodes_network.node[52].core_layer 	slots_sent[face$o[1]->client[52]] 	0
+scalar barabasi_100nodes_network.node[52].core_layer 	slots_sent[face$o[2]->node[3]] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	p_hit[52] 	-nan
+scalar barabasi_100nodes_network.node[52].content_store 	hits[52] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	misses[52] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	decision_yes[52] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	decision_no[52] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	decision_ratio[52] 	0
+scalar barabasi_100nodes_network.node[52].content_store 	"representation_breakdown[52] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[53].core_layer 	interests[53] 	0
+scalar barabasi_100nodes_network.node[53].core_layer 	data[53] 	0
+scalar barabasi_100nodes_network.node[53].core_layer 	slots_sent[face$o[1]->client[53]] 	0
+scalar barabasi_100nodes_network.node[53].core_layer 	slots_sent[face$o[2]->node[18]] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	p_hit[53] 	-nan
+scalar barabasi_100nodes_network.node[53].content_store 	hits[53] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	misses[53] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	decision_yes[53] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	decision_no[53] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	decision_ratio[53] 	0
+scalar barabasi_100nodes_network.node[53].content_store 	"representation_breakdown[53] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[54].core_layer 	interests[54] 	0
+scalar barabasi_100nodes_network.node[54].core_layer 	data[54] 	0
+scalar barabasi_100nodes_network.node[54].core_layer 	slots_sent[face$o[1]->client[54]] 	0
+scalar barabasi_100nodes_network.node[54].core_layer 	slots_sent[face$o[2]->node[41]] 	0
+scalar barabasi_100nodes_network.node[54].core_layer 	slots_sent[face$o[3]->node[97]] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	p_hit[54] 	-nan
+scalar barabasi_100nodes_network.node[54].content_store 	hits[54] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	misses[54] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	decision_yes[54] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	decision_no[54] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	decision_ratio[54] 	0
+scalar barabasi_100nodes_network.node[54].content_store 	"representation_breakdown[54] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[55].core_layer 	interests[55] 	0
+scalar barabasi_100nodes_network.node[55].core_layer 	data[55] 	0
+scalar barabasi_100nodes_network.node[55].core_layer 	slots_sent[face$o[1]->client[55]] 	0
+scalar barabasi_100nodes_network.node[55].core_layer 	slots_sent[face$o[2]->node[41]] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	p_hit[55] 	-nan
+scalar barabasi_100nodes_network.node[55].content_store 	hits[55] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	misses[55] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	decision_yes[55] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	decision_no[55] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	decision_ratio[55] 	0
+scalar barabasi_100nodes_network.node[55].content_store 	"representation_breakdown[55] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[56].core_layer 	interests[56] 	0
+scalar barabasi_100nodes_network.node[56].core_layer 	data[56] 	0
+scalar barabasi_100nodes_network.node[56].core_layer 	slots_sent[face$o[1]->client[56]] 	0
+scalar barabasi_100nodes_network.node[56].core_layer 	slots_sent[face$o[2]->node[15]] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	p_hit[56] 	-nan
+scalar barabasi_100nodes_network.node[56].content_store 	hits[56] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	misses[56] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	decision_yes[56] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	decision_no[56] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	decision_ratio[56] 	0
+scalar barabasi_100nodes_network.node[56].content_store 	"representation_breakdown[56] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[57].core_layer 	interests[57] 	0
+scalar barabasi_100nodes_network.node[57].core_layer 	data[57] 	0
+scalar barabasi_100nodes_network.node[57].core_layer 	slots_sent[face$o[1]->client[57]] 	0
+scalar barabasi_100nodes_network.node[57].core_layer 	slots_sent[face$o[2]->node[21]] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	p_hit[57] 	-nan
+scalar barabasi_100nodes_network.node[57].content_store 	hits[57] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	misses[57] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	decision_yes[57] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	decision_no[57] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	decision_ratio[57] 	0
+scalar barabasi_100nodes_network.node[57].content_store 	"representation_breakdown[57] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[58].core_layer 	interests[58] 	0
+scalar barabasi_100nodes_network.node[58].core_layer 	data[58] 	0
+scalar barabasi_100nodes_network.node[58].core_layer 	slots_sent[face$o[1]->client[58]] 	0
+scalar barabasi_100nodes_network.node[58].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[58].core_layer 	slots_sent[face$o[3]->node[94]] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	p_hit[58] 	-nan
+scalar barabasi_100nodes_network.node[58].content_store 	hits[58] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	misses[58] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	decision_yes[58] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	decision_no[58] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	decision_ratio[58] 	0
+scalar barabasi_100nodes_network.node[58].content_store 	"representation_breakdown[58] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[59].core_layer 	interests[59] 	0
+scalar barabasi_100nodes_network.node[59].core_layer 	data[59] 	0
+scalar barabasi_100nodes_network.node[59].core_layer 	slots_sent[face$o[1]->client[59]] 	0
+scalar barabasi_100nodes_network.node[59].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	p_hit[59] 	-nan
+scalar barabasi_100nodes_network.node[59].content_store 	hits[59] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	misses[59] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	decision_yes[59] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	decision_no[59] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	decision_ratio[59] 	0
+scalar barabasi_100nodes_network.node[59].content_store 	"representation_breakdown[59] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[60].core_layer 	interests[60] 	0
+scalar barabasi_100nodes_network.node[60].core_layer 	data[60] 	0
+scalar barabasi_100nodes_network.node[60].core_layer 	slots_sent[face$o[1]->client[60]] 	0
+scalar barabasi_100nodes_network.node[60].core_layer 	slots_sent[face$o[2]->node[39]] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	p_hit[60] 	-nan
+scalar barabasi_100nodes_network.node[60].content_store 	hits[60] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	misses[60] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	decision_yes[60] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	decision_no[60] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	decision_ratio[60] 	0
+scalar barabasi_100nodes_network.node[60].content_store 	"representation_breakdown[60] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[61].core_layer 	interests[61] 	0
+scalar barabasi_100nodes_network.node[61].core_layer 	data[61] 	0
+scalar barabasi_100nodes_network.node[61].core_layer 	slots_sent[face$o[1]->client[61]] 	0
+scalar barabasi_100nodes_network.node[61].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	p_hit[61] 	-nan
+scalar barabasi_100nodes_network.node[61].content_store 	hits[61] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	misses[61] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	decision_yes[61] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	decision_no[61] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	decision_ratio[61] 	0
+scalar barabasi_100nodes_network.node[61].content_store 	"representation_breakdown[61] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[62].core_layer 	interests[62] 	0
+scalar barabasi_100nodes_network.node[62].core_layer 	data[62] 	0
+scalar barabasi_100nodes_network.node[62].core_layer 	slots_sent[face$o[1]->client[62]] 	0
+scalar barabasi_100nodes_network.node[62].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[62].core_layer 	slots_sent[face$o[3]->node[84]] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	p_hit[62] 	-nan
+scalar barabasi_100nodes_network.node[62].content_store 	hits[62] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	misses[62] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	decision_yes[62] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	decision_no[62] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	decision_ratio[62] 	0
+scalar barabasi_100nodes_network.node[62].content_store 	"representation_breakdown[62] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[63].core_layer 	interests[63] 	0
+scalar barabasi_100nodes_network.node[63].core_layer 	data[63] 	0
+scalar barabasi_100nodes_network.node[63].core_layer 	slots_sent[face$o[1]->client[63]] 	0
+scalar barabasi_100nodes_network.node[63].core_layer 	slots_sent[face$o[2]->node[19]] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	p_hit[63] 	-nan
+scalar barabasi_100nodes_network.node[63].content_store 	hits[63] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	misses[63] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	decision_yes[63] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	decision_no[63] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	decision_ratio[63] 	0
+scalar barabasi_100nodes_network.node[63].content_store 	"representation_breakdown[63] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[64].core_layer 	interests[64] 	0
+scalar barabasi_100nodes_network.node[64].core_layer 	data[64] 	0
+scalar barabasi_100nodes_network.node[64].core_layer 	slots_sent[face$o[1]->client[64]] 	0
+scalar barabasi_100nodes_network.node[64].core_layer 	slots_sent[face$o[2]->node[32]] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	p_hit[64] 	-nan
+scalar barabasi_100nodes_network.node[64].content_store 	hits[64] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	misses[64] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	decision_yes[64] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	decision_no[64] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	decision_ratio[64] 	0
+scalar barabasi_100nodes_network.node[64].content_store 	"representation_breakdown[64] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	interests[65] 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	data[65] 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	slots_sent[face$o[1]->client[65]] 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	slots_sent[face$o[2]->node[31]] 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	slots_sent[face$o[3]->node[95]] 	0
+scalar barabasi_100nodes_network.node[65].core_layer 	slots_sent[face$o[4]->node[98]] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	p_hit[65] 	-nan
+scalar barabasi_100nodes_network.node[65].content_store 	hits[65] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	misses[65] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	decision_yes[65] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	decision_no[65] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	decision_ratio[65] 	0
+scalar barabasi_100nodes_network.node[65].content_store 	"representation_breakdown[65] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[66].core_layer 	interests[66] 	0
+scalar barabasi_100nodes_network.node[66].core_layer 	data[66] 	0
+scalar barabasi_100nodes_network.node[66].core_layer 	slots_sent[face$o[1]->client[66]] 	0
+scalar barabasi_100nodes_network.node[66].core_layer 	slots_sent[face$o[2]->node[8]] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	p_hit[66] 	-nan
+scalar barabasi_100nodes_network.node[66].content_store 	hits[66] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	misses[66] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	decision_yes[66] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	decision_no[66] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	decision_ratio[66] 	0
+scalar barabasi_100nodes_network.node[66].content_store 	"representation_breakdown[66] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[67].core_layer 	interests[67] 	0
+scalar barabasi_100nodes_network.node[67].core_layer 	data[67] 	0
+scalar barabasi_100nodes_network.node[67].core_layer 	slots_sent[face$o[1]->client[67]] 	0
+scalar barabasi_100nodes_network.node[67].core_layer 	slots_sent[face$o[2]->node[13]] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	p_hit[67] 	-nan
+scalar barabasi_100nodes_network.node[67].content_store 	hits[67] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	misses[67] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	decision_yes[67] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	decision_no[67] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	decision_ratio[67] 	0
+scalar barabasi_100nodes_network.node[67].content_store 	"representation_breakdown[67] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[68].core_layer 	interests[68] 	0
+scalar barabasi_100nodes_network.node[68].core_layer 	data[68] 	0
+scalar barabasi_100nodes_network.node[68].core_layer 	slots_sent[face$o[1]->client[68]] 	0
+scalar barabasi_100nodes_network.node[68].core_layer 	slots_sent[face$o[2]->node[18]] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	p_hit[68] 	-nan
+scalar barabasi_100nodes_network.node[68].content_store 	hits[68] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	misses[68] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	decision_yes[68] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	decision_no[68] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	decision_ratio[68] 	0
+scalar barabasi_100nodes_network.node[68].content_store 	"representation_breakdown[68] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[69].core_layer 	interests[69] 	0
+scalar barabasi_100nodes_network.node[69].core_layer 	data[69] 	0
+scalar barabasi_100nodes_network.node[69].core_layer 	slots_sent[face$o[1]->client[69]] 	0
+scalar barabasi_100nodes_network.node[69].core_layer 	slots_sent[face$o[2]->node[41]] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	p_hit[69] 	-nan
+scalar barabasi_100nodes_network.node[69].content_store 	hits[69] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	misses[69] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	decision_yes[69] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	decision_no[69] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	decision_ratio[69] 	0
+scalar barabasi_100nodes_network.node[69].content_store 	"representation_breakdown[69] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[70].core_layer 	interests[70] 	0
+scalar barabasi_100nodes_network.node[70].core_layer 	data[70] 	0
+scalar barabasi_100nodes_network.node[70].core_layer 	slots_sent[face$o[1]->client[70]] 	0
+scalar barabasi_100nodes_network.node[70].core_layer 	slots_sent[face$o[2]->node[19]] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	p_hit[70] 	-nan
+scalar barabasi_100nodes_network.node[70].content_store 	hits[70] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	misses[70] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	decision_yes[70] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	decision_no[70] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	decision_ratio[70] 	0
+scalar barabasi_100nodes_network.node[70].content_store 	"representation_breakdown[70] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[71].core_layer 	interests[71] 	0
+scalar barabasi_100nodes_network.node[71].core_layer 	data[71] 	0
+scalar barabasi_100nodes_network.node[71].core_layer 	slots_sent[face$o[1]->client[71]] 	0
+scalar barabasi_100nodes_network.node[71].core_layer 	slots_sent[face$o[2]->node[10]] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	p_hit[71] 	-nan
+scalar barabasi_100nodes_network.node[71].content_store 	hits[71] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	misses[71] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	decision_yes[71] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	decision_no[71] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	decision_ratio[71] 	0
+scalar barabasi_100nodes_network.node[71].content_store 	"representation_breakdown[71] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[72].core_layer 	interests[72] 	0
+scalar barabasi_100nodes_network.node[72].core_layer 	data[72] 	0
+scalar barabasi_100nodes_network.node[72].core_layer 	slots_sent[face$o[1]->client[72]] 	0
+scalar barabasi_100nodes_network.node[72].core_layer 	slots_sent[face$o[2]->node[18]] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	p_hit[72] 	-nan
+scalar barabasi_100nodes_network.node[72].content_store 	hits[72] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	misses[72] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	decision_yes[72] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	decision_no[72] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	decision_ratio[72] 	0
+scalar barabasi_100nodes_network.node[72].content_store 	"representation_breakdown[72] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[73].core_layer 	interests[73] 	0
+scalar barabasi_100nodes_network.node[73].core_layer 	data[73] 	0
+scalar barabasi_100nodes_network.node[73].core_layer 	slots_sent[face$o[1]->client[73]] 	0
+scalar barabasi_100nodes_network.node[73].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[73].core_layer 	slots_sent[face$o[3]->node[76]] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	p_hit[73] 	-nan
+scalar barabasi_100nodes_network.node[73].content_store 	hits[73] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	misses[73] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	decision_yes[73] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	decision_no[73] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	decision_ratio[73] 	0
+scalar barabasi_100nodes_network.node[73].content_store 	"representation_breakdown[73] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[74].core_layer 	interests[74] 	0
+scalar barabasi_100nodes_network.node[74].core_layer 	data[74] 	0
+scalar barabasi_100nodes_network.node[74].core_layer 	slots_sent[face$o[1]->client[74]] 	0
+scalar barabasi_100nodes_network.node[74].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	p_hit[74] 	-nan
+scalar barabasi_100nodes_network.node[74].content_store 	hits[74] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	misses[74] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	decision_yes[74] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	decision_no[74] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	decision_ratio[74] 	0
+scalar barabasi_100nodes_network.node[74].content_store 	"representation_breakdown[74] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[75].core_layer 	interests[75] 	0
+scalar barabasi_100nodes_network.node[75].core_layer 	data[75] 	0
+scalar barabasi_100nodes_network.node[75].core_layer 	slots_sent[face$o[1]->client[75]] 	0
+scalar barabasi_100nodes_network.node[75].core_layer 	slots_sent[face$o[2]->node[36]] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	p_hit[75] 	-nan
+scalar barabasi_100nodes_network.node[75].content_store 	hits[75] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	misses[75] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	decision_yes[75] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	decision_no[75] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	decision_ratio[75] 	0
+scalar barabasi_100nodes_network.node[75].content_store 	"representation_breakdown[75] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[76].core_layer 	interests[76] 	0
+scalar barabasi_100nodes_network.node[76].core_layer 	data[76] 	0
+scalar barabasi_100nodes_network.node[76].core_layer 	slots_sent[face$o[1]->client[76]] 	0
+scalar barabasi_100nodes_network.node[76].core_layer 	slots_sent[face$o[2]->node[73]] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	p_hit[76] 	-nan
+scalar barabasi_100nodes_network.node[76].content_store 	hits[76] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	misses[76] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	decision_yes[76] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	decision_no[76] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	decision_ratio[76] 	0
+scalar barabasi_100nodes_network.node[76].content_store 	"representation_breakdown[76] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[77].core_layer 	interests[77] 	0
+scalar barabasi_100nodes_network.node[77].core_layer 	data[77] 	0
+scalar barabasi_100nodes_network.node[77].core_layer 	slots_sent[face$o[1]->client[77]] 	0
+scalar barabasi_100nodes_network.node[77].core_layer 	slots_sent[face$o[2]->node[26]] 	0
+scalar barabasi_100nodes_network.node[77].core_layer 	slots_sent[face$o[3]->node[96]] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	p_hit[77] 	-nan
+scalar barabasi_100nodes_network.node[77].content_store 	hits[77] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	misses[77] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	decision_yes[77] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	decision_no[77] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	decision_ratio[77] 	0
+scalar barabasi_100nodes_network.node[77].content_store 	"representation_breakdown[77] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	interests[78] 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	data[78] 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	slots_sent[face$o[1]->client[78]] 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	slots_sent[face$o[2]->node[13]] 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	slots_sent[face$o[3]->node[81]] 	0
+scalar barabasi_100nodes_network.node[78].core_layer 	slots_sent[face$o[4]->node[87]] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	p_hit[78] 	-nan
+scalar barabasi_100nodes_network.node[78].content_store 	hits[78] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	misses[78] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	decision_yes[78] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	decision_no[78] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	decision_ratio[78] 	0
+scalar barabasi_100nodes_network.node[78].content_store 	"representation_breakdown[78] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[79].core_layer 	interests[79] 	0
+scalar barabasi_100nodes_network.node[79].core_layer 	data[79] 	0
+scalar barabasi_100nodes_network.node[79].core_layer 	slots_sent[face$o[1]->client[79]] 	0
+scalar barabasi_100nodes_network.node[79].core_layer 	slots_sent[face$o[2]->node[2]] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	p_hit[79] 	-nan
+scalar barabasi_100nodes_network.node[79].content_store 	hits[79] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	misses[79] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	decision_yes[79] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	decision_no[79] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	decision_ratio[79] 	0
+scalar barabasi_100nodes_network.node[79].content_store 	"representation_breakdown[79] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[80].core_layer 	interests[80] 	0
+scalar barabasi_100nodes_network.node[80].core_layer 	data[80] 	0
+scalar barabasi_100nodes_network.node[80].core_layer 	slots_sent[face$o[1]->client[80]] 	0
+scalar barabasi_100nodes_network.node[80].core_layer 	slots_sent[face$o[2]->node[19]] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	p_hit[80] 	-nan
+scalar barabasi_100nodes_network.node[80].content_store 	hits[80] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	misses[80] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	decision_yes[80] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	decision_no[80] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	decision_ratio[80] 	0
+scalar barabasi_100nodes_network.node[80].content_store 	"representation_breakdown[80] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[81].core_layer 	interests[81] 	0
+scalar barabasi_100nodes_network.node[81].core_layer 	data[81] 	0
+scalar barabasi_100nodes_network.node[81].core_layer 	slots_sent[face$o[1]->client[81]] 	0
+scalar barabasi_100nodes_network.node[81].core_layer 	slots_sent[face$o[2]->node[78]] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	p_hit[81] 	-nan
+scalar barabasi_100nodes_network.node[81].content_store 	hits[81] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	misses[81] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	decision_yes[81] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	decision_no[81] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	decision_ratio[81] 	0
+scalar barabasi_100nodes_network.node[81].content_store 	"representation_breakdown[81] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[82].core_layer 	interests[82] 	0
+scalar barabasi_100nodes_network.node[82].core_layer 	data[82] 	0
+scalar barabasi_100nodes_network.node[82].core_layer 	slots_sent[face$o[1]->client[82]] 	0
+scalar barabasi_100nodes_network.node[82].core_layer 	slots_sent[face$o[2]->node[46]] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	p_hit[82] 	-nan
+scalar barabasi_100nodes_network.node[82].content_store 	hits[82] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	misses[82] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	decision_yes[82] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	decision_no[82] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	decision_ratio[82] 	0
+scalar barabasi_100nodes_network.node[82].content_store 	"representation_breakdown[82] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[83].core_layer 	interests[83] 	0
+scalar barabasi_100nodes_network.node[83].core_layer 	data[83] 	0
+scalar barabasi_100nodes_network.node[83].core_layer 	slots_sent[face$o[1]->client[83]] 	0
+scalar barabasi_100nodes_network.node[83].core_layer 	slots_sent[face$o[2]->node[23]] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	p_hit[83] 	-nan
+scalar barabasi_100nodes_network.node[83].content_store 	hits[83] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	misses[83] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	decision_yes[83] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	decision_no[83] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	decision_ratio[83] 	0
+scalar barabasi_100nodes_network.node[83].content_store 	"representation_breakdown[83] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[84].core_layer 	interests[84] 	0
+scalar barabasi_100nodes_network.node[84].core_layer 	data[84] 	0
+scalar barabasi_100nodes_network.node[84].core_layer 	slots_sent[face$o[1]->client[84]] 	0
+scalar barabasi_100nodes_network.node[84].core_layer 	slots_sent[face$o[2]->node[62]] 	0
+scalar barabasi_100nodes_network.node[84].core_layer 	slots_sent[face$o[3]->node[92]] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	p_hit[84] 	-nan
+scalar barabasi_100nodes_network.node[84].content_store 	hits[84] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	misses[84] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	decision_yes[84] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	decision_no[84] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	decision_ratio[84] 	0
+scalar barabasi_100nodes_network.node[84].content_store 	"representation_breakdown[84] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[85].core_layer 	interests[85] 	0
+scalar barabasi_100nodes_network.node[85].core_layer 	data[85] 	0
+scalar barabasi_100nodes_network.node[85].core_layer 	slots_sent[face$o[1]->client[85]] 	0
+scalar barabasi_100nodes_network.node[85].core_layer 	slots_sent[face$o[2]->node[4]] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	p_hit[85] 	-nan
+scalar barabasi_100nodes_network.node[85].content_store 	hits[85] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	misses[85] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	decision_yes[85] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	decision_no[85] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	decision_ratio[85] 	0
+scalar barabasi_100nodes_network.node[85].content_store 	"representation_breakdown[85] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[86].core_layer 	interests[86] 	0
+scalar barabasi_100nodes_network.node[86].core_layer 	data[86] 	0
+scalar barabasi_100nodes_network.node[86].core_layer 	slots_sent[face$o[1]->client[86]] 	0
+scalar barabasi_100nodes_network.node[86].core_layer 	slots_sent[face$o[2]->node[23]] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	p_hit[86] 	-nan
+scalar barabasi_100nodes_network.node[86].content_store 	hits[86] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	misses[86] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	decision_yes[86] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	decision_no[86] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	decision_ratio[86] 	0
+scalar barabasi_100nodes_network.node[86].content_store 	"representation_breakdown[86] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[87].core_layer 	interests[87] 	0
+scalar barabasi_100nodes_network.node[87].core_layer 	data[87] 	0
+scalar barabasi_100nodes_network.node[87].core_layer 	slots_sent[face$o[1]->client[87]] 	0
+scalar barabasi_100nodes_network.node[87].core_layer 	slots_sent[face$o[2]->node[78]] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	p_hit[87] 	-nan
+scalar barabasi_100nodes_network.node[87].content_store 	hits[87] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	misses[87] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	decision_yes[87] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	decision_no[87] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	decision_ratio[87] 	0
+scalar barabasi_100nodes_network.node[87].content_store 	"representation_breakdown[87] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[88].core_layer 	interests[88] 	0
+scalar barabasi_100nodes_network.node[88].core_layer 	data[88] 	0
+scalar barabasi_100nodes_network.node[88].core_layer 	slots_sent[face$o[1]->client[88]] 	0
+scalar barabasi_100nodes_network.node[88].core_layer 	slots_sent[face$o[2]->node[30]] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	p_hit[88] 	-nan
+scalar barabasi_100nodes_network.node[88].content_store 	hits[88] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	misses[88] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	decision_yes[88] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	decision_no[88] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	decision_ratio[88] 	0
+scalar barabasi_100nodes_network.node[88].content_store 	"representation_breakdown[88] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[89].core_layer 	interests[89] 	0
+scalar barabasi_100nodes_network.node[89].core_layer 	data[89] 	0
+scalar barabasi_100nodes_network.node[89].core_layer 	slots_sent[face$o[1]->client[89]] 	0
+scalar barabasi_100nodes_network.node[89].core_layer 	slots_sent[face$o[2]->node[19]] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	p_hit[89] 	-nan
+scalar barabasi_100nodes_network.node[89].content_store 	hits[89] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	misses[89] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	decision_yes[89] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	decision_no[89] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	decision_ratio[89] 	0
+scalar barabasi_100nodes_network.node[89].content_store 	"representation_breakdown[89] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[90].core_layer 	interests[90] 	0
+scalar barabasi_100nodes_network.node[90].core_layer 	data[90] 	0
+scalar barabasi_100nodes_network.node[90].core_layer 	slots_sent[face$o[1]->client[90]] 	0
+scalar barabasi_100nodes_network.node[90].core_layer 	slots_sent[face$o[2]->node[7]] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	p_hit[90] 	-nan
+scalar barabasi_100nodes_network.node[90].content_store 	hits[90] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	misses[90] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	decision_yes[90] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	decision_no[90] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	decision_ratio[90] 	0
+scalar barabasi_100nodes_network.node[90].content_store 	"representation_breakdown[90] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[91].core_layer 	interests[91] 	0
+scalar barabasi_100nodes_network.node[91].core_layer 	data[91] 	0
+scalar barabasi_100nodes_network.node[91].core_layer 	slots_sent[face$o[1]->client[91]] 	0
+scalar barabasi_100nodes_network.node[91].core_layer 	slots_sent[face$o[2]->node[26]] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	p_hit[91] 	-nan
+scalar barabasi_100nodes_network.node[91].content_store 	hits[91] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	misses[91] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	decision_yes[91] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	decision_no[91] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	decision_ratio[91] 	0
+scalar barabasi_100nodes_network.node[91].content_store 	"representation_breakdown[91] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[92].core_layer 	interests[92] 	0
+scalar barabasi_100nodes_network.node[92].core_layer 	data[92] 	0
+scalar barabasi_100nodes_network.node[92].core_layer 	slots_sent[face$o[1]->client[92]] 	0
+scalar barabasi_100nodes_network.node[92].core_layer 	slots_sent[face$o[2]->node[84]] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	p_hit[92] 	-nan
+scalar barabasi_100nodes_network.node[92].content_store 	hits[92] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	misses[92] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	decision_yes[92] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	decision_no[92] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	decision_ratio[92] 	0
+scalar barabasi_100nodes_network.node[92].content_store 	"representation_breakdown[92] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[93].core_layer 	interests[93] 	0
+scalar barabasi_100nodes_network.node[93].core_layer 	data[93] 	0
+scalar barabasi_100nodes_network.node[93].core_layer 	slots_sent[face$o[1]->client[93]] 	0
+scalar barabasi_100nodes_network.node[93].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	p_hit[93] 	-nan
+scalar barabasi_100nodes_network.node[93].content_store 	hits[93] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	misses[93] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	decision_yes[93] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	decision_no[93] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	decision_ratio[93] 	0
+scalar barabasi_100nodes_network.node[93].content_store 	"representation_breakdown[93] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[94].core_layer 	interests[94] 	0
+scalar barabasi_100nodes_network.node[94].core_layer 	data[94] 	0
+scalar barabasi_100nodes_network.node[94].core_layer 	slots_sent[face$o[1]->client[94]] 	0
+scalar barabasi_100nodes_network.node[94].core_layer 	slots_sent[face$o[2]->node[58]] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	p_hit[94] 	-nan
+scalar barabasi_100nodes_network.node[94].content_store 	hits[94] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	misses[94] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	decision_yes[94] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	decision_no[94] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	decision_ratio[94] 	0
+scalar barabasi_100nodes_network.node[94].content_store 	"representation_breakdown[94] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[95].core_layer 	interests[95] 	0
+scalar barabasi_100nodes_network.node[95].core_layer 	data[95] 	0
+scalar barabasi_100nodes_network.node[95].core_layer 	slots_sent[face$o[1]->client[95]] 	0
+scalar barabasi_100nodes_network.node[95].core_layer 	slots_sent[face$o[2]->node[65]] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	p_hit[95] 	-nan
+scalar barabasi_100nodes_network.node[95].content_store 	hits[95] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	misses[95] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	decision_yes[95] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	decision_no[95] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	decision_ratio[95] 	0
+scalar barabasi_100nodes_network.node[95].content_store 	"representation_breakdown[95] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[96].core_layer 	interests[96] 	0
+scalar barabasi_100nodes_network.node[96].core_layer 	data[96] 	0
+scalar barabasi_100nodes_network.node[96].core_layer 	slots_sent[face$o[1]->client[96]] 	0
+scalar barabasi_100nodes_network.node[96].core_layer 	slots_sent[face$o[2]->node[77]] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	p_hit[96] 	-nan
+scalar barabasi_100nodes_network.node[96].content_store 	hits[96] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	misses[96] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	decision_yes[96] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	decision_no[96] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	decision_ratio[96] 	0
+scalar barabasi_100nodes_network.node[96].content_store 	"representation_breakdown[96] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[97].core_layer 	interests[97] 	0
+scalar barabasi_100nodes_network.node[97].core_layer 	data[97] 	0
+scalar barabasi_100nodes_network.node[97].core_layer 	slots_sent[face$o[1]->client[97]] 	0
+scalar barabasi_100nodes_network.node[97].core_layer 	slots_sent[face$o[2]->node[54]] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	p_hit[97] 	-nan
+scalar barabasi_100nodes_network.node[97].content_store 	hits[97] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	misses[97] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	decision_yes[97] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	decision_no[97] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	decision_ratio[97] 	0
+scalar barabasi_100nodes_network.node[97].content_store 	"representation_breakdown[97] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[98].core_layer 	interests[98] 	0
+scalar barabasi_100nodes_network.node[98].core_layer 	data[98] 	0
+scalar barabasi_100nodes_network.node[98].core_layer 	slots_sent[face$o[1]->client[98]] 	0
+scalar barabasi_100nodes_network.node[98].core_layer 	slots_sent[face$o[2]->node[65]] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	p_hit[98] 	-nan
+scalar barabasi_100nodes_network.node[98].content_store 	hits[98] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	misses[98] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	decision_yes[98] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	decision_no[98] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	decision_ratio[98] 	0
+scalar barabasi_100nodes_network.node[98].content_store 	"representation_breakdown[98] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.node[99].core_layer 	interests[99] 	0
+scalar barabasi_100nodes_network.node[99].core_layer 	data[99] 	0
+scalar barabasi_100nodes_network.node[99].core_layer 	slots_sent[face$o[1]->client[99]] 	0
+scalar barabasi_100nodes_network.node[99].core_layer 	slots_sent[face$o[2]->node[27]] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	p_hit[99] 	-nan
+scalar barabasi_100nodes_network.node[99].content_store 	hits[99] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	misses[99] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	decision_yes[99] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	decision_no[99] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	decision_ratio[99] 	0
+scalar barabasi_100nodes_network.node[99].content_store 	"representation_breakdown[99] 0:0:0:0:0:" 	0
+scalar barabasi_100nodes_network.client[12] 	hdistance[12].real 	2.1702127659574
+scalar barabasi_100nodes_network.client[12] 	downloads[12].real 	117030
+scalar barabasi_100nodes_network.client[12] 	avg_time[12].real 	0

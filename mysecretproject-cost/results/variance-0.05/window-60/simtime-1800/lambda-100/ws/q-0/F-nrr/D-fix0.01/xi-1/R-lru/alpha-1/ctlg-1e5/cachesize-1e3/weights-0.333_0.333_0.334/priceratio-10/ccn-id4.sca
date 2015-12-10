@@ -1,0 +1,262 @@
+version 2
+run General-1-20141031-12:51:40-8227
+attr D fix0.01
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20141031-12:51:40
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$rep=4, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr iterationvars2 "$rep=4, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0, $repetition=0"
+attr kappa 1
+attr lambda 100
+attr measurement "$rep=4, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr mytime 1800
+attr network networks.ws${rep}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 8227
+attr rep 4
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 1
+attr seedset 4
+attr ttl 10
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	kappa 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	4
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar ws4_network.content_distribution 	repo-0 	18
+scalar ws4_network.content_distribution 	repo-1 	16
+scalar ws4_network.content_distribution 	repo-2 	10
+scalar ws4_network.content_distribution 	client-0 	6
+scalar ws4_network.content_distribution 	client-1 	2
+scalar ws4_network.content_distribution 	client-2 	20
+scalar ws4_network.content_distribution 	repo-0_card 	33274
+scalar ws4_network.content_distribution 	repo-0_price 	0
+scalar ws4_network.content_distribution 	repo-1_card 	33153
+scalar ws4_network.content_distribution 	repo-1_price 	1
+scalar ws4_network.content_distribution 	repo-2_card 	33573
+scalar ws4_network.content_distribution 	repo-2_price 	10
+scalar ws4_network.statistics 	repo_popularity[0] 	0.33945880017902
+scalar ws4_network.statistics 	repo_popularity[1] 	0.30988277584688
+scalar ws4_network.statistics 	repo_popularity[2] 	0.35065842397411
+scalar ws4_network.statistics 	stabilization_time 	36060
+scalar ws4_network.statistics 	p_hit 	0.20215594114305
+scalar ws4_network.statistics 	interests 	59843.090909091
+scalar ws4_network.statistics 	data 	35297.318181818
+scalar ws4_network.statistics 	hdistance 	1.9453542117233
+scalar ws4_network.statistics 	avg_time 	0.007449736849
+scalar ws4_network.statistics 	downloads 	539907
+scalar ws4_network.statistics 	total_cost 	948041
+scalar ws4_network.statistics 	total_replicas 	100000
+scalar ws4_network.statistics 	inner_hit 	0.49299416380969
+scalar ws4_network.statistics 	interests_sent 	540009
+scalar ws4_network.node[0].core_layer 	interests[0] 	133244
+scalar ws4_network.node[0].core_layer 	data[0] 	112790
+scalar ws4_network.node[0].core_layer 	repo_int[0] 	273736
+scalar ws4_network.node[0].content_store 	p_hit[0] 	0.15344030500435
+scalar ws4_network.node[0].content_store 	hits[0] 	20445
+scalar ws4_network.node[0].content_store 	misses[0] 	112799
+scalar ws4_network.node[0].content_store 	decision_yes[0] 	1140
+scalar ws4_network.node[0].content_store 	decision_no[0] 	111650
+scalar ws4_network.node[0].content_store 	decision_ratio[0] 	0.010107279014097
+scalar ws4_network.node[1].core_layer 	interests[1] 	0
+scalar ws4_network.node[1].core_layer 	data[1] 	0
+scalar ws4_network.node[1].content_store 	p_hit[1] 	-nan
+scalar ws4_network.node[1].content_store 	hits[1] 	0
+scalar ws4_network.node[1].content_store 	misses[1] 	0
+scalar ws4_network.node[1].content_store 	decision_yes[1] 	0
+scalar ws4_network.node[1].content_store 	decision_no[1] 	0
+scalar ws4_network.node[1].content_store 	decision_ratio[1] 	0
+scalar ws4_network.node[2].core_layer 	interests[2] 	188295
+scalar ws4_network.node[2].core_layer 	data[2] 	122791
+scalar ws4_network.node[2].content_store 	p_hit[2] 	0.34767784593324
+scalar ws4_network.node[2].content_store 	hits[2] 	65466
+scalar ws4_network.node[2].content_store 	misses[2] 	122829
+scalar ws4_network.node[2].content_store 	decision_yes[2] 	1208
+scalar ws4_network.node[2].content_store 	decision_no[2] 	121583
+scalar ws4_network.node[2].content_store 	decision_ratio[2] 	0.0098378545658884
+scalar ws4_network.node[3].core_layer 	interests[3] 	0
+scalar ws4_network.node[3].core_layer 	data[3] 	0
+scalar ws4_network.node[3].content_store 	p_hit[3] 	-nan
+scalar ws4_network.node[3].content_store 	hits[3] 	0
+scalar ws4_network.node[3].content_store 	misses[3] 	0
+scalar ws4_network.node[3].content_store 	decision_yes[3] 	0
+scalar ws4_network.node[3].content_store 	decision_no[3] 	0
+scalar ws4_network.node[3].content_store 	decision_ratio[3] 	0
+scalar ws4_network.node[4].core_layer 	interests[4] 	81429
+scalar ws4_network.node[4].core_layer 	data[4] 	66153
+scalar ws4_network.node[4].content_store 	p_hit[4] 	0.18752532881406
+scalar ws4_network.node[4].content_store 	hits[4] 	15270
+scalar ws4_network.node[4].content_store 	misses[4] 	66159
+scalar ws4_network.node[4].content_store 	decision_yes[4] 	689
+scalar ws4_network.node[4].content_store 	decision_no[4] 	65464
+scalar ws4_network.node[4].content_store 	decision_ratio[4] 	0.010415249497377
+scalar ws4_network.node[5].core_layer 	interests[5] 	0
+scalar ws4_network.node[5].core_layer 	data[5] 	0
+scalar ws4_network.node[5].content_store 	p_hit[5] 	-nan
+scalar ws4_network.node[5].content_store 	hits[5] 	0
+scalar ws4_network.node[5].content_store 	misses[5] 	0
+scalar ws4_network.node[5].content_store 	decision_yes[5] 	0
+scalar ws4_network.node[5].content_store 	decision_no[5] 	0
+scalar ws4_network.node[5].content_store 	decision_ratio[5] 	0
+scalar ws4_network.node[6].core_layer 	interests[6] 	181908
+scalar ws4_network.node[6].core_layer 	data[6] 	120402
+scalar ws4_network.node[6].content_store 	p_hit[6] 	0.33794555489588
+scalar ws4_network.node[6].content_store 	hits[6] 	61475
+scalar ws4_network.node[6].content_store 	misses[6] 	120433
+scalar ws4_network.node[6].content_store 	decision_yes[6] 	1187
+scalar ws4_network.node[6].content_store 	decision_no[6] 	119215
+scalar ws4_network.node[6].content_store 	decision_ratio[6] 	0.0098586402219232
+scalar ws4_network.node[7].core_layer 	interests[7] 	40495
+scalar ws4_network.node[7].core_layer 	data[7] 	31412
+scalar ws4_network.node[7].content_store 	p_hit[7] 	0.22429929620941
+scalar ws4_network.node[7].content_store 	hits[7] 	9083
+scalar ws4_network.node[7].content_store 	misses[7] 	31412
+scalar ws4_network.node[7].content_store 	decision_yes[7] 	345
+scalar ws4_network.node[7].content_store 	decision_no[7] 	31067
+scalar ws4_network.node[7].content_store 	decision_ratio[7] 	0.010983063797275
+scalar ws4_network.node[8].core_layer 	interests[8] 	120794
+scalar ws4_network.node[8].core_layer 	data[8] 	110269
+scalar ws4_network.node[8].content_store 	p_hit[8] 	0.087106975512029
+scalar ws4_network.node[8].content_store 	hits[8] 	10522
+scalar ws4_network.node[8].content_store 	misses[8] 	110272
+scalar ws4_network.node[8].content_store 	decision_yes[8] 	1146
+scalar ws4_network.node[8].content_store 	decision_no[8] 	109123
+scalar ws4_network.node[8].content_store 	decision_ratio[8] 	0.010392766779421
+scalar ws4_network.node[9].core_layer 	interests[9] 	93635
+scalar ws4_network.node[9].core_layer 	data[9] 	88950
+scalar ws4_network.node[9].content_store 	p_hit[9] 	0.050024029476157
+scalar ws4_network.node[9].content_store 	hits[9] 	4684
+scalar ws4_network.node[9].content_store 	misses[9] 	88951
+scalar ws4_network.node[9].content_store 	decision_yes[9] 	862
+scalar ws4_network.node[9].content_store 	decision_no[9] 	88088
+scalar ws4_network.node[9].content_store 	decision_ratio[9] 	0.0096908375491849
+scalar ws4_network.node[10].core_layer 	interests[10] 	88949
+scalar ws4_network.node[10].core_layer 	repo_load[10] 	85867
+scalar ws4_network.node[10].core_layer 	data[10] 	0
+scalar ws4_network.node[10].content_store 	p_hit[10] 	0.034649068567381
+scalar ws4_network.node[10].content_store 	hits[10] 	3082
+scalar ws4_network.node[10].content_store 	misses[10] 	85867
+scalar ws4_network.node[10].content_store 	decision_yes[10] 	841
+scalar ws4_network.node[10].content_store 	decision_no[10] 	85026
+scalar ws4_network.node[10].content_store 	decision_ratio[10] 	0.0097942166373578
+scalar ws4_network.node[11].core_layer 	interests[11] 	0
+scalar ws4_network.node[11].core_layer 	data[11] 	0
+scalar ws4_network.node[11].content_store 	p_hit[11] 	-nan
+scalar ws4_network.node[11].content_store 	hits[11] 	0
+scalar ws4_network.node[11].content_store 	misses[11] 	0
+scalar ws4_network.node[11].content_store 	decision_yes[11] 	0
+scalar ws4_network.node[11].content_store 	decision_no[11] 	0
+scalar ws4_network.node[11].content_store 	decision_ratio[11] 	0
+scalar ws4_network.node[12].core_layer 	interests[12] 	0
+scalar ws4_network.node[12].core_layer 	data[12] 	0
+scalar ws4_network.node[12].content_store 	p_hit[12] 	-nan
+scalar ws4_network.node[12].content_store 	hits[12] 	0
+scalar ws4_network.node[12].content_store 	misses[12] 	0
+scalar ws4_network.node[12].content_store 	decision_yes[12] 	0
+scalar ws4_network.node[12].content_store 	decision_no[12] 	0
+scalar ws4_network.node[12].content_store 	decision_ratio[12] 	0
+scalar ws4_network.node[13].core_layer 	interests[13] 	0
+scalar ws4_network.node[13].core_layer 	data[13] 	0
+scalar ws4_network.node[13].content_store 	p_hit[13] 	-nan
+scalar ws4_network.node[13].content_store 	hits[13] 	0
+scalar ws4_network.node[13].content_store 	misses[13] 	0
+scalar ws4_network.node[13].content_store 	decision_yes[13] 	0
+scalar ws4_network.node[13].content_store 	decision_no[13] 	0
+scalar ws4_network.node[13].content_store 	decision_ratio[13] 	0
+scalar ws4_network.node[14].core_layer 	interests[14] 	0
+scalar ws4_network.node[14].core_layer 	data[14] 	0
+scalar ws4_network.node[14].content_store 	p_hit[14] 	-nan
+scalar ws4_network.node[14].content_store 	hits[14] 	0
+scalar ws4_network.node[14].content_store 	misses[14] 	0
+scalar ws4_network.node[14].content_store 	decision_yes[14] 	0
+scalar ws4_network.node[14].content_store 	decision_no[14] 	0
+scalar ws4_network.node[14].content_store 	decision_ratio[14] 	0
+scalar ws4_network.node[15].core_layer 	interests[15] 	0
+scalar ws4_network.node[15].core_layer 	data[15] 	0
+scalar ws4_network.node[15].content_store 	p_hit[15] 	-nan
+scalar ws4_network.node[15].content_store 	hits[15] 	0
+scalar ws4_network.node[15].content_store 	misses[15] 	0
+scalar ws4_network.node[15].content_store 	decision_yes[15] 	0
+scalar ws4_network.node[15].content_store 	decision_no[15] 	0
+scalar ws4_network.node[15].content_store 	decision_ratio[15] 	0
+scalar ws4_network.node[16].core_layer 	interests[16] 	98706
+scalar ws4_network.node[16].core_layer 	repo_load[16] 	89371
+scalar ws4_network.node[16].core_layer 	data[16] 	2768
+scalar ws4_network.node[16].content_store 	p_hit[16] 	0.066530909975078
+scalar ws4_network.node[16].content_store 	hits[16] 	6567
+scalar ws4_network.node[16].content_store 	misses[16] 	92139
+scalar ws4_network.node[16].content_store 	decision_yes[16] 	919
+scalar ws4_network.node[16].content_store 	decision_no[16] 	91220
+scalar ws4_network.node[16].content_store 	decision_ratio[16] 	0.0099740609296823
+scalar ws4_network.node[17].core_layer 	interests[17] 	0
+scalar ws4_network.node[17].core_layer 	data[17] 	0
+scalar ws4_network.node[17].content_store 	p_hit[17] 	-nan
+scalar ws4_network.node[17].content_store 	hits[17] 	0
+scalar ws4_network.node[17].content_store 	misses[17] 	0
+scalar ws4_network.node[17].content_store 	decision_yes[17] 	0
+scalar ws4_network.node[17].content_store 	decision_no[17] 	0
+scalar ws4_network.node[17].content_store 	decision_ratio[17] 	0
+scalar ws4_network.node[18].core_layer 	interests[18] 	106887
+scalar ws4_network.node[18].core_layer 	repo_load[18] 	98498
+scalar ws4_network.node[18].core_layer 	data[18] 	0
+scalar ws4_network.node[18].content_store 	p_hit[18] 	0.078484754928102
+scalar ws4_network.node[18].content_store 	hits[18] 	8389
+scalar ws4_network.node[18].content_store 	misses[18] 	98498
+scalar ws4_network.node[18].content_store 	decision_yes[18] 	1036
+scalar ws4_network.node[18].content_store 	decision_no[18] 	97462
+scalar ws4_network.node[18].content_store 	decision_ratio[18] 	0.010517980060509
+scalar ws4_network.node[19].core_layer 	interests[19] 	0
+scalar ws4_network.node[19].core_layer 	data[19] 	0
+scalar ws4_network.node[19].content_store 	p_hit[19] 	-nan
+scalar ws4_network.node[19].content_store 	hits[19] 	0
+scalar ws4_network.node[19].content_store 	misses[19] 	0
+scalar ws4_network.node[19].content_store 	decision_yes[19] 	0
+scalar ws4_network.node[19].content_store 	decision_no[19] 	0
+scalar ws4_network.node[19].content_store 	decision_ratio[19] 	0
+scalar ws4_network.node[20].core_layer 	interests[20] 	182206
+scalar ws4_network.node[20].core_layer 	data[20] 	121006
+scalar ws4_network.node[20].content_store 	p_hit[20] 	0.33569147009429
+scalar ws4_network.node[20].content_store 	hits[20] 	61165
+scalar ws4_network.node[20].content_store 	misses[20] 	121041
+scalar ws4_network.node[20].content_store 	decision_yes[20] 	1180
+scalar ws4_network.node[20].content_store 	decision_no[20] 	119826
+scalar ws4_network.node[20].content_store 	decision_ratio[20] 	0.0097515825661537
+scalar ws4_network.node[21].core_layer 	interests[21] 	0
+scalar ws4_network.node[21].core_layer 	data[21] 	0
+scalar ws4_network.node[21].content_store 	p_hit[21] 	-nan
+scalar ws4_network.node[21].content_store 	hits[21] 	0
+scalar ws4_network.node[21].content_store 	misses[21] 	0
+scalar ws4_network.node[21].content_store 	decision_yes[21] 	0
+scalar ws4_network.node[21].content_store 	decision_no[21] 	0
+scalar ws4_network.node[21].content_store 	decision_ratio[21] 	0
+scalar ws4_network.client[2] 	hdistance[2] 	1.945693508573
+scalar ws4_network.client[2] 	downloads[2] 	179868
+scalar ws4_network.client[2] 	avg_time[2] 	0.007470307993
+scalar ws4_network.client[2] 	interests_sent[2] 	179904
+scalar ws4_network.client[6] 	hdistance[6] 	2.1241383907
+scalar ws4_network.client[6] 	downloads[6] 	180041
+scalar ws4_network.client[6] 	avg_time[6] 	0.008385586444
+scalar ws4_network.client[6] 	interests_sent[6] 	180072
+scalar ws4_network.client[20] 	hdistance[20] 	1.7662307358971
+scalar ws4_network.client[20] 	downloads[20] 	179998
+scalar ws4_network.client[20] 	avg_time[20] 	0.006493316111
+scalar ws4_network.client[20] 	interests_sent[20] 	180033

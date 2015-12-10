@@ -1,0 +1,85 @@
+version 2
+run General-0-20150724-11:34:01-28310
+attr C 411765
+attr D lce
+attr F spr
+attr R lru
+attr a 1
+attr brates 1
+attr configname General
+attr ctlg 1e8
+attr datetime 20150724-11:34:01
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=lce, $R=lru, $C=411765, $window=60, $variance=0.05, $mytime=180000"
+attr iterationvars2 "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=lce, $R=lru, $C=411765, $window=60, $variance=0.05, $mytime=180000, $repetition=0"
+attr lambda 100
+attr measurement "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=lce, $R=lru, $C=411765, $window=60, $variance=0.05, $mytime=180000"
+attr mytime 180000
+attr net barabasi_100nodes
+attr network networks.${net=barabasi_100nodes}_network
+attr processid 28310
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	C 	411765
+scalar . 	a 	1
+scalar . 	brates 	1
+scalar . 	ctlg 	1e8
+scalar . 	lambda 	100
+scalar . 	mytime 	180000
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar barabasi_100nodes_network.content_distribution 	repo-0 	37
+scalar barabasi_100nodes_network.content_distribution 	repo-1 	12
+scalar barabasi_100nodes_network.content_distribution 	repo-2 	72
+scalar barabasi_100nodes_network.content_distribution 	repo-3 	9
+scalar barabasi_100nodes_network.content_distribution 	repo-4 	75
+scalar barabasi_100nodes_network.content_distribution 	repo-5 	5
+scalar barabasi_100nodes_network.content_distribution 	repo-6 	79
+scalar barabasi_100nodes_network.content_distribution 	repo-7 	64
+scalar barabasi_100nodes_network.content_distribution 	repo-8 	16
+scalar barabasi_100nodes_network.content_distribution 	repo-9 	1
+scalar barabasi_100nodes_network.content_distribution 	repo-10 	76
+scalar barabasi_100nodes_network.content_distribution 	client-0 	71
+scalar barabasi_100nodes_network.content_distribution 	client-1 	6
+scalar barabasi_100nodes_network.content_distribution 	client-2 	25
+scalar barabasi_100nodes_network.content_distribution 	client-3 	50
+scalar barabasi_100nodes_network.content_distribution 	client-4 	20
+scalar barabasi_100nodes_network.content_distribution 	client-5 	18
+scalar barabasi_100nodes_network.content_distribution 	client-6 	84
+scalar barabasi_100nodes_network.content_distribution 	client-7 	11
+scalar barabasi_100nodes_network.content_distribution 	client-8 	28
+scalar barabasi_100nodes_network.content_distribution 	client-9 	29
+scalar barabasi_100nodes_network.content_distribution 	client-10 	14
+scalar barabasi_100nodes_network.content_distribution 	repo-0_card 	9095977
+scalar barabasi_100nodes_network.content_distribution 	repo-0_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-1_card 	9088624
+scalar barabasi_100nodes_network.content_distribution 	repo-1_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-2_card 	9091685
+scalar barabasi_100nodes_network.content_distribution 	repo-2_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-3_card 	9088508
+scalar barabasi_100nodes_network.content_distribution 	repo-3_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-4_card 	9088372
+scalar barabasi_100nodes_network.content_distribution 	repo-4_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-5_card 	9091948
+scalar barabasi_100nodes_network.content_distribution 	repo-5_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-6_card 	9088124
+scalar barabasi_100nodes_network.content_distribution 	repo-6_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-7_card 	9091126
+scalar barabasi_100nodes_network.content_distribution 	repo-7_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-8_card 	9090919
+scalar barabasi_100nodes_network.content_distribution 	repo-8_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-9_card 	9093205
+scalar barabasi_100nodes_network.content_distribution 	repo-9_price 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-10_card 	9091512
+scalar barabasi_100nodes_network.content_distribution 	repo-10_price 	0

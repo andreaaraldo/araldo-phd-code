@@ -1,0 +1,262 @@
+version 2
+run General-6-20141030-18:28:31-30770
+attr D fix0.01
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20141030-18:28:31
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$rep=10, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr iterationvars2 "$rep=10, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0, $repetition=0"
+attr kappa 1
+attr lambda 100
+attr measurement "$rep=10, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr mytime 1800
+attr network networks.ws${rep}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 30770
+attr rep 10
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 6
+attr seedset 10
+attr ttl 10
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	kappa 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	10
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar ws10_network.content_distribution 	repo-0 	18
+scalar ws10_network.content_distribution 	repo-1 	16
+scalar ws10_network.content_distribution 	repo-2 	2
+scalar ws10_network.content_distribution 	client-0 	6
+scalar ws10_network.content_distribution 	client-1 	10
+scalar ws10_network.content_distribution 	client-2 	14
+scalar ws10_network.content_distribution 	repo-0_card 	33052
+scalar ws10_network.content_distribution 	repo-0_price 	1
+scalar ws10_network.content_distribution 	repo-1_card 	33537
+scalar ws10_network.content_distribution 	repo-1_price 	0
+scalar ws10_network.content_distribution 	repo-2_card 	33411
+scalar ws10_network.content_distribution 	repo-2_price 	10
+scalar ws10_network.statistics 	repo_popularity[0] 	0.34236468954978
+scalar ws10_network.statistics 	repo_popularity[1] 	0.29818826856529
+scalar ws10_network.statistics 	repo_popularity[2] 	0.35944704188494
+scalar ws10_network.statistics 	stabilization_time 	36060
+scalar ws10_network.statistics 	p_hit 	0.20401935133611
+scalar ws10_network.statistics 	interests 	58356.318181818
+scalar ws10_network.statistics 	data 	33794.590909091
+scalar ws10_network.statistics 	hdistance 	1.8916559534148
+scalar ws10_network.statistics 	avg_time 	0.007129690094
+scalar ws10_network.statistics 	downloads 	540248
+scalar ws10_network.statistics 	total_cost 	962807
+scalar ws10_network.statistics 	total_replicas 	100000
+scalar ws10_network.statistics 	inner_hit 	0.48484214656972
+scalar ws10_network.statistics 	interests_sent 	540359
+scalar ws10_network.node[0].core_layer 	interests[0] 	105578
+scalar ws10_network.node[0].core_layer 	data[0] 	99911
+scalar ws10_network.node[0].core_layer 	repo_int[0] 	278313
+scalar ws10_network.node[0].content_store 	p_hit[0] 	0.053675955217943
+scalar ws10_network.node[0].content_store 	hits[0] 	5667
+scalar ws10_network.node[0].content_store 	misses[0] 	99911
+scalar ws10_network.node[0].content_store 	decision_yes[0] 	1039
+scalar ws10_network.node[0].content_store 	decision_no[0] 	98872
+scalar ws10_network.node[0].content_store 	decision_ratio[0] 	0.01039925533725
+scalar ws10_network.node[1].core_layer 	interests[1] 	81094
+scalar ws10_network.node[1].core_layer 	data[1] 	73295
+scalar ws10_network.node[1].content_store 	p_hit[1] 	0.096184674575184
+scalar ws10_network.node[1].content_store 	hits[1] 	7800
+scalar ws10_network.node[1].content_store 	misses[1] 	73294
+scalar ws10_network.node[1].content_store 	decision_yes[1] 	725
+scalar ws10_network.node[1].content_store 	decision_no[1] 	72570
+scalar ws10_network.node[1].content_store 	decision_ratio[1] 	0.0098915342110649
+scalar ws10_network.node[2].core_layer 	interests[2] 	91190
+scalar ws10_network.node[2].core_layer 	repo_load[2] 	87749
+scalar ws10_network.node[2].core_layer 	data[2] 	0
+scalar ws10_network.node[2].content_store 	p_hit[2] 	0.037734400701831
+scalar ws10_network.node[2].content_store 	hits[2] 	3441
+scalar ws10_network.node[2].content_store 	misses[2] 	87749
+scalar ws10_network.node[2].content_store 	decision_yes[2] 	899
+scalar ws10_network.node[2].content_store 	decision_no[2] 	86850
+scalar ws10_network.node[2].content_store 	decision_ratio[2] 	0.010245130998644
+scalar ws10_network.node[3].core_layer 	interests[3] 	45347
+scalar ws10_network.node[3].core_layer 	data[3] 	35890
+scalar ws10_network.node[3].content_store 	p_hit[3] 	0.2085474232033
+scalar ws10_network.node[3].content_store 	hits[3] 	9457
+scalar ws10_network.node[3].content_store 	misses[3] 	35890
+scalar ws10_network.node[3].content_store 	decision_yes[3] 	349
+scalar ws10_network.node[3].content_store 	decision_no[3] 	35541
+scalar ws10_network.node[3].content_store 	decision_ratio[3] 	0.0097241571468376
+scalar ws10_network.node[4].core_layer 	interests[4] 	0
+scalar ws10_network.node[4].core_layer 	data[4] 	0
+scalar ws10_network.node[4].content_store 	p_hit[4] 	-nan
+scalar ws10_network.node[4].content_store 	hits[4] 	0
+scalar ws10_network.node[4].content_store 	misses[4] 	0
+scalar ws10_network.node[4].content_store 	decision_yes[4] 	0
+scalar ws10_network.node[4].content_store 	decision_no[4] 	0
+scalar ws10_network.node[4].content_store 	decision_ratio[4] 	0
+scalar ws10_network.node[5].core_layer 	interests[5] 	0
+scalar ws10_network.node[5].core_layer 	data[5] 	0
+scalar ws10_network.node[5].content_store 	p_hit[5] 	-nan
+scalar ws10_network.node[5].content_store 	hits[5] 	0
+scalar ws10_network.node[5].content_store 	misses[5] 	0
+scalar ws10_network.node[5].content_store 	decision_yes[5] 	0
+scalar ws10_network.node[5].content_store 	decision_no[5] 	0
+scalar ws10_network.node[5].content_store 	decision_ratio[5] 	0
+scalar ws10_network.node[6].core_layer 	interests[6] 	187707
+scalar ws10_network.node[6].core_layer 	data[6] 	123384
+scalar ws10_network.node[6].content_store 	p_hit[6] 	0.34246991321581
+scalar ws10_network.node[6].content_store 	hits[6] 	64284
+scalar ws10_network.node[6].content_store 	misses[6] 	123423
+scalar ws10_network.node[6].content_store 	decision_yes[6] 	1239
+scalar ws10_network.node[6].content_store 	decision_no[6] 	122145
+scalar ws10_network.node[6].content_store 	decision_ratio[6] 	0.01004182065746
+scalar ws10_network.node[7].core_layer 	interests[7] 	28824
+scalar ws10_network.node[7].core_layer 	data[7] 	5927
+scalar ws10_network.node[7].content_store 	p_hit[7] 	0.79437274493478
+scalar ws10_network.node[7].content_store 	hits[7] 	22897
+scalar ws10_network.node[7].content_store 	misses[7] 	5927
+scalar ws10_network.node[7].content_store 	decision_yes[7] 	49
+scalar ws10_network.node[7].content_store 	decision_no[7] 	5878
+scalar ws10_network.node[7].content_store 	decision_ratio[7] 	0.0082672515606546
+scalar ws10_network.node[8].core_layer 	interests[8] 	0
+scalar ws10_network.node[8].core_layer 	data[8] 	0
+scalar ws10_network.node[8].content_store 	p_hit[8] 	-nan
+scalar ws10_network.node[8].content_store 	hits[8] 	0
+scalar ws10_network.node[8].content_store 	misses[8] 	0
+scalar ws10_network.node[8].content_store 	decision_yes[8] 	0
+scalar ws10_network.node[8].content_store 	decision_no[8] 	0
+scalar ws10_network.node[8].content_store 	decision_ratio[8] 	0
+scalar ws10_network.node[9].core_layer 	interests[9] 	0
+scalar ws10_network.node[9].core_layer 	data[9] 	0
+scalar ws10_network.node[9].content_store 	p_hit[9] 	-nan
+scalar ws10_network.node[9].content_store 	hits[9] 	0
+scalar ws10_network.node[9].content_store 	misses[9] 	0
+scalar ws10_network.node[9].content_store 	decision_yes[9] 	0
+scalar ws10_network.node[9].content_store 	decision_no[9] 	0
+scalar ws10_network.node[9].content_store 	decision_ratio[9] 	0
+scalar ws10_network.node[10].core_layer 	interests[10] 	183721
+scalar ws10_network.node[10].core_layer 	data[10] 	122801
+scalar ws10_network.node[10].content_store 	p_hit[10] 	0.33133936784581
+scalar ws10_network.node[10].content_store 	hits[10] 	60874
+scalar ws10_network.node[10].content_store 	misses[10] 	122847
+scalar ws10_network.node[10].content_store 	decision_yes[10] 	1205
+scalar ws10_network.node[10].content_store 	decision_no[10] 	121596
+scalar ws10_network.node[10].content_store 	decision_ratio[10] 	0.009812623675703
+scalar ws10_network.node[11].core_layer 	interests[11] 	0
+scalar ws10_network.node[11].core_layer 	data[11] 	0
+scalar ws10_network.node[11].content_store 	p_hit[11] 	-nan
+scalar ws10_network.node[11].content_store 	hits[11] 	0
+scalar ws10_network.node[11].content_store 	misses[11] 	0
+scalar ws10_network.node[11].content_store 	decision_yes[11] 	0
+scalar ws10_network.node[11].content_store 	decision_no[11] 	0
+scalar ws10_network.node[11].content_store 	decision_ratio[11] 	0
+scalar ws10_network.node[12].core_layer 	interests[12] 	66179
+scalar ws10_network.node[12].core_layer 	data[12] 	60018
+scalar ws10_network.node[12].content_store 	p_hit[12] 	0.093065776152556
+scalar ws10_network.node[12].content_store 	hits[12] 	6159
+scalar ws10_network.node[12].content_store 	misses[12] 	60020
+scalar ws10_network.node[12].content_store 	decision_yes[12] 	618
+scalar ws10_network.node[12].content_store 	decision_no[12] 	59400
+scalar ws10_network.node[12].content_store 	decision_ratio[12] 	0.010296910926722
+scalar ws10_network.node[13].core_layer 	interests[13] 	0
+scalar ws10_network.node[13].core_layer 	data[13] 	0
+scalar ws10_network.node[13].content_store 	p_hit[13] 	-nan
+scalar ws10_network.node[13].content_store 	hits[13] 	0
+scalar ws10_network.node[13].content_store 	misses[13] 	0
+scalar ws10_network.node[13].content_store 	decision_yes[13] 	0
+scalar ws10_network.node[13].content_store 	decision_no[13] 	0
+scalar ws10_network.node[13].content_store 	decision_ratio[13] 	0
+scalar ws10_network.node[14].core_layer 	interests[14] 	182201
+scalar ws10_network.node[14].core_layer 	data[14] 	121189
+scalar ws10_network.node[14].content_store 	p_hit[14] 	0.3346908085027
+scalar ws10_network.node[14].content_store 	hits[14] 	60981
+scalar ws10_network.node[14].content_store 	misses[14] 	121220
+scalar ws10_network.node[14].content_store 	decision_yes[14] 	1229
+scalar ws10_network.node[14].content_store 	decision_no[14] 	119960
+scalar ws10_network.node[14].content_store 	decision_ratio[14] 	0.01014118443093
+scalar ws10_network.node[15].core_layer 	interests[15] 	0
+scalar ws10_network.node[15].core_layer 	data[15] 	0
+scalar ws10_network.node[15].content_store 	p_hit[15] 	-nan
+scalar ws10_network.node[15].content_store 	hits[15] 	0
+scalar ws10_network.node[15].content_store 	misses[15] 	0
+scalar ws10_network.node[15].content_store 	decision_yes[15] 	0
+scalar ws10_network.node[15].content_store 	decision_no[15] 	0
+scalar ws10_network.node[15].content_store 	decision_ratio[15] 	0
+scalar ws10_network.node[16].core_layer 	interests[16] 	190952
+scalar ws10_network.node[16].core_layer 	repo_load[16] 	105247
+scalar ws10_network.node[16].core_layer 	data[16] 	72114
+scalar ws10_network.node[16].content_store 	p_hit[16] 	0.071174954962504
+scalar ws10_network.node[16].content_store 	hits[16] 	13591
+scalar ws10_network.node[16].content_store 	misses[16] 	177361
+scalar ws10_network.node[16].content_store 	decision_yes[16] 	1755
+scalar ws10_network.node[16].content_store 	decision_no[16] 	175606
+scalar ws10_network.node[16].content_store 	decision_ratio[16] 	0.0098950727612045
+scalar ws10_network.node[17].core_layer 	interests[17] 	0
+scalar ws10_network.node[17].core_layer 	data[17] 	0
+scalar ws10_network.node[17].content_store 	p_hit[17] 	-nan
+scalar ws10_network.node[17].content_store 	hits[17] 	0
+scalar ws10_network.node[17].content_store 	misses[17] 	0
+scalar ws10_network.node[17].content_store 	decision_yes[17] 	0
+scalar ws10_network.node[17].content_store 	decision_no[17] 	0
+scalar ws10_network.node[17].content_store 	decision_ratio[17] 	0
+scalar ws10_network.node[18].core_layer 	interests[18] 	88970
+scalar ws10_network.node[18].core_layer 	repo_load[18] 	85317
+scalar ws10_network.node[18].core_layer 	data[18] 	0
+scalar ws10_network.node[18].content_store 	p_hit[18] 	0.041058783859728
+scalar ws10_network.node[18].content_store 	hits[18] 	3653
+scalar ws10_network.node[18].content_store 	misses[18] 	85317
+scalar ws10_network.node[18].content_store 	decision_yes[18] 	811
+scalar ws10_network.node[18].content_store 	decision_no[18] 	84506
+scalar ws10_network.node[18].content_store 	decision_ratio[18] 	0.0095057257053108
+scalar ws10_network.node[19].core_layer 	interests[19] 	0
+scalar ws10_network.node[19].core_layer 	data[19] 	0
+scalar ws10_network.node[19].content_store 	p_hit[19] 	-nan
+scalar ws10_network.node[19].content_store 	hits[19] 	0
+scalar ws10_network.node[19].content_store 	misses[19] 	0
+scalar ws10_network.node[19].content_store 	decision_yes[19] 	0
+scalar ws10_network.node[19].content_store 	decision_no[19] 	0
+scalar ws10_network.node[19].content_store 	decision_ratio[19] 	0
+scalar ws10_network.node[20].core_layer 	interests[20] 	32076
+scalar ws10_network.node[20].core_layer 	data[20] 	28952
+scalar ws10_network.node[20].content_store 	p_hit[20] 	0.097393689986283
+scalar ws10_network.node[20].content_store 	hits[20] 	3124
+scalar ws10_network.node[20].content_store 	misses[20] 	28952
+scalar ws10_network.node[20].content_store 	decision_yes[20] 	278
+scalar ws10_network.node[20].content_store 	decision_no[20] 	28674
+scalar ws10_network.node[20].content_store 	decision_ratio[20] 	0.0096021000276319
+scalar ws10_network.node[21].core_layer 	interests[21] 	0
+scalar ws10_network.node[21].core_layer 	data[21] 	0
+scalar ws10_network.node[21].content_store 	p_hit[21] 	-nan
+scalar ws10_network.node[21].content_store 	hits[21] 	0
+scalar ws10_network.node[21].content_store 	misses[21] 	0
+scalar ws10_network.node[21].content_store 	decision_yes[21] 	0
+scalar ws10_network.node[21].content_store 	decision_no[21] 	0
+scalar ws10_network.node[21].content_store 	decision_ratio[21] 	0
+scalar ws10_network.client[6] 	hdistance[6] 	1.9315321942466
+scalar ws10_network.client[6] 	downloads[6] 	179442
+scalar ws10_network.client[6] 	avg_time[6] 	0.007322741536
+scalar ws10_network.client[6] 	interests_sent[6] 	179478
+scalar ws10_network.client[10] 	hdistance[10] 	2.1281255723856
+scalar ws10_network.client[10] 	downloads[10] 	180167
+scalar ws10_network.client[10] 	avg_time[10] 	0.00844051936
+scalar ws10_network.client[10] 	interests_sent[10] 	180211
+scalar ws10_network.client[14] 	hdistance[14] 	1.6153100936121
+scalar ws10_network.client[14] 	downloads[14] 	180639
+scalar ws10_network.client[14] 	avg_time[14] 	0.005625809388
+scalar ws10_network.client[14] 	interests_sent[14] 	180670

@@ -1,0 +1,312 @@
+version 2
+run General-2-20150720-20:33:06-23876
+attr C 1e6
+attr D lce
+attr F spr
+attr R lru_repr
+attr a 1
+attr brates 0.3_0.7_1.5_2.5_3.5
+attr configname General
+attr ctlg 1e8
+attr datetime 20150720-20:33:06
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=abilene_nodelay, $rep=1, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000"
+attr iterationvars2 "$net=abilene_nodelay, $rep=1, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000, $repetition=0"
+attr lambda 100
+attr measurement "$net=abilene_nodelay, $rep=1, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000"
+attr mytime 180000
+attr net abilene_nodelay
+attr network networks.${net=abilene_nodelay}_network
+attr processid 23876
+attr rep 1
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 2
+attr seedset 1
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	C 	1e6
+scalar . 	a 	1
+scalar . 	ctlg 	1e8
+scalar . 	lambda 	100
+scalar . 	mytime 	180000
+scalar . 	rep 	1
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar abilene_nodelay_network.content_distribution 	repo-0 	10
+scalar abilene_nodelay_network.content_distribution 	repo-1 	7
+scalar abilene_nodelay_network.content_distribution 	repo-2 	5
+scalar abilene_nodelay_network.content_distribution 	repo-3 	1
+scalar abilene_nodelay_network.content_distribution 	repo-4 	8
+scalar abilene_nodelay_network.content_distribution 	repo-5 	2
+scalar abilene_nodelay_network.content_distribution 	repo-6 	9
+scalar abilene_nodelay_network.content_distribution 	repo-7 	4
+scalar abilene_nodelay_network.content_distribution 	repo-8 	6
+scalar abilene_nodelay_network.content_distribution 	repo-9 	3
+scalar abilene_nodelay_network.content_distribution 	repo-10 	0
+scalar abilene_nodelay_network.content_distribution 	client-0 	7
+scalar abilene_nodelay_network.content_distribution 	client-1 	5
+scalar abilene_nodelay_network.content_distribution 	client-2 	9
+scalar abilene_nodelay_network.content_distribution 	client-3 	6
+scalar abilene_nodelay_network.content_distribution 	client-4 	8
+scalar abilene_nodelay_network.content_distribution 	client-5 	2
+scalar abilene_nodelay_network.content_distribution 	client-6 	1
+scalar abilene_nodelay_network.content_distribution 	client-7 	10
+scalar abilene_nodelay_network.content_distribution 	client-8 	0
+scalar abilene_nodelay_network.content_distribution 	client-9 	3
+scalar abilene_nodelay_network.content_distribution 	client-10 	4
+scalar abilene_nodelay_network.content_distribution 	repo-0_card 	9091588
+scalar abilene_nodelay_network.content_distribution 	repo-0_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-1_card 	9095721
+scalar abilene_nodelay_network.content_distribution 	repo-1_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-2_card 	9094056
+scalar abilene_nodelay_network.content_distribution 	repo-2_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-3_card 	9087421
+scalar abilene_nodelay_network.content_distribution 	repo-3_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-4_card 	9090280
+scalar abilene_nodelay_network.content_distribution 	repo-4_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-5_card 	9089080
+scalar abilene_nodelay_network.content_distribution 	repo-5_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-6_card 	9091836
+scalar abilene_nodelay_network.content_distribution 	repo-6_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-7_card 	9094026
+scalar abilene_nodelay_network.content_distribution 	repo-7_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-8_card 	9090973
+scalar abilene_nodelay_network.content_distribution 	repo-8_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-9_card 	9087838
+scalar abilene_nodelay_network.content_distribution 	repo-9_price 	0
+scalar abilene_nodelay_network.content_distribution 	repo-10_card 	9087181
+scalar abilene_nodelay_network.content_distribution 	repo-10_price 	0
+scalar abilene_nodelay_network.statistics 	stabilization_time 	36060
+scalar abilene_nodelay_network.statistics 	p_hit 	0.43104436584329
+scalar abilene_nodelay_network.statistics 	interests 	32605503
+scalar abilene_nodelay_network.statistics 	data 	12010985.727273
+scalar abilene_nodelay_network.statistics 	hdistance 	0.7315975151942
+scalar abilene_nodelay_network.statistics 	avg_time 	0
+scalar abilene_nodelay_network.statistics 	downloads 	198000153
+scalar abilene_nodelay_network.statistics 	total_cost 	0
+scalar abilene_nodelay_network.statistics 	total_replicas 	100000000
+scalar abilene_nodelay_network.statistics 	"representations_downloaded 0.322901:0.0263775:0.0174265:0.0134915:0.619804:" 	0
+scalar abilene_nodelay_network.statistics 	"slots_per_representation 100:233:500:833:1167:" 	0
+scalar abilene_nodelay_network.statistics 	inner_hit 	0.63666145247878
+scalar abilene_nodelay_network.statistics 	execution_time 	8361
+scalar abilene_nodelay_network.node[0].core_layer 	interests[0] 	23916207
+scalar abilene_nodelay_network.node[0].core_layer 	repo_load[0] 	6104800
+scalar abilene_nodelay_network.node[0].core_layer 	data[0] 	5225641
+scalar abilene_nodelay_network.node[0].core_layer 	slots_sent[face$o[1]->client[0]] 	14254739094
+scalar abilene_nodelay_network.node[0].core_layer 	slots_sent[face$o[2]->node[1]] 	955905249
+scalar abilene_nodelay_network.node[0].core_layer 	slots_sent[face$o[3]->node[10]] 	264207463
+scalar abilene_nodelay_network.node[0].content_store 	p_hit[0] 	0.52624423262435
+scalar abilene_nodelay_network.node[0].content_store 	hits[0] 	12585766
+scalar abilene_nodelay_network.node[0].content_store 	misses[0] 	11330441
+scalar abilene_nodelay_network.node[0].content_store 	decision_yes[0] 	5225641
+scalar abilene_nodelay_network.node[0].content_store 	decision_no[0] 	6104800
+scalar abilene_nodelay_network.node[0].content_store 	decision_ratio[0] 	0.46120367247841
+scalar abilene_nodelay_network.node[0].content_store 	"representation_breakdown[0] 3587140:466084:172798:102749:452184:" 	0
+scalar abilene_nodelay_network.node[0].proactive_component 	hdistance[0].proactive_component 	2.210290651901
+scalar abilene_nodelay_network.node[0].proactive_component 	downloads[0].proactive_component 	1539436
+scalar abilene_nodelay_network.node[0].proactive_component 	avg_time[0].proactive_component 	0
+scalar abilene_nodelay_network.node[1].core_layer 	interests[1] 	37018003
+scalar abilene_nodelay_network.node[1].core_layer 	repo_load[1] 	7343323
+scalar abilene_nodelay_network.node[1].core_layer 	data[1] 	15625367
+scalar abilene_nodelay_network.node[1].core_layer 	slots_sent[face$o[1]->client[1]] 	13304446588
+scalar abilene_nodelay_network.node[1].core_layer 	slots_sent[face$o[2]->node[0]] 	1076778360
+scalar abilene_nodelay_network.node[1].core_layer 	slots_sent[face$o[3]->node[10]] 	850337534
+scalar abilene_nodelay_network.node[1].core_layer 	slots_sent[face$o[4]->node[2]] 	2282612556
+scalar abilene_nodelay_network.node[1].content_store 	p_hit[1] 	0.37952649687775
+scalar abilene_nodelay_network.node[1].content_store 	hits[1] 	14049313
+scalar abilene_nodelay_network.node[1].content_store 	misses[1] 	22968690
+scalar abilene_nodelay_network.node[1].content_store 	decision_yes[1] 	15625367
+scalar abilene_nodelay_network.node[1].content_store 	decision_no[1] 	7343323
+scalar abilene_nodelay_network.node[1].content_store 	decision_ratio[1] 	0.68028986415856
+scalar abilene_nodelay_network.node[1].content_store 	"representation_breakdown[1] 3116450:558683:240075:155045:407876:" 	0
+scalar abilene_nodelay_network.node[1].proactive_component 	hdistance[1].proactive_component 	2.1166477031094
+scalar abilene_nodelay_network.node[1].proactive_component 	downloads[1].proactive_component 	3825759
+scalar abilene_nodelay_network.node[1].proactive_component 	avg_time[1].proactive_component 	0
+scalar abilene_nodelay_network.node[2].core_layer 	interests[2] 	46471021
+scalar abilene_nodelay_network.node[2].core_layer 	repo_load[2] 	6813535
+scalar abilene_nodelay_network.node[2].core_layer 	data[2] 	23426198
+scalar abilene_nodelay_network.node[2].core_layer 	slots_sent[face$o[1]->client[2]] 	13983892506
+scalar abilene_nodelay_network.node[2].core_layer 	slots_sent[face$o[2]->node[1]] 	2434751899
+scalar abilene_nodelay_network.node[2].core_layer 	slots_sent[face$o[3]->node[3]] 	2935967814
+scalar abilene_nodelay_network.node[2].core_layer 	slots_sent[face$o[4]->node[8]] 	1178936460
+scalar abilene_nodelay_network.node[2].content_store 	p_hit[2] 	0.34927762830948
+scalar abilene_nodelay_network.node[2].content_store 	hits[2] 	16231288
+scalar abilene_nodelay_network.node[2].content_store 	misses[2] 	30239733
+scalar abilene_nodelay_network.node[2].content_store 	decision_yes[2] 	23426198
+scalar abilene_nodelay_network.node[2].content_store 	decision_no[2] 	6813535
+scalar abilene_nodelay_network.node[2].content_store 	decision_ratio[2] 	0.77468269974474
+scalar abilene_nodelay_network.node[2].content_store 	"representation_breakdown[2] 3141257:563869:247447:162787:396030:" 	0
+scalar abilene_nodelay_network.node[2].proactive_component 	hdistance[2].proactive_component 	2.0800147865179
+scalar abilene_nodelay_network.node[2].proactive_component 	downloads[2].proactive_component 	5394103
+scalar abilene_nodelay_network.node[2].proactive_component 	avg_time[2].proactive_component 	0
+scalar abilene_nodelay_network.node[3].core_layer 	interests[3] 	44188646
+scalar abilene_nodelay_network.node[3].core_layer 	repo_load[3] 	6846135
+scalar abilene_nodelay_network.node[3].core_layer 	data[3] 	21497830
+scalar abilene_nodelay_network.node[3].core_layer 	slots_sent[face$o[1]->client[3]] 	13909131827
+scalar abilene_nodelay_network.node[3].core_layer 	slots_sent[face$o[2]->node[2]] 	2901933005
+scalar abilene_nodelay_network.node[3].core_layer 	slots_sent[face$o[3]->node[4]] 	1792148152
+scalar abilene_nodelay_network.node[3].core_layer 	slots_sent[face$o[4]->node[7]] 	1288977066
+scalar abilene_nodelay_network.node[3].content_store 	p_hit[3] 	0.35856905414119
+scalar abilene_nodelay_network.node[3].content_store 	hits[3] 	15844681
+scalar abilene_nodelay_network.node[3].content_store 	misses[3] 	28343965
+scalar abilene_nodelay_network.node[3].content_store 	decision_yes[3] 	21497830
+scalar abilene_nodelay_network.node[3].content_store 	decision_no[3] 	6846135
+scalar abilene_nodelay_network.node[3].content_store 	decision_ratio[3] 	0.75846233933749
+scalar abilene_nodelay_network.node[3].content_store 	"representation_breakdown[3] 3129757:553699:243495:160992:402021:" 	0
+scalar abilene_nodelay_network.node[3].proactive_component 	hdistance[3].proactive_component 	2.0686214364539
+scalar abilene_nodelay_network.node[3].proactive_component 	downloads[3].proactive_component 	5072686
+scalar abilene_nodelay_network.node[3].proactive_component 	avg_time[3].proactive_component 	0
+scalar abilene_nodelay_network.node[4].core_layer 	interests[4] 	29965621
+scalar abilene_nodelay_network.node[4].core_layer 	repo_load[4] 	6324503
+scalar abilene_nodelay_network.node[4].core_layer 	data[4] 	9896519
+scalar abilene_nodelay_network.node[4].core_layer 	slots_sent[face$o[1]->client[4]] 	14258579626
+scalar abilene_nodelay_network.node[4].core_layer 	slots_sent[face$o[2]->node[3]] 	1649158696
+scalar abilene_nodelay_network.node[4].core_layer 	slots_sent[face$o[3]->node[5]] 	954207149
+scalar abilene_nodelay_network.node[4].content_store 	p_hit[4] 	0.45867893076536
+scalar abilene_nodelay_network.node[4].content_store 	hits[4] 	13744599
+scalar abilene_nodelay_network.node[4].content_store 	misses[4] 	16221022
+scalar abilene_nodelay_network.node[4].content_store 	decision_yes[4] 	9896519
+scalar abilene_nodelay_network.node[4].content_store 	decision_no[4] 	6324503
+scalar abilene_nodelay_network.node[4].content_store 	decision_ratio[4] 	0.61010452978857
+scalar abilene_nodelay_network.node[4].content_store 	"representation_breakdown[4] 2992257:504618:225472:146769:441477:" 	0
+scalar abilene_nodelay_network.node[4].proactive_component 	hdistance[4].proactive_component 	2.1377273420876
+scalar abilene_nodelay_network.node[4].proactive_component 	downloads[4].proactive_component 	2634466
+scalar abilene_nodelay_network.node[4].proactive_component 	avg_time[4].proactive_component 	0
+scalar abilene_nodelay_network.node[5].core_layer 	interests[5] 	25307295
+scalar abilene_nodelay_network.node[5].core_layer 	repo_load[5] 	5864279
+scalar abilene_nodelay_network.node[5].core_layer 	data[5] 	6276106
+scalar abilene_nodelay_network.node[5].core_layer 	slots_sent[face$o[1]->client[5]] 	14460380263
+scalar abilene_nodelay_network.node[5].core_layer 	slots_sent[face$o[2]->node[4]] 	880987629
+scalar abilene_nodelay_network.node[5].core_layer 	slots_sent[face$o[3]->node[6]] 	637792361
+scalar abilene_nodelay_network.node[5].content_store 	p_hit[5] 	0.52028120745421
+scalar abilene_nodelay_network.node[5].content_store 	hits[5] 	13166910
+scalar abilene_nodelay_network.node[5].content_store 	misses[5] 	12140385
+scalar abilene_nodelay_network.node[5].content_store 	decision_yes[5] 	6276106
+scalar abilene_nodelay_network.node[5].content_store 	decision_no[5] 	5864279
+scalar abilene_nodelay_network.node[5].content_store 	decision_ratio[5] 	0.51696103542021
+scalar abilene_nodelay_network.node[5].content_store 	"representation_breakdown[5] 3415462:525170:199431:114095:435589:" 	0
+scalar abilene_nodelay_network.node[5].proactive_component 	hdistance[5].proactive_component 	2.0908739455875
+scalar abilene_nodelay_network.node[5].proactive_component 	downloads[5].proactive_component 	1932237
+scalar abilene_nodelay_network.node[5].proactive_component 	avg_time[5].proactive_component 	0
+scalar abilene_nodelay_network.node[6].core_layer 	interests[6] 	27617234
+scalar abilene_nodelay_network.node[6].core_layer 	repo_load[6] 	6691419
+scalar abilene_nodelay_network.node[6].core_layer 	data[6] 	8137765
+scalar abilene_nodelay_network.node[6].core_layer 	slots_sent[face$o[1]->client[6]] 	13613447385
+scalar abilene_nodelay_network.node[6].core_layer 	slots_sent[face$o[2]->node[5]] 	674042169
+scalar abilene_nodelay_network.node[6].core_layer 	slots_sent[face$o[3]->node[7]] 	1367998286
+scalar abilene_nodelay_network.node[6].content_store 	p_hit[6] 	0.463046009604
+scalar abilene_nodelay_network.node[6].content_store 	hits[6] 	12788050
+scalar abilene_nodelay_network.node[6].content_store 	misses[6] 	14829184
+scalar abilene_nodelay_network.node[6].content_store 	decision_yes[6] 	8137765
+scalar abilene_nodelay_network.node[6].content_store 	decision_no[6] 	6691419
+scalar abilene_nodelay_network.node[6].content_store 	decision_ratio[6] 	0.54876687753015
+scalar abilene_nodelay_network.node[6].content_store 	"representation_breakdown[6] 3070949:533710:227722:138839:433621:" 	0
+scalar abilene_nodelay_network.node[6].proactive_component 	hdistance[6].proactive_component 	2.0936402448762
+scalar abilene_nodelay_network.node[6].proactive_component 	downloads[6].proactive_component 	2348125
+scalar abilene_nodelay_network.node[6].proactive_component 	avg_time[6].proactive_component 	0
+scalar abilene_nodelay_network.node[7].core_layer 	interests[7] 	35225410
+scalar abilene_nodelay_network.node[7].core_layer 	repo_load[7] 	6553388
+scalar abilene_nodelay_network.node[7].core_layer 	data[7] 	13739286
+scalar abilene_nodelay_network.node[7].core_layer 	slots_sent[face$o[1]->client[7]] 	14373453018
+scalar abilene_nodelay_network.node[7].core_layer 	slots_sent[face$o[2]->node[3]] 	1210520871
+scalar abilene_nodelay_network.node[7].core_layer 	slots_sent[face$o[3]->node[6]] 	1524418424
+scalar abilene_nodelay_network.node[7].core_layer 	slots_sent[face$o[4]->node[8]] 	1078717095
+scalar abilene_nodelay_network.node[7].content_store 	p_hit[7] 	0.42391943770136
+scalar abilene_nodelay_network.node[7].content_store 	hits[7] 	14932736
+scalar abilene_nodelay_network.node[7].content_store 	misses[7] 	20292674
+scalar abilene_nodelay_network.node[7].content_store 	decision_yes[7] 	13739286
+scalar abilene_nodelay_network.node[7].content_store 	decision_no[7] 	6553388
+scalar abilene_nodelay_network.node[7].content_store 	decision_ratio[7] 	0.67705645889743
+scalar abilene_nodelay_network.node[7].content_store 	"representation_breakdown[7] 3008956:517380:231204:152345:431062:" 	0
+scalar abilene_nodelay_network.node[7].proactive_component 	hdistance[7].proactive_component 	1.9801278226883
+scalar abilene_nodelay_network.node[7].proactive_component 	downloads[7].proactive_component 	3719371
+scalar abilene_nodelay_network.node[7].proactive_component 	avg_time[7].proactive_component 	0
+scalar abilene_nodelay_network.node[8].core_layer 	interests[8] 	34164347
+scalar abilene_nodelay_network.node[8].core_layer 	repo_load[8] 	6758558
+scalar abilene_nodelay_network.node[8].core_layer 	data[8] 	12838144
+scalar abilene_nodelay_network.node[8].core_layer 	slots_sent[face$o[1]->client[8]] 	14242711931
+scalar abilene_nodelay_network.node[8].core_layer 	slots_sent[face$o[2]->node[2]] 	1110594686
+scalar abilene_nodelay_network.node[8].core_layer 	slots_sent[face$o[3]->node[7]] 	1080940530
+scalar abilene_nodelay_network.node[8].core_layer 	slots_sent[face$o[4]->node[9]] 	1380489279
+scalar abilene_nodelay_network.node[8].content_store 	p_hit[8] 	0.42639904693627
+scalar abilene_nodelay_network.node[8].content_store 	hits[8] 	14567645
+scalar abilene_nodelay_network.node[8].content_store 	misses[8] 	19596702
+scalar abilene_nodelay_network.node[8].content_store 	decision_yes[8] 	12838144
+scalar abilene_nodelay_network.node[8].content_store 	decision_no[8] 	6758558
+scalar abilene_nodelay_network.node[8].content_store 	decision_ratio[8] 	0.655117580499
+scalar abilene_nodelay_network.node[8].content_store 	"representation_breakdown[8] 2986624:507355:228595:151215:436901:" 	0
+scalar abilene_nodelay_network.node[8].proactive_component 	hdistance[8].proactive_component 	1.9605877908677
+scalar abilene_nodelay_network.node[8].proactive_component 	downloads[8].proactive_component 	3490289
+scalar abilene_nodelay_network.node[8].proactive_component 	avg_time[8].proactive_component 	0
+scalar abilene_nodelay_network.node[9].core_layer 	interests[9] 	27727578
+scalar abilene_nodelay_network.node[9].core_layer 	repo_load[9] 	6273109
+scalar abilene_nodelay_network.node[9].core_layer 	data[9] 	8161837
+scalar abilene_nodelay_network.node[9].core_layer 	slots_sent[face$o[1]->client[9]] 	14096060044
+scalar abilene_nodelay_network.node[9].core_layer 	slots_sent[face$o[2]->node[10]] 	815353214
+scalar abilene_nodelay_network.node[9].core_layer 	slots_sent[face$o[3]->node[8]] 	1263151817
+scalar abilene_nodelay_network.node[9].content_store 	p_hit[9] 	0.47940112187224
+scalar abilene_nodelay_network.node[9].content_store 	hits[9] 	13292632
+scalar abilene_nodelay_network.node[9].content_store 	misses[9] 	14434946
+scalar abilene_nodelay_network.node[9].content_store 	decision_yes[9] 	8161837
+scalar abilene_nodelay_network.node[9].content_store 	decision_no[9] 	6273109
+scalar abilene_nodelay_network.node[9].content_store 	decision_ratio[9] 	0.56542206669841
+scalar abilene_nodelay_network.node[9].content_store 	"representation_breakdown[9] 3124250:542222:230128:138660:426452:" 	0
+scalar abilene_nodelay_network.node[9].proactive_component 	hdistance[9].proactive_component 	2.0365284685815
+scalar abilene_nodelay_network.node[9].proactive_component 	downloads[9].proactive_component 	2381485
+scalar abilene_nodelay_network.node[9].proactive_component 	avg_time[9].proactive_component 	0
+scalar abilene_nodelay_network.node[10].core_layer 	interests[10] 	27059171
+scalar abilene_nodelay_network.node[10].core_layer 	repo_load[10] 	6368039
+scalar abilene_nodelay_network.node[10].core_layer 	data[10] 	7296150
+scalar abilene_nodelay_network.node[10].core_layer 	slots_sent[face$o[1]->client[10]] 	14279611398
+scalar abilene_nodelay_network.node[10].core_layer 	slots_sent[face$o[2]->node[0]] 	268127574
+scalar abilene_nodelay_network.node[10].core_layer 	slots_sent[face$o[3]->node[1]] 	801674881
+scalar abilene_nodelay_network.node[10].core_layer 	slots_sent[face$o[4]->node[9]] 	776191482
+scalar abilene_nodelay_network.node[10].content_store 	p_hit[10] 	0.49502558670404
+scalar abilene_nodelay_network.node[10].content_store 	hits[10] 	13394982
+scalar abilene_nodelay_network.node[10].content_store 	misses[10] 	13664189
+scalar abilene_nodelay_network.node[10].content_store 	decision_yes[10] 	7296150
+scalar abilene_nodelay_network.node[10].content_store 	decision_no[10] 	6368039
+scalar abilene_nodelay_network.node[10].content_store 	decision_ratio[10] 	0.53396143744792
+scalar abilene_nodelay_network.node[10].content_store 	"representation_breakdown[10] 3211044:544512:224020:132317:425702:" 	0
+scalar abilene_nodelay_network.node[10].proactive_component 	hdistance[10].proactive_component 	2.0213296104424
+scalar abilene_nodelay_network.node[10].proactive_component 	downloads[10].proactive_component 	2332954
+scalar abilene_nodelay_network.node[10].proactive_component 	avg_time[10].proactive_component 	0
+scalar abilene_nodelay_network.client[0] 	hdistance[0].real 	0.81983544088572
+scalar abilene_nodelay_network.client[0] 	downloads[0].real 	17997180
+scalar abilene_nodelay_network.client[0] 	avg_time[0].real 	0
+scalar abilene_nodelay_network.client[1] 	hdistance[1].real 	0.75807633058434
+scalar abilene_nodelay_network.client[1] 	downloads[1].real 	18002823
+scalar abilene_nodelay_network.client[1] 	avg_time[1].real 	0
+scalar abilene_nodelay_network.client[2] 	hdistance[2].real 	0.65306647688559
+scalar abilene_nodelay_network.client[2] 	downloads[2].real 	17989847
+scalar abilene_nodelay_network.client[2] 	avg_time[2].real 	0
+scalar abilene_nodelay_network.client[3] 	hdistance[3].real 	0.67467217003023
+scalar abilene_nodelay_network.client[3] 	downloads[3].real 	18004989
+scalar abilene_nodelay_network.client[3] 	avg_time[3].real 	0
+scalar abilene_nodelay_network.client[4] 	hdistance[4].real 	0.75914969168328
+scalar abilene_nodelay_network.client[4] 	downloads[4].real 	18006645
+scalar abilene_nodelay_network.client[4] 	avg_time[4].real 	0
+scalar abilene_nodelay_network.client[5] 	hdistance[5].real 	0.80411676400074
+scalar abilene_nodelay_network.client[5] 	downloads[5].real 	17996951
+scalar abilene_nodelay_network.client[5] 	avg_time[5].real 	0
+scalar abilene_nodelay_network.client[6] 	hdistance[6].real 	0.80440366901144
+scalar abilene_nodelay_network.client[6] 	downloads[6].real 	18004305
+scalar abilene_nodelay_network.client[6] 	avg_time[6].real 	0
+scalar abilene_nodelay_network.client[7] 	hdistance[7].real 	0.65612373521988
+scalar abilene_nodelay_network.client[7] 	downloads[7].real 	17997398
+scalar abilene_nodelay_network.client[7] 	avg_time[7].real 	0
+scalar abilene_nodelay_network.client[8] 	hdistance[8].real 	0.64563435512198
+scalar abilene_nodelay_network.client[8] 	downloads[8].real 	17998830
+scalar abilene_nodelay_network.client[8] 	avg_time[8].real 	0
+scalar abilene_nodelay_network.client[9] 	hdistance[9].real 	0.72853374422939
+scalar abilene_nodelay_network.client[9] 	downloads[9].real 	18002930
+scalar abilene_nodelay_network.client[9] 	avg_time[9].real 	0
+scalar abilene_nodelay_network.client[10] 	hdistance[10].real 	0.74396028948365
+scalar abilene_nodelay_network.client[10] 	downloads[10].real 	17998255
+scalar abilene_nodelay_network.client[10] 	avg_time[10].real 	0

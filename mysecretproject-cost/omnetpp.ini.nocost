@@ -1,0 +1,97 @@
+#General paramteters
+[General]
+network = networks.${net=abilene}_network
+
+#<aa> RNG means "random number genetator". By default, all modules use the RNG 0. Here we instantiate two RNGs. RNG 1 will be used only for the traffic generator (client). All the other modules will use the default RNG (RNG 0). See omnet manual section 10.5 for more info about RNGs.
+num-rngs=3
+**.client[*].rng-0 = 1
+**.content_distribution.rng-0 = 1
+**.content_store.rng-0 = 2
+#</aa>
+
+
+seed-set = ${rep = 0}
+
+#####################################################################
+######################## Repositories ##############################
+#####################################################################
+## (In the case of standard topologies, like tree or cascades,
+## repositories are placed within the corresponding ned file.
+##Indicates which node is a repository (left blank for random positioning)
+**.node_repos = ""
+##Indecates how many repositories there are on the network
+**.num_repos = 1
+##Indicates in how many (random) repositories a given content is replicated
+**.replicas = 1
+
+#####################################################################
+########################## Clients ################################
+#####################################################################
+## (In the case of standard topologies, like tree or cascades,
+## clients are placed within the corresponding ned file.
+##Indicates which node is a client (left blank for random positioning)
+**.node_clients = ""
+##Indicates how many clients there are on the network
+**.num_clients = 11
+##Arriva rate of each timer
+**.lambda = 1
+##Timer indicating that a given content is not downloaded (>> N_D*d, where N_D is the network diameter, and d is the average delay on a link)
+**.RTT = 2
+##Timer indicating how often checking for a given content download
+**.check_time = 0.1
+
+
+#####################################################################
+################### Content Distribution ###########################
+#####################################################################
+##Average size of a content (in chunks)
+**.file_size = 1
+##Shaping factor of the Zipf distribution
+**.alpha = ${a = 0.5..1 step 0.1}
+##Cardinality of the catalog
+**.objects = 10^4
+
+#####################################################################
+########################## Forwarding ##############################
+#####################################################################
+##Strategy layer (interest forwarding):
+## - spr: send interests toward the closest repository (in terms of hop count)[comcom,techrep]
+## - nrr1: exploration + exploitation with cut off K[icn2012]
+## - inrr: exploration + exploitation with cut off K[icn2012]
+## - random_repository: send interests toward one randomly chosen repository among those which store the given chunk[comcom,techrep]
+## - parallel_repository: send interests toward all the repositories which store the given chunk[comcom,techrep]
+**.FS = "${F = spr }"
+
+**.TTL2 = ${ttl = 1000}
+**.TTL1= ${ttl}
+**.routing_file = ""
+
+#####################################################################
+########################## Caching ################################
+#####################################################################
+##Caching meta-algorithms: never, fixP, lce , lcd, btw, prob_cache, costawareP, ideal_blind, ideal_costaware
+**.DS = "${ D = lce,lcd,prob_cache,fix0.1 }"
+##Caching algorithms: {lru,lfu,fifo,two,random}_cache
+**.RS = "${ R = lru }_cache"
+##Cache size (in chunks)
+**.C = 10^2
+
+
+
+#####################################################################
+######################## Statistics ################################
+#####################################################################
+##Time window for the stability checking
+**.window = 60
+##Sampling hit_rate time
+**.ts = 0.1
+##Ex: in this case every 60 secs the engine checks for the stabilization. Every 0.1 sec a sample is collected. Thus, the stabilization is checked every 60/0.1=600 samples.
+##Number of nodes to be full (-1 defaults to *all* nodes) for starting statistic collections
+**.partial_n = -1
+
+##Time of simulation after the stabilization
+**.steady = 3600/2
+
+
+output-vector-file = ${resultdir}/${net}/F-${F}/D-${D}/R-${R}/alpha-${a}/ccn-id${rep}.vec
+output-scalar-file = ${resultdir}/${net}/F-${F}/D-${D}/R-${R}/alpha-${a}/ccn-id${rep}.sca

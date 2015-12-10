@@ -1,0 +1,61 @@
+version 2
+run General-38-20140908-17:40:42-8467
+attr D lce
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20140908-17:40:42
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=level3_cost, $rep=13, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=level3_cost, $rep=13, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=level3_cost, $rep=13, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net level3_cost
+attr network networks.${net=level3_cost,tiger_cost,dtelecom_cost}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 8467
+attr rep 13
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 38
+attr seedset 13
+attr ttl 10
+attr variance 0.05
+attr weights 0.333_0.333_0.334
+attr window 60
+attr xi 1
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	13
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar . 	xi 	1
+scalar level3_cost_network.content_distribution 	repo-0 	6
+scalar level3_cost_network.content_distribution 	repo-1 	27
+scalar level3_cost_network.content_distribution 	repo-2 	7
+scalar level3_cost_network.content_distribution 	client-0 	1
+scalar level3_cost_network.content_distribution 	client-1 	12
+scalar level3_cost_network.content_distribution 	client-2 	7
+scalar level3_cost_network.content_distribution 	repo-0_card 	33149
+scalar level3_cost_network.content_distribution 	repo-0_price 	10
+scalar level3_cost_network.content_distribution 	repo-1_card 	33482
+scalar level3_cost_network.content_distribution 	repo-1_price 	1
+scalar level3_cost_network.content_distribution 	repo-2_card 	33369
+scalar level3_cost_network.content_distribution 	repo-2_price 	0
+scalar level3_cost_network.statistics 	repo_popularity[0] 	0.39790136386221
+scalar level3_cost_network.statistics 	repo_popularity[1] 	0.31086887881251
+scalar level3_cost_network.statistics 	repo_popularity[2] 	0.29122975732529

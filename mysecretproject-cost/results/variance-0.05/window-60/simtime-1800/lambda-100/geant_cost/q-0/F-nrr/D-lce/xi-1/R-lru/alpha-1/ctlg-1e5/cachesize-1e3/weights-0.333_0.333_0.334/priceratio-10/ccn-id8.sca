@@ -1,0 +1,61 @@
+version 2
+run General-22-20140904-14:32:22-24744
+attr D lce
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20140904-14:32:22
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=geant_cost, $rep=8, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=geant_cost, $rep=8, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=geant_cost, $rep=8, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net geant_cost
+attr network networks.${net=geant_cost}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 24744
+attr rep 8
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 22
+attr seedset 8
+attr ttl 10
+attr variance 0.05
+attr weights 0.333_0.333_0.334
+attr window 60
+attr xi 1
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	8
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar . 	xi 	1
+scalar geant_cost_network.content_distribution 	repo-0 	4
+scalar geant_cost_network.content_distribution 	repo-1 	15
+scalar geant_cost_network.content_distribution 	repo-2 	12
+scalar geant_cost_network.content_distribution 	client-0 	8
+scalar geant_cost_network.content_distribution 	client-1 	4
+scalar geant_cost_network.content_distribution 	client-2 	20
+scalar geant_cost_network.content_distribution 	repo-0_card 	33476
+scalar geant_cost_network.content_distribution 	repo-0_price 	1
+scalar geant_cost_network.content_distribution 	repo-1_card 	33258
+scalar geant_cost_network.content_distribution 	repo-1_price 	0
+scalar geant_cost_network.content_distribution 	repo-2_card 	33266
+scalar geant_cost_network.content_distribution 	repo-2_price 	10
+scalar geant_cost_network.statistics 	repo_popularity[0] 	0.27308552772926
+scalar geant_cost_network.statistics 	repo_popularity[1] 	0.42673410384757
+scalar geant_cost_network.statistics 	repo_popularity[2] 	0.30018036842319

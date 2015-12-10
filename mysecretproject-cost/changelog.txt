@@ -1,0 +1,14 @@
+####################################
+#### CHANGES W.R.T. VERSION 0.3 ####
+####################################
+- In include/lru_cache.h, lru_pos.cost is renamed in lru_pos.price
+- In lru_cache.lru and lru_cache.mru have been renamed into lru_cache.lru_ and lru_cache.mru_
+- Each object can have different representations. Useful when dealing with videos, for example, that can be encoded at different bit-rates and resolutions (see modifications in include/ccnsim.h)
+- All the functionalities related to repository has been placed in a new class Repository, while in previous versions they were performed by the core_layer code.
+
+
+####################################
+#### TODO ##########################
+####################################
+- Verify replacement policies
+- Disable "Per file cache statistics" (look for this string in base_cache.cc) when not needed

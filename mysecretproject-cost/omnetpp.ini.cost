@@ -1,0 +1,141 @@
+#General paramteters
+[General]
+
+#<aa> RNG means "random number genetator". By default, all modules use the RNG 0. Here we instantiate other two RNGs. RNG 1 will be used only for the traffic generator (client) and content distribution. RNG 2 will be used only for the content store.  In this way, for example, the generation of requests is independent from the decisions taken by the decision policy in the context store. All the other modules will use the default RNG (RNG 0). See omnet manual section 10.5 for more info about RNGs.
+num-rngs=3
+**.client[*].rng-0 = 1
+**.content_distribution.rng-0 = 1
+**.content_store.rng-0 = 2
+#</aa>
+seed-set = ${rep = 1}
+
+
+network = networks.${net=abilene}_network
+
+
+#####################################################################
+######################## Repositories ##############################
+#####################################################################
+## (In the case of standard topologies, like tree or cascades,
+## repositories are placed within the corresponding ned file.
+##Indicates which node is a repository (left blank for random positioning)
+#	**.node_repos = "18,6,9"
+##Indicates how many repositories there are on the network
+#	**.num_repos = 3
+##Indicates in how many (random) repositories a given content is replicated
+*.replicas = 1
+
+#####################################################################
+########################## Clients ################################
+#####################################################################
+## (In the case of standard topologies, like tree or cascades,
+## clients are placed within the corresponding ned file.
+##Indicates which node is a client (left blank for random positioning)
+#	**.node_clients = ""
+##Indicates how many clients there are on the network
+#	**.num_clients = 22
+##Arriva rate of each timer
+**.lambda = ${ lambda = 100}
+##Timer indicating that a given content is not downloaded (>> N_D*d, where N_D is the network diameter, and d is the average delay on a link)
+**.RTT = 2
+##Timer indicating how often checking for a given content download
+**.check_time = 0.1
+
+
+#####################################################################
+################### Content Distribution ###########################
+#####################################################################
+##Average size of a content (in chunks)
+**.file_size = 1
+##Shaping factor of the Zipf distribution
+**.alpha = ${a = 1}
+##Plateau of the MZipf distribution
+**.q = 0
+##Cardinality of the catalog
+**.objects = ${ctlg = 1e5}
+
+#####################################################################
+##########################  Forwarding ##############################
+#####################################################################
+##Strategy layer (interest forwarding): 
+## - spr: send interests toward the closest repository (in terms of hop count)[comcom,techrep]
+## - nrr1: nearest replica routing (one phase) [icn2012]
+## - nrr:  nearest replica routing (two phases) [icn2012]
+## - random_repository: send interests toward one randomly chosen repository among those which store the given chunk[comcom,techrep]
+## - parallel_repository: send interests toward all the repositories which store the given chunk[comcom,techrep]
+**.FS = "${ F = nrr }" #nrr or spr
+**.TTL2 = ${ttl = 10}
+**.TTL1= ${ttl}
+**.routing_file = ""
+
+#####################################################################
+########################## Caching ################################
+#####################################################################
+##Caching meta-algorithms: never, fixP, lce , lcd, btw, prob_cache, costawareP, ideal_blind, ideal_costaware
+		# **.DS = "${ D = lce, fix0.1, fix0.05, fix0.01, fix0.005, fix0.001, fix0.0001, fix0.00001}"
+		# **.DS = "${ D = never, lce, fix0.01, costaware0.01, costprobprodplain0.01, costprobcoincorr0.5, costprobcoinplain0.5, costprobcoincorr0.1, costprobcoinplain0.1}"
+		# **.DS = "${ D = costprobprodplain0.01, costprobcoincorr0.5, costprobcoinplain0.5, costprobcoincorr0.1, costprobcoinplain0.1,costprobcoincorr0.01, costprobcoinplain0.01}"
+		# **.DS = "${ D = never, lce, fix0.01, tailandrank, costaware0.01, costprobtailcons}"
+		# **.DS = "${ D = costaware0.5,costaware0.1,costaware0.05,costaware0.005,costaware0.001,fix0.5,fix0.1,fix0.05,fix0.005,fix0.001}"
+**.DS = "${ D = two_lru, lce}"
+
+
+
+##Caching algorithms: {lru,lfu,fifo,two,random}_cache
+**.RS = "${ R = lru }_cache"
+##Cache size (in chunks)
+**.C = ${ csize = 1e2}
+
+
+
+
+#####################################################################
+########################  Statistics ################################
+#####################################################################
+## I do not want to write the vector file
+**.vector-recording = false
+
+##Time window for the stability checking
+**.window = ${window=60}
+##Sampling hit_rate time
+**.ts = 0.1
+## Every **.window secs the engine checks for the stabilization. Every **.ts sec a sample is collected. Thus, the stabilization is checked every N samples, where N = **.window x **.ts .
+##Number of nodes to be full (-1 defaults to *all* nodes) for starting statistic collections
+**.partial_n = -1
+#<aa>
+## A cache will be considered stable if the sequence of the last N samples have a variance smaller than
+## this value
+**.variance_threshold = ${variance=0.05}
+#</aa>
+
+##Time of simulation after the stabilization
+**.steady = ${ mytime = 1800}
+
+#####################################################################
+########################  Cost ######################################
+#####################################################################
+# COST related parameters. See A. Araldo, D. Rossi, F. Martignon, “Design and Evaluation of Cost-aware Information Centric Routers”, to appear in ACM Conference on Information-Centric Networking (ICN), Paris, 2014 
+
+
+# Power of the costaware decision policy. It has no meaning withother decision policies
+		# **.kappa = ${kappa=0.01, 0.25, 0.50, 0.75, 1.25, 1.50, 1.75, 2 }
+		# **.kappa = ${kappa=1 }
+**.kappa = ${kappa = 1} 
+
+**.priceratio = ${ priceratiovalue = 10}
+
+# Use "WeightedContentDistribution" only if you are studying cost. Otherwise, do not specify anything in order to use the default one
+		**.content_distribution_type = "content_distribution"
+		# **.content_distribution_type = "WeightedContentDistribution"
+
+# The probability that an object is contained in the free, cheap and expensive repository, respectively.
+		# **.content_distribution.catalog_split = "${ catalog_splitt = 0_0.25_0.75, 0_0.5_0.5, 0_0.75_0.25, 0.25_0_0.75, 0.25_0.25_0.5, 0.25_0.5_0.25, 0.25_0.75_0, 0.5_0.25_0.25, 0.5_0_0.5, 0.75_0_0.25, 0.75_0.25_0}"
+**.content_distribution.catalog_split = "${ splits = 0.333_0.333_0.334}"
+
+**.content_distribution.replication_admitted = false
+
+## Number of bits that caches use to represent the price. Put 0 to indicate an infinite number of bits, without any quantization
+**.price_bits = ${ pricebits = 0}
+
+output-vector-file = ${resultdir}/prova_two_lru/variance-${variance}/window-${window}/simtime-${mytime}/lambda-${lambda}/${net}/q-${pricebits}/F-${F}/D-${D}/xi-${kappa}/R-${R}/alpha-${a}/ctlg-${ctlg}/cachesize-${csize}/weights-${splits}/priceratio-${priceratiovalue}/ccn-id${rep}.vec 
+output-scalar-file = ${resultdir}/prova_two_lru/variance-${variance}/window-${window}/simtime-${mytime}/lambda-${lambda}/${net}/q-${pricebits}/F-${F}/D-${D}/xi-${kappa}/R-${R}/alpha-${a}/ctlg-${ctlg}/cachesize-${csize}/weights-${splits}/priceratio-${priceratiovalue}/ccn-id${rep}.sca

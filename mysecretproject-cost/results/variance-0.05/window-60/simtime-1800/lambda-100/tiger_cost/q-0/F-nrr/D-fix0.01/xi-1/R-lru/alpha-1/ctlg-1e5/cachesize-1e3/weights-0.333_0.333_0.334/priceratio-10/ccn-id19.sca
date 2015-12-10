@@ -1,0 +1,264 @@
+version 2
+run General-23-20140908-17:32:14-16928
+attr D fix0.01
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20140908-17:32:14
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=tiger_cost, $rep=19, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=tiger_cost, $rep=19, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=tiger_cost, $rep=19, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.01, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net tiger_cost
+attr network networks.${net=level3_cost,tiger_cost,dtelecom_cost}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 16928
+attr rep 19
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 23
+attr seedset 19
+attr ttl 10
+attr variance 0.05
+attr weights 0.333_0.333_0.334
+attr window 60
+attr xi 1
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	19
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar . 	xi 	1
+scalar tiger_cost_network.content_distribution 	repo-0 	3
+scalar tiger_cost_network.content_distribution 	repo-1 	0
+scalar tiger_cost_network.content_distribution 	repo-2 	14
+scalar tiger_cost_network.content_distribution 	client-0 	3
+scalar tiger_cost_network.content_distribution 	client-1 	20
+scalar tiger_cost_network.content_distribution 	client-2 	1
+scalar tiger_cost_network.content_distribution 	repo-0_card 	33373
+scalar tiger_cost_network.content_distribution 	repo-0_price 	10
+scalar tiger_cost_network.content_distribution 	repo-1_card 	33385
+scalar tiger_cost_network.content_distribution 	repo-1_price 	1
+scalar tiger_cost_network.content_distribution 	repo-2_card 	33242
+scalar tiger_cost_network.content_distribution 	repo-2_price 	0
+scalar tiger_cost_network.statistics 	repo_popularity[0] 	0.41183223595039
+scalar tiger_cost_network.statistics 	repo_popularity[1] 	0.29096057586331
+scalar tiger_cost_network.statistics 	repo_popularity[2] 	0.29720718818631
+scalar tiger_cost_network.statistics 	stabilization_time 	36120
+scalar tiger_cost_network.statistics 	p_hit 	0.18864791848992
+scalar tiger_cost_network.statistics 	interests 	62118.363636364
+scalar tiger_cost_network.statistics 	data 	37560.909090909
+scalar tiger_cost_network.statistics 	hdistance 	2.0518263114555
+scalar tiger_cost_network.statistics 	avg_time 	0.000632717583
+scalar tiger_cost_network.statistics 	downloads 	540256
+scalar tiger_cost_network.statistics 	total_cost 	1166241
+scalar tiger_cost_network.statistics 	total_replicas 	100000
+scalar tiger_cost_network.statistics 	inner_hit 	0.47719414499793
+scalar tiger_cost_network.statistics 	interests_sent 	540264
+scalar tiger_cost_network.node[0].core_layer 	interests[0] 	88741
+scalar tiger_cost_network.node[0].core_layer 	repo_load[0] 	85271
+scalar tiger_cost_network.node[0].core_layer 	data[0] 	564
+scalar tiger_cost_network.node[0].core_layer 	repo_int[0] 	282449
+scalar tiger_cost_network.node[0].content_store 	p_hit[0] 	0.032746982792621
+scalar tiger_cost_network.node[0].content_store 	hits[0] 	2906
+scalar tiger_cost_network.node[0].content_store 	misses[0] 	85835
+scalar tiger_cost_network.node[0].content_store 	decision_yes[0] 	884
+scalar tiger_cost_network.node[0].content_store 	decision_no[0] 	84951
+scalar tiger_cost_network.node[0].content_store 	decision_ratio[0] 	0.010298829148949
+scalar tiger_cost_network.node[1].core_layer 	interests[1] 	186568
+scalar tiger_cost_network.node[1].core_layer 	data[1] 	123521
+scalar tiger_cost_network.node[1].content_store 	p_hit[1] 	0.33790896616783
+scalar tiger_cost_network.node[1].content_store 	hits[1] 	63043
+scalar tiger_cost_network.node[1].content_store 	misses[1] 	123525
+scalar tiger_cost_network.node[1].content_store 	decision_yes[1] 	1323
+scalar tiger_cost_network.node[1].content_store 	decision_no[1] 	122198
+scalar tiger_cost_network.node[1].content_store 	decision_ratio[1] 	0.010710729349665
+scalar tiger_cost_network.node[2].core_layer 	interests[2] 	114034
+scalar tiger_cost_network.node[2].core_layer 	data[2] 	102394
+scalar tiger_cost_network.node[2].content_store 	p_hit[2] 	0.10207481979059
+scalar tiger_cost_network.node[2].content_store 	hits[2] 	11640
+scalar tiger_cost_network.node[2].content_store 	misses[2] 	102394
+scalar tiger_cost_network.node[2].content_store 	decision_yes[2] 	1046
+scalar tiger_cost_network.node[2].content_store 	decision_no[2] 	101348
+scalar tiger_cost_network.node[2].content_store 	decision_ratio[2] 	0.010215442311073
+scalar tiger_cost_network.node[3].core_layer 	interests[3] 	309340
+scalar tiger_cost_network.node[3].core_layer 	repo_load[3] 	108097
+scalar tiger_cost_network.node[3].core_layer 	data[3] 	144105
+scalar tiger_cost_network.node[3].content_store 	p_hit[3] 	0.18470614857438
+scalar tiger_cost_network.node[3].content_store 	hits[3] 	57137
+scalar tiger_cost_network.node[3].content_store 	misses[3] 	252203
+scalar tiger_cost_network.node[3].content_store 	decision_yes[3] 	2562
+scalar tiger_cost_network.node[3].content_store 	decision_no[3] 	249640
+scalar tiger_cost_network.node[3].content_store 	decision_ratio[3] 	0.010158523723047
+scalar tiger_cost_network.node[4].core_layer 	interests[4] 	74399
+scalar tiger_cost_network.node[4].core_layer 	data[4] 	67833
+scalar tiger_cost_network.node[4].content_store 	p_hit[4] 	0.088253874380032
+scalar tiger_cost_network.node[4].content_store 	hits[4] 	6566
+scalar tiger_cost_network.node[4].content_store 	misses[4] 	67833
+scalar tiger_cost_network.node[4].content_store 	decision_yes[4] 	686
+scalar tiger_cost_network.node[4].content_store 	decision_no[4] 	67147
+scalar tiger_cost_network.node[4].content_store 	decision_ratio[4] 	0.010113071808707
+scalar tiger_cost_network.node[5].core_layer 	interests[5] 	3175
+scalar tiger_cost_network.node[5].core_layer 	data[5] 	112
+scalar tiger_cost_network.node[5].content_store 	p_hit[5] 	0.96472440944882
+scalar tiger_cost_network.node[5].content_store 	hits[5] 	3063
+scalar tiger_cost_network.node[5].content_store 	misses[5] 	112
+scalar tiger_cost_network.node[5].content_store 	decision_yes[5] 	3
+scalar tiger_cost_network.node[5].content_store 	decision_no[5] 	109
+scalar tiger_cost_network.node[5].content_store 	decision_ratio[5] 	0.026785714285714
+scalar tiger_cost_network.node[6].core_layer 	interests[6] 	3238
+scalar tiger_cost_network.node[6].core_layer 	data[6] 	81
+scalar tiger_cost_network.node[6].content_store 	p_hit[6] 	0.97498455836936
+scalar tiger_cost_network.node[6].content_store 	hits[6] 	3157
+scalar tiger_cost_network.node[6].content_store 	misses[6] 	81
+scalar tiger_cost_network.node[6].content_store 	decision_yes[6] 	2
+scalar tiger_cost_network.node[6].content_store 	decision_no[6] 	79
+scalar tiger_cost_network.node[6].content_store 	decision_ratio[6] 	0.024691358024691
+scalar tiger_cost_network.node[7].core_layer 	interests[7] 	25638
+scalar tiger_cost_network.node[7].core_layer 	data[7] 	10364
+scalar tiger_cost_network.node[7].content_store 	p_hit[7] 	0.59575629924331
+scalar tiger_cost_network.node[7].content_store 	hits[7] 	15274
+scalar tiger_cost_network.node[7].content_store 	misses[7] 	10364
+scalar tiger_cost_network.node[7].content_store 	decision_yes[7] 	102
+scalar tiger_cost_network.node[7].content_store 	decision_no[7] 	10262
+scalar tiger_cost_network.node[7].content_store 	decision_ratio[7] 	0.0098417599382478
+scalar tiger_cost_network.node[8].core_layer 	interests[8] 	21753
+scalar tiger_cost_network.node[8].core_layer 	data[8] 	8139
+scalar tiger_cost_network.node[8].content_store 	p_hit[8] 	0.62584471107433
+scalar tiger_cost_network.node[8].content_store 	hits[8] 	13614
+scalar tiger_cost_network.node[8].content_store 	misses[8] 	8139
+scalar tiger_cost_network.node[8].content_store 	decision_yes[8] 	73
+scalar tiger_cost_network.node[8].content_store 	decision_no[8] 	8066
+scalar tiger_cost_network.node[8].content_store 	decision_ratio[8] 	0.0089691608305689
+scalar tiger_cost_network.node[9].core_layer 	interests[9] 	0
+scalar tiger_cost_network.node[9].core_layer 	data[9] 	0
+scalar tiger_cost_network.node[9].content_store 	p_hit[9] 	-nan
+scalar tiger_cost_network.node[9].content_store 	hits[9] 	0
+scalar tiger_cost_network.node[9].content_store 	misses[9] 	0
+scalar tiger_cost_network.node[9].content_store 	decision_yes[9] 	0
+scalar tiger_cost_network.node[9].content_store 	decision_no[9] 	0
+scalar tiger_cost_network.node[9].content_store 	decision_ratio[9] 	0
+scalar tiger_cost_network.node[10].core_layer 	interests[10] 	33780
+scalar tiger_cost_network.node[10].core_layer 	data[10] 	29900
+scalar tiger_cost_network.node[10].content_store 	p_hit[10] 	0.11486086441681
+scalar tiger_cost_network.node[10].content_store 	hits[10] 	3880
+scalar tiger_cost_network.node[10].content_store 	misses[10] 	29900
+scalar tiger_cost_network.node[10].content_store 	decision_yes[10] 	289
+scalar tiger_cost_network.node[10].content_store 	decision_no[10] 	29611
+scalar tiger_cost_network.node[10].content_store 	decision_ratio[10] 	0.0096655518394649
+scalar tiger_cost_network.node[11].core_layer 	interests[11] 	30943
+scalar tiger_cost_network.node[11].core_layer 	data[11] 	28652
+scalar tiger_cost_network.node[11].content_store 	p_hit[11] 	0.074039362699157
+scalar tiger_cost_network.node[11].content_store 	hits[11] 	2291
+scalar tiger_cost_network.node[11].content_store 	misses[11] 	28652
+scalar tiger_cost_network.node[11].content_store 	decision_yes[11] 	280
+scalar tiger_cost_network.node[11].content_store 	decision_no[11] 	28372
+scalar tiger_cost_network.node[11].content_store 	decision_ratio[11] 	0.0097724417143655
+scalar tiger_cost_network.node[12].core_layer 	interests[12] 	31189
+scalar tiger_cost_network.node[12].core_layer 	data[12] 	28601
+scalar tiger_cost_network.node[12].content_store 	p_hit[12] 	0.082977973003302
+scalar tiger_cost_network.node[12].content_store 	hits[12] 	2588
+scalar tiger_cost_network.node[12].content_store 	misses[12] 	28601
+scalar tiger_cost_network.node[12].content_store 	decision_yes[12] 	304
+scalar tiger_cost_network.node[12].content_store 	decision_no[12] 	28297
+scalar tiger_cost_network.node[12].content_store 	decision_ratio[12] 	0.010628998986049
+scalar tiger_cost_network.node[13].core_layer 	interests[13] 	0
+scalar tiger_cost_network.node[13].core_layer 	data[13] 	0
+scalar tiger_cost_network.node[13].content_store 	p_hit[13] 	-nan
+scalar tiger_cost_network.node[13].content_store 	hits[13] 	0
+scalar tiger_cost_network.node[13].content_store 	misses[13] 	0
+scalar tiger_cost_network.node[13].content_store 	decision_yes[13] 	0
+scalar tiger_cost_network.node[13].content_store 	decision_no[13] 	0
+scalar tiger_cost_network.node[13].content_store 	decision_ratio[13] 	0
+scalar tiger_cost_network.node[14].core_layer 	interests[14] 	94031
+scalar tiger_cost_network.node[14].core_layer 	repo_load[14] 	89081
+scalar tiger_cost_network.node[14].core_layer 	data[14] 	0
+scalar tiger_cost_network.node[14].content_store 	p_hit[14] 	0.052642213738023
+scalar tiger_cost_network.node[14].content_store 	hits[14] 	4950
+scalar tiger_cost_network.node[14].content_store 	misses[14] 	89081
+scalar tiger_cost_network.node[14].content_store 	decision_yes[14] 	886
+scalar tiger_cost_network.node[14].content_store 	decision_no[14] 	88195
+scalar tiger_cost_network.node[14].content_store 	decision_ratio[14] 	0.0099460041984262
+scalar tiger_cost_network.node[15].core_layer 	interests[15] 	0
+scalar tiger_cost_network.node[15].core_layer 	data[15] 	0
+scalar tiger_cost_network.node[15].content_store 	p_hit[15] 	-nan
+scalar tiger_cost_network.node[15].content_store 	hits[15] 	0
+scalar tiger_cost_network.node[15].content_store 	misses[15] 	0
+scalar tiger_cost_network.node[15].content_store 	decision_yes[15] 	0
+scalar tiger_cost_network.node[15].content_store 	decision_no[15] 	0
+scalar tiger_cost_network.node[15].content_store 	decision_ratio[15] 	0
+scalar tiger_cost_network.node[16].core_layer 	interests[16] 	0
+scalar tiger_cost_network.node[16].core_layer 	data[16] 	0
+scalar tiger_cost_network.node[16].content_store 	p_hit[16] 	-nan
+scalar tiger_cost_network.node[16].content_store 	hits[16] 	0
+scalar tiger_cost_network.node[16].content_store 	misses[16] 	0
+scalar tiger_cost_network.node[16].content_store 	decision_yes[16] 	0
+scalar tiger_cost_network.node[16].content_store 	decision_no[16] 	0
+scalar tiger_cost_network.node[16].content_store 	decision_ratio[16] 	0
+scalar tiger_cost_network.node[17].core_layer 	interests[17] 	68053
+scalar tiger_cost_network.node[17].core_layer 	data[17] 	64112
+scalar tiger_cost_network.node[17].content_store 	p_hit[17] 	0.057910746036178
+scalar tiger_cost_network.node[17].content_store 	hits[17] 	3941
+scalar tiger_cost_network.node[17].content_store 	misses[17] 	64112
+scalar tiger_cost_network.node[17].content_store 	decision_yes[17] 	632
+scalar tiger_cost_network.node[17].content_store 	decision_no[17] 	63480
+scalar tiger_cost_network.node[17].content_store 	decision_ratio[17] 	0.0098577489393561
+scalar tiger_cost_network.node[18].core_layer 	interests[18] 	101080
+scalar tiger_cost_network.node[18].core_layer 	data[18] 	97939
+scalar tiger_cost_network.node[18].content_store 	p_hit[18] 	0.03107439651761
+scalar tiger_cost_network.node[18].content_store 	hits[18] 	3141
+scalar tiger_cost_network.node[18].content_store 	misses[18] 	97939
+scalar tiger_cost_network.node[18].content_store 	decision_yes[18] 	981
+scalar tiger_cost_network.node[18].content_store 	decision_no[18] 	96958
+scalar tiger_cost_network.node[18].content_store 	decision_ratio[18] 	0.010016438803745
+scalar tiger_cost_network.node[19].core_layer 	interests[19] 	0
+scalar tiger_cost_network.node[19].core_layer 	data[19] 	0
+scalar tiger_cost_network.node[19].content_store 	p_hit[19] 	-nan
+scalar tiger_cost_network.node[19].content_store 	hits[19] 	0
+scalar tiger_cost_network.node[19].content_store 	misses[19] 	0
+scalar tiger_cost_network.node[19].content_store 	decision_yes[19] 	0
+scalar tiger_cost_network.node[19].content_store 	decision_no[19] 	0
+scalar tiger_cost_network.node[19].content_store 	decision_ratio[19] 	0
+scalar tiger_cost_network.node[20].core_layer 	interests[20] 	180642
+scalar tiger_cost_network.node[20].core_layer 	data[20] 	120023
+scalar tiger_cost_network.node[20].content_store 	p_hit[20] 	0.33555872942062
+scalar tiger_cost_network.node[20].content_store 	hits[20] 	60616
+scalar tiger_cost_network.node[20].content_store 	misses[20] 	120026
+scalar tiger_cost_network.node[20].content_store 	decision_yes[20] 	1196
+scalar tiger_cost_network.node[20].content_store 	decision_no[20] 	118827
+scalar tiger_cost_network.node[20].content_store 	decision_ratio[20] 	0.0099647567549553
+scalar tiger_cost_network.node[21].core_layer 	interests[21] 	0
+scalar tiger_cost_network.node[21].core_layer 	data[21] 	0
+scalar tiger_cost_network.node[21].content_store 	p_hit[21] 	-nan
+scalar tiger_cost_network.node[21].content_store 	hits[21] 	0
+scalar tiger_cost_network.node[21].content_store 	misses[21] 	0
+scalar tiger_cost_network.node[21].content_store 	decision_yes[21] 	0
+scalar tiger_cost_network.node[21].content_store 	decision_no[21] 	0
+scalar tiger_cost_network.node[21].content_store 	decision_ratio[21] 	0
+scalar tiger_cost_network.client[1] 	hdistance[1] 	2.0981733768428
+scalar tiger_cost_network.client[1] 	downloads[1] 	180497
+scalar tiger_cost_network.client[1] 	avg_time[1] 	0.000655775044
+scalar tiger_cost_network.client[1] 	interests_sent[1] 	180501
+scalar tiger_cost_network.client[3] 	hdistance[3] 	1.4048308103295
+scalar tiger_cost_network.client[3] 	downloads[3] 	179680
+scalar tiger_cost_network.client[3] 	avg_time[3] 	0.000448081734
+scalar tiger_cost_network.client[3] 	interests_sent[3] 	179681
+scalar tiger_cost_network.client[20] 	hdistance[20] 	2.6524747471943
+scalar tiger_cost_network.client[20] 	downloads[20] 	180079
+scalar tiger_cost_network.client[20] 	avg_time[20] 	0.000794295972
+scalar tiger_cost_network.client[20] 	interests_sent[20] 	180082

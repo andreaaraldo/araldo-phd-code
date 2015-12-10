@@ -1,0 +1,260 @@
+version 2
+run General-39-20141007-12:31:09-642
+attr D fix0.001
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20141007-12:31:09
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=geant_cost, $rep=4, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.001, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=geant_cost, $rep=4, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.001, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=geant_cost, $rep=4, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=fix0.001, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net geant_cost
+attr network networks.${net=abilene_cost,geant_cost}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 642
+attr rep 4
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 39
+attr seedset 4
+attr ttl 10
+attr variance 0.05
+attr weights 0.333_0.333_0.334
+attr window 60
+attr xi 1
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	4
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar . 	xi 	1
+scalar geant_cost_network.content_distribution 	repo-0 	18
+scalar geant_cost_network.content_distribution 	repo-1 	16
+scalar geant_cost_network.content_distribution 	repo-2 	10
+scalar geant_cost_network.content_distribution 	client-0 	6
+scalar geant_cost_network.content_distribution 	client-1 	2
+scalar geant_cost_network.content_distribution 	client-2 	20
+scalar geant_cost_network.content_distribution 	repo-0_card 	33274
+scalar geant_cost_network.content_distribution 	repo-0_price 	0
+scalar geant_cost_network.content_distribution 	repo-1_card 	33153
+scalar geant_cost_network.content_distribution 	repo-1_price 	1
+scalar geant_cost_network.content_distribution 	repo-2_card 	33573
+scalar geant_cost_network.content_distribution 	repo-2_price 	10
+scalar geant_cost_network.statistics 	repo_popularity[0] 	0.33945880017902
+scalar geant_cost_network.statistics 	repo_popularity[1] 	0.30988277584688
+scalar geant_cost_network.statistics 	repo_popularity[2] 	0.35065842397411
+scalar geant_cost_network.statistics 	stabilization_time 	36120
+scalar geant_cost_network.statistics 	p_hit 	0.18171849844208
+scalar geant_cost_network.statistics 	interests 	71175.772727273
+scalar geant_cost_network.statistics 	data 	46622.318181818
+scalar geant_cost_network.statistics 	hdistance 	2.3723175068287
+scalar geant_cost_network.statistics 	avg_time 	0.008870564415
+scalar geant_cost_network.statistics 	downloads 	540071
+scalar geant_cost_network.statistics 	total_cost 	854112
+scalar geant_cost_network.statistics 	total_replicas 	100000
+scalar geant_cost_network.statistics 	inner_hit 	0.52688627976692
+scalar geant_cost_network.node[0].core_layer 	interests[0] 	2857
+scalar geant_cost_network.node[0].core_layer 	data[0] 	1745
+scalar geant_cost_network.node[0].core_layer 	repo_int[0] 	255515
+scalar geant_cost_network.node[0].content_store 	p_hit[0] 	0.38921946097305
+scalar geant_cost_network.node[0].content_store 	hits[0] 	1112
+scalar geant_cost_network.node[0].content_store 	misses[0] 	1745
+scalar geant_cost_network.node[0].content_store 	decision_yes[0] 	2
+scalar geant_cost_network.node[0].content_store 	decision_no[0] 	1743
+scalar geant_cost_network.node[0].content_store 	decision_ratio[0] 	0.0011461318051576
+scalar geant_cost_network.node[1].core_layer 	interests[1] 	34658
+scalar geant_cost_network.node[1].core_layer 	data[1] 	28942
+scalar geant_cost_network.node[1].content_store 	p_hit[1] 	0.16492584684633
+scalar geant_cost_network.node[1].content_store 	hits[1] 	5716
+scalar geant_cost_network.node[1].content_store 	misses[1] 	28942
+scalar geant_cost_network.node[1].content_store 	decision_yes[1] 	35
+scalar geant_cost_network.node[1].content_store 	decision_no[1] 	28907
+scalar geant_cost_network.node[1].content_store 	decision_ratio[1] 	0.0012093151820883
+scalar geant_cost_network.node[2].core_layer 	interests[2] 	181799
+scalar geant_cost_network.node[2].core_layer 	data[2] 	116610
+scalar geant_cost_network.node[2].content_store 	p_hit[2] 	0.35830230089274
+scalar geant_cost_network.node[2].content_store 	hits[2] 	65139
+scalar geant_cost_network.node[2].content_store 	misses[2] 	116660
+scalar geant_cost_network.node[2].content_store 	decision_yes[2] 	97
+scalar geant_cost_network.node[2].content_store 	decision_no[2] 	116513
+scalar geant_cost_network.node[2].content_store 	decision_ratio[2] 	0.00083183260440786
+scalar geant_cost_network.node[3].core_layer 	interests[3] 	98528
+scalar geant_cost_network.node[3].core_layer 	data[3] 	84400
+scalar geant_cost_network.node[3].content_store 	p_hit[3] 	0.1434110100682
+scalar geant_cost_network.node[3].content_store 	hits[3] 	14130
+scalar geant_cost_network.node[3].content_store 	misses[3] 	84398
+scalar geant_cost_network.node[3].content_store 	decision_yes[3] 	81
+scalar geant_cost_network.node[3].content_store 	decision_no[3] 	84319
+scalar geant_cost_network.node[3].content_store 	decision_ratio[3] 	0.00095971563981043
+scalar geant_cost_network.node[4].core_layer 	interests[4] 	118241
+scalar geant_cost_network.node[4].core_layer 	data[4] 	106320
+scalar geant_cost_network.node[4].content_store 	p_hit[4] 	0.10081105538688
+scalar geant_cost_network.node[4].content_store 	hits[4] 	11920
+scalar geant_cost_network.node[4].content_store 	misses[4] 	106321
+scalar geant_cost_network.node[4].content_store 	decision_yes[4] 	103
+scalar geant_cost_network.node[4].content_store 	decision_no[4] 	106217
+scalar geant_cost_network.node[4].content_store 	decision_ratio[4] 	0.00096877351392024
+scalar geant_cost_network.node[5].core_layer 	interests[5] 	53780
+scalar geant_cost_network.node[5].core_layer 	data[5] 	39183
+scalar geant_cost_network.node[5].content_store 	p_hit[5] 	0.27138341390852
+scalar geant_cost_network.node[5].content_store 	hits[5] 	14595
+scalar geant_cost_network.node[5].content_store 	misses[5] 	39185
+scalar geant_cost_network.node[5].content_store 	decision_yes[5] 	46
+scalar geant_cost_network.node[5].content_store 	decision_no[5] 	39137
+scalar geant_cost_network.node[5].content_store 	decision_ratio[5] 	0.001173978511089
+scalar geant_cost_network.node[6].core_layer 	interests[6] 	180794
+scalar geant_cost_network.node[6].core_layer 	data[6] 	117371
+scalar geant_cost_network.node[6].content_store 	p_hit[6] 	0.35064216732856
+scalar geant_cost_network.node[6].content_store 	hits[6] 	63394
+scalar geant_cost_network.node[6].content_store 	misses[6] 	117400
+scalar geant_cost_network.node[6].content_store 	decision_yes[6] 	129
+scalar geant_cost_network.node[6].content_store 	decision_no[6] 	117242
+scalar geant_cost_network.node[6].content_store 	decision_ratio[6] 	0.0010990789888473
+scalar geant_cost_network.node[7].core_layer 	interests[7] 	107498
+scalar geant_cost_network.node[7].core_layer 	data[7] 	98866
+scalar geant_cost_network.node[7].content_store 	p_hit[7] 	0.080299168356621
+scalar geant_cost_network.node[7].content_store 	hits[7] 	8632
+scalar geant_cost_network.node[7].content_store 	misses[7] 	98866
+scalar geant_cost_network.node[7].content_store 	decision_yes[7] 	119
+scalar geant_cost_network.node[7].content_store 	decision_no[7] 	98747
+scalar geant_cost_network.node[7].content_store 	decision_ratio[7] 	0.0012036493840147
+scalar geant_cost_network.node[8].core_layer 	interests[8] 	59674
+scalar geant_cost_network.node[8].core_layer 	data[8] 	55974
+scalar geant_cost_network.node[8].content_store 	p_hit[8] 	0.062003552635989
+scalar geant_cost_network.node[8].content_store 	hits[8] 	3700
+scalar geant_cost_network.node[8].content_store 	misses[8] 	55974
+scalar geant_cost_network.node[8].content_store 	decision_yes[8] 	51
+scalar geant_cost_network.node[8].content_store 	decision_no[8] 	55923
+scalar geant_cost_network.node[8].content_store 	decision_ratio[8] 	0.00091113731375281
+scalar geant_cost_network.node[9].core_layer 	interests[9] 	83821
+scalar geant_cost_network.node[9].core_layer 	data[9] 	80242
+scalar geant_cost_network.node[9].content_store 	p_hit[9] 	0.042698130540079
+scalar geant_cost_network.node[9].content_store 	hits[9] 	3579
+scalar geant_cost_network.node[9].content_store 	misses[9] 	80242
+scalar geant_cost_network.node[9].content_store 	decision_yes[9] 	78
+scalar geant_cost_network.node[9].content_store 	decision_no[9] 	80164
+scalar geant_cost_network.node[9].content_store 	decision_ratio[9] 	0.00097205951995214
+scalar geant_cost_network.node[10].core_layer 	interests[10] 	80242
+scalar geant_cost_network.node[10].core_layer 	repo_load[10] 	77923
+scalar geant_cost_network.node[10].core_layer 	data[10] 	0
+scalar geant_cost_network.node[10].content_store 	p_hit[10] 	0.02890007726627
+scalar geant_cost_network.node[10].content_store 	hits[10] 	2319
+scalar geant_cost_network.node[10].content_store 	misses[10] 	77923
+scalar geant_cost_network.node[10].content_store 	decision_yes[10] 	76
+scalar geant_cost_network.node[10].content_store 	decision_no[10] 	77847
+scalar geant_cost_network.node[10].content_store 	decision_ratio[10] 	0.00097532179202546
+scalar geant_cost_network.node[11].core_layer 	interests[11] 	0
+scalar geant_cost_network.node[11].core_layer 	data[11] 	0
+scalar geant_cost_network.node[11].content_store 	p_hit[11] 	-nan
+scalar geant_cost_network.node[11].content_store 	hits[11] 	0
+scalar geant_cost_network.node[11].content_store 	misses[11] 	0
+scalar geant_cost_network.node[11].content_store 	decision_yes[11] 	0
+scalar geant_cost_network.node[11].content_store 	decision_no[11] 	0
+scalar geant_cost_network.node[11].content_store 	decision_ratio[11] 	0
+scalar geant_cost_network.node[12].core_layer 	interests[12] 	30992
+scalar geant_cost_network.node[12].core_layer 	data[12] 	27847
+scalar geant_cost_network.node[12].content_store 	p_hit[12] 	0.10147780072277
+scalar geant_cost_network.node[12].content_store 	hits[12] 	3145
+scalar geant_cost_network.node[12].content_store 	misses[12] 	27847
+scalar geant_cost_network.node[12].content_store 	decision_yes[12] 	26
+scalar geant_cost_network.node[12].content_store 	decision_no[12] 	27821
+scalar geant_cost_network.node[12].content_store 	decision_ratio[12] 	0.00093367328617086
+scalar geant_cost_network.node[13].core_layer 	interests[13] 	0
+scalar geant_cost_network.node[13].core_layer 	data[13] 	0
+scalar geant_cost_network.node[13].content_store 	p_hit[13] 	-nan
+scalar geant_cost_network.node[13].content_store 	hits[13] 	0
+scalar geant_cost_network.node[13].content_store 	misses[13] 	0
+scalar geant_cost_network.node[13].content_store 	decision_yes[13] 	0
+scalar geant_cost_network.node[13].content_store 	decision_no[13] 	0
+scalar geant_cost_network.node[13].content_store 	decision_ratio[13] 	0
+scalar geant_cost_network.node[14].core_layer 	interests[14] 	60812
+scalar geant_cost_network.node[14].core_layer 	data[14] 	54496
+scalar geant_cost_network.node[14].content_store 	p_hit[14] 	0.10377885943564
+scalar geant_cost_network.node[14].content_store 	hits[14] 	6311
+scalar geant_cost_network.node[14].content_store 	misses[14] 	54501
+scalar geant_cost_network.node[14].content_store 	decision_yes[14] 	58
+scalar geant_cost_network.node[14].content_store 	decision_no[14] 	54438
+scalar geant_cost_network.node[14].content_store 	decision_ratio[14] 	0.0010642982971227
+scalar geant_cost_network.node[15].core_layer 	interests[15] 	0
+scalar geant_cost_network.node[15].core_layer 	data[15] 	0
+scalar geant_cost_network.node[15].content_store 	p_hit[15] 	-nan
+scalar geant_cost_network.node[15].content_store 	hits[15] 	0
+scalar geant_cost_network.node[15].content_store 	misses[15] 	0
+scalar geant_cost_network.node[15].content_store 	decision_yes[15] 	0
+scalar geant_cost_network.node[15].content_store 	decision_no[15] 	0
+scalar geant_cost_network.node[15].content_store 	decision_ratio[15] 	0
+scalar geant_cost_network.node[16].core_layer 	interests[16] 	77173
+scalar geant_cost_network.node[16].core_layer 	repo_load[16] 	74882
+scalar geant_cost_network.node[16].core_layer 	data[16] 	0
+scalar geant_cost_network.node[16].content_store 	p_hit[16] 	0.029686548404235
+scalar geant_cost_network.node[16].content_store 	hits[16] 	2291
+scalar geant_cost_network.node[16].content_store 	misses[16] 	74882
+scalar geant_cost_network.node[16].content_store 	decision_yes[16] 	79
+scalar geant_cost_network.node[16].content_store 	decision_no[16] 	74803
+scalar geant_cost_network.node[16].content_store 	decision_ratio[16] 	0.0010549931892845
+scalar geant_cost_network.node[17].core_layer 	interests[17] 	28743
+scalar geant_cost_network.node[17].core_layer 	data[17] 	25628
+scalar geant_cost_network.node[17].content_store 	p_hit[17] 	0.10837421285182
+scalar geant_cost_network.node[17].content_store 	hits[17] 	3115
+scalar geant_cost_network.node[17].content_store 	misses[17] 	25628
+scalar geant_cost_network.node[17].content_store 	decision_yes[17] 	34
+scalar geant_cost_network.node[17].content_store 	decision_no[17] 	25594
+scalar geant_cost_network.node[17].content_store 	decision_ratio[17] 	0.0013266739503668
+scalar geant_cost_network.node[18].core_layer 	interests[18] 	180076
+scalar geant_cost_network.node[18].core_layer 	repo_load[18] 	102710
+scalar geant_cost_network.node[18].core_layer 	data[18] 	69104
+scalar geant_cost_network.node[18].content_store 	p_hit[18] 	0.045875074968347
+scalar geant_cost_network.node[18].content_store 	hits[18] 	8261
+scalar geant_cost_network.node[18].content_store 	misses[18] 	171815
+scalar geant_cost_network.node[18].content_store 	decision_yes[18] 	166
+scalar geant_cost_network.node[18].content_store 	decision_no[18] 	171648
+scalar geant_cost_network.node[18].content_store 	decision_ratio[18] 	0.00096616108116917
+scalar geant_cost_network.node[19].core_layer 	interests[19] 	0
+scalar geant_cost_network.node[19].core_layer 	data[19] 	0
+scalar geant_cost_network.node[19].content_store 	p_hit[19] 	-nan
+scalar geant_cost_network.node[19].content_store 	hits[19] 	0
+scalar geant_cost_network.node[19].content_store 	misses[19] 	0
+scalar geant_cost_network.node[19].content_store 	decision_yes[19] 	0
+scalar geant_cost_network.node[19].content_store 	decision_no[19] 	0
+scalar geant_cost_network.node[19].content_store 	decision_ratio[19] 	0
+scalar geant_cost_network.node[20].core_layer 	interests[20] 	180201
+scalar geant_cost_network.node[20].core_layer 	data[20] 	117145
+scalar geant_cost_network.node[20].content_store 	p_hit[20] 	0.34976498465602
+scalar geant_cost_network.node[20].content_store 	hits[20] 	63028
+scalar geant_cost_network.node[20].content_store 	misses[20] 	117173
+scalar geant_cost_network.node[20].content_store 	decision_yes[20] 	105
+scalar geant_cost_network.node[20].content_store 	decision_no[20] 	117040
+scalar geant_cost_network.node[20].content_store 	decision_ratio[20] 	0.00089632506722438
+scalar geant_cost_network.node[21].core_layer 	interests[21] 	5978
+scalar geant_cost_network.node[21].core_layer 	data[21] 	1818
+scalar geant_cost_network.node[21].content_store 	p_hit[21] 	0.69588491134159
+scalar geant_cost_network.node[21].content_store 	hits[21] 	4160
+scalar geant_cost_network.node[21].content_store 	misses[21] 	1818
+scalar geant_cost_network.node[21].content_store 	decision_yes[21] 	1
+scalar geant_cost_network.node[21].content_store 	decision_no[21] 	1817
+scalar geant_cost_network.node[21].content_store 	decision_ratio[21] 	0.00055005500550055
+scalar geant_cost_network.client[2] 	hdistance[2] 	2.3717873149682
+scalar geant_cost_network.client[2] 	downloads[2] 	179834
+scalar geant_cost_network.client[2] 	avg_time[2] 	0.011606009275
+scalar geant_cost_network.client[6] 	hdistance[6] 	2.373450826226
+scalar geant_cost_network.client[6] 	downloads[6] 	180096
+scalar geant_cost_network.client[6] 	avg_time[6] 	0.008585540183
+scalar geant_cost_network.client[20] 	hdistance[20] 	2.3717143792918
+scalar geant_cost_network.client[20] 	downloads[20] 	180141
+scalar geant_cost_network.client[20] 	avg_time[20] 	0.006420143787

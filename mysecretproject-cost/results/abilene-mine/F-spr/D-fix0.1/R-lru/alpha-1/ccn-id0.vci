@@ -1,0 +1,26 @@
+file 33116 1435756841                                           
+version 2
+run General-23-20150311-18:59:43-28978
+attr D fix0.1
+attr F spr
+attr R lru
+attr a 1
+attr configname General
+attr datetime 20150311-18:59:43
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=fix0.1, $R=lru"
+attr iterationvars2 "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=fix0.1, $R=lru, $repetition=0"
+attr measurement "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=fix0.1, $R=lru"
+attr net abilene
+attr network networks.${net=abilene}_network
+attr processid 28978
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 23
+attr seedset 0
+attr ttl 1000
+vector 21  abilene_network.client[10]  hdistance[10]  ETV
+21	31841 1275 594664 594664 1 76 76 0 6 111.97976190476 382.38548894558

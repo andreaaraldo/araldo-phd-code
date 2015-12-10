@@ -1,0 +1,86 @@
+version 2
+run General-0-20150725-13:10:02-12522
+attr C 5
+attr D lce
+attr F spr
+attr R lru_repr
+attr a 1
+attr brates 0.3_0.7_1.5_2.5_3.5
+attr configname General
+attr ctlg 11
+attr datetime 20150725-13:10:02
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $ctlg=11, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=5, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $ctlg=11, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=5, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $ctlg=11, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=5, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net video_simple_scenario
+attr network networks.${net=video_simple_scenario}_network
+attr processid 12522
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	C 	5
+scalar . 	a 	1
+scalar . 	ctlg 	11
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar video_simple_scenario_network.content_distribution 	repo-0 	0
+scalar video_simple_scenario_network.content_distribution 	client-0 	1
+scalar video_simple_scenario_network.content_distribution 	repo-0_card 	11
+scalar video_simple_scenario_network.content_distribution 	repo-0_price 	0
+scalar video_simple_scenario_network.statistics 	stabilization_time 	329.6
+scalar video_simple_scenario_network.statistics 	p_hit 	0.43250241437709
+scalar video_simple_scenario_network.statistics 	interests 	178617.5
+scalar video_simple_scenario_network.statistics 	data 	50682.5
+scalar video_simple_scenario_network.statistics 	hdistance 	0.28575391101742
+scalar video_simple_scenario_network.statistics 	avg_time 	0
+scalar video_simple_scenario_network.statistics 	downloads 	180260
+scalar video_simple_scenario_network.statistics 	total_cost 	0
+scalar video_simple_scenario_network.statistics 	total_replicas 	11
+scalar video_simple_scenario_network.statistics 	"representations_downloaded 0.268046:0.110757:0.0977643:0.0857595:0.437673:" 	0
+scalar video_simple_scenario_network.statistics 	"slots_per_representation 100:233:500:833:1167:" 	0
+scalar video_simple_scenario_network.statistics 	inner_hit 	0.43767336070121
+scalar video_simple_scenario_network.statistics 	execution_time 	7
+scalar video_simple_scenario_network.node[0].core_layer 	interests[0] 	101365
+scalar video_simple_scenario_network.node[0].core_layer 	repo_load[0] 	101365
+scalar video_simple_scenario_network.node[0].core_layer 	data[0] 	0
+scalar video_simple_scenario_network.node[0].core_layer 	slots_sent[face$o[1]->client[0]] 	0
+scalar video_simple_scenario_network.node[0].core_layer 	slots_sent[face$o[2]->node[1]] 	50535791
+scalar video_simple_scenario_network.node[0].content_store 	p_hit[0] 	0
+scalar video_simple_scenario_network.node[0].content_store 	hits[0] 	0
+scalar video_simple_scenario_network.node[0].content_store 	misses[0] 	101365
+scalar video_simple_scenario_network.node[0].content_store 	decision_yes[0] 	0
+scalar video_simple_scenario_network.node[0].content_store 	decision_no[0] 	101365
+scalar video_simple_scenario_network.node[0].content_store 	decision_ratio[0] 	0
+scalar video_simple_scenario_network.node[0].content_store 	"representation_breakdown[0] 0:0:0:0:0:" 	0
+scalar video_simple_scenario_network.node[1].core_layer 	interests[1] 	255870
+scalar video_simple_scenario_network.node[1].core_layer 	data[1] 	101365
+scalar video_simple_scenario_network.node[1].core_layer 	slots_sent[face$o[1]->client[1]] 	123242957
+scalar video_simple_scenario_network.node[1].core_layer 	slots_sent[face$o[2]->node[0]] 	0
+scalar video_simple_scenario_network.node[1].content_store 	p_hit[1] 	0.60384179466135
+scalar video_simple_scenario_network.node[1].content_store 	hits[1] 	154505
+scalar video_simple_scenario_network.node[1].content_store 	misses[1] 	101365
+scalar video_simple_scenario_network.node[1].content_store 	decision_yes[1] 	101365
+scalar video_simple_scenario_network.node[1].content_store 	decision_no[1] 	0
+scalar video_simple_scenario_network.node[1].content_store 	decision_ratio[1] 	1
+scalar video_simple_scenario_network.node[1].content_store 	"representation_breakdown[1] 1:4:2:0:3:" 	0
+scalar video_simple_scenario_network.node[1].proactive_component 	hdistance[1].proactive_component 	2
+scalar video_simple_scenario_network.node[1].proactive_component 	downloads[1].proactive_component 	89467
+scalar video_simple_scenario_network.node[1].proactive_component 	avg_time[1].proactive_component 	0
+scalar video_simple_scenario_network.client[1] 	hdistance[1].real 	0.28575391101742
+scalar video_simple_scenario_network.client[1] 	downloads[1].real 	180260
+scalar video_simple_scenario_network.client[1] 	avg_time[1].real 	0

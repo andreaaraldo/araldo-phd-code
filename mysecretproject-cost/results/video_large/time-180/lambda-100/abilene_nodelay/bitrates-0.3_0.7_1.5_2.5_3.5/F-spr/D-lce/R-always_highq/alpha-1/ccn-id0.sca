@@ -1,0 +1,50 @@
+version 2
+run General-2-20150716-15:07:42-5720
+attr D lce
+attr F spr
+attr R always_highq
+attr a 1
+attr brates 0.3_0.7_1.5_2.5_3.5
+attr configname General
+attr datetime 20150716-15:07:42
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=abilene_nodelay, $rep=0, $lambda=100, $a=1, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=always_highq, $window=60, $variance=0.05, $mytime=180"
+attr iterationvars2 "$net=abilene_nodelay, $rep=0, $lambda=100, $a=1, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=always_highq, $window=60, $variance=0.05, $mytime=180, $repetition=0"
+attr lambda 100
+attr measurement "$net=abilene_nodelay, $rep=0, $lambda=100, $a=1, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=always_highq, $window=60, $variance=0.05, $mytime=180"
+attr mytime 180
+attr net abilene_nodelay
+attr network networks.${net=abilene_nodelay}_network
+attr processid 5720
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 2
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	180
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar abilene_nodelay_network.content_distribution 	repo-0 	5
+scalar abilene_nodelay_network.content_distribution 	client-0 	8
+scalar abilene_nodelay_network.content_distribution 	client-1 	9
+scalar abilene_nodelay_network.content_distribution 	client-2 	5
+scalar abilene_nodelay_network.content_distribution 	client-3 	0
+scalar abilene_nodelay_network.content_distribution 	client-4 	1
+scalar abilene_nodelay_network.content_distribution 	client-5 	7
+scalar abilene_nodelay_network.content_distribution 	client-6 	6
+scalar abilene_nodelay_network.content_distribution 	client-7 	2
+scalar abilene_nodelay_network.content_distribution 	client-8 	4
+scalar abilene_nodelay_network.content_distribution 	client-9 	10
+scalar abilene_nodelay_network.content_distribution 	client-10 	3
+scalar abilene_nodelay_network.content_distribution 	repo-0_card 	1000
+scalar abilene_nodelay_network.content_distribution 	repo-0_price 	0

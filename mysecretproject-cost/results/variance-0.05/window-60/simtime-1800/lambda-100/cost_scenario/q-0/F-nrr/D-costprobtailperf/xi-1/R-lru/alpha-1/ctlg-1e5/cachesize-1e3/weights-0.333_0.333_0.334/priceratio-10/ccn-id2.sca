@@ -1,0 +1,145 @@
+version 2
+run General-47-20140703-16:09:22-12577
+attr D costprobtailperf
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20140703-16:09:22
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=one_cache_scenario_3_links, $rep=2, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=1000, $D=costprobtailperf, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=one_cache_scenario_3_links, $rep=2, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=1000, $D=costprobtailperf, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr lambda 100
+attr measurement "$net=one_cache_scenario_3_links, $rep=2, $priceratiovalue=10, $weights=0.333_0.333_0.334, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=1000, $D=costprobtailperf, $xi=1, $R=lru, $csize=1e3, $pricebits=0, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net one_cache_scenario_3_links
+attr network "networks.${net= one_cache_scenario_3_links}_network"
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 12577
+attr rep 2
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 47
+attr seedset 2
+attr ttl 1000
+attr variance 0.05
+attr weights 0.333_0.333_0.334
+attr window 60
+attr xi 1
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	2
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar . 	xi 	1
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-0 	4
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-1 	5
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-2 	6
+scalar one_cache_scenario_3_links_network.content_distribution 	client-0 	0
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-0_card 	33329
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-1_card 	33051
+scalar one_cache_scenario_3_links_network.content_distribution 	repo-2_card 	33620
+scalar one_cache_scenario_3_links_network.statistics 	repo_popularity[0] 	0.40477944494875
+scalar one_cache_scenario_3_links_network.statistics 	repo_popularity[1] 	0.29142457969466
+scalar one_cache_scenario_3_links_network.statistics 	repo_popularity[2] 	0.30379597535658
+scalar one_cache_scenario_3_links_network.statistics 	stabilization_time 	77.5
+scalar one_cache_scenario_3_links_network.node[1].face$o[2].channel 	price[1] 	0
+scalar one_cache_scenario_3_links_network.node[1].face$o[2].channel 	represented_price[1] 	0
+scalar one_cache_scenario_3_links_network.node[2].face$o[2].channel 	price[2] 	0
+scalar one_cache_scenario_3_links_network.node[2].face$o[2].channel 	represented_price[2] 	0
+scalar one_cache_scenario_3_links_network.node[3].face$o[2].channel 	price[3] 	0
+scalar one_cache_scenario_3_links_network.node[3].face$o[2].channel 	represented_price[3] 	0
+scalar one_cache_scenario_3_links_network.node[4].face$o[1].channel 	price[4] 	0
+scalar one_cache_scenario_3_links_network.node[4].face$o[1].channel 	represented_price[4] 	0
+scalar one_cache_scenario_3_links_network.node[5].face$o[1].channel 	price[5] 	1
+scalar one_cache_scenario_3_links_network.node[5].face$o[1].channel 	represented_price[5] 	1
+scalar one_cache_scenario_3_links_network.node[6].face$o[1].channel 	price[6] 	10
+scalar one_cache_scenario_3_links_network.node[6].face$o[1].channel 	represented_price[6] 	10
+scalar one_cache_scenario_3_links_network.statistics 	p_hit 	0.30901293993374
+scalar one_cache_scenario_3_links_network.statistics 	interests 	47604.571428571
+scalar one_cache_scenario_3_links_network.statistics 	data 	21929.428571429
+scalar one_cache_scenario_3_links_network.statistics 	hdistance 	0.85411125824867
+scalar one_cache_scenario_3_links_network.statistics 	avg_time 	0
+scalar one_cache_scenario_3_links_network.statistics 	downloads 	179726
+scalar one_cache_scenario_3_links_network.statistics 	total_cost 	233514
+scalar one_cache_scenario_3_links_network.statistics 	total_replicas 	100000
+scalar one_cache_scenario_3_links_network.statistics 	inner_hit 	0.57294437087567
+scalar one_cache_scenario_3_links_network.statistics 	interests_sent 	179726
+scalar one_cache_scenario_3_links_network.node[0].core_layer 	interests[0] 	179726
+scalar one_cache_scenario_3_links_network.node[0].core_layer 	data[0] 	76753
+scalar one_cache_scenario_3_links_network.node[0].core_layer 	repo_int[0] 	76753
+scalar one_cache_scenario_3_links_network.node[0].content_store 	p_hit[0] 	0.57294437087567
+scalar one_cache_scenario_3_links_network.node[0].content_store 	hits[0] 	102973
+scalar one_cache_scenario_3_links_network.node[0].content_store 	misses[0] 	76753
+scalar one_cache_scenario_3_links_network.node[0].content_store 	decision_yes[0] 	1256
+scalar one_cache_scenario_3_links_network.node[0].content_store 	decision_no[0] 	75497
+scalar one_cache_scenario_3_links_network.node[0].content_store 	decision_ratio[0] 	0.016364181204643
+scalar one_cache_scenario_3_links_network.node[0].content_store 	correction_factor[0] 	1.581010066692e-322
+scalar one_cache_scenario_3_links_network.node[0].content_store 	xi[0] 	1
+scalar one_cache_scenario_3_links_network.node[1].core_layer 	interests[1] 	31375
+scalar one_cache_scenario_3_links_network.node[1].core_layer 	data[1] 	31375
+scalar one_cache_scenario_3_links_network.node[1].content_store 	p_hit[1] 	0
+scalar one_cache_scenario_3_links_network.node[1].content_store 	hits[1] 	0
+scalar one_cache_scenario_3_links_network.node[1].content_store 	misses[1] 	31375
+scalar one_cache_scenario_3_links_network.node[1].content_store 	decision_yes[1] 	0
+scalar one_cache_scenario_3_links_network.node[1].content_store 	decision_no[1] 	31375
+scalar one_cache_scenario_3_links_network.node[1].content_store 	decision_ratio[1] 	0
+scalar one_cache_scenario_3_links_network.node[2].core_layer 	interests[2] 	24474
+scalar one_cache_scenario_3_links_network.node[2].core_layer 	data[2] 	24474
+scalar one_cache_scenario_3_links_network.node[2].content_store 	p_hit[2] 	0
+scalar one_cache_scenario_3_links_network.node[2].content_store 	hits[2] 	0
+scalar one_cache_scenario_3_links_network.node[2].content_store 	misses[2] 	24474
+scalar one_cache_scenario_3_links_network.node[2].content_store 	decision_yes[2] 	0
+scalar one_cache_scenario_3_links_network.node[2].content_store 	decision_no[2] 	24474
+scalar one_cache_scenario_3_links_network.node[2].content_store 	decision_ratio[2] 	0
+scalar one_cache_scenario_3_links_network.node[3].core_layer 	interests[3] 	20904
+scalar one_cache_scenario_3_links_network.node[3].core_layer 	data[3] 	20904
+scalar one_cache_scenario_3_links_network.node[3].content_store 	p_hit[3] 	0
+scalar one_cache_scenario_3_links_network.node[3].content_store 	hits[3] 	0
+scalar one_cache_scenario_3_links_network.node[3].content_store 	misses[3] 	20904
+scalar one_cache_scenario_3_links_network.node[3].content_store 	decision_yes[3] 	0
+scalar one_cache_scenario_3_links_network.node[3].content_store 	decision_no[3] 	20904
+scalar one_cache_scenario_3_links_network.node[3].content_store 	decision_ratio[3] 	0
+scalar one_cache_scenario_3_links_network.node[4].core_layer 	interests[4] 	31375
+scalar one_cache_scenario_3_links_network.node[4].core_layer 	repo_load[4] 	31375
+scalar one_cache_scenario_3_links_network.node[4].core_layer 	data[4] 	0
+scalar one_cache_scenario_3_links_network.node[4].content_store 	p_hit[4] 	0
+scalar one_cache_scenario_3_links_network.node[4].content_store 	hits[4] 	0
+scalar one_cache_scenario_3_links_network.node[4].content_store 	misses[4] 	31375
+scalar one_cache_scenario_3_links_network.node[4].content_store 	decision_yes[4] 	0
+scalar one_cache_scenario_3_links_network.node[4].content_store 	decision_no[4] 	31375
+scalar one_cache_scenario_3_links_network.node[4].content_store 	decision_ratio[4] 	0
+scalar one_cache_scenario_3_links_network.node[5].core_layer 	interests[5] 	24474
+scalar one_cache_scenario_3_links_network.node[5].core_layer 	repo_load[5] 	24474
+scalar one_cache_scenario_3_links_network.node[5].core_layer 	data[5] 	0
+scalar one_cache_scenario_3_links_network.node[5].content_store 	p_hit[5] 	0
+scalar one_cache_scenario_3_links_network.node[5].content_store 	hits[5] 	0
+scalar one_cache_scenario_3_links_network.node[5].content_store 	misses[5] 	24474
+scalar one_cache_scenario_3_links_network.node[5].content_store 	decision_yes[5] 	0
+scalar one_cache_scenario_3_links_network.node[5].content_store 	decision_no[5] 	24474
+scalar one_cache_scenario_3_links_network.node[5].content_store 	decision_ratio[5] 	0
+scalar one_cache_scenario_3_links_network.node[6].core_layer 	interests[6] 	20904
+scalar one_cache_scenario_3_links_network.node[6].core_layer 	repo_load[6] 	20904
+scalar one_cache_scenario_3_links_network.node[6].core_layer 	data[6] 	0
+scalar one_cache_scenario_3_links_network.node[6].content_store 	p_hit[6] 	0
+scalar one_cache_scenario_3_links_network.node[6].content_store 	hits[6] 	0
+scalar one_cache_scenario_3_links_network.node[6].content_store 	misses[6] 	20904
+scalar one_cache_scenario_3_links_network.node[6].content_store 	decision_yes[6] 	0
+scalar one_cache_scenario_3_links_network.node[6].content_store 	decision_no[6] 	20904
+scalar one_cache_scenario_3_links_network.node[6].content_store 	decision_ratio[6] 	0
+scalar one_cache_scenario_3_links_network.client[0] 	hdistance[0] 	0.85411125824867
+scalar one_cache_scenario_3_links_network.client[0] 	downloads[0] 	179726
+scalar one_cache_scenario_3_links_network.client[0] 	avg_time[0] 	0
+scalar one_cache_scenario_3_links_network.client[0] 	interests_sent[0] 	179726

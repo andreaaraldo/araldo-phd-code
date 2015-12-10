@@ -1,0 +1,60 @@
+version 2
+run General-6-20150325-10:48:54-20321
+attr D costaware0.01
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20150325-10:48:54
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$rep=12, $net=cost_scenario, $lambda=1000, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800000, $kappa=1, $priceratiovalue=1, $splits=0.333_0.333_0.334, $pricebits=0"
+attr iterationvars2 "$rep=12, $net=cost_scenario, $lambda=1000, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800000, $kappa=1, $priceratiovalue=1, $splits=0.333_0.333_0.334, $pricebits=0, $repetition=0"
+attr kappa 1
+attr lambda 1000
+attr measurement "$rep=12, $net=cost_scenario, $lambda=1000, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800000, $kappa=1, $priceratiovalue=1, $splits=0.333_0.333_0.334, $pricebits=0"
+attr mytime 1800000
+attr net cost_scenario
+attr network networks.${net=cost_scenario}_network
+attr pricebits 0
+attr priceratiovalue 1
+attr processid 20321
+attr rep 12
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 6
+attr seedset 12
+attr splits 0.333_0.333_0.334
+attr ttl 10
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	kappa 	1
+scalar . 	lambda 	1000
+scalar . 	mytime 	1800000
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	1
+scalar . 	rep 	12
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar cost_scenario_network.content_distribution 	repo-0 	1
+scalar cost_scenario_network.content_distribution 	repo-1 	2
+scalar cost_scenario_network.content_distribution 	repo-2 	3
+scalar cost_scenario_network.content_distribution 	client-0 	0
+scalar cost_scenario_network.content_distribution 	repo-0_card 	33375
+scalar cost_scenario_network.content_distribution 	repo-0_price 	1
+scalar cost_scenario_network.content_distribution 	repo-1_card 	33440
+scalar cost_scenario_network.content_distribution 	repo-1_price 	1
+scalar cost_scenario_network.content_distribution 	repo-2_card 	33185
+scalar cost_scenario_network.content_distribution 	repo-2_price 	0
+scalar cost_scenario_network.statistics 	repo_popularity[0] 	0.29391768034429
+scalar cost_scenario_network.statistics 	repo_popularity[1] 	0.42035693237478
+scalar cost_scenario_network.statistics 	repo_popularity[2] 	0.28572538728095
+scalar cost_scenario_network.statistics 	stabilization_time 	237.3

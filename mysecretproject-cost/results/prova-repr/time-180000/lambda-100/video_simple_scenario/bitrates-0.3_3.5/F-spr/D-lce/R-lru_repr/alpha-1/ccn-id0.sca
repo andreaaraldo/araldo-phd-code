@@ -1,0 +1,41 @@
+version 2
+run General-3-20150709-13:21:33-27638
+attr D lce
+attr F spr
+attr R lru_repr
+attr a 1
+attr brates 0.3_3.5
+attr configname General
+attr datetime 20150709-13:21:33
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $brates=0.3_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $window=60, $variance=0.05, $mytime=180000"
+attr iterationvars2 "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $brates=0.3_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $window=60, $variance=0.05, $mytime=180000, $repetition=0"
+attr lambda 100
+attr measurement "$net=video_simple_scenario, $rep=0, $lambda=100, $a=1, $brates=0.3_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $window=60, $variance=0.05, $mytime=180000"
+attr mytime 180000
+attr net video_simple_scenario
+attr network networks.${net=video_simple_scenario}_network
+attr processid 27638
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 3
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	180000
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar video_simple_scenario_network.content_distribution 	repo-0 	0
+scalar video_simple_scenario_network.content_distribution 	client-0 	1
+scalar video_simple_scenario_network.content_distribution 	repo-0_card 	1000
+scalar video_simple_scenario_network.content_distribution 	repo-0_price 	0
+scalar video_simple_scenario_network.statistics 	stabilization_time 	36060

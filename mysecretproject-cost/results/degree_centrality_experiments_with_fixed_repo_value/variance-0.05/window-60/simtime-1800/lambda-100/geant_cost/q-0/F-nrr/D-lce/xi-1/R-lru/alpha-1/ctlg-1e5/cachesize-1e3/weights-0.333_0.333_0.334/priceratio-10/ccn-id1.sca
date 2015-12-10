@@ -1,0 +1,80 @@
+version 2
+run General-0-20150304-10:40:39-26331
+attr D lce
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20150304-10:40:39
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$rep=1, $net=geant_cost, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr iterationvars2 "$rep=1, $net=geant_cost, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0, $repetition=0"
+attr kappa 1
+attr lambda 100
+attr measurement "$rep=1, $net=geant_cost, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=lce, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $pricebits=0"
+attr mytime 1800
+attr net geant_cost
+attr network networks.${net=geant_cost}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 26331
+attr rep 1
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 1
+attr ttl 10
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	kappa 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	1
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar geant_cost_network.content_distribution 	repo-0 	18
+scalar geant_cost_network.content_distribution 	repo-1 	6
+scalar geant_cost_network.content_distribution 	repo-2 	9
+scalar geant_cost_network.content_distribution 	client-0 	14
+scalar geant_cost_network.content_distribution 	client-1 	5
+scalar geant_cost_network.content_distribution 	client-2 	1
+scalar geant_cost_network.content_distribution 	client-3 	8
+scalar geant_cost_network.content_distribution 	client-4 	18
+scalar geant_cost_network.content_distribution 	client-5 	9
+scalar geant_cost_network.content_distribution 	client-6 	7
+scalar geant_cost_network.content_distribution 	client-7 	13
+scalar geant_cost_network.content_distribution 	client-8 	4
+scalar geant_cost_network.content_distribution 	client-9 	12
+scalar geant_cost_network.content_distribution 	client-10 	6
+scalar geant_cost_network.content_distribution 	client-11 	10
+scalar geant_cost_network.content_distribution 	client-12 	20
+scalar geant_cost_network.content_distribution 	client-13 	3
+scalar geant_cost_network.content_distribution 	client-14 	0
+scalar geant_cost_network.content_distribution 	client-15 	21
+scalar geant_cost_network.content_distribution 	client-16 	2
+scalar geant_cost_network.content_distribution 	client-17 	17
+scalar geant_cost_network.content_distribution 	client-18 	19
+scalar geant_cost_network.content_distribution 	client-19 	15
+scalar geant_cost_network.content_distribution 	client-20 	16
+scalar geant_cost_network.content_distribution 	client-21 	11
+scalar geant_cost_network.content_distribution 	repo-0_card 	33397
+scalar geant_cost_network.content_distribution 	repo-0_price 	0
+scalar geant_cost_network.content_distribution 	repo-1_card 	33040
+scalar geant_cost_network.content_distribution 	repo-1_price 	1
+scalar geant_cost_network.content_distribution 	repo-2_card 	33563
+scalar geant_cost_network.content_distribution 	repo-2_price 	10
+scalar geant_cost_network.statistics 	repo_popularity[0] 	0.29608132335594
+scalar geant_cost_network.statistics 	repo_popularity[1] 	0.43265988067652
+scalar geant_cost_network.statistics 	repo_popularity[2] 	0.27125879596755
+scalar geant_cost_network.statistics 	stabilization_time 	60.7

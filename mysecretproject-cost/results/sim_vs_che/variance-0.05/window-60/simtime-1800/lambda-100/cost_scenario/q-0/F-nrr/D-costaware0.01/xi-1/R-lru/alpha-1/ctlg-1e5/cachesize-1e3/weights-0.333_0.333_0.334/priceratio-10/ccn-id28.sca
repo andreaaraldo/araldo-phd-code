@@ -1,0 +1,126 @@
+version 2
+run General-113-20150313-18:10:57-21683
+attr D costaware0.01
+attr F nrr
+attr R lru
+attr a 1
+attr configname General
+attr csize 1e3
+attr ctlg 1e5
+attr datetime 20150313-18:10:57
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$rep=28, $net=cost_scenario, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $splits=0.333_0.333_0.334, $pricebits=0"
+attr iterationvars2 "$rep=28, $net=cost_scenario, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $splits=0.333_0.333_0.334, $pricebits=0, $repetition=0"
+attr kappa 1
+attr lambda 100
+attr measurement "$rep=28, $net=cost_scenario, $lambda=100, $a=1, $ctlg=1e5, $F=nrr, $ttl=10, $D=costaware0.01, $R=lru, $csize=1e3, $window=60, $variance=0.05, $mytime=1800, $kappa=1, $priceratiovalue=10, $splits=0.333_0.333_0.334, $pricebits=0"
+attr mytime 1800
+attr net cost_scenario
+attr network networks.${net=cost_scenario}_network
+attr pricebits 0
+attr priceratiovalue 10
+attr processid 21683
+attr rep 28
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 113
+attr seedset 28
+attr splits 0.333_0.333_0.334
+attr ttl 10
+attr variance 0.05
+attr window 60
+
+scalar . 	a 	1
+scalar . 	csize 	1e3
+scalar . 	ctlg 	1e5
+scalar . 	kappa 	1
+scalar . 	lambda 	100
+scalar . 	mytime 	1800
+scalar . 	pricebits 	0
+scalar . 	priceratiovalue 	10
+scalar . 	rep 	28
+scalar . 	ttl 	10
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar cost_scenario_network.content_distribution 	repo-0 	1
+scalar cost_scenario_network.content_distribution 	repo-1 	2
+scalar cost_scenario_network.content_distribution 	repo-2 	3
+scalar cost_scenario_network.content_distribution 	client-0 	0
+scalar cost_scenario_network.content_distribution 	repo-0_card 	33617
+scalar cost_scenario_network.content_distribution 	repo-0_price 	0
+scalar cost_scenario_network.content_distribution 	repo-1_card 	33126
+scalar cost_scenario_network.content_distribution 	repo-1_price 	1
+scalar cost_scenario_network.content_distribution 	repo-2_card 	33257
+scalar cost_scenario_network.content_distribution 	repo-2_price 	10
+scalar cost_scenario_network.statistics 	repo_popularity[0] 	0.29483962842159
+scalar cost_scenario_network.statistics 	repo_popularity[1] 	0.41265748958676
+scalar cost_scenario_network.statistics 	repo_popularity[2] 	0.29250288199167
+scalar cost_scenario_network.statistics 	stabilization_time 	2100
+scalar cost_scenario_network.statistics 	p_hit 	0.24800250121587
+scalar cost_scenario_network.statistics 	interests 	71965
+scalar cost_scenario_network.statistics 	data 	27058.75
+scalar cost_scenario_network.statistics 	hdistance 	1.2051217814892
+scalar cost_scenario_network.statistics 	avg_time 	0
+scalar cost_scenario_network.statistics 	downloads 	179625
+scalar cost_scenario_network.statistics 	total_cost 	253692
+scalar cost_scenario_network.statistics 	total_replicas 	100000
+scalar cost_scenario_network.statistics 	inner_hit 	0.39743910925539
+scalar cost_scenario_network.statistics 	interests_sent 	179625
+scalar cost_scenario_network.node[0].core_layer 	interests[0] 	179625
+scalar cost_scenario_network.node[0].core_layer 	data[0] 	108235
+scalar cost_scenario_network.node[0].core_layer 	repo_int[0] 	108235
+scalar cost_scenario_network.node[0].content_store 	p_hit[0] 	0.39743910925539
+scalar cost_scenario_network.node[0].content_store 	hits[0] 	71390
+scalar cost_scenario_network.node[0].content_store 	misses[0] 	108235
+scalar cost_scenario_network.node[0].content_store 	decision_yes[0] 	738
+scalar cost_scenario_network.node[0].content_store 	decision_no[0] 	107497
+scalar cost_scenario_network.node[0].content_store 	decision_ratio[0] 	0.0068184967893934
+scalar cost_scenario_network.node[0].content_store 	cache_value[0] 	24.004291786514
+scalar cost_scenario_network.node[0].content_store 	average_price_of_cache[0] 	8.614
+scalar cost_scenario_network.node[0].content_store 	correction_factor[0] 	0.0027225701061802
+scalar cost_scenario_network.node[0].content_store 	kappa[0] 	1
+scalar cost_scenario_network.node[1].core_layer 	interests[1] 	52597
+scalar cost_scenario_network.node[1].core_layer 	repo_load[1] 	52597
+scalar cost_scenario_network.node[1].core_layer 	data[1] 	0
+scalar cost_scenario_network.node[1].content_store 	p_hit[1] 	0
+scalar cost_scenario_network.node[1].content_store 	hits[1] 	0
+scalar cost_scenario_network.node[1].content_store 	misses[1] 	52597
+scalar cost_scenario_network.node[1].content_store 	decision_yes[1] 	0
+scalar cost_scenario_network.node[1].content_store 	decision_no[1] 	52597
+scalar cost_scenario_network.node[1].content_store 	decision_ratio[1] 	0
+scalar cost_scenario_network.node[1].content_store 	cache_value[1] 	1.1334490414575e-316
+scalar cost_scenario_network.node[1].content_store 	average_price_of_cache[1] 	-nan
+scalar cost_scenario_network.node[1].content_store 	correction_factor[1] 	0.0027225701061802
+scalar cost_scenario_network.node[1].content_store 	kappa[1] 	1
+scalar cost_scenario_network.node[2].core_layer 	interests[2] 	33632
+scalar cost_scenario_network.node[2].core_layer 	repo_load[2] 	33632
+scalar cost_scenario_network.node[2].core_layer 	data[2] 	0
+scalar cost_scenario_network.node[2].content_store 	p_hit[2] 	0
+scalar cost_scenario_network.node[2].content_store 	hits[2] 	0
+scalar cost_scenario_network.node[2].content_store 	misses[2] 	33632
+scalar cost_scenario_network.node[2].content_store 	decision_yes[2] 	0
+scalar cost_scenario_network.node[2].content_store 	decision_no[2] 	33632
+scalar cost_scenario_network.node[2].content_store 	decision_ratio[2] 	0
+scalar cost_scenario_network.node[2].content_store 	cache_value[2] 	1.1336079329692e-316
+scalar cost_scenario_network.node[2].content_store 	average_price_of_cache[2] 	-nan
+scalar cost_scenario_network.node[2].content_store 	correction_factor[2] 	0.0027225701061802
+scalar cost_scenario_network.node[2].content_store 	kappa[2] 	1
+scalar cost_scenario_network.node[3].core_layer 	interests[3] 	22006
+scalar cost_scenario_network.node[3].core_layer 	repo_load[3] 	22006
+scalar cost_scenario_network.node[3].core_layer 	data[3] 	0
+scalar cost_scenario_network.node[3].content_store 	p_hit[3] 	0
+scalar cost_scenario_network.node[3].content_store 	hits[3] 	0
+scalar cost_scenario_network.node[3].content_store 	misses[3] 	22006
+scalar cost_scenario_network.node[3].content_store 	decision_yes[3] 	0
+scalar cost_scenario_network.node[3].content_store 	decision_no[3] 	22006
+scalar cost_scenario_network.node[3].content_store 	decision_ratio[3] 	0
+scalar cost_scenario_network.node[3].content_store 	cache_value[3] 	1.1337668244809e-316
+scalar cost_scenario_network.node[3].content_store 	average_price_of_cache[3] 	-nan
+scalar cost_scenario_network.node[3].content_store 	correction_factor[3] 	0.0027225701061802
+scalar cost_scenario_network.node[3].content_store 	kappa[3] 	1
+scalar cost_scenario_network.client[0] 	hdistance[0] 	1.2051217814892
+scalar cost_scenario_network.client[0] 	downloads[0] 	179625
+scalar cost_scenario_network.client[0] 	avg_time[0] 	0
+scalar cost_scenario_network.client[0] 	interests_sent[0] 	179625

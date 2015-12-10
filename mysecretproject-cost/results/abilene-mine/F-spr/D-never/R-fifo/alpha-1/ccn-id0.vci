@@ -1,0 +1,29 @@
+file 11094 1435756841                                           
+version 2
+run General-7-20150612-18:54:01-398
+attr D never
+attr F spr
+attr R fifo
+attr a 1
+attr configname General
+attr datetime 20150612-18:54:01
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=never, $R=fifo, $window=60, $variance=0.05, $mytime=1800"
+attr iterationvars2 "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=never, $R=fifo, $window=60, $variance=0.05, $mytime=1800, $repetition=0"
+attr measurement "$net=abilene, $rep=0, $a=1, $F=spr, $ttl=1000, $D=never, $R=fifo, $window=60, $variance=0.05, $mytime=1800"
+attr mytime 1800
+attr net abilene
+attr network networks.${net=abilene}_network
+attr processid 398
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 7
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+vector 21  abilene_network.client[10]  hdistance[10]  ETV
+21	10678 416 16225828 16225828 1 25 25 6 6 150 900

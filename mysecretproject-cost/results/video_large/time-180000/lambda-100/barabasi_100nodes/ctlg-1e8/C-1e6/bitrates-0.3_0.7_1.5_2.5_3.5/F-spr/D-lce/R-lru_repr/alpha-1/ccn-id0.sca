@@ -1,0 +1,202 @@
+version 2
+run General-0-20150722-16:24:29-23863
+attr C 1e6
+attr D lce
+attr F spr
+attr R lru_repr
+attr a 1
+attr brates 0.3_0.7_1.5_2.5_3.5
+attr configname General
+attr ctlg 1e8
+attr datetime 20150722-16:24:29
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000"
+attr iterationvars2 "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000, $repetition=0"
+attr lambda 100
+attr measurement "$net=barabasi_100nodes, $rep=0, $lambda=100, $a=1, $ctlg=1e8, $brates=0.3_0.7_1.5_2.5_3.5, $F=spr, $ttl=1000, $D=lce, $R=lru_repr, $C=1e6, $window=60, $variance=0.05, $mytime=180000"
+attr mytime 180000
+attr net barabasi_100nodes
+attr network networks.${net=barabasi_100nodes}_network
+attr processid 23863
+attr rep 0
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+attr ttl 1000
+attr variance 0.05
+attr window 60
+
+scalar . 	C 	1e6
+scalar . 	a 	1
+scalar . 	ctlg 	1e8
+scalar . 	lambda 	100
+scalar . 	mytime 	180000
+scalar . 	rep 	0
+scalar . 	ttl 	1000
+scalar . 	variance 	0.05
+scalar . 	window 	60
+scalar barabasi_100nodes_network.content_distribution 	repo-0 	37
+scalar barabasi_100nodes_network.content_distribution 	repo-1 	12
+scalar barabasi_100nodes_network.content_distribution 	repo-2 	72
+scalar barabasi_100nodes_network.content_distribution 	repo-3 	9
+scalar barabasi_100nodes_network.content_distribution 	repo-4 	75
+scalar barabasi_100nodes_network.content_distribution 	repo-5 	5
+scalar barabasi_100nodes_network.content_distribution 	repo-6 	79
+scalar barabasi_100nodes_network.content_distribution 	repo-7 	64
+scalar barabasi_100nodes_network.content_distribution 	repo-8 	16
+scalar barabasi_100nodes_network.content_distribution 	repo-9 	1
+scalar barabasi_100nodes_network.content_distribution 	repo-10 	76
+scalar barabasi_100nodes_network.content_distribution 	repo-11 	71
+scalar barabasi_100nodes_network.content_distribution 	repo-12 	6
+scalar barabasi_100nodes_network.content_distribution 	repo-13 	25
+scalar barabasi_100nodes_network.content_distribution 	repo-14 	50
+scalar barabasi_100nodes_network.content_distribution 	repo-15 	20
+scalar barabasi_100nodes_network.content_distribution 	repo-16 	18
+scalar barabasi_100nodes_network.content_distribution 	repo-17 	84
+scalar barabasi_100nodes_network.content_distribution 	repo-18 	11
+scalar barabasi_100nodes_network.content_distribution 	repo-19 	28
+scalar barabasi_100nodes_network.content_distribution 	repo-20 	29
+scalar barabasi_100nodes_network.content_distribution 	repo-21 	14
+scalar barabasi_100nodes_network.content_distribution 	repo-22 	68
+scalar barabasi_100nodes_network.content_distribution 	repo-23 	87
+scalar barabasi_100nodes_network.content_distribution 	repo-24 	94
+scalar barabasi_100nodes_network.content_distribution 	repo-25 	96
+scalar barabasi_100nodes_network.content_distribution 	repo-26 	86
+scalar barabasi_100nodes_network.content_distribution 	repo-27 	13
+scalar barabasi_100nodes_network.content_distribution 	repo-28 	7
+scalar barabasi_100nodes_network.content_distribution 	repo-29 	63
+scalar barabasi_100nodes_network.content_distribution 	repo-30 	61
+scalar barabasi_100nodes_network.content_distribution 	repo-31 	22
+scalar barabasi_100nodes_network.content_distribution 	repo-32 	57
+scalar barabasi_100nodes_network.content_distribution 	repo-33 	0
+scalar barabasi_100nodes_network.content_distribution 	repo-34 	60
+scalar barabasi_100nodes_network.content_distribution 	repo-35 	81
+scalar barabasi_100nodes_network.content_distribution 	repo-36 	8
+scalar barabasi_100nodes_network.content_distribution 	repo-37 	88
+scalar barabasi_100nodes_network.content_distribution 	repo-38 	47
+scalar barabasi_100nodes_network.content_distribution 	repo-39 	30
+scalar barabasi_100nodes_network.content_distribution 	repo-40 	3
+scalar barabasi_100nodes_network.content_distribution 	repo-41 	70
+scalar barabasi_100nodes_network.content_distribution 	repo-42 	21
+scalar barabasi_100nodes_network.content_distribution 	repo-43 	49
+scalar barabasi_100nodes_network.content_distribution 	repo-44 	24
+scalar barabasi_100nodes_network.content_distribution 	repo-45 	43
+scalar barabasi_100nodes_network.content_distribution 	repo-46 	26
+scalar barabasi_100nodes_network.content_distribution 	repo-47 	52
+scalar barabasi_100nodes_network.content_distribution 	repo-48 	80
+scalar barabasi_100nodes_network.content_distribution 	repo-49 	41
+scalar barabasi_100nodes_network.content_distribution 	repo-50 	82
+scalar barabasi_100nodes_network.content_distribution 	repo-51 	15
+scalar barabasi_100nodes_network.content_distribution 	repo-52 	98
+scalar barabasi_100nodes_network.content_distribution 	repo-53 	67
+scalar barabasi_100nodes_network.content_distribution 	repo-54 	23
+scalar barabasi_100nodes_network.content_distribution 	repo-55 	27
+scalar barabasi_100nodes_network.content_distribution 	repo-56 	83
+scalar barabasi_100nodes_network.content_distribution 	repo-57 	38
+scalar barabasi_100nodes_network.content_distribution 	repo-58 	32
+scalar barabasi_100nodes_network.content_distribution 	repo-59 	34
+scalar barabasi_100nodes_network.content_distribution 	repo-60 	10
+scalar barabasi_100nodes_network.content_distribution 	repo-61 	92
+scalar barabasi_100nodes_network.content_distribution 	repo-62 	74
+scalar barabasi_100nodes_network.content_distribution 	repo-63 	62
+scalar barabasi_100nodes_network.content_distribution 	repo-64 	46
+scalar barabasi_100nodes_network.content_distribution 	repo-65 	55
+scalar barabasi_100nodes_network.content_distribution 	repo-66 	65
+scalar barabasi_100nodes_network.content_distribution 	repo-67 	77
+scalar barabasi_100nodes_network.content_distribution 	repo-68 	85
+scalar barabasi_100nodes_network.content_distribution 	repo-69 	2
+scalar barabasi_100nodes_network.content_distribution 	repo-70 	91
+scalar barabasi_100nodes_network.content_distribution 	repo-71 	36
+scalar barabasi_100nodes_network.content_distribution 	repo-72 	45
+scalar barabasi_100nodes_network.content_distribution 	repo-73 	97
+scalar barabasi_100nodes_network.content_distribution 	repo-74 	54
+scalar barabasi_100nodes_network.content_distribution 	repo-75 	66
+scalar barabasi_100nodes_network.content_distribution 	repo-76 	48
+scalar barabasi_100nodes_network.content_distribution 	repo-77 	17
+scalar barabasi_100nodes_network.content_distribution 	repo-78 	42
+scalar barabasi_100nodes_network.content_distribution 	repo-79 	53
+scalar barabasi_100nodes_network.content_distribution 	repo-80 	56
+scalar barabasi_100nodes_network.content_distribution 	repo-81 	89
+scalar barabasi_100nodes_network.content_distribution 	repo-82 	59
+scalar barabasi_100nodes_network.content_distribution 	repo-83 	69
+scalar barabasi_100nodes_network.content_distribution 	repo-84 	40
+scalar barabasi_100nodes_network.content_distribution 	repo-85 	78
+scalar barabasi_100nodes_network.content_distribution 	repo-86 	35
+scalar barabasi_100nodes_network.content_distribution 	repo-87 	93
+scalar barabasi_100nodes_network.content_distribution 	repo-88 	33
+scalar barabasi_100nodes_network.content_distribution 	repo-89 	31
+scalar barabasi_100nodes_network.content_distribution 	repo-90 	99
+scalar barabasi_100nodes_network.content_distribution 	repo-91 	44
+scalar barabasi_100nodes_network.content_distribution 	repo-92 	19
+scalar barabasi_100nodes_network.content_distribution 	repo-93 	39
+scalar barabasi_100nodes_network.content_distribution 	repo-94 	51
+scalar barabasi_100nodes_network.content_distribution 	repo-95 	58
+scalar barabasi_100nodes_network.content_distribution 	repo-96 	73
+scalar barabasi_100nodes_network.content_distribution 	repo-97 	95
+scalar barabasi_100nodes_network.content_distribution 	repo-98 	4
+scalar barabasi_100nodes_network.content_distribution 	repo-99 	90
+scalar barabasi_100nodes_network.content_distribution 	client-0 	27
+scalar barabasi_100nodes_network.content_distribution 	client-1 	60
+scalar barabasi_100nodes_network.content_distribution 	client-2 	12
+scalar barabasi_100nodes_network.content_distribution 	client-3 	17
+scalar barabasi_100nodes_network.content_distribution 	client-4 	71
+scalar barabasi_100nodes_network.content_distribution 	client-5 	91
+scalar barabasi_100nodes_network.content_distribution 	client-6 	7
+scalar barabasi_100nodes_network.content_distribution 	client-7 	83
+scalar barabasi_100nodes_network.content_distribution 	client-8 	56
+scalar barabasi_100nodes_network.content_distribution 	client-9 	51
+scalar barabasi_100nodes_network.content_distribution 	client-10 	32
+scalar barabasi_100nodes_network.content_distribution 	client-11 	76
+scalar barabasi_100nodes_network.content_distribution 	client-12 	62
+scalar barabasi_100nodes_network.content_distribution 	client-13 	96
+scalar barabasi_100nodes_network.content_distribution 	client-14 	30
+scalar barabasi_100nodes_network.content_distribution 	client-15 	22
+scalar barabasi_100nodes_network.content_distribution 	client-16 	5
+scalar barabasi_100nodes_network.content_distribution 	client-17 	95
+scalar barabasi_100nodes_network.content_distribution 	client-18 	18
+scalar barabasi_100nodes_network.content_distribution 	client-19 	93
+scalar barabasi_100nodes_network.content_distribution 	client-20 	29
+scalar barabasi_100nodes_network.content_distribution 	client-21 	52
+scalar barabasi_100nodes_network.content_distribution 	client-22 	31
+scalar barabasi_100nodes_network.content_distribution 	client-23 	49
+scalar barabasi_100nodes_network.content_distribution 	client-24 	98
+scalar barabasi_100nodes_network.content_distribution 	client-25 	45
+scalar barabasi_100nodes_network.content_distribution 	client-26 	86
+scalar barabasi_100nodes_network.content_distribution 	client-27 	15
+scalar barabasi_100nodes_network.content_distribution 	client-28 	48
+scalar barabasi_100nodes_network.content_distribution 	client-29 	28
+scalar barabasi_100nodes_network.content_distribution 	client-30 	43
+scalar barabasi_100nodes_network.content_distribution 	client-31 	19
+scalar barabasi_100nodes_network.content_distribution 	client-32 	79
+scalar barabasi_100nodes_network.content_distribution 	client-33 	70
+scalar barabasi_100nodes_network.content_distribution 	client-34 	88
+scalar barabasi_100nodes_network.content_distribution 	client-35 	11
+scalar barabasi_100nodes_network.content_distribution 	client-36 	65
+scalar barabasi_100nodes_network.content_distribution 	client-37 	63
+scalar barabasi_100nodes_network.content_distribution 	client-38 	42
+scalar barabasi_100nodes_network.content_distribution 	client-39 	82
+scalar barabasi_100nodes_network.content_distribution 	client-40 	40
+scalar barabasi_100nodes_network.content_distribution 	client-41 	44
+scalar barabasi_100nodes_network.content_distribution 	client-42 	16
+scalar barabasi_100nodes_network.content_distribution 	client-43 	0
+scalar barabasi_100nodes_network.content_distribution 	client-44 	97
+scalar barabasi_100nodes_network.content_distribution 	client-45 	14
+scalar barabasi_100nodes_network.content_distribution 	client-46 	36
+scalar barabasi_100nodes_network.content_distribution 	client-47 	26
+scalar barabasi_100nodes_network.content_distribution 	client-48 	1
+scalar barabasi_100nodes_network.content_distribution 	client-49 	34
+scalar barabasi_100nodes_network.content_distribution 	client-50 	94
+scalar barabasi_100nodes_network.content_distribution 	client-51 	21
+scalar barabasi_100nodes_network.content_distribution 	client-52 	68
+scalar barabasi_100nodes_network.content_distribution 	client-53 	67
+scalar barabasi_100nodes_network.content_distribution 	client-54 	64
+scalar barabasi_100nodes_network.content_distribution 	client-55 	89
+scalar barabasi_100nodes_network.content_distribution 	client-56 	33
+scalar barabasi_100nodes_network.content_distribution 	client-57 	58
+scalar barabasi_100nodes_network.content_distribution 	client-58 	4
+scalar barabasi_100nodes_network.content_distribution 	client-59 	61
+scalar barabasi_100nodes_network.content_distribution 	client-60 	50
+scalar barabasi_100nodes_network.content_distribution 	client
