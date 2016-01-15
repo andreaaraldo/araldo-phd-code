@@ -1,0 +1,3 @@
+error: structure has no member 'p'
+error: called from:
+error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 33, column 4

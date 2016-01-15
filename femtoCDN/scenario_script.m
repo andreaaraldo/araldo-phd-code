@@ -7,25 +7,24 @@ max_parallel = 1;
 parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
-methods_ = {"descent", "dspsa_orig", "dspsa_enhanced", "dspsa_sum", "dspsa_red", "optimum"};
-methods_ = {"dspsa_red"};
+methods_ = {"descent", "dspsa_orig", "opencache", "optimum"};
+methods_ = {"opencache","dspsa_orig"};
 normalizes = {"no", "max", "norm"};
-normalizes = {"no"};
+normalizes = {"norm"};
 coefficientss = {"no", "simple", "every10","every100"};
 coefficientss = {"no"};
 boosts = [1];
-lambdas = [1e3]; %req/s
-tot_times = [0.2]; %total time(hours)
+lambdas = [1e7]; %req/s
+tot_times = [0.1]; %total time(hours)
 Ts = [1e1]; % epoch duration (s)
-overall_ctlgs = [1e5];
+overall_ctlgs = [1e3];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-req_proportion=[0.28 0.02 0.02 0.28 0.02 0.02 0.04 0.02 0.02 0.28];
-req_proportion=[0.6 0.2 0.1 0.1];
-Ns = [4];
-Ks = [1e2]; %cache slots
+req_proportion=[0.8 0.2];
+ps = [2];
+Ks = [1e1]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS
@@ -44,11 +43,11 @@ for seed = seeds
 	for req_eps = req_epss
 	for overall_ctlg=overall_ctlgs
 	for ctlg_eps = ctlg_epss
-	for N = Ns
+	for p = ps
 		%{CHECKS
-		if mod(N,2) != 0; error("Only an even number of CPs are accepted"); end
+		if mod(p,2) != 0; error("Only an even number of CPs are accepted"); end
 		if req_eps==-1; 
-			if length(req_proportion)!=N; disp(req_proportion);disp(N);error("error"); end; 
+			if length(req_proportion)!=p; disp(req_proportion);disp(p);error("error"); end; 
 			if abs( sum(req_proportion) - 1) > 1e-5; 
 				disp(req_proportion); disp(sum(req_proportion)); error("error"); 
 			end; 
@@ -57,14 +56,14 @@ for seed = seeds
 
 		in.ctlg_eps = ctlg_eps;
 		in.overall_ctlg = overall_ctlg;
-		in.N = N;
+		in.p = p;
 		in.alpha0 = alpha0;
 		in.alpha_eps = alpha_eps;
 		in.req_eps = req_eps;
-		in.alpha = differentiated_vector(N, alpha0, alpha_eps);
+		in.alpha = differentiated_vector(p, alpha0, alpha_eps);
 
-		avg_ctlg = overall_ctlg/N;
-		ctlg = round(differentiated_vector(N, avg_ctlg, ctlg_eps) );
+		avg_ctlg = overall_ctlg/p;
+		ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
 		ctlg_perms = [ctlg, flipud(ctlg)];
 
 		for ctlg_perm=ctlg_perms_to_consider
@@ -76,14 +75,14 @@ for seed = seeds
 				settings.epochs = round(tot_time*3600/T);
  				%{CHECK
 				if settings.epochs < 1; error("error");	end;
-				%}CHECKdata/rawdata/coeff/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_1-req_prop_0.64_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04-R_perm_1-T_1e+02-K_1e+02-dspsa_enhanced-norm_0-coeff_no-tot_time_300-seed_1.mdat
+				%}CHECK
 
 				for lambda = lambdas
 				%{BUILD R_perms
 				avg_req_per_epoch = lambda * T;
 				if req_eps != -1
-					avg_req_per_epoch_per_CP = avg_req_per_epoch/in.N;
-					R = differentiated_vector(N, avg_req_per_epoch_per_CP, req_eps); 
+					avg_req_per_epoch_per_CP = avg_req_per_epoch/in.p;
+					R = differentiated_vector(p, avg_req_per_epoch_per_CP, req_eps); 
 					R_perms = [R, flipud(R)];
 				else
 					R = avg_req_per_epoch * req_proportion';
@@ -184,8 +183,8 @@ for seed = seeds
 
 
 								settings.simname = ...
-									sprintf("%s/N_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,N,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method, normalize, coefficients, settings.boost, tot_time,   seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-boost_%g-tot_time_%g-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method, normalize, coefficients, settings.boost, tot_time,   seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -195,8 +194,8 @@ for seed = seeds
 									%{GENERATE lambdatau
 									if length(zipf)==0
 										% the appropriate zipf has not been yet generated
-										zipf = zeros(N, max(in.catalog) );
-										for j=1:in.N
+										zipf = zeros(p, max(in.catalog) );
+										for j=1:in.p
 											zipf(j, 1:in.catalog(j)) = ...
 												(ZipfPDF(in.alpha(j), in.catalog(j)) )';
 										end
@@ -204,7 +203,7 @@ for seed = seeds
 									end
 
 									in.lambdatau=[]; %avg #req per each object
-									for j=1:in.N
+									for j=1:in.p
 										in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
 									end
 									%}GENERATE lambdatau
@@ -212,19 +211,13 @@ for seed = seeds
 
 									function_name = [];
 									switch method
-										case "descdata/rawdata/with10/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_10000-req_prop_0.64_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04_0.04-R_perm_1-T_1e+02-K_1e+02-dspsa_orig-tot_time_3-seed_1.inent"
+										case "descent"
 											function_name = "cumulative_steepest_descent";
-
-										case "dspsa_enhanced"
-											function_name = "dspsa";
 
 										case "dspsa_orig"
 											function_name = "dspsa";
 
-										case "dspsa_sum"
-											function_name = "dspsa";
-
-										case "dspsa_red"
+										case "opencache"
 											function_name = "dspsa";
 
 										case "optimum"
@@ -278,7 +271,7 @@ for seed = seeds
 			end%T for
 			end%tot_time for
 		end%ctlg_perm for
-	end%N for
+	end%p for
 	end%ctlg_eps for
 	end%overall_ctlg for
 	end%eps for

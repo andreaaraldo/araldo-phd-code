@@ -8,7 +8,7 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	% SETTINGS
 	global severe_debug
 
-	N = in.N;
+	N = in.p;
 	border=ones(N,1);
 	border_lambdatau = [];
 	for j=1:N
@@ -28,7 +28,7 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 
 	%{HIT RATIO IMPROVEMENT
 	vc_unif = repmat(in.K/N, N,1 ); 
-	c_unif = round (correct_vc(vc_unif, in) );
+	c_unif = floor(vc_unif);
 	
 	value_unif = compute_value(in, c_unif);
 	hit_ratio_improvement = value - value_unif;
@@ -38,7 +38,7 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 		error("The improvement cannot be negative");
 	else
 	printf("improvement %d %g %g %d %.1g %g %g %s %d %g %g %g\n",...
-		in.N, in.overall_ctlg, in.ctlg_eps, in.ctlg_perm, in.K, in.alpha0, in.alpha_eps, in.req_str_inner, in.R_perm, value*100, value_unif*100, hit_ratio_improvement*100 );
+		N, in.overall_ctlg, in.ctlg_eps, in.ctlg_perm, in.K, in.alpha0, in.alpha_eps, in.req_str_inner, in.R_perm, value*100, value_unif*100, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
 
 
