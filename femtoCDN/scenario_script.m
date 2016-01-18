@@ -2,33 +2,34 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/prova";
-max_parallel = 1;
+max_parallel = 2;
 
 parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"descent", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"opencache","dspsa_orig"};
+methods_ = {"dspsa_orig","opencache"};
 normalizes = {"no", "max", "norm"};
-normalizes = {"norm"};
-coefficientss = {"no", "simple", "every10","every100"};
-coefficientss = {"no"};
+normalizes = {"no"};
+coefficientss = {"no", "simple", "every10","every100", "adaptive"};
+coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1e7]; %req/s
-tot_times = [0.1]; %total time(hours)
-Ts = [1e1]; % epoch duration (s)
-overall_ctlgs = [1e3];
+lambdas = [1e4]; %req/s
+tot_times = [2]; %total time(hours)
+Ts = [60]; % epoch duration (s)
+overall_ctlgs = [1e6];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-req_proportion=[0.8 0.2];
-ps = [2];
-Ks = [1e1]; %cache slots
+req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
+ps = [10];
+Ks = [1e3]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS
-global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
+global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
+	global COEFF_ADAPTIVE=4;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 %} CONSTANTS
 
@@ -96,7 +97,7 @@ for seed = seeds
 						additional_requests = ( settings.epochs-tot_time*3600/T) * lambda;
 
 						tot_effective_req = lambda*T*settings.epochs;
-						if any(abs(sum(R_perms*settings.epochs,1) - tot_effective_req )>1e-5)
+						if any(abs(sum(R_perms*settings.epochs,1) - tot_effective_req )>1e-4)
 
 							exact_epochs = tot_time*3600/T
 							tot_effective_req
@@ -111,6 +112,7 @@ for seed = seeds
 							req_per_epoch = sum(R_perms,1)
 							avg_overall_req = lambda*tot_time*3600
 							tot_effective_req
+							difference = abs(sum(R_perms*settings.epochs,1) - tot_effective_req )
 							error("Total number of requests does not match");
 						end
 					end
@@ -133,6 +135,10 @@ for seed = seeds
 							if strcmp(method,"optim") || strcmp(method,"dspsa_enhanced")
 								active_coefficientss = {"no"};
 							end
+
+							if settings.boost != 1
+								error("boost must be 1");
+							end
 							%}NORMALIZE AND COEFF ONLY WHEN IT MATTERS
 
 							for idx_normalize = 1:length(normalizes);
@@ -149,6 +155,8 @@ for seed = seeds
 										settings.coefficients = COEFF_10;
 									case "every100"
 										settings.coefficients = COEFF_100;
+									case "adaptive"
+										settings.coefficients = COEFF_ADAPTIVE;
 									otherwise
 										error "coefficients incorrect";
 								end

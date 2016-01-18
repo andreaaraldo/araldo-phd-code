@@ -32,7 +32,18 @@ function dspsa(in, settings, infile)
 	rand("seed",settings.seed);
 	p = in.p;
 	
-	theta=repmat( in.K*1.0/p - 0.01, p,1 ); %virtual configuration
+	%{ GENERATE THE INITIAL CONFIG
+	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
+	%{
+	while sum(theta) > in.K
+		theta(rand(1,1,[1:p]) )	--
+	end%while
+	while sum(theta) < in.K
+		theta(rand(1,1,[1:p]) )	++
+	end%while
+	%}
+	%} GENERATE THE INITIAL CONFIG
+
 
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = []; 
@@ -90,24 +101,24 @@ function dspsa(in, settings, infile)
 		hist_tot_requests = [hist_tot_requests, sum(tot_requests,2) ];
 
 		%{ COMPUTE ghat
+		ghat_1_norm = [];
 		switch variant
 			case ORIG
-				delta_y = sum(vec_y(:,2)) /  -sum(vec_y(:,1) ); 
+				delta_y = sum(vec_y(:,2))  -sum(vec_y(:,1) ); 
 				ghat = delta_y * Delta;
 
 			case OPENCACHE
 				delta_vec_y = vec_y(:,2) .- vec_y(:,1);
 				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) * ones(p,1);
-
 		end % switch
+		if i==1; in.ghat_1_norm=norm(ghat); end
 
 		ghat = normalize_ghat(ghat, settings.normalize);
 		ghat = ghat * settings.boost;
 		hist_ghat = [hist_ghat, ghat];
-
 		%} COMPUTE ghat
 
-		alpha_i =  compute_coefficient(settings, i);
+		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 		hist_theta = [hist_theta, theta];
 

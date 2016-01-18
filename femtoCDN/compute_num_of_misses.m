@@ -1,7 +1,7 @@
 % Compute the number of misses
 % y is the miss intensity
 function [num_of_misses, tot_requests] = compute_num_of_misses(in, theta, lambdatau)
-		p = length(theta);
+		p = in.p;
 
 		requests = poissrnd(lambdatau); % one row per each CP, one cell per each object
 
@@ -14,4 +14,12 @@ function [num_of_misses, tot_requests] = compute_num_of_misses(in, theta, lambda
 		end
 
 		tot_requests = sum(sum(requests) ); % total requests, one cell per each CP
+		%num_of_misses(theta < 0) = pow2(-theta) * tot_requests;
+		if any (theta < 0)
+			pow2(-theta)
+			theta
+			num_of_misses
+			error("ciao")
+		end
+
 end
