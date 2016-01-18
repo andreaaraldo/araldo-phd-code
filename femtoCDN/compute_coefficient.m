@@ -12,7 +12,7 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 		case COEFF_100
 			alpha_i = 1.0/( 1+ floor(epoch/100) );
 		case COEFF_ADAPTIVE
-			a = in.K / (in.p * in.ghat_1_norm);
+			a = 0.5 * in.K / (in.p * in.ghat_1_norm);
 			alpha_i = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 		otherwise
 			error("Coefficients not recognised");
