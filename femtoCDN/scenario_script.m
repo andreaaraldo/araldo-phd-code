@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/prova";
+mdat_folder = "data/rawdata/convergence";
 max_parallel = 2;
 
 parse=false; % false if you want to run the experiment.
