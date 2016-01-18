@@ -12,13 +12,16 @@ function dspsa(in, settings, infile)
 	end
 
 	variant = [];
-	ORIG = 1; OPENCACHE = 3;
+	ORIG = 1; OPENCACHE = 3; CSDA = 4;
 	switch settings.method
 		case "dspsa_orig"
 			variant = ORIG;
 
 		case "opencache"
 			variant = OPENCACHE;
+
+		case "csda"
+			variant = CSDA;
 
 		otherwise
 			method
@@ -35,14 +38,6 @@ function dspsa(in, settings, infile)
 	
 	%{ GENERATE THE INITIAL CONFIG
 	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
-	%{
-	while sum(theta) > in.K
-		theta(rand(1,1,[1:p]) )	--
-	end%while
-	while sum(theta) < in.K
-		theta(rand(1,1,[1:p]) )	++
-	end%while
-	%}
 	%} GENERATE THE INITIAL CONFIG
 
 
@@ -56,20 +51,26 @@ function dspsa(in, settings, infile)
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
 
+		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
 			Delta = round(unidrnd(2,p/2,1) - 1.5);
 			ordering = randperm(p/2);
 			Delta2 = -Delta(ordering);
 			Delta = [Delta; Delta2];
 		%}DELTA GENERATION
+		end%if
 
 
 		%{ BUILD TEST CONFIGURATIONS
+		if variant == ORIG || variant == OPENCACHE
 			test_theta = [];
 			pi_ = floor(theta) + 1/2;
 			theta_minus = pi_ - 0.5*Delta;
 			theta_plus = pi_ + 0.5*Delta;
 			test_theta = [theta_minus, theta_plus];
+		else if variant == CSDA
+			test_theta = round(theta);
+		end %if
 			%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K )
 					theta
@@ -84,13 +85,13 @@ function dspsa(in, settings, infile)
 		%{ RUN TESTS
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = [];
-		for test = 1:2
+		for test = 1:size(test_theta, 2)
 			current_theta = test_theta(:,test);
 
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
-			[current_num_of_misses, current_tot_requests] = ...
-				compute_num_of_misses(in, current_theta, in.lambdatau/2.0);
+			[current_num_of_misses, current_tot_requests, current_F] = ...
+				compute_num_of_misses(in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
 			num_of_misses = [num_of_misses, current_num_of_misses];
 			tot_requests = [tot_requests, current_tot_requests];
 			vec_y = [vec_y, current_num_of_misses ./ current_tot_requests];
@@ -111,6 +112,9 @@ function dspsa(in, settings, infile)
 			case OPENCACHE
 				delta_vec_y = vec_y(:,2) .- vec_y(:,1);
 				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) * ones(p,1);
+
+			case CSDA
+				
 		end % switch
 		if i==1; in.ghat_1_norm=norm(ghat); end
 
