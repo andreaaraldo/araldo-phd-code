@@ -31,6 +31,7 @@ function dspsa(in, settings, infile)
 	global severe_debug
 	rand("seed",settings.seed);
 	p = in.p;
+	theta_opt = in.req_proportion' * in.K;
 	
 	%{ GENERATE THE INITIAL CONFIG
 	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
@@ -144,7 +145,8 @@ function dspsa(in, settings, infile)
 		disp (sprintf("%s written", settings.outfile) );
 	end
 
-	hist_theta
+	hist_difference = ( hist_theta - repmat(theta_opt,1, size(hist_theta,2)) ) / in.K;
+	hist_MSE = meansq( hist_difference , 1 );
 %	hist_cum_hit(settings.epochs)
 	printf("\nsuccess\n");
 end%function

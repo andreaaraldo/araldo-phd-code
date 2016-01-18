@@ -14,7 +14,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive"};
 coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1e4]; %req/s
+lambdas = [1e4, 1e2]; %req/s
 tot_times = [2]; %total time(hours)
 Ts = [60]; % epoch duration (s)
 overall_ctlgs = [1e6];
@@ -22,7 +22,7 @@ ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
+in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e3]; %cache slots
 seeds = [1];
@@ -48,9 +48,9 @@ for seed = seeds
 		%{CHECKS
 		if mod(p,2) != 0; error("Only an even number of CPs are accepted"); end
 		if req_eps==-1; 
-			if length(req_proportion)!=p; disp(req_proportion);disp(p);error("error"); end; 
-			if abs( sum(req_proportion) - 1) > 1e-5; 
-				disp(req_proportion); disp(sum(req_proportion)); error("error"); 
+			if length(in.req_proportion)!=p; disp(in.req_proportion);disp(p);error("error"); end; 
+			if abs( sum(in.req_proportion) - 1) > 1e-5; 
+				disp(in.req_proportion); disp(sum(in.req_proportion)); error("error"); 
 			end; 
 		end;
 		%}CHECKS
@@ -86,7 +86,7 @@ for seed = seeds
 					R = differentiated_vector(p, avg_req_per_epoch_per_CP, req_eps); 
 					R_perms = [R, flipud(R)];
 				else
-					R = avg_req_per_epoch * req_proportion';
+					R = avg_req_per_epoch * in.req_proportion';
 					R_perms_to_consider = [1];
 					R_perms = R;
 				end
@@ -182,7 +182,7 @@ for seed = seeds
 
 								req_str=[];in.req_str_inner=[];
 								if req_eps == -1
-									in.req_str_inner = strrep(strrep(strrep(mat2str(req_proportion,2), "[", ""), "]","")," ","_");
+									in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
 									req_str = sprintf("req_prop_%s",in.req_str_inner);
 								else
 									in.req_str_inner = sprintf("%g", req_eps);

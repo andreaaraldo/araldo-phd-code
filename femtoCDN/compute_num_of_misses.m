@@ -14,12 +14,5 @@ function [num_of_misses, tot_requests] = compute_num_of_misses(in, theta, lambda
 		end
 
 		tot_requests = sum(sum(requests) ); % total requests, one cell per each CP
-		%num_of_misses(theta < 0) = pow2(-theta) * tot_requests;
-		if any (theta < 0)
-			pow2(-theta)
-			theta
-			num_of_misses
-			error("ciao")
-		end
-
+		num_of_misses(theta < 0) = -theta(theta < 0) * tot_requests;
 end
