@@ -1,7 +1,0 @@
-1/72; ans =
-
-   0.0074360  -0.0020402  -0.0016957  -0.0037001
-
-error: ciao
-error: called from:
-error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 157, column 5

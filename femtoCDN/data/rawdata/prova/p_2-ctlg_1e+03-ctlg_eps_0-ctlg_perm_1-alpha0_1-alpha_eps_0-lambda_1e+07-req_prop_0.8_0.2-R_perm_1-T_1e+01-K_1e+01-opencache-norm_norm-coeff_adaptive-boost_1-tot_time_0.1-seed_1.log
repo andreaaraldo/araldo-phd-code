@@ -1,4 +1,0 @@
-1/36; error: Normalization is no more supported
-error: called from:
-error:   /home/andrea/software/araldo-phd-code/femtoCDN/normalize_ghat.m at line 10, column 3
-error:   /home/andrea/software/araldo-phd-code/femtoCDN/dspsa.m at line 105, column 8
