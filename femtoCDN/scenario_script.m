@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/iteration_duration";
-max_parallel = 22;
+max_parallel = 8;
 
 parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
@@ -16,7 +16,7 @@ coefficientss = {"adaptive"};
 boosts = [1];
 lambdas = [1]; %req/s
 tot_times = [2]; %total time(hours)
-Ts = [10 100 1000]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
