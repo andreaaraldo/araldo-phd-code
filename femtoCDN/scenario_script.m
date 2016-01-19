@@ -14,7 +14,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive"};
 coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1e8]; %req/s
+lambdas = [1e2 1e4]; %req/s
 tot_times = [1]; %total time(hours)
 Ts = [1 10 100 1000]; % epoch duration (s)
 overall_ctlgs = [1e6];
@@ -72,15 +72,15 @@ for seed = seeds
 			in.catalog = ctlg_perms(:,ctlg_perm);
 			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
-			for T = Ts
-				settings.epochs = round(tot_time*3600/T);
+			for in.T = Ts
+				settings.epochs = round(tot_time*3600/in.T);
  				%{CHECK
 				if settings.epochs < 1; error("error");	end;
 				%}CHECK
 
-				for lambda = lambdas
+				for in.lambda = lambdas
 				%{BUILD R_perms
-				avg_req_per_epoch = lambda * T;
+				avg_req_per_epoch = in.lambda * in.T;
 				if req_eps != -1
 					avg_req_per_epoch_per_CP = avg_req_per_epoch/in.p;
 					R = differentiated_vector(p, avg_req_per_epoch_per_CP, req_eps); 
@@ -94,23 +94,23 @@ for seed = seeds
 					if  severe_debug
 
 						%due to the rounding of epochs
-						additional_requests = ( settings.epochs-tot_time*3600/T) * lambda;
+						additional_requests = ( settings.epochs-tot_time*3600/in.T) * in.lambda;
 
-						tot_effective_req = lambda*T*settings.epochs;
+						tot_effective_req = in.lambda*in.T*settings.epochs;
 						if any(abs(sum(R_perms*settings.epochs,1) - tot_effective_req )>1e-4)
 
-							exact_epochs = tot_time*3600/T
+							exact_epochs = tot_time*3600/in.T
 							tot_effective_req
 							additional_requests
 							avg_req_per_epoch
 							req_per_permutation_per_epoch = sum(R_perms,1)
-							lambda
+							in.lambda
 							tot_seconds = tot_time*3600
 							R_perms'
 							epochs = settings.epochs
-							T
+							in.T
 							req_per_epoch = sum(R_perms,1)
-							avg_overall_req = lambda*tot_time*3600
+							avg_overall_req = in.lambda*tot_time*3600
 							tot_effective_req
 							difference = abs(sum(R_perms*settings.epochs,1) - tot_effective_req )
 							error("Total number of requests does not match");
@@ -192,7 +192,7 @@ for seed = seeds
 
 								settings.simname = ...
 									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   lambda,req_str,R_perm, T,     K, method, normalize, coefficients, settings.boost, tot_time,   seed);
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.boost, tot_time,   seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
