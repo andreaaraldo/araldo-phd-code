@@ -34,7 +34,6 @@ function dspsa(in, settings, infile)
 	global severe_debug
 	rand("seed",settings.seed);
 	p = in.p;
-	theta_opt = in.req_proportion' * in.K;
 	
 	%{ INITIALIZE
 	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
@@ -166,6 +165,9 @@ function dspsa(in, settings, infile)
 
 
 	if settings.save_mdat_file
+		%lambdatau can be hige if the catalog is big. It is better not to save it
+		in.lambdatau = [];
+
 		save("-binary", settings.outfile);
 		disp (sprintf("%s written", settings.outfile) );
 	end
