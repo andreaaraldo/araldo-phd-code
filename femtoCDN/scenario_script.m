@@ -4,7 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/iteration_duration";
 max_parallel = 22;
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
