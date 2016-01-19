@@ -1,21 +1,21 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/convergence";
+mdat_folder = "data/rawdata/prova";
 max_parallel = 4;
 
 parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
-methods_ = {"descent", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"dspsa_orig","opencache"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
+methods_ = {"csda"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive"};
 coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1e4, 1e2]; %req/s
-tot_times = [2000]; %total time(hours)
+lambdas = [1e8]; %req/s
+tot_times = [0.2]; %total time(hours)
 Ts = [60]; % epoch duration (s)
 overall_ctlgs = [1e6];
 ctlg_epss = [0];
@@ -132,7 +132,7 @@ for seed = seeds
 
 							%{NORMALIZE AND COEFF ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optim") || strcmp(method,"dspsa_enhanced")
+							if strcmp(method,"optim") || strcmp(method,"csda")
 								active_coefficientss = {"no"};
 							end
 
@@ -219,8 +219,8 @@ for seed = seeds
 
 									function_name = [];
 									switch method
-										case "descent"
-											function_name = "cumulative_steepest_descent";
+										case "csda"
+											function_name = "dspsa";
 
 										case "dspsa_orig"
 											function_name = "dspsa";

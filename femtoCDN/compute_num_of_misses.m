@@ -1,6 +1,7 @@
 % Compute the number of misses
-% y is the miss intensity
-function [num_of_misses, tot_requests] = compute_num_of_misses(in, theta, lambdatau)
+% F is a vector whose single cell is the fraction of requests to a single CP
+
+function [num_of_misses, tot_requests, F] = compute_num_of_misses(in, theta, lambdatau)
 		p = in.p;
 
 		requests = poissrnd(lambdatau); % one row per each CP, one cell per each object
@@ -13,6 +14,6 @@ function [num_of_misses, tot_requests] = compute_num_of_misses(in, theta, lambda
 			num_of_misses = [num_of_misses; requests(j,:) * cache_indicator_negated(j,:)'];
 		end
 
-		tot_requests = sum(sum(requests) ); % total requests, one cell per each CP
-		num_of_misses(theta < 0) = -theta(theta < 0) * tot_requests;
+		tot_requests = sum(sum(requests,2)); % total requests, one cell per each CP
+		F = sum(requests,2) / tot_requests;
 end
