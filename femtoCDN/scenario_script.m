@@ -4,7 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "data/rawdata/iteration_duration";
 max_parallel = 22;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -14,17 +14,17 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive"};
 coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1e2 1e4]; %req/s
-tot_times = [1]; %total time(hours)
-Ts = [1 10 100 1000]; % epoch duration (s)
-overall_ctlgs = [1e6];
+lambdas = [1e2]; %req/s
+tot_times = [2]; %total time(hours)
+Ts = [10 100 1000]; % epoch duration (s)
+overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
-Ks = [1e3]; %cache slots
+Ks = [1e6]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS

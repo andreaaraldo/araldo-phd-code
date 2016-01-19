@@ -164,13 +164,6 @@ function dspsa(in, settings, infile)
 
 	end%for
 
-	[hist_allocation, hist_cum_observed_req, hist_cum_hit] = compute_metrics(...
-		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
-
-	hist_difference = ( hist_theta - repmat(theta_opt,1, size(hist_theta,2)) ) / in.K;
-	hist_MSE = meansq( hist_difference , 1 );
-
-	hist_theta
 
 	if settings.save_mdat_file
 		save("-binary", settings.outfile);
