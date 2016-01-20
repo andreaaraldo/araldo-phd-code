@@ -1,0 +1,43 @@
+1/1e+06; 2/1e+06; warning: division by zero
+c =
+
+   10
+   10
+   10
+   10
+   10
+   10
+   10
+   10
+   10
+   10
+
+Lc =
+
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+   0
+
+delta_vc =
+
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+
+error: Error: delta_vc cannot be nan
+error: called from:
+error:   /home/araldo_local/software/araldo-phd-code/femtoCDN/cumulative_steepest_descent.m at line 57, column 6
