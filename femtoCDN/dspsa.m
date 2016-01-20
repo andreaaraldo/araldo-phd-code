@@ -37,8 +37,7 @@ function dspsa(in, settings, infile)
 	
 	%{ INITIALIZE
 	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
-		
-	end
+
 
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
