@@ -1,5 +1,0 @@
-improvement 10 100000 0 1 1e+02 1 0 0.56_0.02_0.02_0.08_0.02_0.02_0.04_0.02_0.02_0.2 1 38.6482 29.9253 8.72291
-data/rawdata/prova/N_10-ctlg_1e+05-ctlg_eps_0-ctlg_perm_1-alpha0_1-alpha_eps_0-lambda_100-req_prop_0.56_0.02_0.02_0.08_0.02_0.02_0.04_0.02_0.02_0.2-R_perm_1-T_1e+01-K_1e+02-optimum-norm_1-coeff_no-boost_1-tot_time_1.5-seed_1.mdat written
-
-success
-ans =  0.087229

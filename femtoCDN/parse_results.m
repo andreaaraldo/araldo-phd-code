@@ -3,6 +3,8 @@ function parse_results(in, settings)
 	output = FINAL_CV;
 
 	load(settings.outfile);
+	theta_opt = in.req_proportion' * in.K;
+
 
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
 		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
