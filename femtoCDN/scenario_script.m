@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/prova";
+mdat_folder = "data/rawdata/iteration_duration";
 max_parallel = 8;
 
 parse=true; % false if you want to run the experiment.
