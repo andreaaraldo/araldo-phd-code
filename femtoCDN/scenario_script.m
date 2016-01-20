@@ -1,27 +1,22 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "data/rawdata/iteration_duration";
+mdat_folder = "data/rawdata/prova";
 max_parallel = 8;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"dspsa_orig"};
+methods_ = {"dspsa_orig", "opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive"};
 coefficientss = {"adaptive"};
 boosts = [1];
-lambdas = [1]; %req/s
-<<<<<<< HEAD
+lambdas = [100]; %req/s
 tot_times = [0.5]; %total time(hours)
-Ts = [10]; % epoch duration (s)
-=======
-tot_times = [2]; %total time(hours)
-Ts = [100 1000]; % epoch duration (s)
->>>>>>> 200b2b9ddb863213d0e05d9340be9de334bf3a58
+Ts = [10 100 1000]; % epoch duration (s)
 overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -29,7 +24,7 @@ alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
-Ks = [1e3]; %cache slots
+Ks = [1e6]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS

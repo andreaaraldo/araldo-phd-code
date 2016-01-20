@@ -97,13 +97,18 @@ function dspsa(in, settings, infile)
 			[current_num_of_misses, current_tot_requests, F] = ...
 				compute_num_of_misses(in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
 			num_of_misses = [num_of_misses, current_num_of_misses];
-			miss_ratio = miss_ratio = [miss_ratio, current_num_of_misses ./ (current_tot_requests ./ F) ];
+
 			tot_requests = [tot_requests, current_tot_requests];
 			
-			%{ COMPUTE vec_y
+			%{ COMPUTE vec_y or similar
 			if variant == ORIG || variant == OPENCACHE
 				vec_y = [vec_y, current_num_of_misses ./ current_tot_requests];
+				vec_y(current_tot_requests == 0) = 0;
 			elseif variant == CSDA
+				miss_ratio = miss_ratio = [miss_ratio, ...
+							current_num_of_misses ./ (current_tot_requests .* F ) ] ;
+				miss_ratio (current_tot_requests .* F == 0) = 0;
+			
 				vec_y = F .* miss_ratio ;
 				vec_y_old = F .* miss_ratio_old;
 			end%if
@@ -151,6 +156,10 @@ function dspsa(in, settings, infile)
 
 		%{CHECK
 		if severe_debug
+			if any(isnan(theta) )
+				error("Some element of theta is NaN. This is an error.")
+			end
+
 			if sum(Delta) != 0 && sum(ghat)!=0
 				Delta
 				delta_vc

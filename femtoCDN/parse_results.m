@@ -1,6 +1,6 @@
 function parse_results(in, settings)
-	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3;
-	output = FINAL_CV;
+	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4;
+	output = FINAL_ERR;
 
 	load(settings.outfile);
 	theta_opt = in.req_proportion' * in.K;
@@ -11,6 +11,7 @@ function parse_results(in, settings)
 
 	hist_difference = ( hist_theta - repmat(theta_opt,1, size(hist_theta,2)) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
+	hist_err = norm(hist_difference, 1) ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 
 	hist_theta
 	mean(hist_theta, 1)
@@ -29,6 +30,10 @@ function parse_results(in, settings)
 		case FINAL_CV
 			v = hist_CV( length(hist_CV ) );
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
+
+		case FINAL_ERR
+			v = hist_err( length(hist_err ) );
+			printf("%s %g %g %g %g\n", settings.method, in.lambda, in.K, in.T, v);
 
 		case FINAL_OBSERVED_HIT
 			v = hist_cum_hit(1);
