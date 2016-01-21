@@ -44,14 +44,16 @@ function dspsa(in, settings, infile)
 
 	theta_opt = in.req_proportion' * in.K;
 	convergence.duration = 0;	
-	%} INITIALIZE
-
 
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
 
 	hist_theta = [];
 	hist_ghat = [] ;
+	hist_a = [];
+	%} INITIALIZE
+
+
 
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
@@ -146,6 +148,7 @@ function dspsa(in, settings, infile)
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 		hist_theta = [hist_theta, theta];
+		hist_a = [hist_a, alpha_i]
 
 		if variant == CSDA
 			idx_selection = round(theta) != round(theta_previous);

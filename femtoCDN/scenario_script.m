@@ -4,15 +4,15 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/archive/femtoCDN/iteration_duration";
 max_parallel = 22;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
 methods_ = {"opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
-coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"};
-coefficientss = { "adaptiveaggr", "adaptive"};
+coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive"};
+coefficientss = { "insensitive", "adaptiveaggr", "adaptive"};
 boosts = [1];
 lambdas = [100]; %req/s
 tot_times = [0.5]; %total time(hours)
@@ -29,7 +29,7 @@ seeds = [1];
 
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
-	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5;
+	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 %} CONSTANTS
 
@@ -159,6 +159,8 @@ for seed = seeds
 										settings.coefficients = COEFF_ADAPTIVE;
 									case "adaptiveaggr"
 										settings.coefficients = COEFF_ADAPTIVE_AGGRESSIVE;
+									case "insensitive"
+										settings.coefficients = COEFF_INSENSITIVE;
 									otherwise
 										error "coefficients incorrect";
 								end
