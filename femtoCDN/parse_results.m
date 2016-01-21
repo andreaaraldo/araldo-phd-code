@@ -16,7 +16,7 @@ function parse_results(in, settings)
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 	hist_a
 	round(hist_theta / 1e4)
-	hist_err
+	hist_err'
 	error("ciao")
 
 	switch output
