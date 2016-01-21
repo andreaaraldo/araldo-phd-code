@@ -15,5 +15,7 @@ function [num_of_misses, tot_requests, F] = compute_num_of_misses(in, theta, lam
 		end
 
 		tot_requests = sum(sum(requests,2)); % total requests, one cell per each CP
-		F = sum(requests,2) / tot_requests;
+		F = zeros(in.p, 1);
+		idx_selector = tot_requests != 0;
+		F(tot_requests != 0) = sum(requests,2)(idx_selector) / tot_requests((idx_selector));
 end

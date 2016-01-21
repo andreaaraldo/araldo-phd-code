@@ -3,6 +3,11 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR;
 
+	if in.ghat_1_norm == 0
+		in.ghat_1_norm = 1;
+	end
+
+
 	switch settings.coefficients
 		case COEFF_SIMPLE
 			alpha_i = 1.0/epoch;
@@ -24,30 +29,18 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 			alpha_i = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 
 		case COEFF_ADAPTIVE_AGGRESSIVE
-			if in.ghat_1_norm == 0
-				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
-			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 
 		case COEFF_INSENSITIVE
-			if in.ghat_1_norm == 0
-				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
-			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i = a;
 
 		case COEFF_TRIANGULAR
-			if in.ghat_1_norm == 0
-				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
-			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i = a /epoch;
 
 		case COEFF_SMOOTH_TRIANGULAR
-			if in.ghat_1_norm == 0
-				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
-			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i_triangular = a /epoch;
 			alpha_i_adapt = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );

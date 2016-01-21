@@ -53,8 +53,6 @@ function dspsa(in, settings, infile)
 	hist_a = [];
 	%} INITIALIZE
 
-
-
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
 
@@ -87,7 +85,6 @@ function dspsa(in, settings, infile)
 			%}CHECK CONFIG
 		%} BUILD TEST CONFIGURATIONS
 
-
 		%{ RUN TESTS
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
@@ -104,12 +101,19 @@ function dspsa(in, settings, infile)
 			
 			%{ COMPUTE vec_y or similar
 			if variant == ORIG || variant == OPENCACHE
-				vec_y = [vec_y, current_num_of_misses ./ current_tot_requests];
-				vec_y(current_tot_requests == 0) = 0;
+				current_vec_y = zeros(in.p,1);
+				idx_selector = current_tot_requests != 0; 
+				current_vec_y(idx_selector) = ...
+					current_num_of_misses(idx_selector) ./ ...
+					current_tot_requests(idx_selector);
+				vec_y= [vec_y, current_vec_y];
 			elseif variant == CSDA
-				miss_ratio = miss_ratio = [miss_ratio, ...
-							current_num_of_misses ./ (current_tot_requests .* F ) ] ;
-				miss_ratio (current_tot_requests .* F == 0) = 0;
+				current_miss_ratio = zeros(in.p, 1);
+				idx_selector = (current_tot_requests .* F != zeros(in.p,1) );
+				current_miss_ratio(idx_selector) = ...
+					current_num_of_misses(idx_selector)...
+					 ./ (current_tot_requests.* F)(idx_selector)  ;
+				miss_ratio = [miss_ratio, current_miss_ratio];
 			
 				vec_y = F .* miss_ratio ;
 				vec_y_old = F .* miss_ratio_old;
@@ -131,11 +135,11 @@ function dspsa(in, settings, infile)
 
 			case OPENCACHE
 				delta_vec_y = vec_y(:,2) .- vec_y(:,1);
-				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) * ones(p,1);
+				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) .* ones(p,1);
 
 			case CSDA
 				d_vec_y = (vec_y - vec_y_old) ./ (theta-theta_old);
-				ghat = d_vec_y - (1.0/p) * (d_vec_y' * ones(in.p,1) ) * ones(in.p,1);
+				ghat = d_vec_y - (1.0/p) * (d_vec_y' * ones(in.p,1) ) .* ones(in.p,1);
 				
 		end % switch
 		if i==1; in.ghat_1_norm=norm(ghat); end
@@ -161,7 +165,7 @@ function dspsa(in, settings, infile)
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 		hist_theta = [hist_theta, theta];
-		hist_a = [hist_a, alpha_i]
+		hist_a = [hist_a, alpha_i];
 
 		if variant == CSDA
 			idx_selection = round(theta) != round(theta_previous);
