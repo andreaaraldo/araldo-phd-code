@@ -6,13 +6,13 @@ max_parallel = 22;
 
 parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
 methods_ = {"opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
-coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive"};
-coefficientss = {"adaptiveaggr", "adaptive"};
+coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"smoothtriang", "triang", "adaptiveaggr", "adaptive"};
 boosts = [1];
 lambdas = [100]; %req/s
 tot_times = [0.5]; %total time(hours)
@@ -30,6 +30,7 @@ seeds = [1];
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
+	global COEFF_SMOOTH_TRIANGULAR=7; COEFF_TRIANGULAR=8;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 %} CONSTANTS
 
@@ -161,6 +162,10 @@ for seed = seeds
 										settings.coefficients = COEFF_ADAPTIVE_AGGRESSIVE;
 									case "insensitive"
 										settings.coefficients = COEFF_INSENSITIVE;
+									case "triang"
+										settings.coefficients = COEFF_TRIANGULAR;
+									case "smoothtriang"
+										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
 									otherwise
 										error "coefficients incorrect";
 								end
