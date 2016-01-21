@@ -145,6 +145,11 @@ function dspsa(in, settings, infile)
 		hist_ghat = [hist_ghat, ghat];
 		%{CHECK
 		if severe_debug
+			if any(isnan(vec_y) )
+				error("Some element of ghat is NaN. This is an error.")
+			end
+
+
 			if any(isnan(ghat) )
 				error("Some element of ghat is NaN. This is an error.")
 			end
