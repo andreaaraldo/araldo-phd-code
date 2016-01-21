@@ -143,6 +143,14 @@ function dspsa(in, settings, infile)
 		ghat = normalize_ghat(ghat, settings.normalize);
 		ghat = ghat * settings.boost;
 		hist_ghat = [hist_ghat, ghat];
+		%{CHECK
+		if severe_debug
+			if any(isnan(ghat) )
+				error("Some element of ghat is NaN. This is an error.")
+			end
+		end
+		%}CHECK
+
 		%} COMPUTE ghat
 
 		alpha_i =  compute_coefficient(in, settings, i);
