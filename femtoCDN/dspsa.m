@@ -3,37 +3,36 @@
 % [1] Wang, Spall - "Discrete simultaneous perturbation stochastic approximation on loss function with noisy measurements"	
 function dspsa(in, settings, infile)
 
-	% SETTINGS
-	global severe_debug
+	%{ SETTINGS
+		global severe_debug
 
-	if length(in)==0 && length(settings)==0
-		load (infile);
-		delete(infile);
-	end
+		if length(in)==0 && length(settings)==0
+			load (infile);
+			delete(infile);
+		end
 
-	variant = [];
-	ORIG = 1; OPENCACHE = 3; CSDA = 4;
-	switch settings.method
-		case "dspsa_orig"
-			variant = ORIG;
+		variant = [];
+		ORIG = 1; OPENCACHE = 3; CSDA = 4;
+		switch settings.method
+			case "dspsa_orig"
+				variant = ORIG;
 
-		case "opencache"
-			variant = OPENCACHE;
+			case "opencache"
+				variant = OPENCACHE;
 
-		case "csda"
-			variant = CSDA;
+			case "csda"
+				variant = CSDA;
 
-		otherwise
-			method
-			error("variant not recognised");
-	end %switch
+			otherwise
+				method
+				error("variant not recognised");
+		end %switch
 
-
-
-	% SETTINGS
-	global severe_debug
-	rand("seed",settings.seed);
-	p = in.p;
+		rand("seed",settings.seed);
+		p = in.p;
+		convergence.required_duration = 1e6;
+		convergence.tolerance = 0.1;
+	%} SETTINGS
 	
 	%{ INITIALIZE
 	theta=repmat( (in.K-0.5*p/2) *1.0/p, p,1 ); %virtual configuration
@@ -42,6 +41,9 @@ function dspsa(in, settings, infile)
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
 	end%if
+
+	theta_opt = in.req_proportion' * in.K;
+	convergence.duration = 0;	
 	%} INITIALIZE
 
 
@@ -50,9 +52,6 @@ function dspsa(in, settings, infile)
 
 	hist_theta = [];
 	hist_ghat = [] ;
-
-	"epochs are"
-	settings.epochs	
 
 	for i=1:settings.epochs
 		printf("%g/%g; ",i,settings.epochs);
@@ -154,7 +153,6 @@ function dspsa(in, settings, infile)
 			miss_ratio_old( idx_selection ) = miss_ratio( idx_selection );
 		end
 
-
 		%{CHECK
 		if severe_debug
 			if any(isnan(theta) )
@@ -169,6 +167,18 @@ function dspsa(in, settings, infile)
 		end
 		%}CHECK
 
+		%{ CONVERGENCE
+		err = norm(theta-theta_opt)/norm(theta_opt);
+		if err <= convergence.tolerance
+			convergence.duration ++;
+		else
+			convergence.duration = 0;
+		end
+
+		if convergence.duration == convergence.required_duration
+			break;
+		end
+		%} CONVERGENCE
 
 
 	end%for
