@@ -12,7 +12,7 @@ methods_ = {"opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"smoothtriang", "triang", "adaptiveaggr", "adaptive"};
+coefficientss = {"smoothtriang", "adaptiveaggr", "adaptive"};
 boosts = [1];
 lambdas = [100]; %req/s
 tot_times = [0.5]; %total time(hours)
@@ -30,7 +30,7 @@ seeds = [1];
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
-	global COEFF_SMOOTH_TRIANGULAR=7; COEFF_TRIANGULAR=8;
+	global COEFF_SMOOTH_TRIANGULAR=7; global COEFF_TRIANGULAR=8;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 %} CONSTANTS
 
