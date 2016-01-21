@@ -16,9 +16,9 @@ function parse_results(in, settings)
 	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
-	coefficiente = hist_a
-	configurazione = round(hist_theta)
-	errore = hist_err'
+	%coefficiente = hist_a
+	%configurazione = round(hist_theta)
+	%errore = hist_err'
 
 	switch output
 		case ALL_HISTORY
