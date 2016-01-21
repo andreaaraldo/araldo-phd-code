@@ -8,7 +8,7 @@ parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"opencache", "csda", "dspsa_orig"};
+methods_ = {"opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"};
@@ -24,7 +24,7 @@ alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e3]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS
