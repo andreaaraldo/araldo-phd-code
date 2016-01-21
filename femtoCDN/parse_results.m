@@ -18,7 +18,7 @@ function parse_results(in, settings)
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 	coefficiente = hist_a / 1e4
 	configurazione = round(hist_theta / 1e4)
-	errore hist_err'
+	errore = hist_err'
 
 	switch output
 		case ALL_HISTORY
