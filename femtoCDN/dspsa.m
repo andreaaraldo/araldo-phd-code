@@ -79,12 +79,17 @@ function dspsa(in, settings, infile)
 				theta_minus = pi_ - 0.5*Delta;
 				theta_plus = pi_ + 0.5*Delta;
 			end
-
 			%} CORRECTION
 
 			test_theta = [theta_minus, theta_plus];
 		elseif variant == CSDA
 			test_theta = round(theta);
+			%{ CORRECTION
+			while sum(test_theta)> in.K
+				theta = (1-0.0001) * theta;
+				test_theta = round(theta);
+			end
+			%} CORRECTION
 		endif
 			%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K )
