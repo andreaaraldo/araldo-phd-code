@@ -15,7 +15,7 @@ function parse_results(in, settings)
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 	hist_a
-	hist_theta
+	round(hist_theta / 1e4)
 	error("ciao")
 
 	switch output
