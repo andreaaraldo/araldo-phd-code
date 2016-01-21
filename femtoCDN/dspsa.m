@@ -36,7 +36,7 @@ function dspsa(in, settings, infile)
 	p = in.p;
 	
 	%{ INITIALIZE
-	theta=repmat( (in.K-0.5*p) *1.0/p, p,1 ); %virtual configuration
+	theta=repmat( (in.K-0.5*p/2) *1.0/p, p,1 ); %virtual configuration
 
 
 	if variant == CSDA

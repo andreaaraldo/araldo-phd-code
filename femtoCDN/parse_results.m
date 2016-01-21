@@ -10,11 +10,10 @@ function parse_results(in, settings)
 		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
 
 	hist_difference = ( hist_theta - repmat(theta_opt,1, size(hist_theta,2)) );
+	hist_difference_sqr = hist_difference .^ 2;
+	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
-	hist_err = norm(hist_difference, 1) ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
-
-	hist_theta
-	mean(hist_theta, 1)
+	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 
 	switch output
 		case ALL_HISTORY
