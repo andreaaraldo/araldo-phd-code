@@ -42,14 +42,14 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
 			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
-			alpha_i = a /i;
+			alpha_i = a /epoch;
 
 		case COEFF_SMOOTH_TRIANGULAR
 			if in.ghat_1_norm == 0
 				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
 			end
 			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
-			alpha_i_triangular = a /i;
+			alpha_i_triangular = a /epoch;
 			alpha_i_adapt = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 			iterations_in_half_h = 60*30/in.T;
 			if epoch <= iterations_in_half_h
