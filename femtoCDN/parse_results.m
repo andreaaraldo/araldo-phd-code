@@ -2,7 +2,7 @@ function parse_results(in, settings)
 	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4;
 	output = FINAL_ERR;
 
-	printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
+	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
 	load(settings.outfile);
 	theta_opt = in.req_proportion' * in.K;
