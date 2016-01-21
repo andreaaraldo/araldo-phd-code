@@ -1,6 +1,6 @@
 function alpha_i = compute_coefficient(in, settings, epoch)
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
-	global COEFF_ADAPTIVE;
+	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE;
 
 	switch settings.coefficients
 		case COEFF_SIMPLE
