@@ -33,7 +33,7 @@ function parse_results(in, settings)
 		case FINAL_ERR
 			v1 = hist_err( length(hist_err ) );
 			v2 = mean(hist_err);
-			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficient, in.lambda, in.K, in.T, v1, v2);
+			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
 
 		case FINAL_OBSERVED_HIT
 			v = hist_cum_hit(1);
