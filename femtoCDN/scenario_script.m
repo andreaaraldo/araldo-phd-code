@@ -4,7 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/archive/femtoCDN/prova";
 max_parallel = 22;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -12,7 +12,7 @@ methods_ = {"opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"triang", "smoothtriang"};
+coefficientss = {"adaptive","adaptiveaggr", "triang", "smoothtriang"};
 boosts = [1];
 lambdas = [100]; %req/s
 tot_times = [0.5]; %total time(hours)
