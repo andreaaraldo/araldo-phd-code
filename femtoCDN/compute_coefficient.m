@@ -21,7 +21,7 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 			if in.ghat_1_norm == 0
 				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
 			end
-			a = (in.K - 0.5*p/2) / (in.p * in.ghat_1_norm);
+			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 		otherwise
 			error("Coefficients not recognised");
