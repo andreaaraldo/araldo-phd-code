@@ -12,7 +12,7 @@ methods_ = {"csda", "opencache", "dspsa_orig"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"};
-coefficientss = {"adaptive", "adaptiveaggr"};
+coefficientss = {"adaptiveaggr"};
 boosts = [1];
 lambdas = [1]; %req/s
 tot_times = [0.5]; %total time(hours)
@@ -24,7 +24,7 @@ alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
-Ks = [1e3]; %cache slots
+Ks = [1e6]; %cache slots
 seeds = [1];
 
 %{ CONSTANTS
