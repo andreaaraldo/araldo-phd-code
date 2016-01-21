@@ -35,7 +35,7 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	theta=repmat( (in.K-0.5*p/2 - 0.1) *1.0/p, p,1 ); %virtual configuration
+	theta=repmat( (in.K-0.5*p/2) *1.0/p, p,1 ); %virtual configuration
 
 
 	if variant == CSDA
@@ -72,6 +72,16 @@ function dspsa(in, settings, infile)
 			pi_ = floor(theta) + 1/2;
 			theta_minus = pi_ - 0.5*Delta;
 			theta_plus = pi_ + 0.5*Delta;
+			%{ CORRECTION
+			while sum(theta_plus)> in.K || sum(theta_plus)<= in.K
+				theta = (1-0.0001) * theta;
+				pi_ = floor(theta) + 1/2;
+				theta_minus = pi_ - 0.5*Delta;
+				theta_plus = pi_ + 0.5*Delta;
+			end
+
+			%} CORRECTION
+
 			test_theta = [theta_minus, theta_plus];
 		elseif variant == CSDA
 			test_theta = round(theta);
