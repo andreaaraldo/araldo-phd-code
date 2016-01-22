@@ -183,15 +183,11 @@ function dspsa(in, settings, infile)
 		theta = theta - alpha_i * ghat;
 
 		if settings.balancer && any(theta<0)
-			theta_prima = theta
 			todistribute = sum( theta(theta<0) ) ;
 			fraction = zeros(in.p, 1);
 			fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
 			theta = theta .+ todistribute .* fraction;
 			theta(theta<0) = 0;
-			theta_dopo = theta
-			i
-			error("ciao");
 		end
 
 
