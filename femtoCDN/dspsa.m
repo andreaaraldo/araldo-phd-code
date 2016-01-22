@@ -32,6 +32,7 @@ function dspsa(in, settings, infile)
 		p = in.p;
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
+		printf_interval = ceil(settings.epochs/100);
 	%} SETTINGS
 	
 	%{ INITIALIZE
@@ -54,7 +55,9 @@ function dspsa(in, settings, infile)
 	%} INITIALIZE
 
 	for i=1:settings.epochs
-		printf("%g/%g; ",i,settings.epochs);
+		if mod(i,printf_interval)==0
+			printf("%g/%g=%d%%; ",i,settings.epochs, i*100/settings.epochs);
+		end
 
 		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
@@ -65,7 +68,6 @@ function dspsa(in, settings, infile)
 		%}DELTA GENERATION
 		end%if
 
-
 		%{ BUILD TEST CONFIGURATIONS
 		if variant == ORIG || variant == OPENCACHE
 			test_theta = [];
@@ -73,7 +75,7 @@ function dspsa(in, settings, infile)
 			theta_minus = pi_ - 0.5*Delta;
 			theta_plus = pi_ + 0.5*Delta;
 			%{ CORRECTION
-			while sum(theta_plus)> in.K || sum(theta_plus)<= in.K
+			while sum(theta_plus)> in.K || sum(theta_plus)> in.K
 				theta = (1-0.0001) * theta;
 				pi_ = floor(theta) + 1/2;
 				theta_minus = pi_ - 0.5*Delta;
