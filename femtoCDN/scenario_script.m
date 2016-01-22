@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 24;
+max_parallel = 8;
 
 
 
@@ -29,7 +29,7 @@ in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
 balancers = {"no", "fixed", "prop"};
-seeds = 2:7;
+seeds = 8:9;
 
 
 
