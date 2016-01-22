@@ -32,7 +32,7 @@ function parse_results(in, settings)
 	[ix, iy] = find(hist_theta<0);
 	primo_negativo = min(iy);
 	%}
-	configurazione_is = round(hist_theta(:, size(hist_theta, 2) ) )
+	configurazione_is = round(hist_theta(:, :) )
 
 	switch output
 		case ALL_HISTORY
