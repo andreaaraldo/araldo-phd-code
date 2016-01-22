@@ -29,7 +29,7 @@ function parse_results(in, settings)
 	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
 	configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
 	%}
-	configurazione = round(hist_theta(:, 1:50 )
+	configurazione = round(hist_theta(:, 1:50 ) )
 	error("ciao");
 	%{errore = hist_err'
 	%}
