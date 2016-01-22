@@ -55,7 +55,7 @@ function parse_results(in, settings)
 			v1 = round(v1*100);
 			v2 = mean(hist_err(1:how_many) );
 			v2 = round(v2*100);
-			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
+			printf("%s %d %s %g %g %g %g %g\n", settings.method, settings.coefficients, settings.balancer_str, in.lambda, in.K, in.T, v1, v2);
 
 		case FINAL_OBSERVED_HIT
 			v = hist_cum_hit(1);
