@@ -31,7 +31,7 @@ function parse_results(in, settings)
 	errore = hist_err'
 	%}
 	[ix, iy] = find(hist_theta<0);
-	primo_negativo = min(iy);
+	primo_negativo = min(iy)
 
 	switch output
 		case ALL_HISTORY
