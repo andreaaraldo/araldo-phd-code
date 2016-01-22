@@ -6,6 +6,9 @@ function [num_of_misses, tot_requests, F] = compute_num_of_misses(in, theta, lam
 
 		requests = poissrnd(lambdatau); % one row per each CP, one cell per each object
 
+		requests_is = sum(requests, 2)'
+
+
 		max_catalog = max(in.catalog);
 		ordinal = repmat(1:max_catalog, p, 1);
 		cache_indicator_negated = ordinal > repmat(theta,1,max_catalog);
