@@ -162,7 +162,7 @@ for seed = seeds
 							for idx_balancer = 1:length(balancers)
 								coefficients = active_coefficientss{idx_coefficient};
 								normalize = normalizes{idx_normalize};
-								settings.balancer_str = active_balancers{idx_balancer};
+								settings.balancer_str = active_balancers{balancers};
 
 								switch coefficients
 									case "no"
