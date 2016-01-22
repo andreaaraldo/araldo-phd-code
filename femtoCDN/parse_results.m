@@ -28,9 +28,12 @@ function parse_results(in, settings)
 	a_dopo = hist_a(:, primo_negativo+1 )'
 	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
 	configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
+<<<<<<< HEAD
 	%}
 	configurazione = round(hist_theta(:, 1:50 )
 	error("ciao");
+=======
+>>>>>>> b6f7787c7d5733d6437950703cb43fa39e8460c9
 	%errore = hist_err'
 	%}
 	switch output
