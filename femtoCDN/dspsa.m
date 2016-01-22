@@ -124,6 +124,7 @@ function dspsa(in, settings, infile)
 				else
 					current_vec_y = zeros(in.p,1);
 				end
+				vec_y= [vec_y, current_vec_y];
 			elseif variant == CSDA
 				current_miss_ratio = zeros(in.p, 1);
 				idx_selector = (current_tot_requests .* F != zeros(in.p,1) );
@@ -153,6 +154,7 @@ function dspsa(in, settings, infile)
 			case OPENCACHE
 				delta_vec_y = vec_y(:,2) .- vec_y(:,1);
 				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) .* ones(p,1);
+
 
 			case CSDA
 				d_vec_y = (vec_y - vec_y_old) ./ (theta-theta_old);
