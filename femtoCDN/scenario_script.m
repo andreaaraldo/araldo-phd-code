@@ -2,9 +2,9 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 8;
+max_parallel = 22;
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -16,7 +16,7 @@ coefficientss = {"adaptive","adaptiveaggr","smoothtriang", "triang"};
 boosts = [1];
 lambdas = [1 10 100]; %req/s 
 tot_times = [100]; %total time(hours)
-Ts = [1000]; % epoch duration (s)
+Ts = [10 100 1000]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -25,7 +25,7 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
-seeds = [1];
+seeds = 1:5;
 
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
