@@ -18,7 +18,6 @@ function parse_results(in, settings)
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 	%{
 	coefficiente = hist_a
-	[ix, iy] = find(hist_theta<0);
 	primo_negativo = min(iy);
 	theta_prima = hist_theta(:, primo_negativo-1 )'
 	ghat_corrente = hist_ghat(:, primo_negativo )'
@@ -31,6 +30,7 @@ function parse_results(in, settings)
 	configurazione = round(hist_theta(:, : ) )
 	errore = hist_err'
 	%}
+	[ix, iy] = find(hist_theta<0);
 	primo_negativo = min(iy);
 
 	switch output
