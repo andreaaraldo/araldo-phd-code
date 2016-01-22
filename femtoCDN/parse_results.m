@@ -16,7 +16,8 @@ function parse_results(in, settings)
 	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
-	%coefficiente = hist_a
+	%{
+	coefficiente = hist_a
 	[ix, iy] = find(hist_theta<0);
 	primo_negativo = min(iy);
 	theta_prima = hist_theta(:, primo_negativo-1 )'
@@ -29,7 +30,7 @@ function parse_results(in, settings)
 	%configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
 	error("ciao");
 	%errore = hist_err'
-
+	%}
 	switch output
 		case ALL_HISTORY
 			result_file = sprintf("%s.dat", settings.simname);
