@@ -22,9 +22,6 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 			alpha_i = 1.0/( 1+ floor(epoch/100) );
 
 		case COEFF_ADAPTIVE
-			if in.ghat_1_norm == 0
-				error("in.ghat_1_norm is zero and the coefficient a_i cannot be computed")
-			end
 			a = 0.5 * in.K / (in.p * in.ghat_1_norm);
 			alpha_i = a /( ( 1 + 0.1 * settings.epochs + epoch )^0.501 );
 

@@ -17,7 +17,17 @@ function parse_results(in, settings)
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 	%coefficiente = hist_a
-	%configurazione = round(hist_theta)
+	[ix, iy] = find(hist_theta<0);
+	primo_negativo = min(iy);
+	theta_prima = hist_theta(:, primo_negativo-1 )'
+	ghat_corrente = hist_ghat(:, primo_negativo )'
+	a_corrente = hist_a(:, primo_negativo )'
+	theta_dopo = hist_theta(:, primo_negativo )'
+	ghat_dopo = hist_ghat(:, primo_negativo+1 )'
+	a_dopo = hist_a(:, primo_negativo+1 )'
+	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
+	%configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
+	error("ciao");
 	%errore = hist_err'
 
 	switch output
@@ -36,8 +46,8 @@ function parse_results(in, settings)
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
 
 		case FINAL_ERR
-			%how_many = length(hist_err);
-			how_many = 1800 / in.T;
+			how_many = length(hist_err);
+			%how_many = 1800 / in.T;
 			v1 = hist_err( how_many );
 			v2 = mean(hist_err(1:how_many) );
 			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
