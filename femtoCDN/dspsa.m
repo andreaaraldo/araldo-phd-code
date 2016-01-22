@@ -192,7 +192,7 @@ function dspsa(in, settings, infile)
 			fraction = zeros(in.p, 1);
 
 			%{ COMPUTE FRACTION
-			switch settings.BALANCER
+			switch settings.balancer
 				case BALANCER_FIXED
 					fraction(theta>=0) = 1 / sum(theta>=0 );
 				case BALANCER_PROP
