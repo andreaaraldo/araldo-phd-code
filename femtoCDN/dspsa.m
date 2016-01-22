@@ -110,6 +110,8 @@ function dspsa(in, settings, infile)
 
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
+			inlambdataus_is = in.lambdatau
+			error("ciao");
 			[current_num_of_misses, current_tot_requests, F] = ...
 				compute_num_of_misses(in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
 			num_of_misses = [num_of_misses, current_num_of_misses];
