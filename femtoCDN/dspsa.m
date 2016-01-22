@@ -182,10 +182,11 @@ function dspsa(in, settings, infile)
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 
-		if settings.balancer && any(theta<0)
+		while settings.balancer && any(theta<0)
 			todistribute = sum( theta(theta<0) ) ;
 			fraction = zeros(in.p, 1);
-			fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
+			%fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
+			fraction(theta>=0) = 1 / sum(theta>=0 );
 			theta = theta .+ todistribute .* fraction;
 			theta(theta<0) = 0;
 		end
