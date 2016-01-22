@@ -29,7 +29,7 @@ in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
 balancers = {"no", "fixed", "prop"};
-seeds = 1;
+seeds = [1];
 
 
 
