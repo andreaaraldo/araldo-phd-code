@@ -188,6 +188,7 @@ function dspsa(in, settings, infile)
 			fraction = zeros(in.p, 1);
 			fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
 			theta = theta .+ todistribute .* fraction;
+			theta(theta<0) = 0;
 			theta_dopo = theta
 			error("ciao");
 		end
