@@ -123,6 +123,7 @@ function dspsa(in, settings, infile)
 				current_vec_y(idx_selector) = ...
 					current_num_of_misses(idx_selector) ./ ...
 					current_tot_requests(idx_selector);
+				idx_selector_is = idx_selector'
 				current_vec_y_is = current_vec_y'
 				vec_y= [vec_y, current_vec_y];
 			elseif variant == CSDA
