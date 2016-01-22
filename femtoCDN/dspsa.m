@@ -118,12 +118,10 @@ function dspsa(in, settings, infile)
 			
 			%{ COMPUTE vec_y or similar
 			if variant == ORIG || variant == OPENCACHE
-				current_vec_y = zeros(in.p,1);
-				idx_selector = (current_tot_requests != 0 ) ; 
-				current_vec_y(idx_selector) = ...
-					current_num_of_misses(idx_selector) ./ ...
-					current_tot_requests(idx_selector);
-				idx_selector_is = idx_selector'
+				
+				current_vec_y = current_tot_requests != 0 ? ...
+					current_num_of_misses / current_tot_requests : ...
+					zeros(in.p,1);
 				current_vec_y_is = current_vec_y'
 				vec_y= [vec_y, current_vec_y];
 			elseif variant == CSDA
