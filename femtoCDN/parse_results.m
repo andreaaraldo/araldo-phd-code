@@ -28,10 +28,11 @@ function parse_results(in, settings)
 	a_dopo = hist_a(:, primo_negativo+1 )'
 	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
 	configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
-	%}
 	configurazione = round(hist_theta(:, : ) )
-	%{errore = hist_err'
+	errore = hist_err'
 	%}
+	primo_negativo = min(iy);
+
 	switch output
 		case ALL_HISTORY
 			result_file = sprintf("%s.dat", settings.simname);
