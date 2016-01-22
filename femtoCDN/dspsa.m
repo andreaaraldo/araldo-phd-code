@@ -190,6 +190,7 @@ function dspsa(in, settings, infile)
 			theta = theta .+ todistribute .* fraction;
 			theta(theta<0) = 0;
 			theta_dopo = theta
+			i
 			error("ciao");
 		end
 
