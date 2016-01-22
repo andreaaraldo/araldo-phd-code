@@ -4,6 +4,9 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/iteration_duration";
 max_parallel = 24;
 
+
+
+
 parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
@@ -25,15 +28,21 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
-balancers = [1];
-seeds = 1:5;
+balancers = {"no", "fixed", "prop"};
+seeds = 1;
+
+
+
 
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
+global BALANCER_NO=0; global BALANCER_FIXED=1; global BALANCER_PROP=2;
 %} CONSTANTS
+
+
 
 ctlg_perms_to_consider = [1];
 R_perms_to_consider = [1];
@@ -132,22 +141,28 @@ for seed = seeds
 							method = methods_{i};
 							settings.method = method;
 
-							%{NORMALIZE AND COEFF ONLY WHEN IT MATTERS
+							%{NORMALIZE, COEFF AND BALANCERS ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
 							if strcmp(method,"optim") || strcmp(method,"csda")
 								active_coefficientss = {"no"};
 							end
 
+							active_balancers = balancers;
+							if strcmp(method,"optim") || strcmp(method,"csda")
+								active_balancers = {"no"};
+							end
+
 							if settings.boost != 1
 								error("boost must be 1");
 							end
-							%}NORMALIZE AND COEFF ONLY WHEN IT MATTERS
+							%}NORMALIZE, COEFF AND BALANCERS ONLY WHEN IT MATTERS
 
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
-							for settings.balancer = balancers
+							for idx_balancer = 1:length(balancers)
 								coefficients = active_coefficientss{idx_coefficient};
 								normalize = normalizes{idx_normalize};
+								settings.balancer_str = active_balancers{idx_balancer};
 
 								switch coefficients
 									case "no"
@@ -170,6 +185,17 @@ for seed = seeds
 										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
 									otherwise
 										error "coefficients incorrect";
+								end
+
+								switch settings.balancer_str
+									case "no"
+										settings.balancer = BALANCER_NO;
+									case "fixed"
+										settings.balancer = BALANCER_FIXED;
+									case "prop"
+										settings.balancer = BALANCER_PROP;
+									otherwise
+										error "incorrect balancer";
 								end
 
 								switch normalize

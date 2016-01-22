@@ -52,7 +52,9 @@ function parse_results(in, settings)
 			how_many = length(hist_err);
 			%how_many = 1800 / in.T;
 			v1 = hist_err( how_many );
+			v1 = round(v1*100);
 			v2 = mean(hist_err(1:how_many) );
+			v2 = round(v2*100);
 			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
 
 		case FINAL_OBSERVED_HIT

@@ -33,6 +33,8 @@ function dspsa(in, settings, infile)
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
 		printf_interval = ceil(settings.epochs/100);
+
+		global BALANCER_NO, BALANCER_FIXED, BALANCER_PROP;
 	%} SETTINGS
 	
 	%{ INITIALIZE
@@ -184,14 +186,24 @@ function dspsa(in, settings, infile)
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 
-		while settings.balancer && any(theta<0)
+		%{ BALANCE
+		while settings.balancer!=BALANCER_NO && any(theta<0)
 			todistribute = sum( theta(theta<0) ) ;
 			fraction = zeros(in.p, 1);
-			%fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
-			fraction(theta>=0) = 1 / sum(theta>=0 );
+
+			%{ COMPUTE FRACTION
+			switch settings.BALANCER
+				case BALANCER_FIXED
+					fraction(theta>=0) = 1 / sum(theta>=0 );
+				case BALANCER_PROP
+					fraction(theta>=0) = theta(theta>=0) / sum(theta(theta>=0) );
+			end
+			%} COMPUTE FRACTION
+
 			theta = theta .+ todistribute .* fraction;
 			theta(theta<0) = 0;
 		end
+		%} BALANCE
 
 
 		hist_theta = [hist_theta, theta];
