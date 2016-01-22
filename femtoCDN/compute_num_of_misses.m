@@ -17,7 +17,7 @@ function [num_of_misses, tot_requests, F] = compute_num_of_misses(in, theta, lam
 			num_of_misses = [num_of_misses; requests(j,:) * cache_indicator_negated(j,:)'];
 		end
 
-		num_of_misses_is = num_of_misses
+		num_of_misses_is = num_of_misses'
 
 		tot_requests = sum(sum(requests,2)); % total requests, one cell per each CP
 		F = zeros(in.p, 1);
