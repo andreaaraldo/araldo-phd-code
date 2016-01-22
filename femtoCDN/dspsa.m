@@ -120,7 +120,7 @@ function dspsa(in, settings, infile)
 			if variant == ORIG || variant == OPENCACHE
 				
 				if current_tot_requests != 0
-					current_vec_y = current_num_of_misses / current_tot_requests : ...
+					current_vec_y = current_num_of_misses / current_tot_requests;
 				else
 					current_vec_y = zeros(in.p,1);
 				end
