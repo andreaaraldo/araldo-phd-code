@@ -30,9 +30,13 @@ function parse_results(in, settings)
 	configurazione_is = round(hist_theta(:, : ) )
 	errore = hist_err'
 	[ix, iy] = find(hist_theta<0);
+<<<<<<< HEAD
 	primo_negativo = min(iy);
 	%}
 	configurazione_is = round(hist_theta(:, size(hist_theta, 2) ) )
+=======
+	primo_negativo = min(iy)
+>>>>>>> bb971441231e7e70e482da30c561494b07c30c6e
 
 	switch output
 		case ALL_HISTORY
