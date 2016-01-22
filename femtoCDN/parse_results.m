@@ -26,12 +26,13 @@ function parse_results(in, settings)
 	ghat_dopo = hist_ghat(:, primo_negativo+1 )'
 	a_dopo = hist_a(:, primo_negativo+1 )'
 	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
-	configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
-	configurazione = round(hist_theta(:, : ) )
+	configurazione_is = round(hist_theta(:, size(hist_theta, 2) ) )
+	configurazione_is = round(hist_theta(:, : ) )
 	errore = hist_err'
 	[ix, iy] = find(hist_theta<0);
 	primo_negativo = min(iy);
 	%}
+	configurazione_is = round(hist_theta(:, size(hist_theta, 2) ) )
 
 	switch output
 		case ALL_HISTORY
