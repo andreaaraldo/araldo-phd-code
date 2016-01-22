@@ -36,8 +36,10 @@ function parse_results(in, settings)
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
 
 		case FINAL_ERR
-			v1 = hist_err( length(hist_err ) );
-			v2 = mean(hist_err);
+			%how_many = length(hist_err);
+			how_many = 1800 / in.T;
+			v1 = hist_err( how_many );
+			v2 = mean(hist_err(1:how_many) );
 			printf("%s %d %g %g %g %g %g\n", settings.method, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
 
 		case FINAL_OBSERVED_HIT
