@@ -119,7 +119,7 @@ function dspsa(in, settings, infile)
 			%{ COMPUTE vec_y or similar
 			if variant == ORIG || variant == OPENCACHE
 				current_vec_y = zeros(in.p,1);
-				idx_selector = current_tot_requests != 0; 
+				idx_selector = (current_tot_requests != 0 ) ; 
 				current_vec_y(idx_selector) = ...
 					current_num_of_misses(idx_selector) ./ ...
 					current_tot_requests(idx_selector);
