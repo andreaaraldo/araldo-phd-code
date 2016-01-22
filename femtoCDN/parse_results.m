@@ -30,6 +30,7 @@ function parse_results(in, settings)
 	configurazione = round(hist_theta(:, size(hist_theta, 2) ) )
 	%}
 	configurazione = round(hist_theta(:, 1:50 ) )
+	hist_ghat = hist_ghat(:, 1:50);
 	error("ciao");
 	%{errore = hist_err'
 	%}
