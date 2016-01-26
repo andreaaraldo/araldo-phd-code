@@ -7,7 +7,7 @@ max_parallel = 1;
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -25,7 +25,7 @@ ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
+in.req_proportion=[0.28 0.28 0.28 0.10 0 0 0 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
 balancers = {"prop"};
