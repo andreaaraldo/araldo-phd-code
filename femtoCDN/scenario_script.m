@@ -7,7 +7,7 @@ max_parallel = 8;
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -18,7 +18,7 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [100]; %total time(hours)
+tot_times = [40]; %total time(hours)
 Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
