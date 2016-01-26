@@ -205,7 +205,7 @@ function dspsa(in, settings, infile)
 		end
 		%} COMPUTE PHI
 
-		hist_phi = [hist_phi, phi]
+		hist_phi = [hist_phi, phi];
 		hist_theta = [hist_theta, theta];
 		hist_a = [hist_a, alpha_i];
 
