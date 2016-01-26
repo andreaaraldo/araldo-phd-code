@@ -73,8 +73,8 @@ function dspsa(in, settings, infile)
 		if variant == ORIG || variant == OPENCACHE
 			test_phi = [];
 			pi_ = floor(phi) + 1/2;
-			theta_minus = pi_ - 0.5*Delta;
-			theta_plus = pi_ + 0.5*Delta;
+			phi_minus = pi_ - 0.5*Delta;
+			phi_plus = pi_ + 0.5*Delta;
 			%{ CORRECTION
 			while sum(phi_plus)> in.K || sum(phi_plus)> in.K
 				phi = (1-0.0001) * phi;
