@@ -1,8 +1,8 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 8;
+mdat_folder = "~/local_archive/femtoCDN/prova";
+max_parallel = 1;
 
 
 
@@ -11,15 +11,15 @@ parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"dspsa_orig", "opencache"};
+methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"triang"};
 boosts = [1];
-lambdas = [1 10 100]; %req/s 
-tot_times = [100]; %total time(hours)
-Ts = [10 100 1000]; % epoch duration (s)
+lambdas = [100]; %req/s 
+tot_times = [1]; %total time(hours)
+Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -28,8 +28,8 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.04 0.02 0.02 0.02 0.02 0.02 0.02];
 ps = [10];
 Ks = [1e2]; %cache slots
-balancers = {"no", "fixed", "prop"};
-seeds = 14:15;
+balancers = {"prop"};
+seeds = 1;
 
 
 
