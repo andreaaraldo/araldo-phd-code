@@ -16,26 +16,6 @@ function parse_results(in, settings)
 	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_phi, 1) ;
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
-	%{
-	coefficiente = hist_a
-	primo_negativo = min(iy);
-	theta_prima = hist_theta(:, primo_negativo-1 )'
-	ghat_corrente = hist_ghat(:, primo_negativo )'
-	a_corrente = hist_a(:, primo_negativo )'
-	theta_dopo = hist_theta(:, primo_negativo )'
-	ghat_dopo = hist_ghat(:, primo_negativo+1 )'
-	a_dopo = hist_a(:, primo_negativo+1 )'
-	theta_dopo_ancora = hist_theta(:, primo_negativo+1 )'
-	configurazione_is = round(hist_theta(:, size(hist_theta, 2) ) )
-	configurazione_is = round(hist_theta(:, : ) )
-	errore = hist_err'
-	[ix, iy] = find(hist_theta<0);
-	primo_negativo = min(iy);
-	%}
-
-	hist_phi
-	hist_theta
-	error("ciao")
 
 	switch output
 		case ALL_HISTORY
