@@ -9,7 +9,7 @@ max_parallel = 1;
 
 parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
 methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
