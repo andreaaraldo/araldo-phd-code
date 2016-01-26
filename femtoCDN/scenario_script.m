@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/local_archive/femtoCDN/prova";
-max_parallel = 1;
+max_parallel = 8;
 
 
 
@@ -15,7 +15,7 @@ methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"triang"};
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [100]; %total time(hours)
