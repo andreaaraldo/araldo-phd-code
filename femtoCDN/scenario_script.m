@@ -15,7 +15,7 @@ methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"insensitive"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [50]; %total time(hours)
@@ -26,9 +26,11 @@ alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.10 0 0 0 0.02 0.02 0.02];
-ps = [10];
+in.req_proportion=[0.25 0.75 0 0];
+ps = [4];
 Ks = [1e2]; %cache slots
-balancers = {"prop"};
+projections = {"no", "fixed", "prop", "euclidean"};
+projections = {"euclidean"};
 seeds = 1;
 
 
@@ -39,7 +41,8 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
-global BALANCER_NO=0; global BALANCER_FIXED=1; global BALANCER_PROP=2;
+global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
+	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
 
 
@@ -141,28 +144,28 @@ for seed = seeds
 							method = methods_{i};
 							settings.method = method;
 
-							%{NORMALIZE, COEFF AND BALANCERS ONLY WHEN IT MATTERS
+							%{NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
 							if strcmp(method,"optim") || strcmp(method,"csda")
 								active_coefficientss = {"no"};
 							end
 
-							active_balancers = balancers;
+							active_projections = projections;
 							if strcmp(method,"optim") || strcmp(method,"csda")
-								active_balancers = {"no"};
+								active_projections = {"no"};
 							end
 
 							if settings.boost != 1
 								error("boost must be 1");
 							end
-							%}NORMALIZE, COEFF AND BALANCERS ONLY WHEN IT MATTERS
+							%}NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
 
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
-							for idx_balancer = 1:length(balancers)
+							for idx_projection = 1:length(projections)
 								coefficients = active_coefficientss{idx_coefficient};
 								normalize = normalizes{idx_normalize};
-								settings.balancer_str = balancers{idx_balancer};
+								settings.projection_str = projections{idx_projection};
 
 								switch coefficients
 									case "no"
@@ -187,15 +190,17 @@ for seed = seeds
 										error "coefficients incorrect";
 								end
 
-								switch settings.balancer_str
+								switch settings.projection_str
 									case "no"
-										settings.balancer = BALANCER_NO;
+										settings.projection = PROJECTION_NO;
 									case "fixed"
-										settings.balancer = BALANCER_FIXED;
+										settings.projection = PROJECTION_FIXED;
 									case "prop"
-										settings.balancer = BALANCER_PROP;
+										settings.projection = PROJECTION_PROP;
+									case "euclidean"
+										settings.projection = PROJECTION_EUCLIDEAN;
 									otherwise
-										error "incorrect balancer";
+										error "incorrect projection";
 								end
 
 								switch normalize
@@ -228,8 +233,8 @@ for seed = seeds
 
 
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-balancer_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.balancer_str,settings.boost, tot_time,   seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -308,7 +313,7 @@ for seed = seeds
 
 							end%boost for
 							end%methods for
-						end%balancer
+						end%projection
 						end%coefficient end
 						end%normalize for
 					end%K for
