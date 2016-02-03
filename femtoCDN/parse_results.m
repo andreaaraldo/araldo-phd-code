@@ -21,12 +21,7 @@ function parse_results(in, settings)
 
 		case ALL_HISTORY
 			result_file = sprintf("%s.dat", settings.simname);
-			hist_value = [0];
-			for t=1:settings.epochs;
-				hist_value= [hist_value; compute_value(in, round(hist_theta(:,t) ) ) ];
-			end
-			dlmwrite(result_file,  [hist_cum_tot_requests', ...
-					round( hist_theta(1,:) )', hist_value, hist_err' ], " " );
+			dlmwrite(result_file,  [hist_cum_tot_requests', hist_err' ], " " );
 			printf("%s written\n", result_file);
 
 		case FINAL_CV
