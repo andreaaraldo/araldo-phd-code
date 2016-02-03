@@ -261,7 +261,7 @@ function dspsa(in, settings, infile)
 
 			theta_is = theta'
 			and_the_sum=sum(theta)
-			if abs( sum(theta) - K_prime ) >1e-13
+			if abs( sum(theta) - K_prime ) >1e-10
 				error_is = K_prime-sum(theta)
 				this_is_theta=theta'
 				sum(theta)
