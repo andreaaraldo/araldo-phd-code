@@ -42,6 +42,7 @@ function parse_results(in, settings)
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
 
 		case HIST_STEPS
+			result_file = sprintf("%s.steps.dat", settings.simname);
 			dlmwrite(result_file,  hist_a' , " " );
 	end
 
