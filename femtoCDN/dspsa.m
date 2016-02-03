@@ -251,7 +251,7 @@ function dspsa(in, settings, infile)
 		in.lambdatau = [];
 
 		save("-binary", settings.outfile);
-		disp (sprintf("%s written", settings.outfile) );
+		disp (sprintf("\n%s written", settings.outfile) );
 	end
 
 %	hist_cum_hit(settings.epochs)
