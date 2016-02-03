@@ -21,7 +21,7 @@ function parse_results(in, settings)
 
 		case ALL_HISTORY
 			result_file = sprintf("%s.dat", settings.simname);
-			dlmwrite(result_file,  [hist_cum_tot_requests', hist_err' ], " " );
+			dlmwrite(result_file,  hist_err' ], " " );
 			printf("%s written\n", result_file);
 
 		case FINAL_CV
