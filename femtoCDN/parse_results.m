@@ -1,6 +1,6 @@
 function parse_results(in, settings)
-	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4;
-	output = FINAL_ERR;
+	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5;
+	output = ERR_HISTORY;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -18,6 +18,7 @@ function parse_results(in, settings)
 	hist_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) )  ;
 
 	switch output
+
 		case ALL_HISTORY
 			result_file = sprintf("%s.dat", settings.simname);
 			hist_value = [0];
@@ -25,7 +26,7 @@ function parse_results(in, settings)
 				hist_value= [hist_value; compute_value(in, round(hist_theta(:,t) ) ) ];
 			end
 			dlmwrite(result_file,  [hist_cum_tot_requests', ...
-					round( hist_theta(1,:) )', hist_value, hist_MSE' ], " " );
+					round( hist_theta(1,:) )', hist_value, hist_err' ], " " );
 			printf("%s written\n", result_file);
 
 		case FINAL_CV
