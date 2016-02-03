@@ -1,6 +1,6 @@
 function parse_results(in, settings)
 	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5;
-	output = ERR_HISTORY;
+	output = ALL_HISTORY;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
