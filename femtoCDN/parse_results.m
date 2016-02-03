@@ -44,6 +44,7 @@ function parse_results(in, settings)
 		case HIST_STEPS
 			result_file = sprintf("%s.steps.dat", settings.simname);
 			dlmwrite(result_file,  hist_a' , " " );
+			printf("%s written\n", result_file);
 	end
 
 end
