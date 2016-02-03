@@ -1,6 +1,6 @@
 function parse_results(in, settings)
-	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5;
-	output = ALL_HISTORY;
+	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6;
+	output = HIST_STEPS;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -40,6 +40,9 @@ function parse_results(in, settings)
 		case FINAL_OBSERVED_HIT
 			v = hist_cum_hit(1);
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
+
+		case HIST_STEPS
+			dlmwrite(result_file,  hist_a' , " " );
 	end
 
 end
