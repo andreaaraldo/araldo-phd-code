@@ -32,14 +32,15 @@ function dspsa(in, settings, infile)
 		p = in.p;
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
-		printf_interval = ceil(settings.epochs/100);
+		printf_interval = ceil(settings.epochs/1000);
 
-		global PROJECTION_NO, PROJECTION_FIXED, PROJECTION_PROP; PROJECTION_EUCLIDEAN;
+		global PROJECTION_NO, PROJECTION_FIXED, PROJECTION_PROP, PROJECTION_EUCLIDEAN;
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	theta=repmat( (in.K-0.5*p/2) *1.0/p, p,1 ); %virtual configuration
-
+	K_prime = in.K-0.5*p;
+	theta=repmat( K_prime/p, p,1 );
+	
 
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
@@ -55,6 +56,8 @@ function dspsa(in, settings, infile)
 	%} INITIALIZE
 
 	for i=1:settings.epochs
+		"\n\n\n"
+		i
 		if mod(i,printf_interval)==0
 			printf("%g/%g=%d%%; ",i,settings.epochs, i*100/settings.epochs);
 		end
@@ -70,6 +73,7 @@ function dspsa(in, settings, infile)
 
 		%{ BUILD TEST CONFIGURATIONS
 		if variant == ORIG || variant == OPENCACHE
+			%theta = anti_integer(theta, p, in.K, sigma=0.0001);
 			test_theta = [];
 			pi_ = floor(theta) + 1/2;
 			theta_minus = pi_ - 0.5*Delta;
@@ -100,9 +104,9 @@ function dspsa(in, settings, infile)
 			%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K ) 
 					theta
-					theta
+					sum_of_theta=sum(theta)
 					test_theta
-					error("test_theta is uncorrect")
+					error(sprintf("test_theta is incorrect in iteration %d",i) )
 			endif
 			%}CHECK CONFIG
 		%} BUILD TEST CONFIGURATIONS
@@ -195,23 +199,21 @@ function dspsa(in, settings, infile)
 			%{ COMPUTE FRACTION
 			switch settings.projection
 				case PROJECTION_EUCLIDEAN
+					slots_before_proj = sum(theta)
+					theta_before_proj=theta'
 					u = sort(theta,"descend");
-					u
 					partial_sum=previous_z=z=j=0;
 					do
 						j++;
 						partial_sum += u(j);
-						previous_z=z;
-						z=u(j)+(1/j)*(in.K - partial_sum);
-						last_z = z
-					until z<0 || j==in.p
-					if (z<0) z=previous_z; end;
-					theta_before = theta
-					z
-					j
+						previous_z = z;
+						z = (1/j)*(K_prime - partial_sum);
+					until u(j)+z < 0 || j==in.p
+					if (u(j)+z < 0) z=previous_z; end;
 					theta = max(theta+repmat(z,in.p,1), zeros(in.p,1) );
-					theta_after=theta
-					error("ciao")
+					theta_after_proj=theta'
+					slots_after_proj = sum(theta)
+					difference = theta_after_proj-theta_before_proj
 					
 
 				case PROJECTION_FIXED
@@ -256,6 +258,15 @@ function dspsa(in, settings, infile)
 				delta_vc
 				error("Zero-sum property does not hold")
 			end
+
+			theta_is = theta'
+			and_the_sum=sum(theta)
+			if abs( sum(theta) - K_prime ) >1e-13
+				error_is = K_prime-sum(theta)
+				this_is_theta=theta'
+				sum(theta)
+				error("theta is invalid")
+			end	
 		end
 		%}CHECK
 
