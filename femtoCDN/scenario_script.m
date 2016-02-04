@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/transmissions";
-max_parallel = 24;
+max_parallel = 8;
 
 
 parse=false; % false if you want to run the experiment.
@@ -10,11 +10,12 @@ settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
 methods_ = {"opencache", "unif"};
+methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"adaptive"};
+coefficientss = {"adaptiveaggr"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
