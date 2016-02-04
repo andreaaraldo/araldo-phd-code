@@ -257,7 +257,7 @@ function dspsa(in, settings, infile)
 				error("Zero-sum property does not hold")
 			end
 
-			if abs( sum(theta) - K_prime ) >1e-10
+			if abs( sum(theta) - K_prime ) >1e-3
 				error_is = K_prime-sum(theta)
 				this_is_theta=theta'
 				sum(theta)
