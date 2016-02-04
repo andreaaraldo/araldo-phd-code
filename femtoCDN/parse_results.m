@@ -6,6 +6,7 @@ function parse_results(in, settings)
 
 	load(settings.outfile);
 	theta_opt = in.req_proportion' * in.K;
+	hist_theta = repmat(in.K/in.p, in.p, 1);
 
 
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
@@ -44,5 +45,6 @@ function parse_results(in, settings)
 			dlmwrite(result_file,  hist_a' , " " );
 			printf("%s written\n", result_file);
 	end
+	error "ciao"
 
 end
