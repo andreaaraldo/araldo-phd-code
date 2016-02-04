@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/local_archive/femtoCDN/prova";
-max_parallel = 1;
+max_parallel = 24;
 
 
 
