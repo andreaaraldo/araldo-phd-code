@@ -1,6 +1,6 @@
 function parse_results(in, settings)
-	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6;
-	output = FINAL_ERR;
+	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; HIST_TRANSMISSIONS=7;
+	output = HIST_TRANSMISSIONS;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -45,6 +45,9 @@ function parse_results(in, settings)
 			result_file = sprintf("%s.steps.dat", settings.simname);
 			dlmwrite(result_file,  hist_a' , " " );
 			printf("%s written\n", result_file);
+
+		case HIST_TRANSMISSIONS
+			sum(hist_num_of_misses,2)
 	end
 	error "ciao"
 

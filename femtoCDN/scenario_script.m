@@ -1,15 +1,8 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-<<<<<<< HEAD
 mdat_folder = "~/remote_archive/femtoCDN/transmissions";
 max_parallel = 1;
-=======
-mdat_folder = "~/local_archive/femtoCDN/prova";
-max_parallel = 24;
->>>>>>> e744b4273ab9885d427028d0cafadfbc6fbaa0bc
-
-
 
 
 parse=false; % false if you want to run the experiment.
