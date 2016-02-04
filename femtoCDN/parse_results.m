@@ -48,7 +48,14 @@ function parse_results(in, settings)
 
 		case HIST_TRANSMISSIONS
 			result_file = sprintf("%s.transmissions.dat", settings.simname);
-			dlmwrite( result_file, (sum(hist_num_of_misses,1) .+ hist_updates )', "");
+			num_of_transmissions = sum(hist_num_of_misses,1) .+ hist_updates;
+			cum_num_of_transmissions = zeros(size(num_of_transmissions) );
+			partial_sum = 0;
+			for j=1:size(num_of_transmissions,2)
+				partial_sum += num_of_transmissions(j);
+				cum_num_of_transmissions(1,j) = partial_sum/j;
+			end
+			dlmwrite( result_file, cum_num_of_transmissions', "");
 			printf("%s written\n", result_file);
 	end
 
