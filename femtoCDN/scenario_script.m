@@ -7,7 +7,7 @@ max_parallel = 24;
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
@@ -18,20 +18,20 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [100]; %total time(hours)
-Ts = [100]; % epoch duration (s)
+tot_times = [1]; %total time(hours)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.10 0 0 0 0.02 0.02 0.02];
-in.req_proportion=[0.23 0.75 0.02 0];
+in.req_proportion=[0.13 0.75 0.02 0.10];
 ps = [4];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:9;
 
 
 
