@@ -12,17 +12,16 @@ function dspsa(in, settings, infile)
 		end
 
 		variant = [];
-		ORIG = 1; OPENCACHE = 3; CSDA = 4;
+		ORIG = 1; OPENCACHE = 3; CSDA = 4; UNIF=5;
 		switch settings.method
 			case "dspsa_orig"
 				variant = ORIG;
-
 			case "opencache"
 				variant = OPENCACHE;
-
 			case "csda"
 				variant = CSDA;
-
+			case "unif"
+				variant = UNIF;
 			otherwise
 				method
 				error("variant not recognised");
@@ -38,8 +37,16 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	K_prime = in.K-0.5*p;
-	theta=repmat( K_prime/p, p,1 );
+	if variant==ORIG || variant==OPENCACHE
+		K_prime = in.K-0.5*p;
+		theta=repmat( K_prime/p, p,1 );
+	elseif variant==CSDA
+		K_prime = K;
+		theta=repmat( K/p, p,1 );
+	elseif variant==UNIF
+		K_prime = K;
+		theta=repmat( floor(K/p), p,1 );
+	end
 	
 
 	if variant == CSDA
@@ -52,15 +59,16 @@ function dspsa(in, settings, infile)
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
 
-	hist_theta = hist_ghat = hist_a = hist_thet = [];
+	hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
+	last_theta = repmat(0,in.p, 1); 
 	%} INITIALIZE
 
 	for i=1:settings.epochs
-		"\n\n\n"
-		i
 		if mod(i,printf_interval)==0
 			printf("%g/%g=%d%%; ",i,settings.epochs, i*100/settings.epochs);
 		end
+
+		current_updates = 0; % Number of files proactively downloaded to the cache
 
 		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
@@ -78,28 +86,11 @@ function dspsa(in, settings, infile)
 			pi_ = floor(theta) + 1/2;
 			theta_minus = pi_ - 0.5*Delta;
 			theta_plus = pi_ + 0.5*Delta;
-			%{ CORRECTION
-			%{
-			while sum(theta_plus)> in.K || sum(theta_plus)> in.K
-				theta = (1-0.0001) * theta;
-				pi_ = floor(theta) + 1/2;
-				theta_minus = pi_ - 0.5*Delta;
-				theta_plus = pi_ + 0.5*Delta;
-			end
-			%}
-			%} CORRECTION
-
 			test_theta = [theta_minus, theta_plus];
 		elseif variant == CSDA
 			test_theta = round(theta);
-			%{ CORRECTION
-			%{
-			while sum(test_theta)> in.K
-				theta = (1-0.0001) * theta;
-				test_theta = round(theta);
-			end
-			%}
-			%} CORRECTION
+		elseif variant==UNIF
+			test_theta = theta;
 		endif
 			%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K ) 
@@ -116,6 +107,9 @@ function dspsa(in, settings, infile)
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
 			current_theta = test_theta(:,test);
+
+			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
+			
 
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
@@ -152,6 +146,7 @@ function dspsa(in, settings, infile)
 		% Historical data
 		hist_num_of_misses = [hist_num_of_misses, sum(num_of_misses,2) ];
 		hist_tot_requests = [hist_tot_requests, sum(tot_requests,2) ];
+		hist_updates = [hist_updates, current_updates];
 
 		%{ COMPUTE ghat
 			ghat_1_norm = [];
@@ -168,6 +163,9 @@ function dspsa(in, settings, infile)
 				case CSDA
 					d_vec_y = (vec_y - vec_y_old) ./ (theta-theta_old);
 					ghat = d_vec_y - (1.0/p) * (d_vec_y' * ones(in.p,1) ) .* ones(in.p,1);
+
+				case UNIF
+					ghat = zeros(in.p, 1);
 				
 			end % switch
 			if i==1; in.ghat_1_norm=norm(ghat); end
@@ -253,14 +251,12 @@ function dspsa(in, settings, infile)
 				error("Some element of theta is NaN. This is an error.")
 			end
 
-			if sum(Delta) != 0 && sum(ghat)!=0
+			if variant!=UNIF && sum(Delta) != 0 && sum(ghat)!=0
 				Delta
 				delta_vc
 				error("Zero-sum property does not hold")
 			end
 
-			theta_is = theta'
-			and_the_sum=sum(theta)
 			if abs( sum(theta) - K_prime ) >1e-10
 				error_is = K_prime-sum(theta)
 				this_is_theta=theta'
@@ -284,7 +280,7 @@ function dspsa(in, settings, infile)
 		%} CONVERGENCE
 
 
-	end%for
+	end%for iterations
 
 
 	if settings.save_mdat_file
@@ -295,6 +291,5 @@ function dspsa(in, settings, infile)
 		disp (sprintf("\n%s written", settings.outfile) );
 	end
 
-%	hist_cum_hit(settings.epochs)
 	printf("\nsuccess\n");
 end%function

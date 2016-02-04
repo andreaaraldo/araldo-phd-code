@@ -1,17 +1,17 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/after_30_minutes";
-max_parallel = 8;
+mdat_folder = "~/local_archive/femtoCDN/prova";
+max_parallel = 1;
 
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = true;
-methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
-methods_ = {"opencache"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
+methods_ = {"opencache", "unif"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
@@ -31,7 +31,7 @@ ps = [4];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:23;
+seeds = 1;
 
 
 
@@ -39,7 +39,7 @@ seeds = 1:23;
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
-	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8;
+	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -146,12 +146,12 @@ for seed = seeds
 
 							%{NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optim") || strcmp(method,"csda")
+							if strcmp(method,"optim") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_coefficientss = {"no"};
 							end
 
 							active_projections = projections;
-							if strcmp(method,"optim") || strcmp(method,"csda")
+							if strcmp(method,"optim") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_projections = {"no"};
 							end
 
@@ -186,6 +186,8 @@ for seed = seeds
 										settings.coefficients = COEFF_TRIANGULAR;
 									case "smoothtriang"
 										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
+									case "zero"
+										settings.coefficients = COEFF_ZERO;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -263,16 +265,14 @@ for seed = seeds
 									switch method
 										case "csda"
 											function_name = "dspsa";
-
 										case "dspsa_orig"
 											function_name = "dspsa";
-
 										case "opencache"
 											function_name = "dspsa";
-
 										case "optimum"
 											function_name = "optimum";
-
+										case "unif"
+											function_name = "dspsa";
 										otherwise
 											method
 											error("method not recognized");

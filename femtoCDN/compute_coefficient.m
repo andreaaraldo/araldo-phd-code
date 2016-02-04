@@ -1,7 +1,7 @@
 function alpha_i = compute_coefficient(in, settings, epoch)
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE
-	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR;
+	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -48,6 +48,9 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 			else
 				alpha_i = alpha_i_triangular;
 			end
+
+		case COEFF_ZERO
+			alpha_i = 0;
 
 		otherwise
 			error("Coefficients not recognised");
