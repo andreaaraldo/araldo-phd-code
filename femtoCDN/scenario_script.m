@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/local_archive/femtoCDN/prova";
+mdat_folder = "~/remote_archive/femtoCDN/transmissions";
 max_parallel = 1;
 
 
