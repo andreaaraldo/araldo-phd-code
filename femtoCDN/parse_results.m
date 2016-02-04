@@ -1,6 +1,6 @@
 function parse_results(in, settings)
 	ALL_HISTORY=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6;
-	output = HIST_STEPS;
+	output = FINAL_ERR;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -33,7 +33,7 @@ function parse_results(in, settings)
 			how_many = 1800 / in.T;
 			v1 = hist_err( how_many );
 			v2 = mean(hist_err(1:how_many) );
-			printf("%d %g %g %g %g %g\n", settings.coefficients, in.lambda, in.K, in.T, v1, v2);
+			printf("%d %d %g %g %g %g %g\n", settings.seed, settings.coefficients, in.lambda, in.K, in.T, v1, v2);
 
 		case FINAL_OBSERVED_HIT
 			v = hist_cum_hit(1);
