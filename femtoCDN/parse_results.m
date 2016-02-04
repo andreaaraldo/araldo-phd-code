@@ -48,7 +48,7 @@ function parse_results(in, settings)
 
 		case HIST_TRANSMISSIONS
 			sum(hist_num_of_misses,2)
+			hist_updates
 	end
-	error "ciao"
 
 end
