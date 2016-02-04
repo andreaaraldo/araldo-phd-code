@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
+mdat_folder = "~/remote_archive/femtoCDN/after_30_minutes";
 max_parallel = 24;
 
 
