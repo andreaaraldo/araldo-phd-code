@@ -47,8 +47,9 @@ function parse_results(in, settings)
 			printf("%s written\n", result_file);
 
 		case HIST_TRANSMISSIONS
-			sum(hist_num_of_misses,2)
-			hist_updates
+			result_file = sprintf("%s.transmissions.dat", settings.simname);
+			dlmwrite( result_file, (sum(hist_num_of_misses,1) .+ hist_updates )', "");
+			printf("%s written\n", result_file);
 	end
 
 end
