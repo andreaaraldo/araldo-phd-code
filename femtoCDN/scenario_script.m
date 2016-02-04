@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/after_30_minutes";
-max_parallel = 24;
+max_parallel = 8;
 
 
 
@@ -31,7 +31,7 @@ ps = [4];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:9;
+seeds = 10:13;
 
 
 
