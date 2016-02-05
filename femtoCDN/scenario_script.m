@@ -1,30 +1,32 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/transmissions";
-max_parallel = 8;
+mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
+max_parallel = 24;
 
 
-parse=true; % false if you want to run the experiment.
+
+
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
-methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
-methods_ = {"opencache", "unif"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum"};
+methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
-Ts = [10]; % epoch duration (s)
+tot_times = [3]; %total time(hours)
+Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.28 0.28 0.28 0.10 0 0 0 0.02 0.02 0.02];
-in.req_proportion=[0.13 0.75 0.02 0.10];
+in.req_proportion=[0.23 0.75 0.02 0];
 ps = [4];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
@@ -37,7 +39,7 @@ seeds = 1;
 %{ CONSTANTS
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
-	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
+	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -144,12 +146,12 @@ for seed = seeds
 
 							%{NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optim") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optim") || strcmp(method,"csda")
 								active_coefficientss = {"no"};
 							end
 
 							active_projections = projections;
-							if strcmp(method,"optim") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optim") || strcmp(method,"csda")
 								active_projections = {"no"};
 							end
 
@@ -184,8 +186,6 @@ for seed = seeds
 										settings.coefficients = COEFF_TRIANGULAR;
 									case "smoothtriang"
 										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
-									case "zero"
-										settings.coefficients = COEFF_ZERO;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -263,14 +263,16 @@ for seed = seeds
 									switch method
 										case "csda"
 											function_name = "dspsa";
+
 										case "dspsa_orig"
 											function_name = "dspsa";
+
 										case "opencache"
 											function_name = "dspsa";
+
 										case "optimum"
 											function_name = "optimum";
-										case "unif"
-											function_name = "dspsa";
+
 										otherwise
 											method
 											error("method not recognized");
