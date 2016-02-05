@@ -10,6 +10,7 @@ settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
 methods_ = {"opencache", "unif"};
+methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
