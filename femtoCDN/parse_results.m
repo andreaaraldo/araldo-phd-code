@@ -65,9 +65,9 @@ function parse_results(in, settings)
 			num_of_transmissions = sum(hist_num_of_misses,1) .+ hist_updates;
 			cum_num_of_transmissions = zeros(size(num_of_transmissions) );
 			partial_sum = 0;
-			for j=1:size(num_of_transmissions,2)
+			for j=2:size(num_of_transmissions,2)
 				partial_sum += num_of_transmissions(j);
-				cum_num_of_transmissions(1,j) = partial_sum/j;
+				cum_num_of_transmissions(1,j) = partial_sum/(j-1);
 			end
 			dlmwrite( result_file, cum_num_of_transmissions', "");
 			printf("%s written\n", result_file);
