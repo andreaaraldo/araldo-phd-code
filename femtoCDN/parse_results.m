@@ -62,11 +62,11 @@ function parse_results(in, settings)
 
 		case HIST_MISSES
 			result_file = sprintf("%s.misses.dat", settings.simname);
-			sum(hist_num_of_misses,1)
-			cum_num_of_misses = zeros(1,size(hist_num_of_misses, 2) );
+			hist_total_num_of_misses = sum(hist_num_of_misses,1);
+			cum_num_of_misses = zeros(size(hist_total_num_of_misses) );
 			partial_sum = 0;
-			for t=1:size(hist_num_of_misses,2)
-				partial_sum += num_of_misses(t);
+			for t=1:size(hist_total_num_of_misses,2)
+				partial_sum += hist_total_num_of_misses(t);
 				cum_num_of_misses(1,t) = partial_sum/t;
 			end
 			dlmwrite( result_file, cum_num_of_misses', "");
