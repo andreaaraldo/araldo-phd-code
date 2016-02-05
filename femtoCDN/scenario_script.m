@@ -5,7 +5,7 @@ mdat_folder = "~/remote_archive/femtoCDN/transmissions";
 max_parallel = 8;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
