@@ -1,7 +1,7 @@
 function parse_results(in, settings)
-	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; HIST_TRANSMISSIONS=7;
+	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; HIST_MISSES=7;
 	HIST_AVG_ERR=8; HIST_NICE_ERR=9;
-	output = HIST_TRANSMISSIONS;
+	output = HIST_MISSES;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -60,16 +60,16 @@ function parse_results(in, settings)
 			dlmwrite(result_file,  hist_nice_err' , " " );
 			printf("%s written\n", result_file);
 
-		case HIST_TRANSMISSIONS
-			result_file = sprintf("%s.transmissions.dat", settings.simname);
-			num_of_transmissions = sum(hist_num_of_misses,1) .+ hist_updates;
-			cum_num_of_transmissions = zeros(size(num_of_transmissions) );
+		case HIST_MISSES
+			result_file = sprintf("%s.misses.dat", settings.simname);
+			sum(hist_num_of_misses,1)
+			cum_num_of_misses = zeros(1,size(hist_num_of_misses, 2) );
 			partial_sum = 0;
-			for j=2:size(num_of_transmissions,2)
-				partial_sum += num_of_transmissions(j);
-				cum_num_of_transmissions(1,j) = partial_sum/(j-1);
+			for t=1:size(hist_num_of_misses,2)
+				partial_sum += num_of_misses(t);
+				cum_num_of_misses(1,t) = partial_sum/t;
 			end
-			dlmwrite( result_file, cum_num_of_transmissions', "");
+			dlmwrite( result_file, cum_num_of_misses', "");
 			printf("%s written\n", result_file);
 
 		otherwise
