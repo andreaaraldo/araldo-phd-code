@@ -5,7 +5,7 @@ mdat_folder = "~/remote_archive/femtoCDN/transmissions";
 max_parallel = 24;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif"};
@@ -17,7 +17,7 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
-Ts = [10,100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
