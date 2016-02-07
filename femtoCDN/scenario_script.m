@@ -321,7 +321,8 @@ for seed = seeds
 										parse_results(in, settings);
 									end % parse
 								else
-									disp (sprintf("%s exists or it is running", settings.outfile) );
+									disp (sprintf("%s exists:%d or it is running:%d", settings.outfile, ...
+											exist(settings.outfile), exist(settings.tokenfile) );
 							
 								end
 
