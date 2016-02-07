@@ -1,6 +1,4 @@
-%Modified version of [1]
-
-% [1] Wang, Spall - "Discrete simultaneous perturbation stochastic approximation on loss function with noisy measurements"	
+%
 function dspsa(in, settings, infile)
 
 	%{ SETTINGS

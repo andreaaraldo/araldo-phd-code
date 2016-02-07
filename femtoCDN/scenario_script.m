@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/transmissions";
+mdat_folder = "~/local_archive/femtoCDN/prova";
 max_parallel = 24;
 
 
@@ -9,8 +9,8 @@ parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
-methods_ = {"opencache", "unif"};
-methods_ = {"optimum"};
+methods_ = {"opencache", "unif", "optimum"};
+methods_ = {"optimum_nominal"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
@@ -19,15 +19,15 @@ boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [10, 100]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-in.req_proportion=[0.28 0.28 0.28 0.10 0 0 0 0.02 0.02 0.02];
 in.req_proportion=[0.13 0.75 0.02 0.10];
-ps = [4];
-Ks = [1e3 1e6]; %cache slots
+in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+ps = [10];
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 seeds = 1;
@@ -75,6 +75,7 @@ for seed = seeds
 		in.alpha_eps = alpha_eps;
 		in.req_eps = req_eps;
 		in.alpha = differentiated_vector(p, alpha0, alpha_eps);
+		in.alpha = in.alpha(randperm(size(in.alpha) ) );
 
 		avg_ctlg = overall_ctlg/p;
 		ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
@@ -143,21 +144,25 @@ for seed = seeds
 							method = methods_{i};
 							settings.method = method;
 
-							%{NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
+							%{NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optimum") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_coefficientss = {"no"};
 							end
 
 							active_projections = projections;
-							if strcmp(method,"optimum") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_projections = {"no"};
+							end
+
+							if strcmp(method,"optimum_nominal")
+								in.T = 0;
 							end
 
 							if settings.boost != 1
 								error("boost must be 1");
 							end
-							%}NORMALIZE, COEFF AND PROJECTIONS ONLY WHEN IT MATTERS
+							%}NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
@@ -242,6 +247,13 @@ for seed = seeds
 								%{NAME
 
 								if !exist(settings.outfile) || overwrite || parse
+
+									if !parse
+										% To avoid duplicate exectution
+										fid = fopen (settings.outfile, "w");
+										fputs (fid, "Running"); fclose (fid);
+									end
+
 									%{GENERATE lambdatau
 									if length(zipf)==0
 										% the appropriate zipf has not been yet generated
