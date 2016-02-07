@@ -207,7 +207,7 @@ function dspsa(in, settings, infile)
 			switch settings.projection
 				case PROJECTION_EUCLIDEAN
 					slots_before_proj = sum(theta)
-					theta_before_proj=theta'
+					
 					u = sort(theta,"descend");
 					partial_sum=previous_z=z=j=0;
 					do
@@ -218,9 +218,9 @@ function dspsa(in, settings, infile)
 					until u(j)+z < 0 || j==in.p
 					if (u(j)+z < 0) z=previous_z; end;
 					theta = max(theta+repmat(z,in.p,1), zeros(in.p,1) );
-					theta_after_proj=theta'
-					slots_after_proj = sum(theta)
-					difference = theta_after_proj-theta_before_proj
+					
+					
+					
 					
 
 				case PROJECTION_FIXED
