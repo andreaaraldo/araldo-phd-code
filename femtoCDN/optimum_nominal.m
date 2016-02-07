@@ -1,4 +1,4 @@
-function hit_ratio_improvement = optimum(in, settings, infile)
+function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, infile)
         if length(in)==0 && length(settings)==0
                 load (infile);
 		delete(infile);
@@ -22,7 +22,7 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 		border_lambdatau(idx) =  in.lambdatau(idx, border(idx)) ;
 	end%for
 
-	c = border .- ones(N,1);
+	theta = c = border .- ones(N,1);
 	value = compute_value(in, c);
 
 
@@ -53,9 +53,11 @@ function hit_ratio_improvement = optimum(in, settings, infile)
 	end
 	%}CHECK
 
+	%{
 	if settings.save_mdat_file
 		save(settings.outfile);
 		disp (sprintf("%s written", settings.outfile) );
 	end
 	printf("\nsuccess\n");
+	%}
 end%function

@@ -12,7 +12,7 @@ function dspsa(in, settings, infile)
 		end
 
 		variant = [];
-		ORIG = 1; OPENCACHE = 3; CSDA = 4; UNIF=5;
+		ORIG = 1; OPENCACHE = 3; CSDA = 4; UNIF=5; OPTIMUM=6;
 		switch settings.method
 			case "dspsa_orig"
 				variant = ORIG;
@@ -22,6 +22,8 @@ function dspsa(in, settings, infile)
 				variant = CSDA;
 			case "unif"
 				variant = UNIF;
+			case "optimum"
+				variant = OPTIMUM;
 			otherwise
 				method
 				error("variant not recognised");
@@ -37,6 +39,8 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
+	[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
+
 	if variant==ORIG || variant==OPENCACHE
 		K_prime = in.K-0.5*p;
 		theta=repmat( K_prime/p, p,1 );
@@ -46,6 +50,9 @@ function dspsa(in, settings, infile)
 	elseif variant==UNIF
 		K_prime = K;
 		theta=repmat( floor(K/p), p,1 );
+	elseif variant == OPTIMUM
+		K_prime = K;
+		theta = theta_opt;
 	end
 	
 
@@ -53,7 +60,6 @@ function dspsa(in, settings, infile)
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
 	end%if
 
-	theta_opt = in.req_proportion' * in.K;
 	convergence.duration = 0;	
 
 	% Historical num of misses. One row per each CP, one column per each epoch
@@ -91,8 +97,11 @@ function dspsa(in, settings, infile)
 			test_theta = round(theta);
 		elseif variant==UNIF
 			test_theta = theta;
+		elseif variant == OPTIMUM
+			test_theta = theta_opt;
 		endif
-			%{CHECK CONFIG
+
+		%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K ) 
 					theta
 					sum_of_theta=sum(theta)
@@ -167,6 +176,8 @@ function dspsa(in, settings, infile)
 				case UNIF
 					ghat = zeros(in.p, 1);
 				
+				case OPTIMUM
+					ghat = zeros(in.p, 1);
 			end % switch
 			if i==1; in.ghat_1_norm=norm(ghat); end
 
@@ -251,7 +262,7 @@ function dspsa(in, settings, infile)
 				error("Some element of theta is NaN. This is an error.")
 			end
 
-			if variant!=UNIF && sum(Delta) != 0 && sum(ghat)!=0
+			if variant!=UNIF && variant!=OPTIMUM && sum(Delta) != 0 && sum(ghat)!=0
 				Delta
 				delta_vc
 				error("Zero-sum property does not hold")
