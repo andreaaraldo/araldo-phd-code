@@ -243,13 +243,15 @@ for seed = seeds
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
+								settings.tokenfile = sprintf("%s.token",settings.simname);
 								%{NAME
 
-								if !exist(settings.outfile) || overwrite || parse
+								if ( !exist(settings.outfile) &&  !exist(settings.tokenfile) ) ||...
+										overwrite || parse
 
 									if !parse
 										% To avoid duplicate exectution
-										fid = fopen (settings.outfile, "w");
+										fid = fopen (settings.tokenfile, "w");
 										fputs (fid, "Running"); fclose (fid);
 									end
 
@@ -319,7 +321,7 @@ for seed = seeds
 										parse_results(in, settings);
 									end % parse
 								else
-									disp (sprintf("%s exists", settings.outfile) );
+									disp (sprintf("%s exists or it is running", settings.outfile) );
 							
 								end
 
