@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/with10CPs";
-max_parallel = 24;
+max_parallel = 8;
 
 
 parse=false; % false if you want to run the experiment.
@@ -19,7 +19,7 @@ lambdas = [100 1e6]; %req/s
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [10 100]; % epoch duration (s)
-Ts = [10]; % epoch duration (s)
+Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
