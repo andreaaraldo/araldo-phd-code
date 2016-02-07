@@ -5,11 +5,12 @@ mdat_folder = "~/remote_archive/femtoCDN/with10CPs";
 max_parallel = 24;
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache", "unif", "optimum"};
+methods_ = {"optimum_nominal"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};

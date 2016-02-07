@@ -53,7 +53,8 @@ function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, i
 	end
 	%}CHECK
 
-	printf("\nNominal miss ratio=%g", 1-value);
+	printf("\nNominal miss ratio=%g\n", 1-value);
+	optimum=theta'
 	%{
 	if settings.save_mdat_file
 		save(settings.outfile);
