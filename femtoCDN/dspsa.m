@@ -113,7 +113,6 @@ function dspsa(in, settings, infile)
 		%} BUILD TEST CONFIGURATIONS
 
 		%{ RUN TESTS
-		"Start to run"
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
@@ -152,7 +151,6 @@ function dspsa(in, settings, infile)
 			end%if
 			%} COMPUTE vec_y
 		end%test
-		"Finish to run"
 		%} RUN TESTS
 
 		% Historical data
@@ -161,7 +159,6 @@ function dspsa(in, settings, infile)
 		hist_updates = [hist_updates, current_updates];
 
 		%{ COMPUTE ghat
-		"ghat start"
 			ghat_1_norm = [];
 			switch variant
 				case ORIG
@@ -200,20 +197,17 @@ function dspsa(in, settings, infile)
 				end
 			end
 			%}CHECK
-		"ghat end"
 		%} COMPUTE ghat
 
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 
 		%{ COMPUTE theta
-		"theta start"
 		if any(theta<0) && settings.projection!=PROJECTION_NO
 
 			%{ COMPUTE FRACTION
 			switch settings.projection
 				case PROJECTION_EUCLIDEAN
-					"\n\nstart"
 					u = sort(theta,"descend");
 					partial_sum=previous_z=z=j=0;
 					do
@@ -224,7 +218,6 @@ function dspsa(in, settings, infile)
 					until u(j)+z < 0 || j==in.p
 					if (u(j)+z < 0) z=previous_z; end;
 					theta = max(theta+repmat(z,in.p,1), zeros(in.p,1) );
-					"end"
 					
 					
 					
@@ -249,7 +242,6 @@ function dspsa(in, settings, infile)
 			end
 			%} COMPUTE FRACTION
 		end
-		"ghat end"
 		%} COMPUTE theta
 
 		hist_theta = [hist_theta, theta];
@@ -283,9 +275,8 @@ function dspsa(in, settings, infile)
 		end
 		%}CHECK
 
-		%{ CONVERGENCE
+		%{ CONVERGENCE (not used for the moment)
 		if false
-			"conv start"
 			err = norm(theta-theta_opt)/norm(theta_opt);
 			if err <= convergence.tolerance
 				convergence.duration ++;
@@ -296,7 +287,6 @@ function dspsa(in, settings, infile)
 			if convergence.duration == convergence.required_duration
 				break;
 			end
-			"conv end"
 		end
 		%} CONVERGENCE
 
