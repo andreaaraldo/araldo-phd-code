@@ -284,18 +284,20 @@ function dspsa(in, settings, infile)
 		%}CHECK
 
 		%{ CONVERGENCE
-		"conv start"
-		err = norm(theta-theta_opt)/norm(theta_opt);
-		if err <= convergence.tolerance
-			convergence.duration ++;
-		else
-			convergence.duration = 0;
-		end
+		if false
+			"conv start"
+			err = norm(theta-theta_opt)/norm(theta_opt);
+			if err <= convergence.tolerance
+				convergence.duration ++;
+			else
+				convergence.duration = 0;
+			end
 
-		if convergence.duration == convergence.required_duration
-			break;
+			if convergence.duration == convergence.required_duration
+				break;
+			end
+			"conv end"
 		end
-		"conv end"
 		%} CONVERGENCE
 
 
