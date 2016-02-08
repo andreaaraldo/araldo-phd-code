@@ -37,10 +37,11 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != 0 ) 
+	"Init started"
+	if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) )
 		[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
 	else
-		theta_opt = in.req_proportion * in.K;
+		theta_opt = in.req_proportion .* in.K;
 
 	if variant==ORIG || variant==OPENCACHE
 		K_prime = in.K-0.5*p;
@@ -67,7 +68,8 @@ function dspsa(in, settings, infile)
 	hist_num_of_misses = hist_tot_requests = [];
 
 	hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
-	last_theta = repmat(0,in.p, 1); 
+	last_theta = repmat(0,in.p, 1);
+	"Init finished"
 	%} INITIALIZE
 
 	for i=1:settings.epochs
@@ -113,6 +115,7 @@ function dspsa(in, settings, infile)
 		%} BUILD TEST CONFIGURATIONS
 
 		%{ RUN TESTS
+		"Start to run"
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
@@ -151,6 +154,7 @@ function dspsa(in, settings, infile)
 			end%if
 			%} COMPUTE vec_y
 		end%test
+		"Finish to run"
 		%} RUN TESTS
 
 		% Historical data
