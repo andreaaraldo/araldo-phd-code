@@ -51,6 +51,7 @@ global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2;
 	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
 
+warning("on", "backtrace");
 
 
 ctlg_perms_to_consider = [1];
