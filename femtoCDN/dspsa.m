@@ -245,7 +245,6 @@ function dspsa(in, settings, infile)
 		%} COMPUTE theta
 
 		hist_theta = [hist_theta, theta];
-		hist_theta = [hist_theta, theta];
 		hist_a = [hist_a, alpha_i];
 
 		if variant == CSDA
