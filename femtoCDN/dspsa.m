@@ -37,7 +37,10 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
+	if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != 0 ) 
+		[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
+	else
+		theta_opt = in.req_proportion * in.K;
 
 	if variant==ORIG || variant==OPENCACHE
 		K_prime = in.K-0.5*p;
