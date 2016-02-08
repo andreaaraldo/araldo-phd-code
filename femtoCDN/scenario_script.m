@@ -28,9 +28,8 @@ alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
-in.req_proportion=[0.13 0.75 0.02 0.10];
 
-ps = [4];
+ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
