@@ -20,7 +20,7 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 boosts = [1];
 lambdas = [1e9]; %req/s 
 tot_times = [100]; %total time(hours)
-Ts = [100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -29,7 +29,6 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.13 0.75 0.02 0.10];
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
-in.req_proportion=[0.23 0.75 0.02 0];
 
 ps = [4];
 Ks = [1e2]; %cache slots
