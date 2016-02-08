@@ -1,7 +1,7 @@
 function parse_results(in, settings)
 	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; 
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
-	output = HIST_INFTY_ERR;
+	output = HIST_MISSES;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -80,14 +80,7 @@ function parse_results(in, settings)
 
 		case HIST_MISSES
 			result_file = sprintf("%s.misses.dat", settings.simname);
-			hist_total_num_of_misses = sum(hist_num_of_misses,1);
-			cum_num_of_misses = zeros(size(hist_total_num_of_misses) );
-			partial_sum = 0;
-			for t=1:size(hist_total_num_of_misses,2)
-				partial_sum += hist_total_num_of_misses(t);
-				cum_num_of_misses(1,t) = partial_sum/t;
-			end
-			dlmwrite( result_file, cum_num_of_misses', "");
+			dlmwrite( result_file, (1-hist_cum_hit)', "");
 			printf("%s written\n", result_file);
 
 		otherwise

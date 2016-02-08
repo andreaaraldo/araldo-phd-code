@@ -2,10 +2,10 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 24;
+max_parallel = 8;
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 
@@ -19,7 +19,7 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
 lambdas = [1e9]; %req/s 
-tot_times = [100]; %total time(hours)
+tot_times = [1, 100, 1e5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
