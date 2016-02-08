@@ -37,7 +37,6 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	"Init started"
 	if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) )
 		[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
 	else
@@ -69,7 +68,6 @@ function dspsa(in, settings, infile)
 
 	hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
 	last_theta = repmat(0,in.p, 1);
-	"Init finished"
 	%} INITIALIZE
 
 	for i=1:settings.epochs
@@ -163,6 +161,7 @@ function dspsa(in, settings, infile)
 		hist_updates = [hist_updates, current_updates];
 
 		%{ COMPUTE ghat
+		"ghat start"
 			ghat_1_norm = [];
 			switch variant
 				case ORIG
@@ -201,13 +200,14 @@ function dspsa(in, settings, infile)
 				end
 			end
 			%}CHECK
-
+		"ghat end"
 		%} COMPUTE ghat
 
 		alpha_i =  compute_coefficient(in, settings, i);
 		theta = theta - alpha_i * ghat;
 
 		%{ COMPUTE theta
+		"theta start"
 		if any(theta<0) && settings.projection!=PROJECTION_NO
 
 			%{ COMPUTE FRACTION
@@ -249,6 +249,7 @@ function dspsa(in, settings, infile)
 			end
 			%} COMPUTE FRACTION
 		end
+		"ghat end"
 		%} COMPUTE theta
 
 		hist_theta = [hist_theta, theta];
@@ -283,6 +284,7 @@ function dspsa(in, settings, infile)
 		%}CHECK
 
 		%{ CONVERGENCE
+		"conv start"
 		err = norm(theta-theta_opt)/norm(theta_opt);
 		if err <= convergence.tolerance
 			convergence.duration ++;
@@ -293,6 +295,7 @@ function dspsa(in, settings, infile)
 		if convergence.duration == convergence.required_duration
 			break;
 		end
+		"conv end"
 		%} CONVERGENCE
 
 
