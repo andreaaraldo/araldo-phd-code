@@ -27,8 +27,8 @@ alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
-in.req_proportion=[0.13 0.75 0.02 0.10];
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.13 0.75 0.02 0.10];
 
 ps = [4];
 Ks = [1e2]; %cache slots
@@ -66,11 +66,14 @@ for seed = seeds
 		%{CHECKS
 		if mod(p,2) != 0; error("Only an even number of CPs are accepted"); end
 		if req_eps==-1; 
-			if length(in.req_proportion)!=p; disp(in.req_proportion);disp(p);error("error"); end; 
-			if abs( sum(in.req_proportion) - 1) > 1e-5; 
-				disp(in.req_proportion); disp(sum(in.req_proportion)); error("error"); 
-			end; 
-		end;
+			if length(in.req_proportion)!=p 
+				disp(in.req_proportion);disp(p);error("error: size of request vector incorrect"); 
+			end
+			if abs( sum(in.req_proportion) - 1) > 1e-5
+				disp(in.req_proportion); disp(sum(in.req_proportion)); 
+				error("error: request vector does not sum up to 1"); 
+			end
+		end
 		%}CHECKS
 
 		in.ctlg_eps = ctlg_eps;
