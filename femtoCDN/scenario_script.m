@@ -18,12 +18,8 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 boosts = [1];
-lambdas = [1e9]; %req/s 
-<<<<<<< HEAD
-tot_times = [1, 100, 1e5]; %total time(hours)
-=======
+lambdas = [1 100 1e5]; %req/s
 tot_times = [10000]; %total time(hours)
->>>>>>> 0bc421c22a8fa74a4ac57e2aed154f2896ce6b37
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
