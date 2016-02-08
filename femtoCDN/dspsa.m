@@ -209,8 +209,6 @@ function dspsa(in, settings, infile)
 			%{ COMPUTE FRACTION
 			switch settings.projection
 				case PROJECTION_EUCLIDEAN
-					slots_before_proj = sum(theta)
-					
 					u = sort(theta,"descend");
 					partial_sum=previous_z=z=j=0;
 					do
