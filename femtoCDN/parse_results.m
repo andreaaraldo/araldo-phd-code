@@ -1,7 +1,7 @@
 function parse_results(in, settings)
-	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; HIST_MISSES=7;
-	HIST_AVG_ERR=8; HIST_NICE_ERR=9;
-	output = HIST_MISSES;
+	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; 
+	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
+	output = HIST_GHAT_AVG;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -24,6 +24,24 @@ function parse_results(in, settings)
 	hist_weigth_avg_err = (1/p) * (1./theta_opt)' * abs(hist_difference);
 
 	switch output
+
+		case HIST_GHAT_AVG
+			partial_sum = zeros(in.p,1);
+			hist_ghat_avg = [];
+			for t=1:size(hist_ghat,2)
+				avg = sum( hist_ghat(:,max(1,t-99):t), 2) ./ (t+1- max(1,t-99) );
+				hist_ghat_avg = [hist_ghat_avg, sqrt( sum( avg .^2 ) ) ];
+			end
+			result_file = sprintf("%s.ghat_avg.dat", settings.simname);
+			dlmwrite(result_file,  hist_ghat_avg' , " " );
+			printf("%s written\n", result_file);
+			
+
+		case HIST_INFTY_ERR
+			hist_infty_err = norm(hist_difference, Inf,"cols");
+			result_file = sprintf("%s.infty_err.dat", settings.simname);
+			dlmwrite(result_file,  hist_infty_err' , " " );
+			printf("%s written\n", result_file);
 
 		case HIST_REL_ERR
 			result_file = sprintf("%s.rel_err.dat", settings.simname);
