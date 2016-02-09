@@ -5,7 +5,7 @@ mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
 max_parallel = 8;
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 
@@ -33,7 +33,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 3;
+seeds = 4;
 
 
 
