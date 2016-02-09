@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 4;
+max_parallel = 8;
 
 
 parse=false; % false if you want to run the experiment.
@@ -33,7 +33,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 2;
 
 
 
