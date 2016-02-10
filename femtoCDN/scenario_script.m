@@ -21,7 +21,7 @@ boosts = [1];
 lambdas = [100]; %req/s
 tot_times = [1]; %total time(hours)
 Ts = [1 10 100 1000]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
@@ -30,7 +30,7 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 seeds = 1;
