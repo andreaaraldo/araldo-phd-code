@@ -11,6 +11,7 @@ overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache", "unif"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
