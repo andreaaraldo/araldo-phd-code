@@ -112,6 +112,8 @@ function parse_results(in, settings)
 
 		case HIST_ALLOCATION
 			result_file = sprintf("%s.allocation.dat", settings.simname);
+			hist_theta'
+			error "ciao"
 			dlmwrite( result_file, hist_theta', "");
 			printf("%s written\n", result_file);
 			
