@@ -1,7 +1,9 @@
 function parse_results(in, settings)
 	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; 
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
-	output = HIST_MISSES;
+	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14;
+
+	output = MISSES_AFTER_30_MIN;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -52,6 +54,11 @@ function parse_results(in, settings)
 			v = hist_CV( length(hist_CV ) );
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
 
+		case MISSES_AFTER_30_MIN
+			iteration = ceil(1800/in.T);
+			v=1-hist_cum_hit(iteration);
+			printf("%s %d %g %g %g\n", settings.method, settings.coefficients, in.T, v, in.lambda);
+
 		case FINAL_ERR
 			%how_many = length(hist_err);
 			how_many = 1800 / in.T;
@@ -82,6 +89,27 @@ function parse_results(in, settings)
 			result_file = sprintf("%s.misses.dat", settings.simname);
 			dlmwrite( result_file, (1-hist_cum_hit)', "");
 			printf("%s written\n", result_file);
+
+		case HIST_POINTMISSES
+			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
+			result_file = sprintf("%s.pointmisses.dat", settings.simname);
+			dlmwrite( result_file, pointmisses', "");
+			printf("%s written\n", result_file);
+
+		case HIST_WINDOWEDMISSES
+			win_size = 600; % in seconds
+			iterations = ceil(win_size/in.T);
+			misses_across_CPs = sum(hist_num_of_misses,1);
+			windowed_misses = zeros(size(hist_tot_requests) );
+			for t=1:length(hist_tot_requests)
+				selector = max(t+1-iterations, 1):t;
+				windowed_misses(1,t) = sum(misses_across_CPs(1, selector) ) / ...
+					sum(hist_tot_requests(1, selector) );
+			end
+			result_file = sprintf("%s.windowedmisses.dat", settings.simname);
+			dlmwrite( result_file, windowed_misses', "");
+			printf("%s written\n", result_file);
+
 
 		otherwise
 			error "metric not recognized"

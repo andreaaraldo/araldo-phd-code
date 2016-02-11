@@ -1,4 +1,4 @@
-function alpha_i = compute_coefficient(in, settings, epoch)
+function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses)
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO;
@@ -51,6 +51,12 @@ function alpha_i = compute_coefficient(in, settings, epoch)
 
 		case COEFF_ZERO
 			alpha_i = 0;
+
+		case COEFF_SMART
+			"The first 10th of hour, it remains insensitive. Then until the end of the hour, it "
+			"decreases in a triangular manner if the current miss ratio is less than the average of"
+			"the miss ratio experienced so far"
+			
 
 		otherwise
 			error("Coefficients not recognised");

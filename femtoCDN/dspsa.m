@@ -199,7 +199,7 @@ function dspsa(in, settings, infile)
 			%}CHECK
 		%} COMPUTE ghat
 
-		alpha_i =  compute_coefficient(in, settings, i);
+		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses);
 		theta = theta - alpha_i * ghat;
 
 		%{ COMPUTE theta
@@ -218,10 +218,6 @@ function dspsa(in, settings, infile)
 					until u(j)+z < 0 || j==in.p
 					if (u(j)+z < 0) z=previous_z; end;
 					theta = max(theta+repmat(z,in.p,1), zeros(in.p,1) );
-					
-					
-					
-					
 
 				case PROJECTION_FIXED
 					todistribute = sum( theta(theta<0) ) ;
