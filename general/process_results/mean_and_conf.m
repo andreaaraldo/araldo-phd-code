@@ -21,7 +21,9 @@ function mean_and_conf(input_files)
 	for i=1:size(table_mean,2)
 		maxitable = [maxitable, table_mean(:,i), table_conf(:,i)];
 	end %for
-	disp(maxitable)
+	outfile="/tmp/mean_and_conf.dat";
+	dlmwrite(outfile, maxitable, " ");
+	printf("%s written\n", outfile);
 end %function
 
 mean_and_conf(input_files);
