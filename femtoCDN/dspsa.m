@@ -37,25 +37,31 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-	if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) )
-		[hit_ratio_improvement, value, theta_opt] = optimum_nominal(in, settings, infile);
-	else
-		theta_opt = in.req_proportion .* in.K;
+		%{COMPUTE theta_opt
+		if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) )
+			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
+		else
+			in.theta_opt = in.req_proportion' .* in.K;
+		end
+		%}COMPUTE theta_opt
 
-	if variant==ORIG || variant==OPENCACHE
-		K_prime = in.K-0.5*p;
-		theta=repmat( K_prime/p, p,1 );
-	elseif variant==CSDA
-		K_prime = K;
-		theta=repmat( K/p, p,1 );
-	elseif variant==UNIF
-		K_prime = K;
-		theta=repmat( floor(K/p), p,1 );
-	elseif variant == OPTIMUM
-		K_prime = K;
-		theta = theta_opt;
-	end
+		%{COMPUTE THE FIRST theta
+		if variant==ORIG || variant==OPENCACHE
+			K_prime = in.K-0.5*p;
+			theta=repmat( K_prime/p, p,1 );
+		elseif variant==CSDA
+			K_prime = K;
+			theta=repmat( K/p, p,1 );
+		elseif variant==UNIF
+			K_prime = K;
+			theta=repmat( floor(K/p), p,1 );
+		elseif variant == OPTIMUM
+			K_prime = K;
+			theta = in.theta_opt;
+		end
+		%}COMPUTE THE FIRST theta
 	
+	last_cofficient_update_iteration = 0;
 
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
@@ -66,7 +72,7 @@ function dspsa(in, settings, infile)
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
 
-	hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
+	in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
 	last_theta = repmat(0,in.p, 1);
 	%} INITIALIZE
 
@@ -99,7 +105,7 @@ function dspsa(in, settings, infile)
 		elseif variant==UNIF
 			test_theta = theta;
 		elseif variant == OPTIMUM
-			test_theta = theta_opt;
+			test_theta = in.theta_opt;
 		endif
 
 		%{CHECK CONFIG
@@ -199,7 +205,13 @@ function dspsa(in, settings, infile)
 			%}CHECK
 		%} COMPUTE ghat
 
-		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses);
+		%{COEFFICIENT
+		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
+		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, last_coefficient,last_cofficient_update_iteration);
+		if length(hist_a)>0 && last_coefficient != alpha_i
+			last_cofficient_update_iteration = i;
+		end
+		%}COEFFICIENT
 		theta = theta - alpha_i * ghat;
 
 		%{ COMPUTE theta
@@ -240,7 +252,7 @@ function dspsa(in, settings, infile)
 		end
 		%} COMPUTE theta
 
-		hist_theta = [hist_theta, theta];
+		in.hist_theta = [in.hist_theta, theta];
 		hist_a = [hist_a, alpha_i];
 
 		if variant == CSDA
@@ -272,7 +284,7 @@ function dspsa(in, settings, infile)
 
 		%{ CONVERGENCE (not used for the moment)
 		if false
-			err = norm(theta-theta_opt)/norm(theta_opt);
+			err = norm(theta-in.theta_opt)/norm(in.theta_opt);
 			if err <= convergence.tolerance
 				convergence.duration ++;
 			else

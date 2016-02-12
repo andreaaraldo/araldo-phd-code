@@ -8,22 +8,31 @@ function parse_results(in, settings)
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
 	load(settings.outfile);
-	theta_opt = in.req_proportion' * in.K;
 	theta_unif = repmat(in.K/in.p, in.p, 1);
+
+	%{COMPATIBILITY WITH OLD VERSIONS
+	if !exist("hist_theta","var")
+		hist_theta=in.hist_theta;
+	end
+
+	if exist("theta_opt","var")
+		in.theta_opt=theta_opt;
+	end
+	%}COMPATIBILITY WITH OLD VERSIONS
 
 
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
 		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
 
 
-	hist_difference = ( hist_theta - repmat(theta_opt,1, size(hist_theta,2)) );
+	hist_difference = ( hist_theta - repmat(in.theta_opt,1, size(hist_theta,2)) );
 	hist_difference_sqr = hist_difference .^ 2;
 	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
 	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
 	hist_nice_err = sqrt( meansq( hist_difference , 1 ) ) ./ in.K ;
-	hist_rel_err = hist_difference_norm ./  repmat( norm(theta_opt), 1, size(hist_difference,2) ) ;
+	hist_rel_err = hist_difference_norm ./  repmat( norm(in.theta_opt), 1, size(hist_difference,2) ) ;
 	hist_avg_err = (1/(in.K*in.p) ) * sum(abs( hist_difference ),1);
-	hist_weigth_avg_err = (1/p) * (1./theta_opt)' * abs(hist_difference);
+	hist_weigth_avg_err = (1/p) * (1./in.theta_opt)' * abs(hist_difference);
 
 	switch output
 
@@ -40,7 +49,7 @@ function parse_results(in, settings)
 			
 
 		case HIST_INFTY_ERR
-			hist_infty_err = norm(hist_difference, Inf,"cols");
+			hist_infty_err = compute_hist_infty_err(in.theta_opt, in.hist_theta)
 			result_file = sprintf("%s.infty_err.dat", settings.simname);
 			dlmwrite(result_file,  hist_infty_err' , " " );
 			printf("%s written\n", result_file);
