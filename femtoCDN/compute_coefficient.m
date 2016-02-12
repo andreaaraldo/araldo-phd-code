@@ -62,8 +62,10 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				if hist_infty_err(end) <= avg_error_experienced_so_far
 					% We update
 					alpha_i = a /(last_cofficient_update_iteration+1);
+					"update"
 				else
 					alpha_i = last_coefficient;
+					"no"
 				end
 			else
 				alpha_i = a /(last_cofficient_update_iteration+1);

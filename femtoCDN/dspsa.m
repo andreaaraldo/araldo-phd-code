@@ -208,9 +208,16 @@ function dspsa(in, settings, infile)
 		%{COEFFICIENT
 		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
 		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, last_coefficient,last_cofficient_update_iteration);
-		if length(hist_a)>0 && last_coefficient != alpha_i
-			last_cofficient_update_iteration = i;
+		if length(hist_a)>0 && hist_a(end) != alpha_i
+			last_cofficient_update_iteration = i
 		end
+		if length(hist_a)>0
+			hist_a
+			alpha_i
+		end
+		error "last_cofficient_update_iteration is not updating"
+		last_cofficient_update_iteration
+		hist_a = [hist_a, alpha_i];
 		%}COEFFICIENT
 		theta = theta - alpha_i * ghat;
 
@@ -253,7 +260,6 @@ function dspsa(in, settings, infile)
 		%} COMPUTE theta
 
 		in.hist_theta = [in.hist_theta, theta];
-		hist_a = [hist_a, alpha_i];
 
 		if variant == CSDA
 			idx_selection = round(theta) != round(theta_previous);
@@ -299,7 +305,6 @@ function dspsa(in, settings, infile)
 
 
 	end%for iterations
-
 
 	if settings.save_mdat_file
 		%lambdatau can be hige if the catalog is big. It is better not to save it

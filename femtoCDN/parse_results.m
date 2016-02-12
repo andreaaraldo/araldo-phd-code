@@ -2,8 +2,9 @@ function parse_results(in, settings)
 	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; 
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
+	AVG_ALLOCATION=16;
 
-	output = HIST_ALLOCATION;
+	output = HIST_STEPS;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -124,6 +125,8 @@ function parse_results(in, settings)
 			dlmwrite( result_file, hist_theta', " ");
 			printf("%s written\n", result_file);
 			
+		case AVG_ALLOCATION
+			mean(hist_theta,2)'
 
 		otherwise
 			error "metric not recognized"
