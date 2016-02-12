@@ -34,8 +34,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 5;
-
+seeds = 1:5;
 
 
 
@@ -43,6 +42,7 @@ seeds = 5;
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
+	global COEFF_SMART=10;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -200,6 +200,8 @@ for seed = seeds
 										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
 									case "zero"
 										settings.coefficients = COEFF_ZERO;
+									case "smart"
+										settings.coefficients = COEFF_SMART;
 									otherwise
 										error "coefficients incorrect";
 								end
