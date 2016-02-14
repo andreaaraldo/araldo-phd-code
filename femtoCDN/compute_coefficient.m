@@ -1,7 +1,10 @@
-function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, last_coefficient,last_cofficient_update_iteration)
+function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, hist_tot_requests,...
+		last_coefficient,how_many_step_update)
+
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
-	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE
+	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE;
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO; global COEFF_SMART;
+	global COEFF_SMARTPERC25;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -57,18 +60,34 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			if epoch*in.T <= 360
 				alpha_i=a;
 			elseif epoch*in.T <=3600
-				hist_infty_err = compute_hist_infty_err(in.theta_opt, in.hist_theta);
-				avg_error_experienced_so_far = mean(hist_infty_err);
-				if hist_infty_err(end) <= avg_error_experienced_so_far
+				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
+				miss_ratio_past = nanmean(hist_miss_ratio);
+				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /(last_cofficient_update_iteration+1);
-					"update"
+					alpha_i = a /(how_many_step_update+1);
 				else
 					alpha_i = last_coefficient;
-					"no"
 				end
 			else
-				alpha_i = a /(last_cofficient_update_iteration+1);
+				alpha_i = a /(how_many_step_update+1);
+			end
+
+
+		case COEFF_SMARTPERC25
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
+			if epoch*in.T <= 360
+				alpha_i=a;
+			elseif epoch*in.T <=3600
+				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
+				miss_ratio_past = prctile(hist_miss_ratio,25);
+				if hist_miss_ratio(end) <= miss_ratio_past
+					% We update
+					alpha_i = a /(how_many_step_update+1);
+				else
+					alpha_i = last_coefficient;
+				end
+			else
+				alpha_i = a /(how_many_step_update+1);
 			end
 
 		otherwise

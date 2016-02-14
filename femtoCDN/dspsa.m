@@ -2,6 +2,7 @@
 function dspsa(in, settings, infile)
 
 	%{ SETTINGS
+		pkg load statistics
 		global severe_debug
 
 		if length(in)==0 && length(settings)==0
@@ -61,7 +62,7 @@ function dspsa(in, settings, infile)
 		end
 		%}COMPUTE THE FIRST theta
 	
-	last_cofficient_update_iteration = 0;
+	how_many_step_update = 1;
 
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
@@ -207,21 +208,16 @@ function dspsa(in, settings, infile)
 
 		%{COEFFICIENT
 		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
-		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, last_coefficient,last_cofficient_update_iteration);
+		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, hist_tot_requests,...
+			last_coefficient,how_many_step_update);
 		if length(hist_a)>0 && hist_a(end) != alpha_i
-			last_cofficient_update_iteration = i
+			how_many_step_update++;
 		end
-		if length(hist_a)>0
-			hist_a
-			alpha_i
-		end
-		error "last_cofficient_update_iteration is not updating"
-		last_cofficient_update_iteration
 		hist_a = [hist_a, alpha_i];
 		%}COEFFICIENT
-		theta = theta - alpha_i * ghat;
 
 		%{ COMPUTE theta
+		theta = theta - alpha_i * ghat;
 		if any(theta<0) && settings.projection!=PROJECTION_NO
 
 			%{ COMPUTE FRACTION

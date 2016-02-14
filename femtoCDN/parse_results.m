@@ -4,7 +4,7 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16;
 
-	output = HIST_STEPS;
+	output = MISSES_AFTER_30_MIN;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -19,12 +19,15 @@ function parse_results(in, settings)
 	if exist("theta_opt","var")
 		in.theta_opt=theta_opt;
 	end
+
+	if size(in.theta_opt)==[1 in.p]
+		in.theta_opt=in.theta_opt';
+	end
 	%}COMPATIBILITY WITH OLD VERSIONS
 
 
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
 		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
-
 
 	hist_difference = ( hist_theta - repmat(in.theta_opt,1, size(hist_theta,2)) );
 	hist_difference_sqr = hist_difference .^ 2;
