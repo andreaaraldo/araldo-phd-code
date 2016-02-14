@@ -99,7 +99,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = nanmean(hist_miss_ratio);
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /( ( 1 + 0.1 * settings.epochs + (how_many_step_update+1) )^0.501 );
+					alpha_i = a /( ( 1 +  (how_many_step_update+1) )^0.501 );
 				else
 					alpha_i = last_coefficient;
 				end
