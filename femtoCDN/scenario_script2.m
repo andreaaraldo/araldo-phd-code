@@ -5,12 +5,8 @@ mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
 max_parallel = 24;
 
 
-<<<<<<< HEAD
 parse=false; % false if you want to run the experiment.
-=======
-parse=true; % false if you want to run the experiment.
 clean_tokens=false;
->>>>>>> e43b489ac200620eff1b2e5de1c686d5de8d502a
 settings.save_mdat_file = true;
 overwrite = false;
 
