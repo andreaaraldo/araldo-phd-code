@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 4;
+max_parallel = 12;
 
 
 parse=false; % false if you want to run the experiment.
