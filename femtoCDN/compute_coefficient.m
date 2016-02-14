@@ -1,10 +1,10 @@
 function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, hist_tot_requests,...
-		last_coefficient,how_many_step_update)
+		last_coefficient,how_many_step_updates)
 
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE;
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO; global COEFF_SMART;
-	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH;
+	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH; global COEFF_MODERATE;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -64,12 +64,12 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = nanmean(hist_miss_ratio);
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /(how_many_step_update+1);
+					alpha_i = a /(how_many_step_updates+1);
 				else
 					alpha_i = last_coefficient;
 				end
 			else
-				alpha_i = a /(how_many_step_update+1);
+				alpha_i = a /(how_many_step_updates+1);
 			end
 
 
@@ -82,12 +82,12 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = prctile(hist_miss_ratio,25);
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /(how_many_step_update+1);
+					alpha_i = a /(how_many_step_updates+1);
 				else
 					alpha_i = last_coefficient;
 				end
 			else
-				alpha_i = a /(how_many_step_update+1);
+				alpha_i = a /(how_many_step_updates+1);
 			end
 
 		case COEFF_SMARTSMOOTH
@@ -99,12 +99,12 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = nanmean(hist_miss_ratio);
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /( ( 1 +  (how_many_step_update+1) )^0.501 );
+					alpha_i = a*( ( 1 +  (1+1) )^0.501 ) /( ( 1 +  (how_many_step_updates+1) )^0.501 );
 				else
 					alpha_i = last_coefficient;
 				end
 			else
-				alpha_i = a /( ( 1 +  (how_many_step_update+1) )^0.501 );
+				alpha_i = a*( ( 1 +  (1+1) )^0.501 ) /( ( 1 +  (how_many_step_updates+1) )^0.501 );
 			end
 
 		case COEFF_SMART
@@ -116,14 +116,18 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = nanmean(hist_miss_ratio);
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We update
-					alpha_i = a /(how_many_step_update+1);
+					alpha_i = a /(how_many_step_updates+1);
 				else
 					alpha_i = last_coefficient;
 				end
 			else
-				alpha_i = a /(how_many_step_update+1);
+				alpha_i = a /(how_many_step_updates+1);
 			end
 
+		case COEFF_MODERATE
+			iterations_in_1h = 3600/in.T;
+			a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_1h + 1 )^0.501 ) / (in.p * in.ghat_1_norm);
+			alpha_i = a /( ( 1 + 0.1 * iterations_in_1h + epoch )^0.501 );
 
 
 		otherwise
