@@ -4,7 +4,7 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16;
 
-	output = AVG_ALLOCATION;
+	output = HIST_INFTY_ERR;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
@@ -53,7 +53,7 @@ function parse_results(in, settings)
 			
 
 		case HIST_INFTY_ERR
-			hist_infty_err = compute_hist_infty_err(in.theta_opt, in.hist_theta)
+			hist_infty_err = compute_hist_infty_err(in.theta_opt, hist_theta);
 			result_file = sprintf("%s.infty_err.dat", settings.simname);
 			dlmwrite(result_file,  hist_infty_err' , " " );
 			printf("%s written\n", result_file);
