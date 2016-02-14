@@ -2,26 +2,25 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 12;
+max_parallel = 24;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 settings.save_mdat_file = true;
 overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
-methods_ = {"opencache", "unif"};
+methods_ = {"opencache"};
+
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
-coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smart", "smartperc25"};
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang","smart","smartperc25"};
-coefficientss = {"smartperc25"};
-
+coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth"};
 boosts = [1];
-lambdas = [1 10 100]; %req/s
-tot_times = [1]; %total time(hours)
-Ts = [1 10 100]; % epoch duration (s)
+lambdas = [1e9]; %req/s 
+tot_times = [100]; %total time(hours)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -34,7 +33,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:5;
+seeds = 1;
 
 
 
@@ -42,7 +41,7 @@ seeds = 1:5;
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
-	global COEFF_SMART=10; global COEFF_SMARTPERC25=11;
+	global COEFF_SMART=10; global COEFF_SMARTPERC25=11; global COEFF_SMARTSMOOTH=12;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -204,6 +203,8 @@ for seed = seeds
 										settings.coefficients = COEFF_SMART;
 									case "smartperc25"
 										settings.coefficients = COEFF_SMARTPERC25;
+									case "smartsmooth"
+										settings.coefficients = COEFF_SMARTSMOOTH;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -259,31 +260,33 @@ for seed = seeds
 								settings.tokenfile = sprintf("%s.token",settings.simname);
 								%{NAME
 
-								if ( !exist(settings.outfile) &&  !exist(settings.tokenfile) ) ||...
-										overwrite || parse
+								if clean_tokens
+									delete(settings.tokenfile);
+								elseif ( !exist(settings.outfile) &&  !exist(settings.tokenfile) )...
+										|| overwrite || parse
 
 									if !parse
 										% To avoid duplicate exectution
 										fid = fopen (settings.tokenfile, "w");
 										fputs (fid, "Running"); fclose (fid);
-									end
 
-									%{GENERATE lambdatau
-									if length(zipf)==0
-										% the appropriate zipf has not been yet generated
-										zipf = zeros(p, max(in.catalog) );
-										for j=1:in.p
-											zipf(j, 1:in.catalog(j)) = ...
-												(ZipfPDF(in.alpha(j), in.catalog(j)) )';
+										%{GENERATE lambdatau
+										if length(zipf)==0
+											% the appropriate zipf has not been yet generated
+											zipf = zeros(p, max(in.catalog) );
+											for j=1:in.p
+												zipf(j, 1:in.catalog(j)) = ...
+													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
+											end
+										%else it means that the zipf has already been generated
 										end
-									%else it means that the zipf has already been generated
-									end
 
-									in.lambdatau=[]; %avg #req per each object
-									for j=1:in.p
-										in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+										in.lambdatau=[]; %avg #req per each object
+										for j=1:in.p
+											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+										end
+										%}GENERATE lambdatau
 									end
-									%}GENERATE lambdatau
 
 
 									function_name = [];
