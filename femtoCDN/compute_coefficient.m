@@ -5,6 +5,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE;
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO; global COEFF_SMART;
 	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH; global COEFF_MODERATE;global COEFF_LINEAR;
+	global COEFF_MODERATELONG; global COEFF_LINEARLONG;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -129,12 +130,28 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_1h + 1 )^0.501 ) / (in.p * in.ghat_1_norm);
 			alpha_i = a /( ( 1 + 0.1 * iterations_in_1h + epoch )^0.501 );
 
+		case COEFF_MODERATELONG
+			iterations_in_100h = 3600*100/in.T;
+			a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_100h + 1 )^0.501 ) / (in.p * in.ghat_1_norm);
+			alpha_i = a /( ( 1 + 0.1 * iterations_in_100h + epoch )^0.501 );
+
+
 		case COEFF_LINEAR
 			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
 			if epoch*in.T <=3600
 				alpha_i = a - (0.9*a/3600 )*(epoch-1)*in.T; 
 			else
 				alpha_i = (a/10) * ( ( 1 +  1 )^0.501 ) /( 1 + (epoch - 3600/in.T +1)^0.501 );
+			end
+
+		case COEFF_LINEARLONG
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
+			if epoch*in.T <=3600
+				alpha_i = a - (0.9*a/3600 )*(epoch-1)*in.T; 
+			else
+				iterations_in_100h = 3600*100/in.T;
+				a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_100h + 1 )^0.501 ) / (in.p * in.ghat_1_norm);
+				alpha_i = a /( ( 1 + 0.1 * iterations_in_100h + (epoch - 3600/in.T +1) )^0.501 );
 			end
 
 
