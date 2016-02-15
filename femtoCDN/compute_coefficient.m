@@ -9,6 +9,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_LINEARSMART100; global COEFF_LINEARCUT25; global COEFF_LINEARCUT10;
 	global COEFF_LINEARHALVED5; global COEFF_LINEARHALVED10;
 	global COEFF_LINEARCUTCAUTIOUS10;	global COEFF_LINEARCUTCAUTIOUS25;
+	global COEFF_LINEARCUTCAUTIOUSMODERATE10;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -225,6 +226,29 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				iterations_in_10h = 3600*10/in.T;
 				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501;
 			end
+
+
+		case COEFF_LINEARCUTCAUTIOUSMODERATE10
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
+			if epoch*in.T <=360
+				alpha_i = a;
+			elseif epoch*in.T <=3600
+				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
+				miss_ratio_past = prctile(hist_miss_ratio',10)
+				if hist_miss_ratio(end) <= miss_ratio_past
+					% We decrease more
+					alpha_i_first = last_coefficient * (epoch )/ (epoch+1);
+					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
+					alpha_i=min(alpha_i_first, alpha_i_second);
+					alpha_i=max(alpha_i, a/10)
+				else
+					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
+				end
+			else
+				iterations_in_10h = 3600*10/in.T;
+				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501;
+			end
+
 
 		case COEFF_LINEARCUTCAUTIOUS25
 			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
