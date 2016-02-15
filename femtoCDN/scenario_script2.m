@@ -8,7 +8,7 @@ max_parallel = 12;
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -18,7 +18,7 @@ normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"linearcut25", "linearcut10"};
+coefficientss = {"linearcut25", "linearcut10","linearhalved5","linearhalved10"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [2]; %total time(hours)
@@ -44,9 +44,10 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
 	global COEFF_SMART=10; global COEFF_SMARTPERC25=11; global COEFF_SMARTSMOOTH=12;
-	global COEFF_MODERATE=13; global COEFF_LINEAR=14;
+	global COEFF_MODERATE=13; global COEFF_LINEAR=14; 
 	global COEFF_MODERATELONG=15; global COEFF_LINEARLONG=16; global COEFF_LINEARSMART10=17;
 	global COEFF_LINEARSMART100=18; global COEFF_LINEARCUT25=19; global COEFF_LINEARCUT10=20;
+	global COEFF_LINEARHALVED5=21; global COEFF_LINEARHALVED10=22;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
