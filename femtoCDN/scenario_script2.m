@@ -227,6 +227,10 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUT25;
 									case "linearcut10"
 										settings.coefficients = COEFF_LINEARCUT10;
+									case "linearhalved5"
+										settings.coefficients = COEFF_LINEARHALVED5;
+									case "linearhalved10"
+										settings.coefficients = COEFF_LINEARHALVED10;
 									otherwise
 										error "coefficients incorrect";
 								end
