@@ -4,7 +4,7 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16;
 
-	output = HIST_INFTY_ERR;
+	output = MISSES_AFTER_30_MIN;
 
 	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
 
