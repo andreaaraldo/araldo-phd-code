@@ -4,7 +4,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_NO; global COEFF_SIMPLE; global COEFF_10; global COEFF_100;
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE;
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO; global COEFF_SMART;
-	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH; global COEFF_MODERATE;
+	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH; global COEFF_MODERATE;global COEFF_LINEAR;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
