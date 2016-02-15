@@ -19,7 +19,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcut25", "linearcut10","linearcutcautious25", "linearcutcautious10"};
-coefficientss = {"linearcutcautious25", "linearcutcautious10"};
+coefficientss = {"linearcutcautious25"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [2]; %total time(hours)
@@ -36,7 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:2;
 
 
 
