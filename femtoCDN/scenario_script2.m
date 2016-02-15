@@ -233,9 +233,9 @@ for seed = seeds
 									case "linearhalved10"
 										settings.coefficients = COEFF_LINEARHALVED10;
 									case "linearcutcautious10"
-										settings.coefficients = COEFF_LINEARCAUTIOUS10;
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10;
 									case "linearcutcautious25"
-										settings.coefficients = COEFF_LINEARCAUTIOUS25;
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS25;
 									otherwise
 										error "coefficients incorrect";
 								end
