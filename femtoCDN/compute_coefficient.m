@@ -134,7 +134,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			if epoch*in.T <=3600
 				alpha_i = a - (0.9*alpha/3600 )*(epoch-1)*in.T; 
 			else
-				alpha_i = (a/10) / ( ( 1 +  1 )^0.501 ) /( ( 1 + (epoch - 3600/in.T +1)^0.501 );
+				alpha_i = (a/10) / ( ( 1 +  1 )^0.501 ) /( 1 + (epoch - 3600/in.T +1)^0.501 );
 			end
 
 
