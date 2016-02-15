@@ -8,7 +8,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_MODERATELONG; global COEFF_LINEARLONG; global COEFF_LINEARSMART10; 
 	global COEFF_LINEARSMART100; global COEFF_LINEARCUT25; global COEFF_LINEARCUT10;
 	global COEFF_LINEARHALVED5; global COEFF_LINEARHALVED10;
-	global COEFF_LINEARCUTCAUTIOUS10;	global COEFF_LINEARCUTCAUTIOUS5;
+	global COEFF_LINEARCUTCAUTIOUS10;	global COEFF_LINEARCUTCAUTIOUS25;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
