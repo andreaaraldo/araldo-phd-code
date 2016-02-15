@@ -62,7 +62,7 @@ function dspsa(in, settings, infile)
 		end
 		%}COMPUTE THE FIRST theta
 	
-	how_many_step_update = 1;
+	how_many_step_updates = 1;
 
 	if variant == CSDA
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
@@ -209,9 +209,9 @@ function dspsa(in, settings, infile)
 		%{COEFFICIENT
 		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
 		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, hist_tot_requests,...
-			last_coefficient,how_many_step_update);
+			last_coefficient,how_many_step_updates);
 		if length(hist_a)>0 && hist_a(end) != alpha_i
-			how_many_step_update++;
+			how_many_step_updates++;
 		end
 		hist_a = [hist_a, alpha_i];
 		%}COEFFICIENT
