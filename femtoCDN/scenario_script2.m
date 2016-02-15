@@ -17,11 +17,7 @@ methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-<<<<<<< HEAD
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate"};
-=======
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderatelong", "linearlong"};
->>>>>>> ca6c344e54a91f1ee6abe2d069680f1dfa3ac180
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [100]; %total time(hours)
