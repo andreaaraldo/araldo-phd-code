@@ -214,7 +214,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = prctile(hist_miss_ratio',10)
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We decrease more
-					alpha_i_first = last_coefficient * (epoch-360/T -1)/ (epoch-360/T);
+					alpha_i_first = last_coefficient * (epoch-360/in.T -1)/ (epoch-360/in.T);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
 				else
@@ -234,7 +234,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				miss_ratio_past = prctile(hist_miss_ratio',10)
 				if hist_miss_ratio(end) <= miss_ratio_past
 					% We decrease more
-					alpha_i_first = last_coefficient * (epoch-360/T -1)/ (epoch-360/T);
+					alpha_i_first = last_coefficient * (epoch-360/in.T -1)/ (epoch-360/in.T);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
 				else
