@@ -18,6 +18,7 @@ normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong"};
+coefficientss = {"linearlong"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [100]; %total time(hours)
