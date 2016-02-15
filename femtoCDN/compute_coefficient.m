@@ -150,7 +150,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				alpha_i = a - (0.9*a/3600 )*(epoch-1)*in.T; 
 			else
 				iterations_in_100h = 3600*100/in.T;
-				a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_100h + 1 )^0.501 ) / (in.p * in.ghat_1_norm);
+				a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_100h + 1 )^0.501 ) / (in.p * in.ghat_1_norm*10);
 				alpha_i = a /( ( 1 + 0.1 * iterations_in_100h + (epoch - 3600/in.T +1) )^0.501 );
 			end
 
