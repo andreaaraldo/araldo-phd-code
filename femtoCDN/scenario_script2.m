@@ -17,7 +17,7 @@ methods_ = {"opencache"};
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear"};
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderatelong", "linearlong"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [100]; %total time(hours)
@@ -44,6 +44,7 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
 	global COEFF_SMART=10; global COEFF_SMARTPERC25=11; global COEFF_SMARTSMOOTH=12;
 	global COEFF_MODERATE=13; global COEFF_LINEAR=14;
+	global COEFF_MODERATELONG=15; global COEFF_LINEARLONG=16;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -211,6 +212,10 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATE;
 									case "linear"
 										settings.coefficients = COEFF_LINEAR;
+									case "moderatelong"
+										settings.coefficients = COEFF_MODERATELONG;
+									case "linearlong"
+										settings.coefficients = COEFF_LINEARLONG;
 									otherwise
 										error "coefficients incorrect";
 								end
