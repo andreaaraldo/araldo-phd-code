@@ -5,7 +5,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_ADAPTIVE; global COEFF_ADAPTIVE_AGGRESSIVE; global COEFF_INSENSITIVE;
 	global COEFF_SMOOTH_TRIANGULAR; global COEFF_TRIANGULAR; global COEFF_ZERO; global COEFF_SMART;
 	global COEFF_SMARTPERC25; global COEFF_SMARTSMOOTH; global COEFF_MODERATE;global COEFF_LINEAR;
-	global COEFF_MODERATELONG; global COEFF_LINEARLONG;
+	global COEFF_MODERATELONG; global COEFF_LINEARLONG; global COEFF_LINEARSMART10; 
+	global COEFF_LINEARSMART100;
 
 	if in.ghat_1_norm == 0
 		in.ghat_1_norm = 1;
@@ -144,13 +145,22 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				alpha_i = (a/10) * ( ( 1 +  1 )^0.501 ) /( 1 + (epoch - 3600/in.T +1)^0.501 );
 			end
 
-		case COEFF_LINEARSMART
+		case COEFF_LINEARSMART10
 			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
 			if epoch*in.T <=3600
 				alpha_i = last_coefficient - 0.9 * a * in.T / 3600
 			else
 				iterations_in_10h = 3600*10/in.T;
 				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501
+			end
+
+		case COEFF_LINEARSMART100
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
+			if epoch*in.T <=3600
+				alpha_i = last_coefficient - 0.9 * a * in.T / 3600
+			else
+				iterations_in_100h = 3600*100/in.T;
+				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_100h + epoch - 3600/in.T) )^0.501
 			end
 
 
