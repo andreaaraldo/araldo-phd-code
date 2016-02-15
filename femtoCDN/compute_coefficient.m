@@ -144,6 +144,16 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				alpha_i = (a/10) * ( ( 1 +  1 )^0.501 ) /( 1 + (epoch - 3600/in.T +1)^0.501 );
 			end
 
+		case COEFF_LINEARSMART
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
+			if epoch*in.T <=3600
+				alpha_i = last_coefficient - 0.9 * a * in.T / 3600
+			else
+				iterations_in_10h = 3600*10/in.T;
+				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501
+			end
+
+
 		case COEFF_LINEARLONG
 			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
 			if epoch*in.T <=3600
