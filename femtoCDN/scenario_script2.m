@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
-max_parallel = 4;
+max_parallel = 12;
 
 
 parse=false; % false if you want to run the experiment.
@@ -12,17 +12,16 @@ overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache", "unif"};
-methods_ = {"opencache"};
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
-coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smart", "smartperc25","smartsmooth"};
-coefficientss = {"linear"};
+coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smart", "smartperc25","smartsmooth","linear"};
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang","smart","smartperc25", "smartsmooth","linear"};
 
 boosts = [1];
-lambdas = [100]; %req/s
+lambdas = [1 10 100]; %req/s
 tot_times = [1]; %total time(hours)
-Ts = [10]; % epoch duration (s)
+Ts = [1 10 100]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -35,7 +34,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:5;
 
 
 
