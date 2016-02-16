@@ -48,7 +48,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			alpha_i = a;
 
 		case COEFF_TRIANGULAR
-			a = (in.K - 0.5*in.p/2) / (in.p * in.ghat_1_norm);
+			a = (in.K - in.p/2) / (in.p * in.ghat_1_norm);
 			alpha_i = a /epoch;
 
 		case COEFF_SMOOTH_TRIANGULAR

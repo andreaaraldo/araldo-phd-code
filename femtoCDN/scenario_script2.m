@@ -1,11 +1,11 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/prova";
+mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 24;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -19,7 +19,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"moderate", "moderatelong", "moderatenew", "moderatelongnew","insensitive"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
