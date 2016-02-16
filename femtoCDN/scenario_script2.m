@@ -19,11 +19,11 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"lincutcautious10dp", "linearhalved10"};
+coefficientss = {"linearhalved10", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
-Ts = [1]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -54,6 +54,7 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D2=27;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
+	global COEFF_LINEARHALVED5=32;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -253,6 +254,8 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D16;
 									case "lincutcautious10dp"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10Dp;
+									case "linearhalved5"
+										settings.coefficients = COEFF_LINEARHALVED5;
 									otherwise
 										error "coefficients incorrect";
 								end
