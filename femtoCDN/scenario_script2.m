@@ -8,7 +8,7 @@ max_parallel = 24;
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -19,7 +19,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"moderate", "moderatelong", "moderatenew", "moderatelongnew"};
+coefficientss = {"moderate", "moderatelong", "moderatenew", "moderatelongnew","insensitive"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
