@@ -5,10 +5,10 @@ mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
 max_parallel = 12;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -18,7 +18,7 @@ normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"linearcutcautiousmoderate10", "linearcutcautious10"};
+coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [2]; %total time(hours)
@@ -35,7 +35,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 2;
 
 
 
@@ -237,7 +237,7 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10;
 									case "linearcutcautious25"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS25;
-									case "linearcutcautiousmoderate10"
+									case "linearcutcautiousmod10"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUSMODERATE10;
 									otherwise
 										error "coefficients incorrect";
