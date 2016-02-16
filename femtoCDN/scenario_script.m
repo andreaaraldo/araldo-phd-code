@@ -12,6 +12,7 @@ overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache", "unif", "optimum"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -20,23 +21,24 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
-Ts = [1,10,100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
-in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.13 0.75 0.02 .1];
 
-ps = [10];
-Ks = [1e1]; %cache slots
+ps = [4];
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:30;
+seeds = 1;
 
 
 
