@@ -1,26 +1,29 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
+mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 24;
 
 
 parse=false; % false if you want to run the experiment.
+clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
-methods_ = {"opencache"};
+methods_ = {"opencache", "unif", "optimum"};
 
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
-coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
+coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
-lambdas = [1e9]; %req/s 
-tot_times = [10000]; %total time(hours)
-Ts = [10]; % epoch duration (s)
+lambdas = [1]; %req/s 
+tot_times = [1]; %total time(hours)
+Ts = [1,10,100]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
@@ -30,11 +33,10 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e2]; %cache slots
+Ks = [1e1]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
-
+seeds = 1:30;
 
 
 
@@ -42,6 +44,17 @@ seeds = 1;
 global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3; 
 	global COEFF_ADAPTIVE=4; global COEFF_ADAPTIVE_AGGRESSIVE=5; global COEFF_INSENSITIVE=6;
 	global COEFF_TRIANGULAR=7; global COEFF_SMOOTH_TRIANGULAR=8; global COEFF_ZERO=9;
+	global COEFF_SMART=10; global COEFF_SMARTPERC25=11; global COEFF_SMARTSMOOTH=12;
+	global COEFF_MODERATE=13; global COEFF_LINEAR=14; 
+	global COEFF_MODERATELONG=15; global COEFF_LINEARLONG=16; global COEFF_LINEARSMART10=17;
+	global COEFF_LINEARSMART100=18; global COEFF_LINEARCUT25=19; global COEFF_LINEARCUT10=20;
+	global COEFF_LINEARHALVED5=21; global COEFF_LINEARHALVED10=22;
+	global COEFF_LINEARCUTCAUTIOUS10=23;	global COEFF_LINEARCUTCAUTIOUS25=24;
+	global COEFF_LINEARCUTCAUTIOUSMODERATE10=25; global COEFF_LINEARCUTCAUTIOUSOTHER10=26;
+	global COEFF_LINEARCUTCAUTIOUS10D2=27;
+	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
+	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
+	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33; 
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -55,7 +68,7 @@ R_perms_to_consider = [1];
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
-	rand("seed",seed);
+	rand("state",seed);randn("state",seed);randp("state",seed);
 	for alpha0 = alpha0s
 	for alpha_eps = alpha_epss
 	for req_eps = req_epss
@@ -199,6 +212,54 @@ for seed = seeds
 										settings.coefficients = COEFF_SMOOTH_TRIANGULAR;
 									case "zero"
 										settings.coefficients = COEFF_ZERO;
+									case "smart"
+										settings.coefficients = COEFF_SMART;
+									case "smartperc25"
+										settings.coefficients = COEFF_SMARTPERC25;
+									case "smartsmooth"
+										settings.coefficients = COEFF_SMARTSMOOTH;
+									case "moderate"
+										settings.coefficients = COEFF_MODERATE;
+									case "linear"
+										settings.coefficients = COEFF_LINEAR;
+									case "moderatelong"
+										settings.coefficients = COEFF_MODERATELONG;
+									case "linearlong"
+										settings.coefficients = COEFF_LINEARLONG;
+									case "linearsmart10"
+										settings.coefficients = COEFF_LINEARSMART10;
+									case "linearsmart100"
+										settings.coefficients = COEFF_LINEARSMART100;
+									case "linearcut25"
+										settings.coefficients = COEFF_LINEARCUT25;
+									case "linearcut10"
+										settings.coefficients = COEFF_LINEARCUT10;
+									case "linearhalved5"
+										settings.coefficients = COEFF_LINEARHALVED5;
+									case "linearhalved10"
+										settings.coefficients = COEFF_LINEARHALVED10;
+									case "linearcutcautious10"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10;
+									case "linearcutcautious25"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS25;
+									case "linearcutcautiousmod10"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUSMODERATE10;
+									case "lincutcautious10d2"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D2;
+									case "lincutcautious10d4"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D4;
+									case "lincutcautious10d8"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D8;
+									case "lincutcautious10d16"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D16;
+									case "lincutcautious10dp"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10Dp;
+									case "linearhalved5"
+										settings.coefficients = COEFF_LINEARHALVED5;
+									case "moderatelongnew"
+										settings.coefficients = COEFF_MODERATELONGNEW;
+									case "moderatenew"
+										settings.coefficients = COEFF_MODERATENEW;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -254,31 +315,33 @@ for seed = seeds
 								settings.tokenfile = sprintf("%s.token",settings.simname);
 								%{NAME
 
-								if ( !exist(settings.outfile) &&  !exist(settings.tokenfile) ) ||...
-										overwrite || parse
+								if clean_tokens
+									delete(settings.tokenfile);
+								elseif ( !exist(settings.outfile) &&  !exist(settings.tokenfile) )...
+										|| overwrite || parse
 
 									if !parse
 										% To avoid duplicate exectution
 										fid = fopen (settings.tokenfile, "w");
 										fputs (fid, "Running"); fclose (fid);
-									end
 
-									%{GENERATE lambdatau
-									if length(zipf)==0
-										% the appropriate zipf has not been yet generated
-										zipf = zeros(p, max(in.catalog) );
-										for j=1:in.p
-											zipf(j, 1:in.catalog(j)) = ...
-												(ZipfPDF(in.alpha(j), in.catalog(j)) )';
+										%{GENERATE lambdatau
+										if length(zipf)==0
+											% the appropriate zipf has not been yet generated
+											zipf = zeros(p, max(in.catalog) );
+											for j=1:in.p
+												zipf(j, 1:in.catalog(j)) = ...
+													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
+											end
+										%else it means that the zipf has already been generated
 										end
-									%else it means that the zipf has already been generated
-									end
 
-									in.lambdatau=[]; %avg #req per each object
-									for j=1:in.p
-										in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+										in.lambdatau=[]; %avg #req per each object
+										for j=1:in.p
+											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+										end
+										%}GENERATE lambdatau
 									end
-									%}GENERATE lambdatau
 
 
 									function_name = [];
