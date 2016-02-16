@@ -5,8 +5,8 @@ mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 24;
 
 
-parse=false; % false if you want to run the experiment.
-clean_tokens=true;
+parse=true; % false if you want to run the experiment.
+clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
 
