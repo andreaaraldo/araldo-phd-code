@@ -32,7 +32,7 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
-ps = [2];
+ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
