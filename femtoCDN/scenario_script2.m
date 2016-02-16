@@ -5,7 +5,7 @@ mdat_folder = "~/remote_archive/femtoCDN/prova";
 max_parallel = 24;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = true;
@@ -36,7 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:3;
+seeds = 1:30;
 
 
 
