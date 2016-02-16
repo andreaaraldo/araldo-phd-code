@@ -4,13 +4,7 @@
 function [num_of_misses, tot_requests, F] = compute_num_of_misses(settings, epoch, test, in, theta, lambdatau)
 		p = in.p;
 
-		rand("seed",settings.seed*epoch*test);randn("seed",settings.seed*epoch*test);
-		il_seme_della_discordia = settings.seed*epoch*test
-		rand("state",1);randn("state",1);
-		vediamolo=random("poisson",10)
-		vediamo=poissrnd(10)
 		requests = poissrnd(lambdatau); % one row per each CP, one cell per each object
-		requests
 
 		max_catalog = max(in.catalog);
 		ordinal = repmat(1:max_catalog, p, 1);

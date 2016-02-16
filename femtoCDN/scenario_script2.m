@@ -19,21 +19,18 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"linearcutcautious10", "lincutcautiousother10"};
+coefficientss = {"lincutcautious10d2","lincutcautious10d4","lincutcautious10d8"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
-tot_times = [0.1]; %total time(hours)
+tot_times = [2]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
-overall_ctlgs = [6];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
-in.req_proportion=[0.50 0.50];
 
 ps = [2];
 Ks = [1e2]; %cache slots
@@ -54,6 +51,8 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARHALVED5=21; global COEFF_LINEARHALVED10=22;
 	global COEFF_LINEARCUTCAUTIOUS10=23;	global COEFF_LINEARCUTCAUTIOUS25=24;
 	global COEFF_LINEARCUTCAUTIOUSMODERATE10=25; global COEFF_LINEARCUTCAUTIOUSOTHER10=26;
+	global COEFF_LINEARCUTCAUTIOUS10D2=27;
+	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -67,7 +66,7 @@ R_perms_to_consider = [1];
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
-	rand("state",seed);randn("state",seed);
+	rand("state",seed);randn("state",seed);randp("state",seed);
 	for alpha0 = alpha0s
 	for alpha_eps = alpha_epss
 	for req_eps = req_epss
@@ -243,8 +242,12 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS25;
 									case "linearcutcautiousmod10"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUSMODERATE10;
-									case "lincutcautiousother10"
-										settings.coefficients = COEFF_LINEARCUTCAUTIOUSOTHER10;
+									case "lincutcautious10d2"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D2;
+									case "lincutcautious10d4"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D4;
+									case "lincutcautious10d8"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D8;
 									otherwise
 										error "coefficients incorrect";
 								end

@@ -28,7 +28,8 @@ function dspsa(in, settings, infile)
 				error("variant not recognised");
 		end %switch
 
-		rand("state",settings.seed);randn("state",settings.seed);
+		rand("state",settings.seed);randn("state",settings.seed);randp("state",settings.seed);
+
 		p = in.p;
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
