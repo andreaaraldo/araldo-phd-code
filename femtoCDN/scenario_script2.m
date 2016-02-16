@@ -5,10 +5,10 @@ mdat_folder = "~/remote_archive/femtoCDN/prova";
 max_parallel = 12;
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -19,7 +19,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"lincutcautious10d2","lincutcautious10d4","lincutcautious10d8"};
+coefficientss = {"lincutcautious10d2","lincutcautious10d4","lincutcautious10d8","lincutcautious10d16"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [2]; %total time(hours)
@@ -36,7 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:3;
+seeds = 3;
 
 
 
@@ -53,6 +53,7 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUSMODERATE10=25; global COEFF_LINEARCUTCAUTIOUSOTHER10=26;
 	global COEFF_LINEARCUTCAUTIOUS10D2=27;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
+	global COEFF_LINEARCUTCAUTIOUS10D16=30;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -248,6 +249,8 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D4;
 									case "lincutcautious10d8"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D8;
+									case "lincutcautious10d16"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUS10D16;
 									otherwise
 										error "coefficients incorrect";
 								end
