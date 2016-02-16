@@ -36,11 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-<<<<<<< HEAD
-seeds = 1:3;
-=======
 seeds = 1:10;
->>>>>>> 14562db0f88875e205fba8295e1336854c00acad
 
 
 
