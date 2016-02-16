@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/local_archive/femtoCDN/prova";
+mdat_folder = "~/remote_archive/femtoCDN/prova";
 max_parallel = 12;
 
 
@@ -36,7 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 2:3;
+seeds = 1:3;
 
 
 
