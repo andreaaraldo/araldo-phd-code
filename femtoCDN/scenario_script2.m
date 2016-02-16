@@ -5,7 +5,7 @@ mdat_folder = "~/local_archive/femtoCDN/prova";
 max_parallel = 12;
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = true;
@@ -23,16 +23,19 @@ coefficientss = {"linearcutcautious10", "lincutcautiousother10"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
+tot_times = [0.1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
+overall_ctlgs = [6];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.50 0.50];
 
-ps = [10];
+ps = [2];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
@@ -64,7 +67,7 @@ R_perms_to_consider = [1];
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
-	rand("seed",seed);
+	rand("state",seed);randn("state",seed);
 	for alpha0 = alpha0s
 	for alpha_eps = alpha_epss
 	for req_eps = req_epss

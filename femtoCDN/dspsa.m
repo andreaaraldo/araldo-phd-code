@@ -28,7 +28,7 @@ function dspsa(in, settings, infile)
 				error("variant not recognised");
 		end %switch
 
-		rand("seed",settings.seed*15);
+		rand("state",settings.seed);randn("state",settings.seed);
 		p = in.p;
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
@@ -68,7 +68,8 @@ function dspsa(in, settings, infile)
 		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
 	end%if
 
-	convergence.duration = 0;	
+	convergence.duration = 0;
+	in.ghat_1 = [];	
 
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
@@ -131,7 +132,7 @@ function dspsa(in, settings, infile)
 			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			[current_num_of_misses, current_tot_requests, F] = ...
-				compute_num_of_misses(in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
+				compute_num_of_misses(settings, i, test, in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
 			num_of_misses = [num_of_misses, current_num_of_misses];
 
 			tot_requests = [tot_requests, current_tot_requests];
@@ -166,7 +167,6 @@ function dspsa(in, settings, infile)
 		hist_updates = [hist_updates, current_updates];
 
 		%{ COMPUTE ghat
-			ghat_1_norm = [];
 			switch variant
 				case ORIG
 					delta_y = sum(vec_y(:,2))  -sum(vec_y(:,1) ); 
@@ -187,7 +187,9 @@ function dspsa(in, settings, infile)
 				case OPTIMUM
 					ghat = zeros(in.p, 1);
 			end % switch
-			if i==1; in.ghat_1=ghat; end
+			if length(in.ghat_1)==0 && any(ghat!=0)
+				in.ghat_1=ghat; 
+			end
 
 			ghat = normalize_ghat(ghat, settings.normalize);
 			ghat = ghat * settings.boost;

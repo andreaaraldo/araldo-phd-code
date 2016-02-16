@@ -11,9 +11,9 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_LINEARCUTCAUTIOUS10;	global COEFF_LINEARCUTCAUTIOUS25;
 	global COEFF_LINEARCUTCAUTIOUSMODERATE10; global COEFF_LINEARCUTCAUTIOUSOTHER10;
 
-	in.ghat_1_norm = norm(in.ghat_1);
-	if in.ghat_1_norm == 0
-		in.ghat_1_norm = 1;
+	if length(in.ghat_1)==0
+		alpha_i=0;
+		return
 	end
 
 
@@ -230,9 +230,9 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 
 
 		case COEFF_LINEARCUTCAUTIOUSOTHER10
-			ghat_measure = sum( abs(in.ghat_1) );
+			ghat_measure = sum( abs(in.ghat_1) )
 			how_many_initial_iterations=floor(360/in.T);
-			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/8);
+			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/4);
 			if epoch*in.T <=360
 				alpha_i = a;
 			elseif epoch*in.T <=3600
