@@ -6,7 +6,7 @@ max_parallel = 24;
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 
@@ -22,8 +22,8 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
-Ts = [100]; % epoch duration (s)
+tot_times = [100]; %total time(hours)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
