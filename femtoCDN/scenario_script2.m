@@ -1,14 +1,14 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/convergence_check_small_scale";
+mdat_folder = "~/local_archive/femtoCDN/prova";
 max_parallel = 12;
 
 
 parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -19,9 +19,10 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
+coefficientss = {"linearcutcautious10", "lincutcautiousother10"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [2]; %total time(hours)
+tot_times = [1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
 ctlg_epss = [0];
@@ -35,7 +36,7 @@ ps = [10];
 Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 2;
+seeds = 1;
 
 
 
@@ -49,7 +50,7 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARSMART100=18; global COEFF_LINEARCUT25=19; global COEFF_LINEARCUT10=20;
 	global COEFF_LINEARHALVED5=21; global COEFF_LINEARHALVED10=22;
 	global COEFF_LINEARCUTCAUTIOUS10=23;	global COEFF_LINEARCUTCAUTIOUS25=24;
-	global COEFF_LINEARCUTCAUTIOUSMODERATE10=25;
+	global COEFF_LINEARCUTCAUTIOUSMODERATE10=25; global COEFF_LINEARCUTCAUTIOUSOTHER10=26;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -239,6 +240,8 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUS25;
 									case "linearcutcautiousmod10"
 										settings.coefficients = COEFF_LINEARCUTCAUTIOUSMODERATE10;
+									case "lincutcautiousother10"
+										settings.coefficients = COEFF_LINEARCUTCAUTIOUSOTHER10;
 									otherwise
 										error "coefficients incorrect";
 								end

@@ -28,7 +28,7 @@ function dspsa(in, settings, infile)
 				error("variant not recognised");
 		end %switch
 
-		rand("seed",settings.seed);
+		rand("seed",settings.seed*15);
 		p = in.p;
 		convergence.required_duration = 1e6;
 		convergence.tolerance = 0.1;
@@ -187,7 +187,7 @@ function dspsa(in, settings, infile)
 				case OPTIMUM
 					ghat = zeros(in.p, 1);
 			end % switch
-			if i==1; in.ghat_1_norm=norm(ghat); end
+			if i==1; in.ghat_1=ghat; end
 
 			ghat = normalize_ghat(ghat, settings.normalize);
 			ghat = ghat * settings.boost;
