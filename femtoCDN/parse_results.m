@@ -70,12 +70,12 @@ function parse_results(in, settings)
 		case MISSES_AFTER_30_MIN
 			iteration = ceil(1800/in.T);
 			v=1-hist_cum_hit(iteration);
-			printf("%s %d %g %g %g\n", settings.method, settings.coefficients, in.T, v, in.lambda);
+			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
 
 		case MISSES_AFTER_60_MIN
 			iteration = ceil(3600/in.T);
 			v=1-hist_cum_hit(iteration);
-			printf("%s %d %g %g %g\n", settings.method, settings.coefficients, in.T, v, in.lambda);
+			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
 
 		case FINAL_ERR
 			%how_many = length(hist_err);
