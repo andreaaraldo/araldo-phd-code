@@ -19,6 +19,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 		return
 	end
 
+	in.ghat_1_norm = norm(in.ghat_1);
+
 
 	switch settings.coefficients
 		case COEFF_SIMPLE
