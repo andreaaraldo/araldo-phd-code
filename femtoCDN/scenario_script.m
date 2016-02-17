@@ -1,4 +1,3 @@
-Running on tipi52, tipi53 and loganberry
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
@@ -7,7 +6,7 @@ max_parallel = 1;
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 
