@@ -6,7 +6,7 @@ max_parallel = 24;
 
 
 parse=true; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 
