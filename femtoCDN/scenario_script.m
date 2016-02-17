@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/new";
-max_parallel = 1;
+max_parallel = 24;
 
 
 parse=false; % false if you want to run the experiment.
@@ -11,7 +11,7 @@ settings.save_mdat_file = true;
 overwrite = false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
-methods_ = {"opencache"};
+methods_ = {"opencache", "unif", "optimum"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -22,9 +22,9 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [100]; %total time(hours)
-Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+tot_times = [1]; %total time(hours)
+Ts = [1,10,100]; % epoch duration (s)
+overall_ctlgs = [1e4];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
@@ -33,10 +33,10 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:30;
 
 
 

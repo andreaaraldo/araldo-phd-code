@@ -4,20 +4,18 @@
 function [num_of_misses, tot_requests, F] = compute_num_of_misses(settings, epoch, test, in, theta, lambdatau)
 		p = in.p;
 
-		requests = poissrnd(lambdatau); % one row per each CP, one cell per each object
+		requests_per_each_CP = poissrnd( sum(lambdatau,2) );
 
 		max_catalog = max(in.catalog);
 		ordinal = repmat(1:max_catalog, p, 1);
 		cache_indicator_negated = ordinal > repmat(theta,1,max_catalog);
-		num_of_misses = [];
-		for j=1:p
-			num_of_misses = [num_of_misses; requests(j,:) * cache_indicator_negated(j,:)'];
-		end
+		expected_num_of_misses_per_each_CP = diag(lambdatau * cache_indicator_negated');
+		% Using the fact that the sum of poisson variables is a posson variable whose expected value is
+		% the sum of the expected values of the summands 
+		num_of_misses = poissrnd(expected_num_of_misses_per_each_CP);
 
-		tot_requests = sum(sum(requests,2)); % total requests, one cell per each CP
-
-
+		tot_requests = sum(requests_per_each_CP);
 		F = zeros(in.p, 1);
-		idx_selector = tot_requests != 0;
-		F(tot_requests != 0) = sum(requests,2)(idx_selector) / tot_requests((idx_selector));
+		idx_selector = (requests_per_each_CP != 0);
+		F(idx_selector) = requests_per_each_CP(idx_selector) / tot_requests;
 end
