@@ -1,28 +1,15 @@
 function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, infile)
-        if length(in)==0 && length(settings)==0
-                load (infile);
+    if length(in)==0 && length(settings)==0
+		load (infile);
 		delete(infile);
-        end
+    end
 
 
 	% SETTINGS
 	global severe_debug
 
 	N = in.p;
-	border=ones(N,1);
-	border_lambdatau = [];
-	for j=1:N
-		border_lambdatau = [border_lambdatau; in.lambdatau(j, border(j)) ];
-	end
-
-	for i=1:in.K
-
-		[new_value, idx] = max(border_lambdatau);
-		border(idx)++;
-		border_lambdatau(idx) =  in.lambdatau(idx, border(idx)) ;
-	end%for
-
-	theta = c = border .- ones(N,1);
+	theta = c = compute_optimum(in.p, in.lambdatau, in.K);
 	value = compute_value(in, c);
 
 

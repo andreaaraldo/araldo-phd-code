@@ -4,6 +4,7 @@ function dspsa(in, settings, infile)
 	%{ SETTINGS
 		pkg load statistics
 		global severe_debug
+		addpath("~/software/araldo-phd-code/general/statistical/");
 
 		if length(in)==0 && length(settings)==0
 			load (infile);
@@ -11,7 +12,7 @@ function dspsa(in, settings, infile)
 		end
 
 		variant = [];
-		ORIG = 1; OPENCACHE = 3; CSDA = 4; UNIF=5; OPTIMUM=6;
+		ORIG = 1; OPENCACHE = 3; CSDA = 4; UNIF=5; OPTIMUM=6; DECLARATION=7;
 		switch settings.method
 			case "dspsa_orig"
 				variant = ORIG;
@@ -23,6 +24,8 @@ function dspsa(in, settings, infile)
 				variant = UNIF;
 			case "optimum"
 				variant = OPTIMUM;
+			case "declaration"
+				variant = DECLARATION;
 			otherwise
 				method
 				error("variant not recognised");
@@ -54,7 +57,7 @@ function dspsa(in, settings, infile)
 		elseif variant==CSDA
 			K_prime = K;
 			theta=repmat( K/p, p,1 );
-		elseif variant==UNIF
+		elseif variant==UNIF || variant == DECLARATION
 			K_prime = K;
 			theta=repmat( floor(K/p), p,1 );
 		elseif variant == OPTIMUM
@@ -105,7 +108,7 @@ function dspsa(in, settings, infile)
 			test_theta = [theta_minus, theta_plus];
 		elseif variant == CSDA
 			test_theta = round(theta);
-		elseif variant==UNIF
+		elseif variant==UNIF || variant==DECLARATION
 			test_theta = theta;
 		elseif variant == OPTIMUM
 			test_theta = in.theta_opt;
@@ -129,11 +132,21 @@ function dspsa(in, settings, infile)
 
 			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
 			
-
-			% We divide lambdatau by 2, because at each epoch for half of the time we evaluate 
+			% We divide lambdatau by the number of tests, because, for example if tests are 2,
+			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
-			[current_num_of_misses, current_tot_requests, F] = ...
-				compute_num_of_misses(settings, i, test, in, current_theta, in.lambdatau*1.0/size(test_theta, 2));
+			if variant==DECLARATION
+				requests_per_object = poissrnd(in.lambdatau*1.0/size(test_theta, 2) );
+				[current_num_of_misses, current_tot_requests, F] = ...
+					compute_num_of_misses_fine(settings, i, test, in, ...
+						current_theta, requests_per_object ...
+					);
+			else
+				[current_num_of_misses, current_tot_requests, F] = ...
+					compute_num_of_misses_gross(settings, i, test, in, ...
+						current_theta, in.lambdatau*1.0/size(test_theta, 2)...
+					);
+			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
 
 			tot_requests = [tot_requests, current_tot_requests];
@@ -157,6 +170,8 @@ function dspsa(in, settings, infile)
 			
 				vec_y = F .* miss_ratio ;
 				vec_y_old = F .* miss_ratio_old;
+			% else if variant==UNIF || variant==DECLARATION
+			%	We do not need to do anything
 			end%if
 			%} COMPUTE vec_y
 		end%test
@@ -168,26 +183,22 @@ function dspsa(in, settings, infile)
 		hist_updates = [hist_updates, current_updates];
 
 		%{ COMPUTE ghat
-			switch variant
-				case ORIG
-					delta_y = sum(vec_y(:,2))  -sum(vec_y(:,1) ); 
-					ghat = delta_y * Delta;
+			if variant==ORIG
+				delta_y = sum(vec_y(:,2))  -sum(vec_y(:,1) ); 
+				ghat = delta_y * Delta;
 
-				case OPENCACHE
-					delta_vec_y = vec_y(:,2) .- vec_y(:,1);
-					ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) .* ones(p,1);
+			elseif variant==OPENCACHE
+				delta_vec_y = vec_y(:,2) .- vec_y(:,1);
+				ghat = delta_vec_y .* Delta - (1.0/p) * (delta_vec_y' * Delta) .* ones(p,1);
 
-
-				case CSDA
+			elseif variant==CSDA
 					d_vec_y = (vec_y - vec_y_old) ./ (theta-theta_old);
 					ghat = d_vec_y - (1.0/p) * (d_vec_y' * ones(in.p,1) ) .* ones(in.p,1);
 
-				case UNIF
+			elseif variant==UNIF || variant==DECLARATION || variant==OPTIMUM
 					ghat = zeros(in.p, 1);
-				
-				case OPTIMUM
-					ghat = zeros(in.p, 1);
-			end % switch
+			end
+
 			if length(in.ghat_1)==0 && any(ghat!=0)
 				in.ghat_1=ghat; 
 			end
@@ -220,7 +231,17 @@ function dspsa(in, settings, infile)
 		%}COEFFICIENT
 
 		%{ COMPUTE theta
-		theta = theta - alpha_i * ghat;
+		if variant!=DECLARATION
+			theta = theta - alpha_i * ghat;
+		else
+			lambdatau_reconstruct = zeros(size(in.lambdatau) );
+			for j=1:in.p
+				prob_obs = requests_per_object(j,:) / sum(requests_per_object(j,:));
+				lambdatau_reconstruct(j,:) = zipf_fitting(prob_obs) * F(j);
+			end
+			theta = compute_optimum(in.p, lambdatau_reconstruct, in.K);
+		end
+
 		if any(theta<0) && settings.projection!=PROJECTION_NO
 
 			%{ COMPUTE FRACTION
@@ -272,7 +293,9 @@ function dspsa(in, settings, infile)
 				error("Some element of theta is NaN. This is an error.")
 			end
 
-			if variant!=UNIF && variant!=OPTIMUM && sum(Delta) != 0 && sum(ghat)!=0
+			if variant!=UNIF && variant!=OPTIMUM && variant!=OPTIMUM && variant!=DECLARATION && ...
+				sum(Delta) != 0 && sum(ghat)!=0
+
 				Delta
 				delta_vc
 				error("Zero-sum property does not hold")

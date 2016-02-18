@@ -1,7 +1,7 @@
 % Compute the number of misses
 % F is a vector whose single cell is the fraction of requests to a single CP
 
-function [num_of_misses, tot_requests, F] = compute_num_of_misses(settings, epoch, test, in, theta, lambdatau)
+function [num_of_misses, tot_requests, F] = compute_num_of_misses_gross(settings, epoch, test, in, theta, lambdatau)
 		p = in.p;
 
 		requests_per_each_CP = poissrnd( sum(lambdatau,2) );
