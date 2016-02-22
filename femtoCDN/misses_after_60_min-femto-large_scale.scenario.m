@@ -1,19 +1,17 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
-max_parallel = 8;
+max_parallel = 4;
 
 
-
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
 
-methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"opencache", "unif", "optimum","declaration"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
+methods_ = {"opencache", "unif", "optimum"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -23,10 +21,10 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
-lambdas = [100]; %req/s 
+lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [1,10,100]; % epoch duration (s)
-overall_ctlgs = [1e4];
+overall_ctlgs = [1e8];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
@@ -35,7 +33,7 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e2]; %cache slots
+Ks = [1e3]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 seeds = 1:10;
@@ -106,7 +104,7 @@ for seed = seeds
 		for ctlg_perm=ctlg_perms_to_consider
 			in.ctlg_perm = ctlg_perm;
 			in.catalog = ctlg_perms(:,ctlg_perm);
-			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
+			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
 			for in.T = Ts
 				settings.epochs = round(tot_time*3600/in.T);
@@ -168,9 +166,12 @@ for seed = seeds
 
 							%{NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							active_projections = projections;
-							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif") || strcmp(method,"declaration") 
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_coefficientss = {"no"};
+							end
+
+							active_projections = projections;
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
 								active_projections = {"no"};
 							end
 
@@ -325,20 +326,19 @@ for seed = seeds
 										fputs (fid, "Running"); fclose (fid);
 
 										%{GENERATE lambdatau
-										if length(popularity)==0
-											% the appropriate popularity has not been yet generated
-											popularity = zeros(p, max(in.catalog) );
+										if length(zipf)==0
+											% the appropriate zipf has not been yet generated
+											zipf = zeros(p, max(in.catalog) );
 											for j=1:in.p
-												popularity(j, 1:in.catalog(j)) = ...
+												zipf(j, 1:in.catalog(j)) = ...
 													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
 											end
-										%else it means that the popularity has already been generated
+										%else it means that the zipf has already been generated
 										end
-
 
 										in.lambdatau=[]; %avg #req per each object
 										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  popularity(j,:) .* in.R(j) ];
+											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
 										end
 										%}GENERATE lambdatau
 									end
@@ -357,8 +357,6 @@ for seed = seeds
 										case "optimum_nominal"
 											function_name = "optimum_nominal";
 										case "unif"
-											function_name = "dspsa";
-										case "declaration"
 											function_name = "dspsa";
 										otherwise
 											method

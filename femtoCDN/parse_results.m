@@ -6,7 +6,7 @@ function parse_results(in, settings)
 
 	output = MISSES_AFTER_60_MIN;
 
-	%printf("\n\n\n\n I AM PRINTING %s %d\n", settings.method, settings.coefficients);
+	%printf("\n Loading %s\n", settings.outfile);
 
 	load(settings.outfile);
 	theta_unif = repmat(in.K/in.p, in.p, 1);
