@@ -31,6 +31,7 @@ ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
+ONtimes = [1];%Fraction of time the object is on.
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
@@ -183,6 +184,7 @@ for seed = seeds
 							end
 							%}NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 
+							for in.ONtime = ONtimes
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
@@ -335,10 +337,14 @@ for seed = seeds
 										%else it means that the popularity has already been generated
 										end
 
-
+										% To take into account the fact that only active objects generate
+										% requests
+										adjust_factor = 1.0/ONtime; 
+										
 										in.lambdatau=[]; %avg #req per each object
 										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  popularity(j,:) .* in.R(j) ];
+											in.lambdatau = [in.lambdatau;  ...
+												popularity(j,:) .* in.R(j) * adjust_factor ];
 										end
 										%}GENERATE lambdatau
 									end
@@ -405,6 +411,7 @@ for seed = seeds
 						end%projection
 						end%coefficient end
 						end%normalize for
+						end%ONtime for
 					end%K for
 				end%R_perm for
 				end%lambda for
