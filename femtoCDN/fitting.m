@@ -106,7 +106,7 @@ for seed = seeds
 		for ctlg_perm=ctlg_perms_to_consider
 			in.ctlg_perm = ctlg_perm;
 			in.catalog = ctlg_perms(:,ctlg_perm);
-			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
+			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
 			for in.T = Ts
 				settings.epochs = round(tot_time*3600/in.T);
@@ -325,20 +325,20 @@ for seed = seeds
 										fputs (fid, "Running"); fclose (fid);
 
 										%{GENERATE lambdatau
-										if length(zipf)==0
-											% the appropriate zipf has not been yet generated
-											zipf = zeros(p, max(in.catalog) );
+										if length(popularity)==0
+											% the appropriate popularity has not been yet generated
+											popularity = zeros(p, max(in.catalog) );
 											for j=1:in.p
-												zipf(j, 1:in.catalog(j)) = ...
+												popularity(j, 1:in.catalog(j)) = ...
 													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
 											end
-										%else it means that the zipf has already been generated
+										%else it means that the popularity has already been generated
 										end
 
 
 										in.lambdatau=[]; %avg #req per each object
 										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+											in.lambdatau = [in.lambdatau;  popularity(j,:) .* in.R(j) ];
 										end
 										%}GENERATE lambdatau
 									end
