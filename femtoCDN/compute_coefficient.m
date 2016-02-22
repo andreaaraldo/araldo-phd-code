@@ -12,7 +12,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_LINEARCUTCAUTIOUSMODERATE10; global COEFF_LINEARCUTCAUTIOUS10D2;
 	global COEFF_LINEARCUTCAUTIOUS10D4; global COEFF_LINEARCUTCAUTIOUS10D8; 
 	global COEFF_LINEARCUTCAUTIOUS10D16; global COEFF_LINEARCUTCAUTIOUS10Dp;
-	global COEFF_MODERATELONGNEW; global COEFF_MODERATENEW; 
+	global COEFF_MODERATELONGNEW; global COEFF_MODERATENEW; global COEFF_LINEARHALVED5REINIT30MIN;
 
 	if length(in.ghat_1)==0
 		alpha_i=0;
@@ -248,7 +248,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -272,7 +272,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -295,7 +295,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -318,7 +318,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -341,7 +341,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -364,7 +364,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -386,7 +386,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch )/ (epoch+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -408,7 +408,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -433,7 +433,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient /2;
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -456,7 +456,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i_first = last_coefficient /2;
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10)
+					alpha_i=max(alpha_i, a/10);
 				else
 					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
 				end
@@ -465,6 +465,29 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501;
 			end
 
+		case COEFF_LINEARHALVED5REINIT30MIN
+			ghat_measure = sum( abs(in.ghat_1) );
+			how_many_initial_iterations=floor(360/in.T);
+			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+			if mod(epoch*in.T,30*60) <=360
+				alpha_i = a;
+			elseif mod(epoch*in.T,30*60) <=3600
+				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
+				miss_ratio_past = prctile(hist_miss_ratio',5);
+				if hist_miss_ratio(end) <= miss_ratio_past
+					% We decrease more
+					alpha_i_first = last_coefficient /2;
+					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
+					alpha_i=min(alpha_i_first, alpha_i_second);
+					alpha_i=max(alpha_i, a/10);
+				else
+					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
+				end
+			else
+				error "We should never arrive there"
+				iterations_in_10h = 3600*10/in.T;
+				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501;
+			end
 
 
 		case COEFF_LINEARLONG

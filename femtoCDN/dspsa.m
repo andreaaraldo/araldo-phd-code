@@ -43,7 +43,10 @@ function dspsa(in, settings, infile)
 	
 	%{ INITIALIZE
 		%{COMPUTE theta_opt
-		if any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) )
+		if 	any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) ) || ...
+			any(in.catalog - repmat(in.catalog(1), size(in.catalog) ) != zeros(size(in.catalog)) ) 
+
+			error "We should compute the optimum in the complicated way. It is not an error but check if it is really what you want."
 			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
 		else
 			in.theta_opt = in.req_proportion' .* in.K;
@@ -65,6 +68,16 @@ function dspsa(in, settings, infile)
 			theta = in.theta_opt;
 		end
 		%}COMPUTE THE FIRST theta
+
+		%{ HANDLE ON OFF state
+			% Initialize ONobjects
+			% The ONobjects has a 1 in correspondence to active objects
+			ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
+
+			in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
+			in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
+		%} HANDLE ON OFF state
+
 	
 	how_many_step_updates = 1;
 
@@ -78,7 +91,8 @@ function dspsa(in, settings, infile)
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
 
-	in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = [];
+	in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
+		hist_deactivated_objects = [];
 	last_theta = repmat(0,in.p, 1);
 	%} INITIALIZE
 
@@ -88,6 +102,8 @@ function dspsa(in, settings, infile)
 		end
 
 		current_updates = 0; % Number of files proactively downloaded to the cache
+
+		active_lambdatau = ONobjects .* in.lambdatau;
 
 		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
@@ -131,20 +147,25 @@ function dspsa(in, settings, infile)
 			current_theta = test_theta(:,test);
 
 			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
+
+			%{ COMPUTE CACHE INDICATOR
+			cache_indicator_negated = repmat(current_theta,1,size(ONobjects,2) ) - cumsum(ONobjects,2) < 0;
+			%} COMPUTE CACHE INDICATOR
+
 			
 			% We divide lambdatau by the number of tests, because, for example if tests are 2,
 			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			if variant==DECLARATION
-				requests_per_object = poissrnd(in.lambdatau*1.0/size(test_theta, 2) );
+				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_fine(settings, i, test, in, ...
-						current_theta, requests_per_object ...
+						current_theta, requests_per_object, cache_indicator_negated ...
 					);
 			else
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_gross(settings, i, test, in, ...
-						current_theta, in.lambdatau*1.0/size(test_theta, 2)...
+						current_theta, active_lambdatau*1.0/size(test_theta, 2), cache_indicator_negated...
 					);
 			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
@@ -278,6 +299,26 @@ function dspsa(in, settings, infile)
 			%} COMPUTE FRACTION
 		end
 		%} COMPUTE theta
+
+		%{ UPDATE ONobjects
+			objects_to_switch_off_large = rand(size(ONobjects) ) <= in.p_on_off;
+			temp = ONobjects + objects_to_switch_off_large;
+			objects_to_switch_off = (temp == 2);
+
+			objects_to_switch_on_large = rand(size(ONobjects) ) <= in.p_off_on;
+			temp = ONobjects - objects_to_switch_on_large;
+			objects_to_switch_on = (temp == -1);
+			ONobjects = ONobjects - objects_to_switch_off+ objects_to_switch_on;
+
+			hist_activated_objects = [hist_activated_objects, sum(sum(objects_to_switch_on) )];
+			hist_deactivated_objects = [hist_deactivated_objects, sum(sum(objects_to_switch_off) )];
+
+			if severe_debug
+				if any(objects_to_switch_on+objects_to_switch_off>1)
+					error "error in updating ONobjects"
+				end
+			end
+		%} UPDATE ONobjects
 
 		in.hist_theta = [in.hist_theta, theta];
 

@@ -2,18 +2,19 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
-mdat_folder = "~/remote_archive/femtoCDN/new";
+mdat_folder = "~/local_archive/femtoCDN/prova";
 max_parallel = 8;
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache", "unif", "optimum","declaration"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -21,25 +22,28 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"triang", "moderate", "linearhalved5", "linearhalved5reinit30min"};
+coefficientss = {"linearhalved5reinit30min"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
-Ts = [1,10,100]; % epoch duration (s)
-overall_ctlgs = [1e4];
+tot_times = [2]; %total time(hours)
+Ts = [10]; % epoch duration (s)
+overall_ctlgs = [3.5e6];
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-ONtimes = [1];%Fraction of time the object is on.
+ONtimes = [0.1];%Fraction of time the object is on.
+ONOFFspans = 70; %How many days an ON-OFF period lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.25 0.25 0.25 0.25];
 
-ps = [10];
-Ks = [1e2]; %cache slots
+ps = [4];
+Ks = [1e4]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1:10;
+seeds = 1;
 
 
 
@@ -57,7 +61,8 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D2=27;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
-	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33; 
+	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
+	global COEFF_LINEARHALVED5REINIT30MIN=34;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -185,6 +190,7 @@ for seed = seeds
 							%}NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 
 							for in.ONtime = ONtimes
+							for in.ONOFFspan = ONOFFspans
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
@@ -261,6 +267,8 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATELONGNEW;
 									case "moderatenew"
 										settings.coefficients = COEFF_MODERATENEW;
+									case "linearhalved5reinit30min"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -306,10 +314,16 @@ for seed = seeds
 									req_str = sprintf("req_eps_%s", in.req_str_inner);
 								end
 
+								timeev_str="";
+								if in.ONtime<1
+									timeev_str = sprintf("-ONtime_%g-span_%g",in.ONtime,in.ONOFFspan);
+								elseif in.ONtime>1
+									error "in.ONtime must be a fraction";
+								end
 
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -339,7 +353,7 @@ for seed = seeds
 
 										% To take into account the fact that only active objects generate
 										% requests
-										adjust_factor = 1.0/ONtime; 
+										adjust_factor = 1.0/in.ONtime; 
 										
 										in.lambdatau=[]; %avg #req per each object
 										for j=1:in.p
@@ -347,6 +361,7 @@ for seed = seeds
 												popularity(j,:) .* in.R(j) * adjust_factor ];
 										end
 										%}GENERATE lambdatau
+
 									end
 
 
@@ -412,6 +427,7 @@ for seed = seeds
 						end%coefficient end
 						end%normalize for
 						end%ONtime for
+						end%ONOFFspan for
 					end%K for
 				end%R_perm for
 				end%lambda for

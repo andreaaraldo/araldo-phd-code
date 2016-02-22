@@ -4,7 +4,7 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17;
 
-	output = MISSES_AFTER_60_MIN;
+	output = HIST_STEPS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
