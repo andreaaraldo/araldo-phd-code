@@ -5,7 +5,7 @@ mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 4;
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -21,7 +21,7 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
-lambdas = [100]; %req/s 
+lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [1,10,100]; % epoch duration (s)
 overall_ctlgs = [1e8];
@@ -33,7 +33,7 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e3]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 seeds = 1:10;
