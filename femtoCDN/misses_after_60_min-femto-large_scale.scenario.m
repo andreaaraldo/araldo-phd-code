@@ -8,7 +8,7 @@ max_parallel = 4;
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 
@@ -31,7 +31,7 @@ ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-ONtimes = [0.1];%Fraction of time the object is on.
+ONtimes = [1];%Fraction of time the object is on.
 ONOFFspans = 70; %How many days an ON-OFF period lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
