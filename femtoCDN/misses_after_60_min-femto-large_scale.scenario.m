@@ -1,8 +1,10 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/new";
+addpath("~/software/araldo-phd-code/general/statistical/");
+mdat_folder = "~/local_archive/femtoCDN/prova";
 max_parallel = 4;
+
 
 
 parse=false; % false if you want to run the experiment.
@@ -10,7 +12,7 @@ clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
 
-methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal", "declaration"};
 methods_ = {"opencache", "unif", "optimum"};
 
 
@@ -29,6 +31,8 @@ ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
+ONtimes = [0.1];%Fraction of time the object is on.
+ONOFFspans = 70; %How many days an ON-OFF period lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
@@ -54,13 +58,13 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D2=27;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
-	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33; 
+	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
+	global COEFF_LINEARHALVED5REINIT30MIN=34;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
 
-warning("on", "backtrace");
 
 
 ctlg_perms_to_consider = [1];
@@ -104,7 +108,7 @@ for seed = seeds
 		for ctlg_perm=ctlg_perms_to_consider
 			in.ctlg_perm = ctlg_perm;
 			in.catalog = ctlg_perms(:,ctlg_perm);
-			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
+			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
 			for in.T = Ts
 				settings.epochs = round(tot_time*3600/in.T);
@@ -166,12 +170,9 @@ for seed = seeds
 
 							%{NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
-								active_coefficientss = {"no"};
-							end
-
 							active_projections = projections;
-							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif") || strcmp(method,"declaration") 
+								active_coefficientss = {"no"};
 								active_projections = {"no"};
 							end
 
@@ -184,6 +185,8 @@ for seed = seeds
 							end
 							%}NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 
+							for in.ONtime = ONtimes
+							for in.ONOFFspan = ONOFFspans
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
@@ -260,6 +263,8 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATELONGNEW;
 									case "moderatenew"
 										settings.coefficients = COEFF_MODERATENEW;
+									case "linearhalved5reinit30min"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -305,10 +310,16 @@ for seed = seeds
 									req_str = sprintf("req_eps_%s", in.req_str_inner);
 								end
 
+								timeev_str="";
+								if in.ONtime<1
+									timeev_str = sprintf("-ONtime_%g-span_%g",in.ONtime,in.ONOFFspan);
+								elseif in.ONtime>1
+									error "in.ONtime must be a fraction";
+								end
 
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -326,21 +337,27 @@ for seed = seeds
 										fputs (fid, "Running"); fclose (fid);
 
 										%{GENERATE lambdatau
-										if length(zipf)==0
-											% the appropriate zipf has not been yet generated
-											zipf = zeros(p, max(in.catalog) );
+										if length(popularity)==0
+											% the appropriate popularity has not been yet generated
+											popularity = zeros(p, max(in.catalog) );
 											for j=1:in.p
-												zipf(j, 1:in.catalog(j)) = ...
+												popularity(j, 1:in.catalog(j)) = ...
 													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
 											end
-										%else it means that the zipf has already been generated
+										%else it means that the popularity has already been generated
 										end
 
+										% To take into account the fact that only active objects generate
+										% requests
+										adjust_factor = 1.0/in.ONtime; 
+										
 										in.lambdatau=[]; %avg #req per each object
 										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+											in.lambdatau = [in.lambdatau;  ...
+												popularity(j,:) .* in.R(j) * adjust_factor ];
 										end
 										%}GENERATE lambdatau
+
 									end
 
 
@@ -357,6 +374,8 @@ for seed = seeds
 										case "optimum_nominal"
 											function_name = "optimum_nominal";
 										case "unif"
+											function_name = "dspsa";
+										case "declaration"
 											function_name = "dspsa";
 										otherwise
 											method
@@ -403,6 +422,8 @@ for seed = seeds
 						end%projection
 						end%coefficient end
 						end%normalize for
+						end%ONtime for
+						end%ONOFFspan for
 					end%K for
 				end%R_perm for
 				end%lambda for
