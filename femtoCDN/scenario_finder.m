@@ -1,4 +1,3 @@
-Running on tipi52
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");

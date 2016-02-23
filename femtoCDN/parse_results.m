@@ -2,9 +2,9 @@ function parse_results(in, settings)
 	HIST_REL_ERR=1; FINAL_CV=2; FINAL_OBSERVED_HIT=3; FINAL_ERR = 4; ERR_HISTORY = 5; HIST_STEPS=6; 
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
-	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17;
+	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18;
 
-	output = HIST_MISSES;
+	output = HIST_OBJECT_CHANGED;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -135,6 +135,12 @@ function parse_results(in, settings)
 			
 		case AVG_ALLOCATION
 			mean(hist_theta,2)'
+
+		case HIST_OBJECT_CHANGED
+			result_file = sprintf("%s.cobj.dat", settings.simname);
+			dlmwrite(result_file, (hist_activated_objects+hist_deactivated_objects)' , " " );
+			printf("%s written\n", result_file);
+
 
 		otherwise
 			error "metric not recognized"
