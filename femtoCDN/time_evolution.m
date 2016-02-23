@@ -24,8 +24,8 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5", "halved5re30"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [5]; %total time(hours)
-Ts = [10]; % epoch duration (s)
+tot_times = [240]; %total time(hours)
+Ts = [100]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
 
 ctlg_epss = [0];
