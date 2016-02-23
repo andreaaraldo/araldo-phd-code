@@ -342,8 +342,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				hist_miss_ratio = ones( size(hist_tot_requests) );
 				hist_miss_ratio(idx) = (sum(hist_num_of_misses,1)(idx) ) ./hist_tot_requests(idx);
 				miss_ratio_past = prctile(hist_miss_ratio',5);
+				denominator = 3600/in.T - epoch+1;
 				if hist_miss_ratio(end) <= miss_ratio_past
-					denominator = 3600/in.T - epoch+1;
 					if denominator==0
 						disp denominator; disp in.T; disp epoch;
 						error "denominator cannot be zero"
@@ -385,8 +385,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			elseif epoch_to_consider <=3600
 				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
 				miss_ratio_past = prctile(hist_miss_ratio',5);
+				denominator = 3600/in.T - epoch+1;
 				if hist_miss_ratio(end) <= miss_ratio_past
-					denominator = 3600/in.T - epoch+1;
 					if denominator==0
 						disp denominator; disp in.T; disp epoch;
 						error "denominator cannot be zero"
