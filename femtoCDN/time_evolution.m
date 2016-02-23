@@ -33,7 +33,7 @@ alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [0.1];%Fraction of time the object is on.
-ONOFFspans = 70; %How many days an ON-OFF cycle lasts on average
+ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
@@ -335,8 +335,14 @@ for seed = seeds
 
 									if !parse
 										% To avoid duplicate exectution
-										fid = fopen (settings.tokenfile, "w");
-										fputs (fid, "Running"); fclose (fid);
+										[fid, msg] = fopen (settings.tokenfile, "w");
+										if fid==-1
+											printf("Error in writing file %s. Error is: %s",...
+													settings.tokenfile, msg;
+											quit
+										else
+											fputs (fid, "Running"); fclose (fid);
+										end
 
 										%{GENERATE lambdatau
 										if length(popularity)==0
