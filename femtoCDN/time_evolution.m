@@ -21,7 +21,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5", "linearhalved5reinit30min"};
+coefficientss = {"triang", "moderate", "linearhalved5", "halved5re30"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [5]; %total time(hours)
@@ -265,7 +265,7 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATELONGNEW;
 									case "moderatenew"
 										settings.coefficients = COEFF_MODERATENEW;
-									case "linearhalved5reinit30min"
+									case "halved5re30"
 										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
 									otherwise
 										error "coefficients incorrect";
@@ -314,7 +314,7 @@ for seed = seeds
 
 								timeev_str="";
 								if in.ONtime<1
-									timeev_str = sprintf("-ONtime_%g-span_%g",in.ONtime,in.ONOFFspan);
+									timeev_str = sprintf("-ON_%gover%g",in.ONtime,in.ONOFFspan);
 								elseif in.ONtime>1
 									error "in.ONtime must be a fraction";
 								end
