@@ -44,7 +44,16 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			alpha_i = a;
 
 		case COEFF_TRIANGULAR
-			a = (in.K - in.p/2) / (in.p * ghat_1_norm);
+			ghat_measure = 0; t=1;
+			while ghat_measure==0 && t<=size(hist_ghat,2)
+				ghat_measure=norm(hist_ghat(:,t)  );
+				t++;
+			end
+			if ghat_measure>0
+				a = (in.K - in.p/2) / (in.p * ghat_1_norm);
+			else
+				a=0;
+			end
 			alpha_i = a /epoch;
 
 		case COEFF_SMOOTH_TRIANGULAR
@@ -302,26 +311,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 
 
 		case COEFF_LINEARCUTCAUTIOUS25
-			a = (in.K - in.p/2) / (in.p * ghat_1_norm);
-			if epoch*in.T <=360
-				alpha_i = a;
-			elseif epoch*in.T <=3600
-				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
-				miss_ratio_past = prctile(hist_miss_ratio',25);
-				if hist_miss_ratio(end) <= miss_ratio_past
-					% We decrease more
-					alpha_i_first = last_coefficient * (epoch-360/in.T )/ (epoch-360/in.T+1);
-					alpha_i_second = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
-					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10);
-				else
-					alpha_i = last_coefficient - (last_coefficient - a/10)/(3600/in.T - epoch+1);
-				end
-			else
-				iterations_in_10h = 3600*10/in.T;
-				alpha_i = last_coefficient * (1- 1/(1+0.1*iterations_in_10h + epoch - 3600/in.T) )^0.501;
-			end
-
+			error "copy and paste from LINEARCUTCAUTIOUS10"
 
 
 		case COEFF_LINEARHALVED10
