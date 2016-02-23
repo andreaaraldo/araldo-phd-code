@@ -50,7 +50,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				t++;
 			end
 			if ghat_measure>0
-				a = (in.K - in.p/2) / (in.p * ghat_1_norm);
+				a = (in.K - in.p/2) / (in.p * ghat_measure);
 			else
 				a=0;
 			end
@@ -142,7 +142,16 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 
 		case COEFF_MODERATE
 			iterations_in_1h = 3600/in.T;
-			a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_1h + 1 )^0.501 ) / (in.p * ghat_1_norm);
+			ghat_measure = 0; t=1;
+			while ghat_measure==0 && t<=size(hist_ghat,2)
+				ghat_measure=norm(hist_ghat(:,t)  );
+				t++;
+			end
+			if ghat_measure>0
+				a = (in.K - in.p/2)*( ( 1 + 0.1 * iterations_in_1h + 1 )^0.501 ) / (in.p * ghat_measure);
+			else
+				a=0;
+			end
 			alpha_i = a /( ( 1 + 0.1 * iterations_in_1h + epoch )^0.501 );
 
 		case COEFF_MODERATENEW
