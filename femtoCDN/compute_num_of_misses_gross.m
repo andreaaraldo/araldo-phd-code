@@ -14,6 +14,6 @@ function [num_of_misses, tot_requests, F] = compute_num_of_misses_gross(settings
 		tot_requests = sum(requests_per_each_CP);
 		F = zeros(in.p, 1);
 		if tot_requests!=0
-			F = requests_per_each_CP(idx_selector) / tot_requests;
+			F = requests_per_each_CP / tot_requests;
 		end
 end
