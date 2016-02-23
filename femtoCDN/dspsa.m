@@ -1,5 +1,6 @@
 %
 function dspsa(in, settings, infile)
+	warning("error", "Octave:divide-by-zero");
 
 	%{ SETTINGS
 		pkg load statistics
@@ -72,10 +73,17 @@ function dspsa(in, settings, infile)
 		%{ HANDLE ON OFF state
 			% Initialize ONobjects
 			% The ONobjects has a 1 in correspondence to active objects
-			ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
+			if in.ONtime == 1
+				ONobjects = ones(size(in.lambdatau) );
+				in.p_on_off = in.p_off_on = 0;
+			elseif in.ONtime < 1 && in.ONtime > 0
+				ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
 
-			in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
-			in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
+				in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
+				in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
+			else
+				error "in.ONtime can be neither larger than 1 nor 0"
+			end
 		%} HANDLE ON OFF state
 
 	
@@ -86,7 +94,6 @@ function dspsa(in, settings, infile)
 	end%if
 
 	convergence.duration = 0;
-	in.ghat_1 = [];	
 
 	% Historical num of misses. One row per each CP, one column per each epoch
 	hist_num_of_misses = hist_tot_requests = [];
@@ -220,10 +227,6 @@ function dspsa(in, settings, infile)
 					ghat = zeros(in.p, 1);
 			end
 
-			if length(in.ghat_1)==0 && any(ghat!=0)
-				in.ghat_1=ghat; 
-			end
-
 			ghat = normalize_ghat(ghat, settings.normalize);
 			ghat = ghat * settings.boost;
 			hist_ghat = [hist_ghat, ghat];
@@ -244,7 +247,7 @@ function dspsa(in, settings, infile)
 		%{COEFFICIENT
 		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
 		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, hist_tot_requests,...
-			last_coefficient,how_many_step_updates);
+			last_coefficient,how_many_step_updates, hist_ghat);
 		if length(hist_a)>0 && hist_a(end) != alpha_i
 			how_many_step_updates++;
 		end
@@ -254,10 +257,15 @@ function dspsa(in, settings, infile)
 		%{ COMPUTE theta
 		if variant!=DECLARATION
 			theta = theta - alpha_i * ghat;
-		else
+		else %declaration
 			lambdatau_reconstruct = zeros(size(in.lambdatau) );
 			for j=1:in.p
-				prob_obs = requests_per_object(j,:) / sum(requests_per_object(j,:));
+				tot_reqs = sum(requests_per_object(j,:));
+				if tot_reqs != 0
+					prob_obs = requests_per_object(j,:) / tot_reqs;
+				else
+					prob_obs = zeros(size(requests_per_object(j,:)) );
+				end
 				lambdatau_reconstruct(j,:) = zipf_fitting(prob_obs) * F(j);
 			end
 			theta = compute_optimum(in.p, lambdatau_reconstruct, in.K);

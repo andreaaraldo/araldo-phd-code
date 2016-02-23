@@ -29,6 +29,8 @@ lambdas = [100]; %req/s
 tot_times = [2]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
+overall_ctlgs = [1e3];
+
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
@@ -41,6 +43,8 @@ in.req_proportion=[0.25 0.25 0.25 0.25];
 
 ps = [4];
 Ks = [1e4]; %cache slots
+Ks = [1e1]; %cache slots
+
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 seeds = 1;
@@ -68,7 +72,6 @@ global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2;
 	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
 
-warning("on", "backtrace");
 
 
 ctlg_perms_to_consider = [1];
