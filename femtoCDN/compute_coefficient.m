@@ -13,6 +13,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 	global COEFF_LINEARCUTCAUTIOUS10D4; global COEFF_LINEARCUTCAUTIOUS10D8; 
 	global COEFF_LINEARCUTCAUTIOUS10D16; global COEFF_LINEARCUTCAUTIOUS10Dp;
 	global COEFF_MODERATELONGNEW; global COEFF_MODERATENEW; global COEFF_LINEARHALVED5REINIT30MIN;
+	global COEFF_LINEARHALVED5REINIT1DAY;
 
 	ghat_1 = hist_ghat(:,1);
 	ghat_1_norm = norm(ghat_1);
@@ -367,10 +368,52 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			end
 
 		case COEFF_LINEARHALVED5REINIT30MIN
-			if epoch < 30*60/in.T
+			reinit_period = 30*60;
+			if epoch < reinit_period/in.T
 				epoch_to_consider = epoch;
 			else
-				epoch_to_consider = mod(epoch*in.T,30*60) / in.T +1;
+				epoch_to_consider = mod(epoch*in.T,reinit_period) / in.T +1;
+			end
+			ghat_1 = hist_ghat(:, epoch_to_consider );
+			ghat_measure = sum( abs(ghat_1) );
+			how_many_initial_iterations=floor(360/in.T);
+			if ghat_measure==0 || how_many_initial_iterations==0
+				disp ghat_measure; disp how_many_initial_iterations;
+				error "They cannot be zero"
+			end
+			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+			if epoch_to_consider <=360
+				alpha_i = a;
+			elseif epoch_to_consider <=3600
+				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
+				miss_ratio_past = prctile(hist_miss_ratio',5);
+				denominator = 3600/in.T - epoch+1;
+				if hist_miss_ratio(end) <= miss_ratio_past
+					if denominator==0
+						disp denominator; disp in.T; disp epoch;
+						error "denominator cannot be zero"
+					end
+					% We decrease more
+					alpha_i_first = last_coefficient /2;
+					alpha_i_second = last_coefficient - (last_coefficient - a/10)/denominator;
+					alpha_i=min(alpha_i_first, alpha_i_second);
+					alpha_i=max(alpha_i, a/10);
+				else
+					alpha_i = last_coefficient - (last_coefficient - a/10)/denominator;
+				end
+			else
+				error "We should never arrive there"
+				denominator = 1+0.1*iterations_in_10h + epoch - 3600/in.T;
+				iterations_in_10h = 3600*10/in.T;
+				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
+			end
+
+		case COEFF_LINEARHALVED5REINIT1DAY
+			reinit_period = 24*3600;
+			if epoch < reinit_period/in.T
+				epoch_to_consider = epoch;
+			else
+				epoch_to_consider = mod(epoch*in.T,reinit_period) / in.T +1;
 			end
 			ghat_1 = hist_ghat(:, epoch_to_consider );
 			ghat_measure = sum( abs(ghat_1) );
