@@ -104,7 +104,7 @@ function parse_results(in, settings)
 			printf("%s written\n", result_file);
 
 		case HIST_MISSES
-			result_file = sprintf("%s.misses.dat", settings.simname);
+			result_file = sprintf("%s.miss.dat", settings.simname);
 			dlmwrite( result_file, (1-hist_cum_hit)', "");
 			printf("%s written\n", result_file);
 
