@@ -338,7 +338,7 @@ for seed = seeds
 										[fid, msg] = fopen (settings.tokenfile, "w");
 										if fid==-1
 											printf("Error in writing file %s. Error is: %s",...
-													settings.tokenfile, msg;
+													settings.tokenfile, msg);
 											quit
 										else
 											fputs (fid, "Running"); fclose (fid);
