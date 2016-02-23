@@ -13,8 +13,7 @@ settings.save_mdat_file = true;
 overwrite = true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"opencache", "unif", "optimum","declaration"};
-methods_ = {"opencache"};
+methods_ = {"opencache", "unif"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -23,27 +22,23 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5", "linearhalved5reinit30min"};
-coefficientss = {"linearhalved5reinit30min"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [2]; %total time(hours)
+tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
-overall_ctlgs = [1e3];
 
 ctlg_epss = [0];
 alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [0.1];%Fraction of time the object is on.
-ONOFFspans = 70; %How many days an ON-OFF period lasts on average
+ONOFFspans = 70; %How many days an ON-OFF cycle lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
-in.req_proportion=[0.25 0.25 0.25 0.25];
 
-ps = [4];
+ps = [10];
 Ks = [1e4]; %cache slots
-Ks = [1e1]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
