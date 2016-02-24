@@ -4,7 +4,7 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 
-	output = HIST_MISSES;
+	output = HIST_STEPS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -89,7 +89,7 @@ function parse_results(in, settings)
 			printf("%s %g %g %g\n", settings.method, in.lambda, in.T, v);
 
 		case HIST_STEPS
-			result_file = sprintf("%s.steps.dat", settings.simname);
+			result_file = sprintf("%s.st.dat", settings.simname);
 			dlmwrite(result_file,  hist_a' , " " );
 			printf("%s written\n", result_file);
 
@@ -104,7 +104,7 @@ function parse_results(in, settings)
 			printf("%s written\n", result_file);
 
 		case HIST_MISSES
-			result_file = sprintf("%s.miss.dat", settings.simname);
+			result_file = sprintf("%s.ms.dat", settings.simname);
 			dlmwrite( result_file, (1-hist_cum_hit)', "");
 			printf("%s written\n", result_file);
 
