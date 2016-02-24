@@ -3,11 +3,11 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
-max_parallel = 3;
+max_parallel = 8;
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -26,7 +26,7 @@ boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [3.14e7];
 
 ctlg_epss = [0];
 alpha0s = [0.5 0.8 1];
@@ -38,7 +38,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e3]; %cache slots
+Ks = [1e2, 1e3]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
