@@ -26,7 +26,7 @@ boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [3.14e7];
+overall_ctlgs = [1e8];
 
 ctlg_epss = [0];
 alpha0s = [0.5 0.8 1];
@@ -38,7 +38,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e2, 1e3]; %cache slots
+Ks = [1e4 1e5 ]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
