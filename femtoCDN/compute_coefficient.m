@@ -375,7 +375,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				epoch_to_consider = mod(epoch*in.T,reinit_period) / in.T +1;
 			end
 			
-			ghat_1 = hist_ghat(:, floor(epoch*in.T/reinit_period)  );
+			ghat_1 = hist_ghat(:, floor(epoch*in.T/reinit_period)+1  );
 			ghat_measure = sum( abs(ghat_1) );
 			how_many_initial_iterations=floor(360/in.T);
 			if ghat_measure==0 || how_many_initial_iterations==0
