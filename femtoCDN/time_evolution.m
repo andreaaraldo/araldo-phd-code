@@ -7,10 +7,10 @@ max_parallel = 8;
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
@@ -27,8 +27,8 @@ coefficientss = {"linearhalved5", "halved5re30","halved5re1d"};
 coefficientss = {"halved5re30"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
-Ts = [100]; % epoch duration (s)
+tot_times = [2]; %total time(hours)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
 overall_ctlgs = [1e4];
 
