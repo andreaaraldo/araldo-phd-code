@@ -7,15 +7,14 @@ max_parallel = 8;
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache", "unif"};
-methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -24,13 +23,11 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"linearhalved5", "halved5re30","halved5re1d"};
-coefficientss = {"linearhalved5", "halved5re30"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [2]; %total time(hours)
+tot_times = [240]; %total time(hours)
 Ts = [100]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
-overall_ctlgs = [1e4];
 
 ctlg_epss = [0];
 alpha0s = [1];
@@ -44,7 +41,6 @@ in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
 Ks = [1e4]; %cache slots
-Ks = [1e2]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
