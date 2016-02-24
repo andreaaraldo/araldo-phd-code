@@ -11,9 +11,11 @@ parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
+compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache", "unif"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -22,11 +24,13 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"linearhalved5", "halved5re30","halved5re1d"};
+coefficientss = {"halved5re30"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [240]; %total time(hours)
+tot_times = [1]; %total time(hours)
 Ts = [100]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
+overall_ctlgs = [1e4];
 
 ctlg_epss = [0];
 alpha0s = [1];
@@ -37,8 +41,10 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
+
 ps = [10];
 Ks = [1e4]; %cache slots
+Ks = [1e2]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
@@ -307,7 +313,11 @@ for seed = seeds
 
 								req_str=[];in.req_str_inner=[];
 								if req_eps == -1
-									in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
+									if compact_name
+										in.req_str_inner = sprintf("%g", std(in.req_proportion)*100);
+									else
+										in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
+									end
 									req_str = sprintf("req_prop_%s",in.req_str_inner);
 								else
 									in.req_str_inner = sprintf("%g", req_eps);
