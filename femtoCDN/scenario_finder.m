@@ -4,6 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 8;
+warning("error", "Octave:divide-by-zero");
 
 
 
@@ -11,6 +12,7 @@ parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
+compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"optimum_nominal"};
@@ -26,10 +28,11 @@ boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [3.14e7];
+overall_ctlgs = [1e8];
 
-ctlg_epss = [0];
-alpha0s = [0.5 0.8 1];
+CTLG_PROP=-1; % To split the catalog as the request proportion
+ctlg_epss = [CTLG_PROP];
+alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [1];%Fraction of time the object is on.
@@ -38,7 +41,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
 ps = [10];
-Ks = [1e2, 1e3]; %cache slots
+Ks = [1e2 1e3 1e4 1e5 1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
@@ -61,7 +64,7 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
 	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
-	global COEFF_LINEARHALVED5REINIT30MIN=34;
+	global COEFF_LINEARHALVED5REINIT30MIN=34; global COEFF_LINEARHALVED5REINIT1DAY=35;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -104,7 +107,12 @@ for seed = seeds
 		in.alpha = in.alpha(randperm(size(in.alpha) ) );
 
 		avg_ctlg = overall_ctlg/p;
-		ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+		if ctlg_eps!= CTLG_PROP
+			ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+		else
+			ctlg = in.req_proportion' .* overall_ctlg;
+		end
+
 		ctlg_perms = [ctlg, flipud(ctlg)];
 
 		for ctlg_perm=ctlg_perms_to_consider
@@ -267,6 +275,8 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATENEW;
 									case "halved5re30"
 										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
+									case "halved5re1d"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT1DAY;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -305,7 +315,11 @@ for seed = seeds
 
 								req_str=[];in.req_str_inner=[];
 								if req_eps == -1
-									in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
+									if compact_name
+										in.req_str_inner = sprintf("%g", std(in.req_proportion)*100);
+									else
+										in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
+									end
 									req_str = sprintf("req_prop_%s",in.req_str_inner);
 								else
 									in.req_str_inner = sprintf("%g", req_eps);
