@@ -405,8 +405,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				end
 			else
 				error "We should never arrive there"
-				denominator = 1+0.1*iterations_in_10h + epoch - 3600/in.T;
 				iterations_in_10h = 3600*10/in.T;
+				denominator = 1+0.1*iterations_in_10h + epoch_to_consider - 3600/in.T;
 				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
 			end
 
@@ -447,9 +447,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					alpha_i = last_coefficient - (last_coefficient - a/10)/denominator;
 				end
 			else
-				error "We should never arrive there"
-				denominator = 1+0.1*iterations_in_10h + epoch - 3600/in.T;
 				iterations_in_10h = 3600*10/in.T;
+				denominator = 1+0.1*iterations_in_10h + epoch_to_consider - 3600/in.T;
 				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
 			end
 
