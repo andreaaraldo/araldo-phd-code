@@ -43,16 +43,6 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-		%{COMPUTE theta_opt
-		if 	any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) ) || ...
-			any(in.catalog - repmat(in.catalog(1), size(in.catalog) ) != zeros(size(in.catalog)) ) 
-
-			error "We should compute the optimum in the complicated way. It is not an error but check if it is really what you want."
-			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
-		else
-			in.theta_opt = in.req_proportion' .* in.K;
-		end
-		%}COMPUTE theta_opt
 
 		%{COMPUTE THE FIRST theta
 		if variant==ORIG || variant==OPENCACHE
@@ -66,6 +56,7 @@ function dspsa(in, settings, infile)
 			theta=repmat( floor(K/p), p,1 );
 		elseif variant == OPTIMUM
 			K_prime = K;
+			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
 			theta = in.theta_opt;
 		end
 		%}COMPUTE THE FIRST theta
@@ -155,27 +146,24 @@ function dspsa(in, settings, infile)
 
 			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
 
-			%{ COMPUTE CACHE INDICATOR
-			cache_indicator_negated = repmat(current_theta,1,size(ONobjects,2) ) - cumsum(ONobjects,2) < 0;
-			%} COMPUTE CACHE INDICATOR
-
-			
+			%{ COMPUTE_NUM_OF_MISSES
 			% We divide lambdatau by the number of tests, because, for example if tests are 2,
 			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			if variant==DECLARATION
+				error "not supported anymore"
 				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_fine(settings, i, test, in, ...
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
 			else
-				[current_num_of_misses, current_tot_requests, F] = ...
-					compute_num_of_misses_gross(settings, i, test, in, ...
-						current_theta, active_lambdatau*1.0/size(test_theta, 2), cache_indicator_negated...
-					);
+				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values] = ...
+					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
+				in.last_zipf_points = current_theta;
 			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
+			%} COMPUTE_NUM_OF_MISSES
 
 			tot_requests = [tot_requests, current_tot_requests];
 			
@@ -359,20 +347,6 @@ function dspsa(in, settings, infile)
 		end
 		%}CHECK
 
-		%{ CONVERGENCE (not used for the moment)
-		if false
-			err = norm(theta-in.theta_opt)/norm(in.theta_opt);
-			if err <= convergence.tolerance
-				convergence.duration ++;
-			else
-				convergence.duration = 0;
-			end
-
-			if convergence.duration == convergence.required_duration
-				break;
-			end
-		end
-		%} CONVERGENCE
 
 
 	end%for iterations

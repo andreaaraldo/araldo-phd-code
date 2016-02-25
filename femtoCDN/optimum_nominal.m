@@ -9,7 +9,7 @@ function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, i
 	global severe_debug
 
 	N = in.p;
-	theta = c = compute_optimum(in.p, in.lambdatau, in.K);
+	theta = c = compute_optimum(in.lambdatau);
 	value = compute_value(in, c);
 
 
