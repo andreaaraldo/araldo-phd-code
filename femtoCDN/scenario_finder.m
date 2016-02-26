@@ -3,7 +3,7 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
-max_parallel = 8;
+max_parallel = 1;
 warning("error", "Octave:divide-by-zero");
 
 
@@ -11,7 +11,7 @@ warning("error", "Octave:divide-by-zero");
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
@@ -28,11 +28,11 @@ boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e4];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
-ctlg_epss = [CTLG_PROP];
-alpha0s = [0.8];
+ctlg_epss = [0];
+alpha0s = [1];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [1];%Fraction of time the object is on.
@@ -41,7 +41,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
-Ks = [1e2 1e3 1e4 1e5 1e6]; %cache slots
+Ks = [1e2]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
@@ -107,16 +107,11 @@ for seed = seeds
 
 		avg_ctlg = overall_ctlg/p;
 		if ctlg_eps!= CTLG_PROP
-			ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+			in.ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
 		else
-			ctlg = in.req_proportion' .* overall_ctlg;
+			in.ctlg = in.req_proportion' .* overall_ctlg;
 		end
 
-		ctlg_perms = [ctlg, flipud(ctlg)];
-
-		for ctlg_perm=ctlg_perms_to_consider
-			in.ctlg_perm = ctlg_perm;
-			in.catalog = ctlg_perms(:,ctlg_perm);
 			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
 			for in.T = Ts
@@ -290,8 +285,8 @@ for seed = seeds
 								end
 
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-alpha0_%g-alpha_eps_%g-lambda_%g-%s-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps, alpha0,   alpha_eps,   in.lambda,req_str, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -319,10 +314,12 @@ for seed = seeds
 										in.last_zipf_points = ones(in.p,1);
 										for j=1:in.p
 											[cdf_value, harmonic_num] = ZipfCDF_smart(...
-													in.last_zipf_points(1), 0, [], in.alpha(j), , in.catalog(j));
+													in.last_zipf_points(j), 0, [], in.alpha(j), [], ...
+													in.ctlg(j) );
 											in.last_cdf_values(j) = cdf_value;
 											in.harmonic_num(j) = harmonic_num;
 										end
+
 										% To take into account the fact that only active objects generate
 										% requests
 										in.adjust_factor = 1.0/in.ONtime; 
@@ -400,7 +397,6 @@ for seed = seeds
 				end%lambda for
 			end%T for
 			end%tot_time for
-		end%ctlg_perm for
 	end%p for
 	end%ctlg_eps for
 	end%overall_ctlg for

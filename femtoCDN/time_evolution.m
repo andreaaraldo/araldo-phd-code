@@ -4,6 +4,7 @@ addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 8;
+warning("error", "Octave:divide-by-zero");
 
 
 
@@ -29,8 +30,9 @@ tot_times = [240]; %total time(hours)
 Ts = [100]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
 
-ctlg_epss = [0];
-alpha0s = [1];
+CTLG_PROP=-1; % To split the catalog as the request proportion
+ctlg_epss = [CTLG_PROP];
+alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [0.1];%Fraction of time the object is on.
@@ -72,7 +74,7 @@ global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2;
 
 
 ctlg_perms_to_consider = [1];
-R_perms_to_consider = [1];
+
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
@@ -106,7 +108,12 @@ for seed = seeds
 		in.alpha = in.alpha(randperm(size(in.alpha) ) );
 
 		avg_ctlg = overall_ctlg/p;
-		ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+		if ctlg_eps!= CTLG_PROP
+			ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+		else
+			ctlg = in.req_proportion' .* overall_ctlg;
+		end
+
 		ctlg_perms = [ctlg, flipud(ctlg)];
 
 		for ctlg_perm=ctlg_perms_to_consider
@@ -121,49 +128,6 @@ for seed = seeds
 				%}CHECK
 
 				for in.lambda = lambdas
-				%{BUILD R_perms
-				avg_req_per_epoch = in.lambda * in.T;
-				if req_eps != -1
-					avg_req_per_epoch_per_CP = avg_req_per_epoch/in.p;
-					R = differentiated_vector(p, avg_req_per_epoch_per_CP, req_eps); 
-					R_perms = [R, flipud(R)];
-				else
-					R = avg_req_per_epoch * in.req_proportion';
-					R_perms_to_consider = [1];
-					R_perms = R;
-				end
-					%{CHECK
-					if  severe_debug
-
-						%due to the rounding of epochs
-						additional_requests = ( settings.epochs-tot_time*3600/in.T) * in.lambda;
-
-						tot_effective_req = in.lambda*in.T*settings.epochs;
-						if any(abs(sum(R_perms*settings.epochs,1) - tot_effective_req )>1e-4)
-
-							exact_epochs = tot_time*3600/in.T
-							tot_effective_req
-							additional_requests
-							avg_req_per_epoch
-							req_per_permutation_per_epoch = sum(R_perms,1)
-							in.lambda
-							tot_seconds = tot_time*3600
-							R_perms'
-							epochs = settings.epochs
-							in.T
-							req_per_epoch = sum(R_perms,1)
-							avg_overall_req = in.lambda*tot_time*3600
-							tot_effective_req
-							difference = abs(sum(R_perms*settings.epochs,1) - tot_effective_req )
-							error("Total number of requests does not match");
-						end
-					end
-					%}CHECK
-				%}BUILD R_perms 
-
-				for R_perm=R_perms_to_consider
-					in.R_perm = R_perm;
-					in.R = R_perms(:,R_perm);
 					for K=Ks
 						in.K = K;
 
@@ -353,27 +317,22 @@ for seed = seeds
 										end
 
 										%{GENERATE lambdatau
-										if length(popularity)==0
-											% the appropriate popularity has not been yet generated
-											popularity = zeros(p, max(in.catalog) );
-											for j=1:in.p
-												popularity(j, 1:in.catalog(j)) = ...
-													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
-											end
-										%else it means that the popularity has already been generated
+										in.last_cdf_values = in.harmonic_num = zeros(in.p,1);
+										in.last_zipf_points = ones(in.p,1);
+										for j=1:in.p
+											[cdf_value, harmonic_num] = ZipfCDF_smart(...
+													in.last_zipf_points(1), 0, [], in.alpha(j), , in.catalog(j));
+											in.last_cdf_values(j) = cdf_value;
+											in.harmonic_num(j) = harmonic_num;
 										end
 
 										% To take into account the fact that only active objects generate
 										% requests
-										adjust_factor = 1.0/in.ONtime; 
-										
-										in.lambdatau=[]; %avg #req per each object
-										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  ...
-												popularity(j,:) .* in.R(j) * adjust_factor ];
-										end
-										%}GENERATE lambdatau
+										in.adjust_factor = 1.0/in.ONtime; 
+										in.lambda_per_CP = in.lambda .* in.req_proportion;
 
+
+										%}GENERATE lambdatau
 									end
 
 
@@ -441,7 +400,6 @@ for seed = seeds
 						end%ONtime for
 						end%ONOFFspan for
 					end%K for
-				end%R_perm for
 				end%lambda for
 			end%T for
 			end%tot_time for
