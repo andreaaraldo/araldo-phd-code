@@ -4,11 +4,13 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			alpha, harmonic_num, N)
 
 	if N==0
-		"N==0"
 		cdf_value = 0;
 		harmonic_num_returned = 0;
+	elseif k==0
+		cdf_value = 0;
+		harmonic_num_returned = harmonic_num;
 	elseif current_k == 0
-		"current_k == 0"
+		% We compute Zipf from the beginning
 		max_vec_size = 1e5;
 		partial_sum =0;
 		for i=1:max_vec_size:N
@@ -21,22 +23,17 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		first_pop = harmonic_num_returned;
 		[cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, 1, first_pop, alpha, harmonic_num_returned, N);
 	elseif k==current_k
-		"k==current_k"
 		cdf_value = current_cdf_value;
 		harmonic_num_returned = harmonic_num;
 	elseif k>current_k
-		"k>current_k"
-		k
 		p = (current_k+1:k)' .^ alpha;
 		p = 1 ./ p;
 		cdf_value = current_cdf_value+harmonic_num * sum(p);
 		harmonic_num_returned = harmonic_num;
 	else %k is not zero and is < current_k
-		"else"
 		harmonic_num
 		p = (k:current_k)' .^ alpha;
 		p = 1 ./ p;
-		somma_p = sum(p)
 		cdf_value = current_cdf_value - harmonic_num * sum(p);
 		harmonic_num_returned = harmonic_num;
 	end		

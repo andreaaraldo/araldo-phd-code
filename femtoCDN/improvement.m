@@ -3,7 +3,7 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/local_archive/femtoCDN/prova";
-max_parallel = 1;
+max_parallel = 18;
 warning("error", "Octave:divide-by-zero");
 
 
@@ -11,11 +11,11 @@ warning("error", "Octave:divide-by-zero");
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"optimum_nominal"};
+methods_ = {"opencache", "optimum", "unif"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -23,7 +23,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5", "halved5re30"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [5]; %total time(hours)
@@ -41,11 +41,11 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e3,1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:20;
 
 
 
