@@ -3,6 +3,9 @@
 function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, current_cdf_value, ...
 			alpha, harmonic_num, N)
 
+	max_vec_size = 1e5;
+		
+
 	if N==0
 		cdf_value = 0;
 		harmonic_num_returned = 0;
@@ -11,7 +14,6 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		harmonic_num_returned = harmonic_num;
 	elseif current_k == 0
 		% We compute Zipf from the beginning
-		max_vec_size = 1e5;
 		partial_sum =0;
 		for i=1:max_vec_size:N
 			p = (i:min(i+max_vec_size-1, N) )' .^ alpha;
@@ -31,17 +33,28 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		cdf_value = current_cdf_value+harmonic_num * sum(p);
 		harmonic_num_returned = harmonic_num;
 	else %k is not zero and is < current_k
-		p = (k:current_k)' .^ alpha;
-		p = 1 ./ p;
-		cdf_value = current_cdf_value - harmonic_num * sum(p);
-		harmonic_num_returned = harmonic_num;
+		if current_k-k < k 
+			p = (k:current_k)' .^ alpha;
+			p = 1 ./ p;
+			cdf_value = current_cdf_value - harmonic_num * sum(p);
+			harmonic_num_returned = harmonic_num;
 
+<<<<<<< HEAD
 		if cdf_value<0
 			p_is = p'
 			k
 			current_k
 			cdf_value
 			error "cdf_value cannot be negative"
+=======
+		else
+			% It is more convenient, in terms of precision, to start computing
+			% from the beginning
+			p = (1:k)' .^ alpha;
+			p = 1 ./ p;
+			cdf_value = harmonic_num * sum(p);
+			harmonic_num_returned = harmonic_num;
+>>>>>>> f5f25c99e50cc64ec1a1376d9af79f765d27bec9
 		end
 	end		
 
