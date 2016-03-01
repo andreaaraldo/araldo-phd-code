@@ -20,7 +20,7 @@ function parse_results(in, settings)
 		in.theta_opt=theta_opt;
 	end
 
-	if size(in.theta_opt)==[1 in.p]
+	if exist("in.theta_opt","var") && size(in.theta_opt)==[1 in.p]
 		in.theta_opt=in.theta_opt';
 	end
 	%}COMPATIBILITY WITH OLD VERSIONS
