@@ -5,6 +5,7 @@ function [num_of_misses, tot_requests, F, last_cdf_values, last_zipf_points] = c
 				theta, observation_time)
 
 		addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
+		global severe_debug;
 
 		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observation_time );
 		cdf=zeros(in.p, 1);
@@ -24,6 +25,11 @@ function [num_of_misses, tot_requests, F, last_cdf_values, last_zipf_points] = c
 		%{ UPDATE LAST CDF VALUES
 		last_cdf_values(theta!=0) = cdf(theta!=0) ;
 		last_zipf_points(theta!=0)= theta(theta!=0);
+		if severe_debug && ( length(last_cdf_values)!=in.p || length(last_zipf_points)!=in.p)
+			last_cdf_values
+			last_zipf_points
+			error "They should have in.p elements"
+		end
 		%} UPDATE LAST CDF VALUES
 
 
