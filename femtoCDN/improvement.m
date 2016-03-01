@@ -44,7 +44,7 @@ Ks = [1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:20;
 
 
 
