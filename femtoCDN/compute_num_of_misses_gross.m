@@ -4,6 +4,7 @@
 function [num_of_misses, tot_requests, F, last_cdf_values] = compute_num_of_misses_gross(in, ...
 				theta, observation_time)
 
+		addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 
 		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observation_time );
 
