@@ -64,15 +64,12 @@ function dspsa(in, settings, infile)
 		%{ HANDLE ON OFF state
 			% Initialize ONobjects
 			% The ONobjects has a 1 in correspondence to active objects
-			if in.ONtime == 1
-				ONobjects = ones(size(in.lambdatau) );
-				in.p_on_off = in.p_off_on = 0;
-			elseif in.ONtime < 1 && in.ONtime > 0
+			if in.ONtime < 1 && in.ONtime > 0
 				ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
 
 				in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
 				in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
-			else
+			elseif in.ONtime > 1 || in.ONtime <= 0
 				error "in.ONtime can be neither larger than 1 nor 0"
 			end
 		%} HANDLE ON OFF state
@@ -101,8 +98,7 @@ function dspsa(in, settings, infile)
 
 		current_updates = 0; % Number of files proactively downloaded to the cache
 
-		active_lambdatau = ONobjects .* in.lambdatau;
-
+		
 		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
 			Delta = round(unidrnd(2,p/2,1) - 1.5);
@@ -152,15 +148,17 @@ function dspsa(in, settings, infile)
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 			if variant==DECLARATION
 				error "not supported anymore"
+				active_lambdatau = ONobjects .* in.lambdatau;
 				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_fine(settings, i, test, in, ...
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
-			else
-				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values] = ...
+			elseif in.ONtime==1
+				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values, in.last_zipf_points] = ...
 					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
-				in.last_zipf_points = current_theta;
+			else
+				error "reuse compute_num_of_misses_fine"
 			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
 			%} COMPUTE_NUM_OF_MISSES
@@ -246,6 +244,7 @@ function dspsa(in, settings, infile)
 		if variant!=DECLARATION
 			theta = theta - alpha_i * ghat;
 		else %declaration
+			error "not supported as for now"
 			lambdatau_reconstruct = zeros(size(in.lambdatau) );
 			for j=1:in.p
 				tot_reqs = sum(requests_per_object(j,:));
@@ -297,6 +296,7 @@ function dspsa(in, settings, infile)
 		%} COMPUTE theta
 
 		%{ UPDATE ONobjects
+		if in.ONtime<1
 			objects_to_switch_off_large = rand(size(ONobjects) ) <= in.p_on_off;
 			temp = ONobjects + objects_to_switch_off_large;
 			objects_to_switch_off = (temp == 2);
@@ -314,6 +314,7 @@ function dspsa(in, settings, infile)
 					error "error in updating ONobjects"
 				end
 			end
+		end
 		%} UPDATE ONobjects
 
 		in.hist_theta = [in.hist_theta, theta];
@@ -352,8 +353,6 @@ function dspsa(in, settings, infile)
 	end%for iterations
 
 	if settings.save_mdat_file
-		%lambdatau can be hige if the catalog is big. It is better not to save it
-		in.lambdatau = [];
 
 		save("-binary", settings.outfile);
 		disp (sprintf("\n%s written", settings.outfile) );
