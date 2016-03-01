@@ -39,7 +39,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		if cdf_value<0
 			p
 			k
-			current_key
+			current_k
 			cdf_value
 			error "cdf_value cannot be negative"
 		end
