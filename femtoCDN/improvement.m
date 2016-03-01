@@ -31,7 +31,7 @@ Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
-ctlg_epss = [CTLG_PROP];
+ctlg_epss = [0];
 alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
