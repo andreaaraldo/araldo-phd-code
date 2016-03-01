@@ -37,7 +37,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		harmonic_num_returned = harmonic_num;
 
 		if cdf_value<0
-			p
+			p_is = p'
 			k
 			current_k
 			cdf_value
