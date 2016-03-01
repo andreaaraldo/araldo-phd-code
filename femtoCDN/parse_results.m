@@ -29,14 +29,18 @@ function parse_results(in, settings)
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
 		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
 
-	hist_difference = ( hist_theta - repmat(in.theta_opt,1, size(hist_theta,2)) );
-	hist_difference_sqr = hist_difference .^ 2;
-	hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
-	hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
-	hist_nice_err = sqrt( meansq( hist_difference , 1 ) ) ./ in.K ;
-	hist_rel_err = hist_difference_norm ./  repmat( norm(in.theta_opt), 1, size(hist_difference,2) ) ;
-	hist_avg_err = (1/(in.K*in.p) ) * sum(abs( hist_difference ),1);
-	hist_weigth_avg_err = (1/p) * (1./in.theta_opt)' * abs(hist_difference);
+	if output==HIST_REL_ERR || output==FINAL_CV || output==FINAL_ERR || output==ERR_HISTORY ||...
+		output==HIST_AVG_ERR || output==HIST_NICE_ERR || output==HIST_INFTY_ERR
+
+		hist_difference = ( hist_theta - repmat(in.theta_opt,1, size(hist_theta,2)) );
+		hist_difference_sqr = hist_difference .^ 2;
+		hist_difference_norm = sqrt( sum(hist_difference_sqr, 1) );
+		hist_CV = sqrt( meansq( hist_difference , 1 ) ) ./ mean(hist_theta, 1) ;
+		hist_nice_err = sqrt( meansq( hist_difference , 1 ) ) ./ in.K ;
+		hist_rel_err = hist_difference_norm ./  repmat( norm(in.theta_opt), 1, size(hist_difference,2) ) ;
+		hist_avg_err = (1/(in.K*in.p) ) * sum(abs( hist_difference ),1);
+		hist_weigth_avg_err = (1/p) * (1./in.theta_opt)' * abs(hist_difference);
+	end
 
 	switch output
 
