@@ -8,7 +8,15 @@ function [num_of_misses, tot_requests, F, last_cdf_values, last_zipf_points] = c
 
 		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observation_time );
 		cdf=zeros(in.p, 1);
-		for j=1:in.p
+
+		theta_is = theta'
+		in_last_zipf_points_is = in.last_zipf_points'
+		in_last_cdf_values_is = in.last_cdf_values'
+		in_alpha_is = in.alpha'
+		in_harmonic_num_is = in.harmonic_num'
+		in_ctlg_is = in.ctlg'
+
+		for j=1:in.p			
 			[cdf(j), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
 				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j));
 		end
