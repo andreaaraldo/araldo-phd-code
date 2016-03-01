@@ -39,14 +39,6 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			cdf_value = current_cdf_value - harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;
 
-<<<<<<< HEAD
-		if cdf_value<0
-			p_is = p'
-			k
-			current_k
-			cdf_value
-			error "cdf_value cannot be negative"
-=======
 		else
 			% It is more convenient, in terms of precision, to start computing
 			% from the beginning
@@ -54,7 +46,6 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			p = 1 ./ p;
 			cdf_value = harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;
->>>>>>> f5f25c99e50cc64ec1a1376d9af79f765d27bec9
 		end
 	end		
 
