@@ -37,9 +37,9 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		harmonic_num_returned = harmonic_num;
 	end		
 
-	if isnan(cdf_value) || isinf(cdf_value)
+	if isnan(cdf_value) || isinf(cdf_value) || cdf_value<0
 		cdf_value
-		error "cdf_value cannot be NaN or infty"
+		error "cdf_value cannot neither NaN nor infty nor negative"
 	end
 end
 
