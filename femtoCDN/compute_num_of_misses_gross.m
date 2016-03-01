@@ -2,12 +2,12 @@
 % F is a vector whose single cell is the fraction of requests to a single CP
 
 function [num_of_misses, tot_requests, F, last_cdf_values] = compute_num_of_misses_gross(in, ...
-				theta, ovservation_time)
+				theta, observation_time)
 
 
-		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observed_time );
+		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observation_time );
 
-		last_cdf_values zeros(in.p, 1);
+		last_cdf_values = zeros(in.p, 1);
 		for j=1:in.p
 			[cdf_value, harmonic_num_returned] = ZipfCDF_smart(theta, in.last_zipf_points(j), ...
 				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), []);
