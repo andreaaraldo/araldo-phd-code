@@ -155,9 +155,8 @@ function dspsa(in, settings, infile)
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
 			elseif in.ONtime==1
-				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values] = ...
+				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values, in.last_zipf_points] = ...
 					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
-				in.last_zipf_points = current_theta;
 			else
 				error "reuse compute_num_of_misses_fine"
 			end
@@ -297,6 +296,7 @@ function dspsa(in, settings, infile)
 		%} COMPUTE theta
 
 		%{ UPDATE ONobjects
+		if in.ONtime<1
 			objects_to_switch_off_large = rand(size(ONobjects) ) <= in.p_on_off;
 			temp = ONobjects + objects_to_switch_off_large;
 			objects_to_switch_off = (temp == 2);
@@ -314,6 +314,7 @@ function dspsa(in, settings, infile)
 					error "error in updating ONobjects"
 				end
 			end
+		end
 		%} UPDATE ONobjects
 
 		in.hist_theta = [in.hist_theta, theta];

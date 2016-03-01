@@ -31,7 +31,6 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		cdf_value = current_cdf_value+harmonic_num * sum(p);
 		harmonic_num_returned = harmonic_num;
 	else %k is not zero and is < current_k
-		harmonic_num
 		p = (k:current_k)' .^ alpha;
 		p = 1 ./ p;
 		cdf_value = current_cdf_value - harmonic_num * sum(p);
@@ -39,6 +38,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 	end		
 
 	if isnan(cdf_value) || isinf(cdf_value)
+		cdf_value
 		error "cdf_value cannot be NaN or infty"
 	end
 end
