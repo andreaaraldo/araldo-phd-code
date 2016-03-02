@@ -29,7 +29,7 @@ boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e3];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -42,7 +42,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e1]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
