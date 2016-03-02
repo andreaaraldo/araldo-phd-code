@@ -3,8 +3,9 @@ function parse_results(in, settings)
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
+	GAIN_WRT_UNIF=20;
 
-	output = MISSES_AFTER_60_MIN;
+	output = GAIN_WRT_UNIF;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -80,6 +81,13 @@ function parse_results(in, settings)
 			iteration = ceil(3600/in.T);
 			v=1-hist_cum_hit(iteration);
 			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
+
+		case GAIN_WRT_UNIF
+			miss_ratio_unif = 0.6236701000000002;
+			iteration = ceil(3600/in.T);
+			v = miss_ratio_unif - (1-hist_cum_hit(iteration)) / miss_ratio_unif;
+			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
+
 
 		case FINAL_ERR
 			%how_many = length(hist_err);
