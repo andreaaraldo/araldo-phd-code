@@ -75,20 +75,22 @@ function dspsa(in, settings, infile)
 		%} HANDLE ON OFF state
 
 	
-	how_many_step_updates = 1;
+		how_many_step_updates = 1;
 
-	if variant == CSDA
-		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
-	end%if
+		if variant == CSDA
+			theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
+		end%if
 
-	convergence.duration = 0;
+		convergence.duration = 0;
 
-	% Historical num of misses. One row per each CP, one column per each epoch
-	hist_num_of_misses = hist_tot_requests = [];
+		% Historical num of misses. One row per each CP, one column per each epoch
+		hist_num_of_misses = hist_tot_requests = [];
 
-	in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
-		hist_deactivated_objects = [];
-	last_theta = repmat(0,in.p, 1);
+		in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
+			hist_deactivated_objects = [];
+
+		in.last_cdf_values=in.last_zipf_points=zeros(in.p,1);
+		last_theta = repmat(0,in.p, 1);
 	%} INITIALIZE
 
 	for i=1:settings.epochs
@@ -138,6 +140,7 @@ function dspsa(in, settings, infile)
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
+
 			current_theta = test_theta(:,test);
 
 			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
@@ -146,6 +149,8 @@ function dspsa(in, settings, infile)
 			% We divide lambdatau by the number of tests, because, for example if tests are 2,
 			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
+
+
 			if variant==DECLARATION
 				error "not supported anymore"
 				active_lambdatau = ONobjects .* in.lambdatau;
@@ -155,8 +160,9 @@ function dspsa(in, settings, infile)
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
 			elseif in.ONtime==1
-				[current_num_of_misses, current_tot_requests, F, in.last_cdf_values, in.last_zipf_points] = ...
+				[current_num_of_misses, current_tot_requests, F, last_cdf_values, last_zipf_points] = ...
 					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
+				in.last_cdf_values=last_cdf_values; in.last_zipf_points=last_zipf_points;
 			else
 				error "reuse compute_num_of_misses_fine"
 			end
