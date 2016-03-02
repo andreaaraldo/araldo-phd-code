@@ -9,7 +9,7 @@ function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, i
 	global severe_debug
 
 	N = in.p;
-	theta = c = compute_optimum(in.p, in.lambdatau, in.K);
+	theta = c = compute_optimum(in);
 	value = compute_value(in, c);
 
 
@@ -24,8 +24,8 @@ function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, i
 		value
 		error("The improvement cannot be negative");
 	else
-	printf("improvement %d %g %g %d %.1g %g %g %s %d %g %g %g\n",...
-		N, in.overall_ctlg, in.ctlg_eps, in.ctlg_perm, in.K, in.alpha0, in.alpha_eps, in.req_str_inner, in.R_perm, value*100, value_unif*100, hit_ratio_improvement*100 );
+	printf("improvement %d %g %g %.1g %g %g %s %g %g %g\n",...
+		N, in.overall_ctlg, in.ctlg_eps, in.K, in.alpha0, in.alpha_eps, in.req_str_inner, value*100, value_unif*100, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
 
 

@@ -369,13 +369,14 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 
 		case COEFF_LINEARHALVED5REINIT30MIN
 			reinit_period = 30*60; % in seconds
+			first_iteration = floor(epoch*in.T/reinit_period)+1;
 			if epoch < reinit_period/in.T
 				epoch_to_consider = epoch;
 			else
 				epoch_to_consider = mod(epoch*in.T,reinit_period) / in.T +1;
 			end
 			
-			ghat_1 = hist_ghat(:, floor(epoch*in.T/reinit_period)+1  );
+			ghat_1 = hist_ghat(:, first_iteration  );
 			ghat_measure = sum( abs(ghat_1) );
 			how_many_initial_iterations=floor(360/in.T);
 			iterations_in_1h = 3600/in.T;
@@ -387,15 +388,18 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			if epoch_to_consider <= how_many_initial_iterations
 				alpha_i = a;
 			elseif epoch_to_consider <= iterations_in_1h
-				hist_miss_ratio = sum(hist_num_of_misses,1) ./hist_tot_requests;
-				miss_ratio_past = prctile(hist_miss_ratio',5);
-				denominator = iterations_in_1h - epoch+1;
-				if hist_miss_ratio(end) <= miss_ratio_past
-					if denominator==0
-						disp denominator; disp in.T; disp epoch;
-						error "denominator cannot be zero"
-					end
+				hist_num_of_misses_to_consider = hist_num_of_misses(:,first_iteration:end);
+				hist_tot_requests_to_consider = hist_tot_requests(:,first_iteration:end);
+				hist_miss_ratio_to_consider = ...
+						sum(hist_num_of_misses_to_consider,1) ./hist_tot_requests_to_consider;
+				miss_ratio_past = prctile(hist_miss_ratio_to_consider',5);
+				denominator = iterations_in_1h - epoch_to_consider+1;
+				if hist_miss_ratio_to_consider(end) <= miss_ratio_past
 					% We decrease more
+					if denominator<=0
+						disp denominator; disp in.T; disp epoch;
+						error "denominator must be positive"
+					end
 					alpha_i_first = last_coefficient /2;
 					alpha_i_second = last_coefficient - (last_coefficient - a/10)/denominator;
 					alpha_i=min(alpha_i_first, alpha_i_second);
@@ -405,13 +409,57 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 				end
 			else
 				error "We should never arrive there"
-				denominator = 1+0.1*iterations_in_10h + epoch - 3600/in.T;
 				iterations_in_10h = 3600*10/in.T;
+				denominator = 1+0.1*iterations_in_10h + epoch_to_consider - 3600/in.T;
 				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
 			end
 
 		case COEFF_LINEARHALVED5REINIT1DAY
-			error "copy and paste"
+			reinit_period = 3600*24; % in seconds
+			first_iteration = floor(epoch*in.T/reinit_period)+1;
+			if epoch < reinit_period/in.T
+				epoch_to_consider = epoch;
+			else
+				epoch_to_consider = mod(epoch*in.T,reinit_period) / in.T +1;
+			end
+			
+			ghat_1 = hist_ghat(:, first_iteration  );
+			ghat_measure = sum( abs(ghat_1) );
+			how_many_initial_iterations=floor(360/in.T);
+			iterations_in_1h = 3600/in.T;
+			if ghat_measure==0 || how_many_initial_iterations==0
+				disp ghat_measure; disp how_many_initial_iterations;
+				error "They cannot be zero"
+			end
+			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+			if epoch_to_consider <= how_many_initial_iterations
+				alpha_i = a;
+			elseif epoch_to_consider <= iterations_in_1h
+				hist_num_of_misses_to_consider = hist_num_of_misses(:,first_iteration:end);
+				hist_tot_requests_to_consider = hist_tot_requests(:,first_iteration:end);
+				hist_miss_ratio_to_consider = ...
+						sum(hist_num_of_misses_to_consider,1) ./hist_tot_requests_to_consider;
+				miss_ratio_past = prctile(hist_miss_ratio_to_consider',5);
+				denominator = iterations_in_1h - epoch_to_consider+1;
+				if hist_miss_ratio_to_consider(end) <= miss_ratio_past
+					% We decrease more
+					if denominator<=0
+						disp denominator; disp in.T; disp epoch;
+						error "denominator must be positive"
+					end
+					alpha_i_first = last_coefficient /2;
+					alpha_i_second = last_coefficient - (last_coefficient - a/10)/denominator;
+					alpha_i=min(alpha_i_first, alpha_i_second);
+					alpha_i=max(alpha_i, a/10);
+				else
+					alpha_i = last_coefficient - (last_coefficient - a/10)/denominator;
+				end
+			else
+				error "We should never arrive there"
+				iterations_in_10h = 3600*10/in.T;
+				denominator = 1+0.1*iterations_in_10h + epoch_to_consider - 3600/in.T;
+				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
+			end
 
 
 		case COEFF_LINEARLONG

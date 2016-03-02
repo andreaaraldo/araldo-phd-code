@@ -1,5 +1,5 @@
 % Andrea: Inspired by  ZipfCDF of Michele
-function [ pdf ] = ZipfPDF( alpha, N )
+function [ pdf, harmonic_num ] = ZipfPDF( alpha, N )
 
 	if N!= 0
 		p = (1:N)'.^alpha;
@@ -7,10 +7,11 @@ function [ pdf ] = ZipfPDF( alpha, N )
 
 		normalization_const = sum(p);
 
-		pdf = p / normalization_const;
-
+		harmonic_num = 1/normalization_const;
+		pdf = harmonic_num .* p;
 	else
 		pdf = 0;
+		harmonic_num = [];
 	end
 end
 

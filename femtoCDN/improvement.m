@@ -2,40 +2,35 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
-<<<<<<< HEAD
 mdat_folder = "~/remote_archive/femtoCDN/new";
-=======
-mdat_folder = "~/local_archive/femtoCDN/prova";
->>>>>>> a5494fb8ef84d8b526b34fba83c316b3da17b68b
-max_parallel = 1;
+max_parallel = 24;
 warning("error", "Octave:divide-by-zero");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"optimum_nominal"};
-
+methods_ = {"opencache", "optimum", "unif"};
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5", "halved5re30"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
-lambdas = [1]; %req/s 
-tot_times = [5]; %total time(hours)
-Ts = [10]; % epoch duration (s)
+lambdas = [100]; %req/s 
+tot_times = [1]; %total time(hours)
+Ts = [1,5, 10, 50, 100]; % epoch duration (s)
 overall_ctlgs = [1e8];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
-ctlg_epss = [CTLG_PROP];
+ctlg_epss = [0];
 alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
@@ -49,7 +44,7 @@ Ks = [1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:20;
 
 
 

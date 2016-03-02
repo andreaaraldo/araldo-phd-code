@@ -43,16 +43,6 @@ function dspsa(in, settings, infile)
 	%} SETTINGS
 	
 	%{ INITIALIZE
-		%{COMPUTE theta_opt
-		if 	any(in.alpha - repmat(in.alpha(1), size(in.alpha) ) != zeros(size(in.alpha)) ) || ...
-			any(in.catalog - repmat(in.catalog(1), size(in.catalog) ) != zeros(size(in.catalog)) ) 
-
-			error "We should compute the optimum in the complicated way. It is not an error but check if it is really what you want."
-			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
-		else
-			in.theta_opt = in.req_proportion' .* in.K;
-		end
-		%}COMPUTE theta_opt
 
 		%{COMPUTE THE FIRST theta
 		if variant==ORIG || variant==OPENCACHE
@@ -66,6 +56,7 @@ function dspsa(in, settings, infile)
 			theta=repmat( floor(K/p), p,1 );
 		elseif variant == OPTIMUM
 			K_prime = K;
+			[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
 			theta = in.theta_opt;
 		end
 		%}COMPUTE THE FIRST theta
@@ -73,34 +64,33 @@ function dspsa(in, settings, infile)
 		%{ HANDLE ON OFF state
 			% Initialize ONobjects
 			% The ONobjects has a 1 in correspondence to active objects
-			if in.ONtime == 1
-				ONobjects = ones(size(in.lambdatau) );
-				in.p_on_off = in.p_off_on = 0;
-			elseif in.ONtime < 1 && in.ONtime > 0
+			if in.ONtime < 1 && in.ONtime > 0
 				ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
 
 				in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
 				in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
-			else
+			elseif in.ONtime > 1 || in.ONtime <= 0
 				error "in.ONtime can be neither larger than 1 nor 0"
 			end
 		%} HANDLE ON OFF state
 
 	
-	how_many_step_updates = 1;
+		how_many_step_updates = 1;
 
-	if variant == CSDA
-		theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
-	end%if
+		if variant == CSDA
+			theta_old = miss_ratio_old = theta_previous = Delta = zeros(in.p, 1);
+		end%if
 
-	convergence.duration = 0;
+		convergence.duration = 0;
 
-	% Historical num of misses. One row per each CP, one column per each epoch
-	hist_num_of_misses = hist_tot_requests = [];
+		% Historical num of misses. One row per each CP, one column per each epoch
+		hist_num_of_misses = hist_tot_requests = [];
 
-	in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
-		hist_deactivated_objects = [];
-	last_theta = repmat(0,in.p, 1);
+		in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
+			hist_deactivated_objects = [];
+
+		in.last_cdf_values=in.last_zipf_points=zeros(in.p,1);
+		last_theta = repmat(0,in.p, 1);
 	%} INITIALIZE
 
 	for i=1:settings.epochs
@@ -110,8 +100,7 @@ function dspsa(in, settings, infile)
 
 		current_updates = 0; % Number of files proactively downloaded to the cache
 
-		active_lambdatau = ONobjects .* in.lambdatau;
-
+		
 		if variant == ORIG || variant == OPENCACHE
 		%{DELTA GENERATION
 			Delta = round(unidrnd(2,p/2,1) - 1.5);
@@ -151,31 +140,34 @@ function dspsa(in, settings, infile)
 		% one row per each CP, one columns per each test
 		tot_requests = num_of_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
+
 			current_theta = test_theta(:,test);
 
 			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
 
-			%{ COMPUTE CACHE INDICATOR
-			cache_indicator_negated = repmat(current_theta,1,size(ONobjects,2) ) - cumsum(ONobjects,2) < 0;
-			%} COMPUTE CACHE INDICATOR
-
-			
+			%{ COMPUTE_NUM_OF_MISSES
 			% We divide lambdatau by the number of tests, because, for example if tests are 2,
 			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
+
+
 			if variant==DECLARATION
+				error "not supported anymore"
+				active_lambdatau = ONobjects .* in.lambdatau;
 				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_fine(settings, i, test, in, ...
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
+			elseif in.ONtime==1
+				[current_num_of_misses, current_tot_requests, F, last_cdf_values, last_zipf_points] = ...
+					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
+				in.last_cdf_values=last_cdf_values; in.last_zipf_points=last_zipf_points;
 			else
-				[current_num_of_misses, current_tot_requests, F] = ...
-					compute_num_of_misses_gross(settings, i, test, in, ...
-						current_theta, active_lambdatau*1.0/size(test_theta, 2), cache_indicator_negated...
-					);
+				error "reuse compute_num_of_misses_fine"
 			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
+			%} COMPUTE_NUM_OF_MISSES
 
 			tot_requests = [tot_requests, current_tot_requests];
 			
@@ -258,6 +250,7 @@ function dspsa(in, settings, infile)
 		if variant!=DECLARATION
 			theta = theta - alpha_i * ghat;
 		else %declaration
+			error "not supported as for now"
 			lambdatau_reconstruct = zeros(size(in.lambdatau) );
 			for j=1:in.p
 				tot_reqs = sum(requests_per_object(j,:));
@@ -309,6 +302,7 @@ function dspsa(in, settings, infile)
 		%} COMPUTE theta
 
 		%{ UPDATE ONobjects
+		if in.ONtime<1
 			objects_to_switch_off_large = rand(size(ONobjects) ) <= in.p_on_off;
 			temp = ONobjects + objects_to_switch_off_large;
 			objects_to_switch_off = (temp == 2);
@@ -326,6 +320,7 @@ function dspsa(in, settings, infile)
 					error "error in updating ONobjects"
 				end
 			end
+		end
 		%} UPDATE ONobjects
 
 		in.hist_theta = [in.hist_theta, theta];
@@ -359,27 +354,11 @@ function dspsa(in, settings, infile)
 		end
 		%}CHECK
 
-		%{ CONVERGENCE (not used for the moment)
-		if false
-			err = norm(theta-in.theta_opt)/norm(in.theta_opt);
-			if err <= convergence.tolerance
-				convergence.duration ++;
-			else
-				convergence.duration = 0;
-			end
-
-			if convergence.duration == convergence.required_duration
-				break;
-			end
-		end
-		%} CONVERGENCE
 
 
 	end%for iterations
 
 	if settings.save_mdat_file
-		%lambdatau can be hige if the catalog is big. It is better not to save it
-		in.lambdatau = [];
 
 		save("-binary", settings.outfile);
 		disp (sprintf("\n%s written", settings.outfile) );

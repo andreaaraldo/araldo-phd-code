@@ -1,8 +1,7 @@
 function v = compute_value(in, theta)
-	c = floor(theta);
-	tot_lambdatau = 0;
+	v = 0;
 	for j=1:in.p
-		tot_lambdatau += sum( in.lambdatau(j,1:c(j) ) );
+		[cdf_value, h] = ZipfCDF_smart(floor(theta(j) ), 0, [], in.alpha(j), [], in.ctlg(j) );
+		v += cdf_value * in.req_proportion(j);
 	end
-	v = tot_lambdatau / sum(in.R);
 end
