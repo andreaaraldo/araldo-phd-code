@@ -18,13 +18,13 @@ function [num_of_misses, tot_requests, F, last_cdf_values, last_zipf_points] = c
 		in_ctlg_is = in.ctlg'
 
 		for j=1:in.p			
-			[cdf(j), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
+			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
 				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j));
 		end
 
 		%{ UPDATE LAST CDF VALUES
-		last_cdf_values(theta!=0) = cdf(theta!=0) ;
-		last_zipf_points(theta!=0)= theta(theta!=0);
+		last_cdf_values(theta!=0,1) = cdf(theta!=0) ;
+		last_zipf_points(theta!=0,1)= theta(theta!=0);
 		if severe_debug && ( length(last_cdf_values)!=in.p || length(last_zipf_points)!=in.p)
 			last_cdf_values
 			last_zipf_points
