@@ -3,7 +3,7 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 mdat_folder = "~/remote_archive/femtoCDN/new";
-max_parallel = 24;
+max_parallel = 6;
 warning("error", "Octave:divide-by-zero");
 
 
