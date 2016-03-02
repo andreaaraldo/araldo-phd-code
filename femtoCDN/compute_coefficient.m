@@ -331,7 +331,8 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			ghat_measure = sum( abs(ghat_1) );
 			how_many_initial_iterations=floor(360/in.T);
 			if ghat_measure==0 || how_many_initial_iterations==0
-				disp ghat_measure; disp how_many_initial_iterations;
+				ghat_measure
+				how_many_initial_iterations
 				error "They cannot be zero"
 			end
 			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
