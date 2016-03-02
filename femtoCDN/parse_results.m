@@ -85,7 +85,7 @@ function parse_results(in, settings)
 		case GAIN_WRT_UNIF
 			miss_ratio_unif = 0.6236701000000002;
 			iteration = ceil(3600/in.T);
-			v = miss_ratio_unif - (1-hist_cum_hit(iteration)) / miss_ratio_unif;
+			v = (miss_ratio_unif - (1-hist_cum_hit(iteration)) )/ miss_ratio_unif;
 			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
 
 
