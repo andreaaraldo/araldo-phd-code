@@ -8,8 +8,8 @@ warning("error", "Octave:divide-by-zero");
 
 
 
-parse=true; % false if you want to run the experiment.
-clean_tokens=false;
+parse=false; % false if you want to run the experiment.
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 compact_name=true;
@@ -22,11 +22,11 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"linearhalved5"};
 boosts = [1];
-lambdas = [1]; %req/s 
+lambdas = [10,100,1000,10000]; %req/s 
 tot_times = [1]; %total time(hours)
-Ts = [1,5, 10, 50, 100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
@@ -40,7 +40,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
-Ks = [1e4]; %cache slots
+Ks = [1e3,1e4,1e5,1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
