@@ -5,7 +5,7 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_WRT_UNIF=20; MISSES_AFTER_60_MIN_SINGLE=21;
 
-	output = MISSES_AFTER_60_MIN;
+	output = MISSES_AFTER_60_MIN_SINGLE;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -87,6 +87,7 @@ function parse_results(in, settings)
 			v=1-hist_cum_hit(iteration);
 			result_file = sprintf("%s.ms.dat", settings.simname);
 			dlmwrite( result_file, v, "");
+			printf("%s written\n", result_file);
 
 
 		case GAIN_WRT_UNIF
