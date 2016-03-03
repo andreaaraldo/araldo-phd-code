@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
-mdat_folder = "~/remote_archive/femtoCDN/new";
+settings.mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 8;
 warning("error", "Octave:divide-by-zero");
 
@@ -12,7 +12,7 @@ parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
-compact_name=true;
+settings.compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache", "optimum", "unif"};
@@ -265,7 +265,7 @@ for seed = seeds
 
 								req_str=[];in.req_str_inner=[];
 								if req_eps == -1
-									if compact_name
+									if settings.compact_name
 										in.req_str_inner = sprintf("%g", std(in.req_proportion)*100);
 									else
 										in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
@@ -285,7 +285,7 @@ for seed = seeds
 
 								settings.simname = ...
 									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-alpha0_%g-alpha_eps_%g-lambda_%g-%s-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps, alpha0,   alpha_eps,   in.lambda,req_str, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
+									settings.mdat_folder,p,overall_ctlg,ctlg_eps, alpha0,   alpha_eps,   in.lambda,req_str, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
