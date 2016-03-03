@@ -5,7 +5,7 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_WRT_UNIF=20;
 
-	output = GAIN_WRT_UNIF;
+	output = MISSES_AFTER_60_MIN;
 
 	%printf("\n Loading %s\n", settings.outfile);
 

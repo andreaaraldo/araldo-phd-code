@@ -9,9 +9,9 @@ warning("error", "Octave:divide-by-zero");
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
@@ -23,7 +23,6 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
-coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
