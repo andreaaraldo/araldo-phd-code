@@ -62,10 +62,10 @@ function dspsa(in, settings, infile)
 		%}COMPUTE THE FIRST theta
 
 		%{ HANDLE ON OFF state
-			% Initialize ONobjects
-			% The ONobjects has a 1 in correspondence to active objects
+			% Initialize in.ONobjects
+			% The in.ONobjects has a 1 in correspondence to active objects
 			if in.ONtime < 1 && in.ONtime > 0
-				ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
+				in.ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
 
 				in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
 				in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
@@ -153,7 +153,7 @@ function dspsa(in, settings, infile)
 
 			if variant==DECLARATION
 				error "not supported anymore"
-				active_lambdatau = ONobjects .* in.lambdatau;
+				active_lambdatau = in.ONobjects .* in.lambdatau;
 				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
 					compute_num_of_misses_fine(settings, i, test, in, ...
@@ -163,8 +163,9 @@ function dspsa(in, settings, infile)
 				[current_num_of_misses, current_tot_requests, F, last_cdf_values, last_zipf_points] = ...
 					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
 				in.last_cdf_values=last_cdf_values; in.last_zipf_points=last_zipf_points;
-			else
-				error "reuse compute_num_of_misses_fine"
+			else #in.ONtime<1
+				[current_num_of_misses, current_tot_requests, F] = ...
+					compute_num_of_misses_fine(in, current_theta, in.T/size(test_theta, 2) );
 			end
 			num_of_misses = [num_of_misses, current_num_of_misses];
 			%} COMPUTE_NUM_OF_MISSES
@@ -301,27 +302,27 @@ function dspsa(in, settings, infile)
 		end
 		%} COMPUTE theta
 
-		%{ UPDATE ONobjects
+		%{ UPDATE in.ONobjects
 		if in.ONtime<1
-			objects_to_switch_off_large = rand(size(ONobjects) ) <= in.p_on_off;
-			temp = ONobjects + objects_to_switch_off_large;
+			objects_to_switch_off_large = rand(size(in.ONobjects) ) <= in.p_on_off;
+			temp = in.ONobjects + objects_to_switch_off_large;
 			objects_to_switch_off = (temp == 2);
 
-			objects_to_switch_on_large = rand(size(ONobjects) ) <= in.p_off_on;
-			temp = ONobjects - objects_to_switch_on_large;
+			objects_to_switch_on_large = rand(size(in.ONobjects) ) <= in.p_off_on;
+			temp = in.ONobjects - objects_to_switch_on_large;
 			objects_to_switch_on = (temp == -1);
-			ONobjects = ONobjects - objects_to_switch_off+ objects_to_switch_on;
+			in.ONobjects = in.ONobjects - objects_to_switch_off+ objects_to_switch_on;
 
 			hist_activated_objects = [hist_activated_objects, sum(sum(objects_to_switch_on) )];
 			hist_deactivated_objects = [hist_deactivated_objects, sum(sum(objects_to_switch_off) )];
 
 			if severe_debug
 				if any(objects_to_switch_on+objects_to_switch_off>1)
-					error "error in updating ONobjects"
+					error "error in updating in.ONobjects"
 				end
 			end
 		end
-		%} UPDATE ONobjects
+		%} UPDATE in.ONobjects
 
 		in.hist_theta = [in.hist_theta, theta];
 

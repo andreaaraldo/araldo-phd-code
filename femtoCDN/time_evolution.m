@@ -31,7 +31,7 @@ Ts = [100]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
-ctlg_epss = [CTLG_PROP];
+ctlg_epss = [0];
 alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
@@ -109,9 +109,9 @@ for seed = seeds
 
 		avg_ctlg = overall_ctlg/p;
 		if ctlg_eps!= CTLG_PROP
-			ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+			in.ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
 		else
-			ctlg = in.req_proportion' .* overall_ctlg;
+			in.ctlg = in.req_proportion' .* overall_ctlg;
 		end
 
 		ctlg_perms = [ctlg, flipud(ctlg)];
@@ -292,8 +292,8 @@ for seed = seeds
 								end
 
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-alpha0_%g-alpha_eps_%g-lambda_%g-%s-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps, alpha0,   alpha_eps,   in.lambda,req_str, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -321,7 +321,8 @@ for seed = seeds
 										in.last_zipf_points = ones(in.p,1);
 										for j=1:in.p
 											[cdf_value, harmonic_num] = ZipfCDF_smart(...
-													in.last_zipf_points(1), 0, [], in.alpha(j), , in.catalog(j));
+													in.last_zipf_points(j), 0, [], in.alpha(j), [], ...
+													in.ctlg(j) );
 											in.last_cdf_values(j) = cdf_value;
 											in.harmonic_num(j) = harmonic_num;
 										end
