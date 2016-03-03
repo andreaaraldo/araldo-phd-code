@@ -16,7 +16,6 @@ compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache", "optimum", "unif"};
-methods_ = {"opencache"};
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
@@ -29,8 +28,7 @@ boosts = [1];
 lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [1,5, 10, 50, 100]; % epoch duration (s)
-Ts = [1]; % epoch duration (s)
-overall_ctlgs = [1e3];
+overall_ctlgs = [1e8];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -44,7 +42,6 @@ in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
 Ks = [1e3, 5e3, 1e4]; %cache slots
-Ks = [1e1]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};

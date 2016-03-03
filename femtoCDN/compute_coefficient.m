@@ -328,14 +328,18 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			error "Copy and paste from LINEARHALVED5"
 
 		case COEFF_LINEARHALVED5
-			ghat_measure = sum( abs(ghat_1) );
 			how_many_initial_iterations=floor(360/in.T);
-			if ghat_measure==0 || how_many_initial_iterations==0
-				ghat_measure
-				how_many_initial_iterations
-				error "They cannot be zero"
+			ghat_measure = 0; t=1;
+			while ghat_measure==0 && t<=size(hist_ghat,2)
+				ghat_measure=sum(abs(hist_ghat(:,t)  ) );
+				t++;
 			end
-			a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+			if ghat_measure>0
+				a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+			else
+				a=0;
+			end
+
 			if epoch*in.T <=360
 				alpha_i = a;
 			elseif epoch*in.T <=3600
