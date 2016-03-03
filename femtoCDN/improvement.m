@@ -9,7 +9,7 @@ warning("error", "Octave:divide-by-zero");
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = true;
 compact_name=true;
