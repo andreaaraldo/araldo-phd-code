@@ -19,6 +19,8 @@ function simname = compute_simname(settings, in)
 										req_str_inner = sprintf("%g", std(in.req_proportion)*100);
 									else
 										req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
+										req_str_inner
+										error "stop"
 									end
 									req_str = sprintf("req_prop_%s",req_str_inner);
 								else
