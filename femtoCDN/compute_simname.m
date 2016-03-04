@@ -9,6 +9,12 @@ function simname = compute_simname(settings, in)
 
 								req_str=[];req_str_inner=[];
 								if in.req_eps == -1
+									%{ COMPATIBILITY WITH OLD VERSIONS
+									if !exist("settings.compact_name","var")
+										settings.compact_name=false;
+									end
+									%} COMPATIBILITY WITH OLD VERSIONS
+
 									if settings.compact_name
 										req_str_inner = sprintf("%g", std(in.req_proportion)*100);
 									else
