@@ -11,7 +11,11 @@ function simname = compute_simname(settings, in)
 								if in.req_eps == -1
 									%{ COMPATIBILITY WITH OLD VERSIONS
 									if !exist("settings.compact_name","var")
-										settings.compact_name=compact_name;
+										if exist("compact_name","var")
+											settings.compact_name=compact_name;
+										else
+											settings.compact_name=compact_name;
+										end
 									end
 
 									if !exist("settings.mdat_folder","var")
