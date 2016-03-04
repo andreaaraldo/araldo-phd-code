@@ -100,7 +100,7 @@ function parse_results(in, settings)
 			in.coefficients_str = "no";
 			settings.projection_str = "no";
 			unif_simname = compute_simname(unif_settings, unif_in);
-			miss_ratio_unif = dlmread(sprintf("%s.ms.dat") );
+			miss_ratio_unif = dlmread(sprintf("%s.ms.dat",unif_simname) );
 			%} UNIF MISS RATIO
 
 			v = (miss_ratio_unif - (1-hist_cum_hit(iteration)) )/ miss_ratio_unif;

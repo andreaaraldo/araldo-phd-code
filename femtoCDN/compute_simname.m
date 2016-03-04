@@ -1,6 +1,17 @@
 %
 function simname = compute_simname(settings, in)
 
+global COEFF_LINEARHALVED5; global COEFF_NO;
+global NORM_NO;
+
+	%{ CHECK
+	if strcmp(settings.method,"opencache") && strcmp(settings.coefficients,"no")
+		settings.method
+		settings.coefficients
+		error "Error"
+	end
+	%} CHECK
+
 								if strcmp(settings.method,"optimum_nominal")
 									% These parameters do not influence the result and thus I 
 									% keep a unique name
@@ -14,12 +25,45 @@ function simname = compute_simname(settings, in)
 										if exist("compact_name","var")
 											settings.compact_name=compact_name;
 										else
-											settings.compact_name=compact_name;
+											settings.compact_name=true;
 										end
 									end
 
 									if !exist("settings.mdat_folder","var")
-										settings.mdat_folder=mdat_folder;
+										if exist("mdat_folder","var")
+											settings.mdat_folder=mdat_folder;
+										else
+											settings.mdat_folder="~/remote_archive/femtoCDN/new";
+									end
+
+									if !exist("in.normalize_str","var")
+										switch settings.normalize
+											case NORM_NO
+												in.normalize_str="no";
+											otherwise
+												error "Error: normalize not recognized"
+										end
+									end
+
+									if !exist("in.coefficients_str","var")
+										switch settings.coefficients
+											case COEFF_NO
+												in.coefficients_str="no";
+											case COEFF_LINEARHALVED5
+												in.coefficients_str="linearhalved5";
+											otherwise
+												settings.coefficients
+												error "Error: coefficient not recognized"
+										end
+									end
+
+									if !exist("in.tot_time","var")
+										in.tot_time=1;
+									end
+
+									if strcmp(settings.method, "unif")
+										in.coefficients_str="no";
+										in.projections="no";
 									end
 									%} COMPATIBILITY WITH OLD VERSIONS
 
