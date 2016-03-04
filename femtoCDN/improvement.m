@@ -256,7 +256,7 @@ for seed = seeds
 								end
 
 								%{FILES
-								settings.simname = compute_simname(settings, in)
+								settings.simname = compute_simname(settings, in);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
