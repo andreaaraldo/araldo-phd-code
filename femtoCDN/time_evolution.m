@@ -8,8 +8,8 @@ warning("error", "Octave:divide-by-zero");
 
 
 
-parse=true; % false if you want to run the experiment.
-clean_tokens=false;
+parse=false; % false if you want to run the experiment.
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = true;
 settings.compact_name=true;
