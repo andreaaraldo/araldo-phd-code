@@ -65,7 +65,7 @@ function dspsa(in, settings, infile)
 			% Initialize in.ONobjects
 			% The in.ONobjects has a 1 in correspondence to active objects
 			if in.ONtime < 1 && in.ONtime > 0
-				in.ONobjects = (rand(size(in.lambdatau))<= in.ONtime );
+				in.ONobjects = (rand(in.p, max(in.ctlg) )<= in.ONtime );
 
 				in.p_on_off = in.T*1.0/ (in.ONtime*in.ONOFFspan*3600*24);
 				in.p_off_on = in.T*1.0/ ( (1- in.ONtime)*in.ONOFFspan*3600*24);
