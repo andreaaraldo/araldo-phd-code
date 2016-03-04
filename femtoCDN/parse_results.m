@@ -91,8 +91,18 @@ function parse_results(in, settings)
 
 
 		case GAIN_WRT_UNIF
-			miss_ratio_unif = 0.6236701000000002;
 			iteration = ceil(3600/in.T);
+			%{ UNIF MISS RATIO
+			unif_settings = settings;
+			unif_in = in;
+			unif_settings.method="unif";
+			in.normalize_str = "no";
+			in.coefficients_str = "no";
+			settings.projection_str = "no";
+			unif_simname = compute_simname(unif_settings, in_settings);
+			miss_ratio_unif = dlmread(sprintf("%s.ms.dat") );
+			%} UNIF MISS RATIO
+
 			v = (miss_ratio_unif - (1-hist_cum_hit(iteration)) )/ miss_ratio_unif;
 			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
 
