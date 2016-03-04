@@ -10,11 +10,11 @@ function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in
 		for j=1:in.p
 			active_obj_indices = find(in.ONobjects(j,:) );
 			cached_objs = active_obj_indices(1:current_theta(j) );
-			hit_prob = in.harmonic_num(j)./(cached_objs.^in.alpha(j) );
+			hit_prob = sum(in.harmonic_num(j)./(cached_objs.^in.alpha(j) ) );
 			miss_prob = 1-hit_prob;
 			expected_num_of_misses = miss_prob * in.lambda_per_CP(j) * observation_time;
-			num_of_misses_per_CP(j) = poissrnd(expected_num_of_misses);
-			requests_per_CP(j) = poissrnd(in.lambda_per_CP(j));
+			num_of_misses_per_CP(j,1) = poissrnd(expected_num_of_misses);
+			requests_per_CP(j,1) = poissrnd(in.lambda_per_CP(j));
 		end
 
 
