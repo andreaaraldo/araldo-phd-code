@@ -57,6 +57,19 @@ global NORM_NO;
 										end
 									end
 
+									if !exist("settings.projection_str","var")
+										switch settings.projection
+											case PROJECTION_NO
+												settings.projection_str="no";
+											case PROJECTION_EUCLIDEAN
+												settings.projection_str="euclidean";
+											otherwise
+												settings.coefficients
+												error "Error: coefficient not recognized"
+										end
+									end
+
+
 									if !exist("in.tot_time","var")
 										in.tot_time=1;
 									end
