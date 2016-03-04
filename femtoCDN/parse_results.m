@@ -3,7 +3,7 @@ function parse_results(in, settings)
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
-	GAIN_WRT_UNIF=20; MISSES_AFTER_60_MIN_SINGLE=21;
+	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21;
 
 	output = MISSES_AFTER_60_MIN_SINGLE;
 
@@ -90,7 +90,7 @@ function parse_results(in, settings)
 			printf("%s written\n", result_file);
 
 
-		case GAIN_WRT_UNIF
+		case GAIN_AFTER_60_MIN
 			iteration = ceil(3600/in.T);
 			%{ UNIF MISS RATIO
 			unif_settings = settings;
