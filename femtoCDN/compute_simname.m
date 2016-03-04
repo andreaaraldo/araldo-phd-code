@@ -2,6 +2,8 @@
 function simname = compute_simname(settings, in)
 
 global COEFF_LINEARHALVED5; global COEFF_NO;
+global COEFF_LINEARHALVED5REINIT30MIN; global COEFF_LINEARHALVED5REINIT1DAY;
+
 global NORM_NO;
 global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 
@@ -52,6 +54,10 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 												in.coefficients_str="no";
 											case COEFF_LINEARHALVED5
 												in.coefficients_str="linearhalved5";
+											case COEFF_LINEARHALVED5REINIT30MIN
+												in.coefficients_str="halved5re30";
+											case COEFF_LINEARHALVED5REINIT1DAY
+												in.coefficients_str="halved5re1d";
 											otherwise
 												settings.coefficients
 												error "Error: coefficient not recognized"
