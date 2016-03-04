@@ -7,6 +7,7 @@ input_files = argv ();
 pkg load statistics;
 function mean_and_conf(input_files)
 	% Get sizes
+	reading_file= input_files{1}
 	sizes = size(dlmread(input_files{1} ) );
 	table = zeros(sizes(1), sizes(2), length(input_files) );
 
