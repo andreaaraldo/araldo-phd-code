@@ -112,9 +112,9 @@ for seed = seeds
 		end
 
 			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
-			for tot_time = tot_times
+			for in.tot_time = tot_times
 			for in.T = Ts
-				settings.epochs = round(tot_time*3600/in.T);
+				settings.epochs = round(in.tot_time*3600/in.T);
  				%{CHECK
 				if settings.epochs < 1; error("error");	end;
 				%}CHECK
@@ -150,11 +150,11 @@ for seed = seeds
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
-								coefficients = active_coefficientss{idx_coefficient};
-								normalize = normalizes{idx_normalize};
+								in.coefficients_str = active_coefficientss{idx_coefficient};
+								in.normalize_str = normalizes{idx_normalize};
 								settings.projection_str = projections{idx_projection};
 
-								switch coefficients
+								switch in.coefficients_str
 									case "no"
 										settings.coefficients = COEFF_NO;
 									case "simple"
@@ -244,7 +244,7 @@ for seed = seeds
 										error "incorrect projection";
 								end
 
-								switch normalize
+								switch in.normalize_str
 									case "no"
 										settings.normalize = NORM_NO;
 									case "max"
@@ -252,45 +252,16 @@ for seed = seeds
 									case "norm"
 										settings.normalize = NORM_NORM;
 									otherwise
-										error (sprintf("normalize \"%s\" not recognized",normalize) );
+										error (sprintf("normalize \"%s\" not recognized",in.normalize_str) );
 								end
 
-								%{NAME
-								if strcmp(method,"optimum_nominal")
-									% These parameters do not influence the result and thus I 
-									% keep a unique name
-									settings.epochs = 1e6;
-									avg_overall_req=1e8;
-								end
-
-								req_str=[];in.req_str_inner=[];
-								if req_eps == -1
-									if settings.compact_name
-										in.req_str_inner = sprintf("%g", std(in.req_proportion)*100);
-									else
-										in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
-									end
-									req_str = sprintf("req_prop_%s",in.req_str_inner);
-								else
-									in.req_str_inner = sprintf("%g", req_eps);
-									req_str = sprintf("req_eps_%s", in.req_str_inner);
-								end
-
-								timeev_str="";
-								if in.ONtime<1
-									timeev_str = sprintf("-ON_%gover%g",in.ONtime,in.ONOFFspan);
-								elseif in.ONtime>1
-									error "in.ONtime must be a fraction";
-								end
-
-								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-alpha0_%g-alpha_eps_%g-lambda_%g-%s-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g%s-seed_%d",...
-									settings.mdat_folder,p,overall_ctlg,ctlg_eps, alpha0,   alpha_eps,   in.lambda,req_str, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   timeev_str, seed);
+								%{FILES
+								settings.simname = compute_simname(settings, in)
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
 								settings.tokenfile = sprintf("%s.token",settings.simname);
-								%{NAME
+								%}FILES
 
 								if clean_tokens
 									delete(settings.tokenfile);
