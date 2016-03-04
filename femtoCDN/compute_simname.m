@@ -11,7 +11,7 @@ function simname = compute_simname(settings, in)
 								if in.req_eps == -1
 									%{ COMPATIBILITY WITH OLD VERSIONS
 									if !exist("settings.compact_name","var")
-										settings.compact_name=false;
+										settings.compact_name=true;
 									end
 									%} COMPATIBILITY WITH OLD VERSIONS
 
