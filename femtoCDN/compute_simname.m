@@ -3,6 +3,7 @@ function simname = compute_simname(settings, in)
 
 global COEFF_LINEARHALVED5; global COEFF_NO;
 global NORM_NO;
+global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 
 	%{ CHECK
 	if strcmp(settings.method,"opencache") && strcmp(settings.coefficients,"no")
