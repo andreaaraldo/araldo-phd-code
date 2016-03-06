@@ -104,7 +104,7 @@ function parse_results(in, settings)
 			%} UNIF MISS RATIO
 
 			v = (miss_ratio_unif - (1-hist_cum_hit(iteration)) )/ miss_ratio_unif;
-			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
+			printf("%g %g %s %d %g %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed, );
 
 
 		case FINAL_ERR
