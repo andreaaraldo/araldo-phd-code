@@ -14,7 +14,7 @@ function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in
 			miss_prob = 1-hit_prob;
 			expected_num_of_misses = miss_prob * in.lambda_per_CP(j) * observation_time;
 			num_of_misses_per_CP(j,1) = poissrnd(expected_num_of_misses);
-			requests_per_CP(j,1) = poissrnd(in.lambda_per_CP(j));
+			requests_per_CP(j,1) = poissrnd(in.lambda_per_CP(j) * observation_time);
 		end
 
 
@@ -23,10 +23,19 @@ function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in
 		end
 
 		tot_requests = sum(requests_per_CP);
+
+		if severe_debug && any(num_of_misses_per_CP>repmat(tot_requests,in.p,1) )
+			num_of_misses_per_CP
+			tot_requests
+			error "ciao"
+		end
+		
+
 		F = zeros(in.p, 1);
 		if tot_requests!=0
 			F = requests_per_CP / tot_requests;
 		end
+
 end
 
 

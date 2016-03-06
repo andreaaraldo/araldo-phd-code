@@ -156,7 +156,7 @@ function dspsa(in, settings, infile)
 				active_lambdatau = in.ONobjects .* in.lambdatau;
 				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
 				[current_num_of_misses, current_tot_requests, F] = ...
-					compute_num_of_misses_fine(settings, i, test, in, ...
+					compute_num_of_misses_fine_old(settings, i, test, in, ...
 						current_theta, requests_per_object, cache_indicator_negated ...
 					);
 			elseif in.ONtime==1
@@ -199,6 +199,12 @@ function dspsa(in, settings, infile)
 		%} RUN TESTS
 
 		% Historical data
+		if severe_debug && any(num_of_misses > tot_requests)
+			num_of_misses
+			tot_requests
+			error "ciao"
+		end
+
 		hist_num_of_misses = [hist_num_of_misses, sum(num_of_misses,2) ];
 		hist_tot_requests = [hist_tot_requests, sum(tot_requests,2) ];
 		hist_updates = [hist_updates, current_updates];
