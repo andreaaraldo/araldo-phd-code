@@ -5,7 +5,7 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21;
 
-	output = GAIN_AFTER_60_MIN;
+	output = MISSES_AFTER_60_MIN;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -80,7 +80,7 @@ function parse_results(in, settings)
 		case MISSES_AFTER_60_MIN
 			iteration = ceil(3600/in.T);
 			v=1-hist_cum_hit(iteration);
-			printf("%s %d %g %g %g %d\n", settings.method, settings.coefficients, in.T, v, in.lambda, settings.seed);
+			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
 
 		case MISSES_AFTER_60_MIN_SINGLE
 			iteration = ceil(3600/in.T);
