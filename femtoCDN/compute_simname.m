@@ -77,9 +77,7 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 									end
 
 
-									if !exist("in.tot_time","var")
-										in.tot_time=1;
-									end
+
 
 									if strcmp(settings.method, "unif")
 										in.coefficients_str="no";
