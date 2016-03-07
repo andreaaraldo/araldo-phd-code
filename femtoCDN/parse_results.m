@@ -140,7 +140,6 @@ function parse_results(in, settings)
 
 		case HIST_POINTMISSES
 			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
-			%{
 			if any(pointmisses>1)
 				"The following points are erroneous"
 				hist_num_of_misses(:,pointmisses>1)
@@ -148,7 +147,6 @@ function parse_results(in, settings)
 				find(pointmisses>1)
 				error "Miss rate cannot be more than 1"
 			end
-			%}
 			result_file = sprintf("%s.pointmisses.dat", settings.simname);
 			dlmwrite( result_file, pointmisses', "");
 			printf("%s written\n", result_file);
