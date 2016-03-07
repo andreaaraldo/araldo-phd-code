@@ -5,7 +5,7 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21;
 
-	output = HIST_POINTMISSES;
+	output = HIST_MISSES;
 
 	%printf("\n Loading %s\n", settings.outfile);
 

@@ -8,7 +8,7 @@ warning("error", "Octave:divide-by-zero");
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -28,6 +28,7 @@ boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [240]; %total time(hours)
 Ts = [10,100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [3.5e6];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
@@ -36,7 +37,8 @@ alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [0.1];%Fraction of time the object is on.
-ONOFFspans = [10, 70]; %How many days an ON-OFF cycle lasts on average
+ONOFFspans = [10,70]; %How many days an ON-OFF cycle lasts on average
+ONOFFspans = [10]; %How many days an ON-OFF cycle lasts on average
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
