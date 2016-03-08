@@ -7,7 +7,6 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 		addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 		global severe_debug;
 
-		requests_per_each_CP = poissrnd( in.lambda_per_CP .* observation_time );
 		cdf=zeros(in.p, 1);
 
 		for j=1:in.p			
@@ -33,9 +32,16 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 
 		expected_num_of_misses_per_each_CP = ( repmat(1,in.p,1) .- cdf ) .* in.lambda_per_CP * ....
 								observation_time ;
+		expected_num_of_hits_per_each_CP = cdf .* in.lambda_per_CP * observation_time ;
+
+
+
 		% Using the fact that the sum of poisson variables is a posson variable whose expected value is
 		% the sum of the expected values of the summands 
 		num_of_misses = poissrnd(expected_num_of_misses_per_each_CP);
+		num_of_hits = poissrnd(expected_num_of_hits_per_each_CP);
+		requests_per_each_CP = num_of_misses+num_of_hits;
+
 
 		tot_requests = sum(requests_per_each_CP);
 		F = zeros(in.p, 1);
