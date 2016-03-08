@@ -8,7 +8,7 @@ warning("error", "Octave:divide-by-zero");
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -25,7 +25,6 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [1,10,100,1000,10000]; %req/s 
-lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
