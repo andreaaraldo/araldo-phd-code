@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
-settings.mdat_folder = "~/remote_archive/femtoCDN/new/time_evolution";
+settings.mdat_folder = "~/remote_archive/femtoCDN/new";
 max_parallel = 22;
 warning("error", "Octave:divide-by-zero");
 
