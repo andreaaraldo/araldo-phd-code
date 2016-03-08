@@ -25,7 +25,6 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [1,10,100,1000,10000]; %req/s 
-lambdas = [1]; %req/s 
 tot_times = [1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
