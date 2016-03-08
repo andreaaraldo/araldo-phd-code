@@ -199,7 +199,7 @@ function dspsa(in, settings, infile)
 		%} RUN TESTS
 
 		% Historical data
-		if severe_debug && any(num_of_misses > repmat(tot_requests, in.p,1) )
+		if severe_debug && sum(num_of_misses)>tot_requests
 			num_of_misses
 			tot_requests
 			error "ciao"
