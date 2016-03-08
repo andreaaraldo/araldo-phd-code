@@ -32,12 +32,14 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 										end
 									end
 
+									%{
 									if !exist("settings.mdat_folder","var")
 										if exist("mdat_folder","var")
 											settings.mdat_folder=mdat_folder;
 										else
 											settings.mdat_folder="~/remote_archive/femtoCDN/new";
 									end
+									%}
 
 									if !exist("in.normalize_str","var")
 										switch settings.normalize
