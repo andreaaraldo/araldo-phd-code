@@ -145,7 +145,7 @@ function parse_results(in, settings)
 				vs(t) = prctile(vs(1:t) ,5);
 			end
 			result_file = sprintf("%s.prctile.dat", settings.simname);
-			dlmwrite( result_file, vs,5), "");
+			dlmwrite( result_file, vs, "");
 			printf("%s written\n", result_file);
 
 
