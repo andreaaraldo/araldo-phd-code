@@ -143,7 +143,7 @@ function parse_results(in, settings)
 			vs = zeros(length(pointmisses));
 			for t=1:length(pointmisses)
 				vs(1:t)
-				vs(t) = prctile(vs(1:t) ,5);
+				vs(t) = prctile(pointmisses(1:t) ,5);
 			end
 			result_file = sprintf("%s.prctile.dat", settings.simname);
 			dlmwrite( result_file, vs, "");
