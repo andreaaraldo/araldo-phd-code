@@ -5,7 +5,7 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22;
 
-	output = HIST_INFTY_ERR;
+	output = HIST_STEPS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -25,7 +25,11 @@ function parse_results(in, settings)
 		in.theta_opt=in.theta_opt';
 	end
 
-	if !isfield(in,"theta_opt")
+	if !isfield(in,"theta_opt") && 
+		( output==HIST_REL_ERR || output==FINAL_CV || output==FINAL_ERR || output==ERR_HISTORY ||...
+		output==HIST_AVG_ERR || output==HIST_NICE_ERR || output==HIST_INFTY_ERR
+		)
+
 		% We have to compute it
 		[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
 	end
