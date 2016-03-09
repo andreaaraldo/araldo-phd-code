@@ -21,7 +21,7 @@ function parse_results(in, settings)
 		in.theta_opt=theta_opt;
 	end
 
-	if isfield(in,"theta_opt","var") && size(in.theta_opt)==[1 in.p]
+	if isfield(in,"theta_opt") && size(in.theta_opt)==[1 in.p]
 		in.theta_opt=in.theta_opt';
 	end
 	%}COMPATIBILITY WITH OLD VERSIONS
