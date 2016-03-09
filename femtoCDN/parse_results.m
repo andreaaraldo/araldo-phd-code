@@ -24,6 +24,11 @@ function parse_results(in, settings)
 	if isfield(in,"theta_opt") && size(in.theta_opt)==[1 in.p]
 		in.theta_opt=in.theta_opt';
 	end
+
+	if isfield(in,"theta_opt")
+		% We have to compute it
+		[hit_ratio_improvement, value, in.theta_opt] = optimum_nominal(in, settings, infile);
+	end
 	%}COMPATIBILITY WITH OLD VERSIONS
 
 
