@@ -5,8 +5,12 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22;
 
+<<<<<<< HEAD
 
 	output = HIST_PRCTILE;
+=======
+	output = HIST_POINTMISSES;
+>>>>>>> 45ad3e7e2669fabe1a22fa77f38e634e5fc5aa0a
 
 	%printf("\n Loading %s\n", settings.outfile);
 
