@@ -3,12 +3,12 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 settings.mdat_folder = "~/local_archive/femtoCDN/new";
-max_parallel = 24;
+max_parallel = 7;
 warning("error", "Octave:divide-by-zero");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -26,7 +26,7 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
+tot_times = [100]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 

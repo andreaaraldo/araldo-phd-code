@@ -25,7 +25,7 @@ function parse_results(in, settings)
 		in.theta_opt=in.theta_opt';
 	end
 
-	if !isfield(in,"theta_opt") && 
+	if 	!isfield(in,"theta_opt") && ...
 		( output==HIST_REL_ERR || output==FINAL_CV || output==FINAL_ERR || output==ERR_HISTORY ||...
 		output==HIST_AVG_ERR || output==HIST_NICE_ERR || output==HIST_INFTY_ERR
 		)
