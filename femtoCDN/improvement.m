@@ -8,10 +8,10 @@ warning("error", "Octave:divide-by-zero");
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 settings.compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
@@ -45,7 +45,7 @@ Ks = [1e3,1e4,1e5,1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 2:20;
+seeds = 1:20;
 
 
 
