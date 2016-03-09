@@ -139,8 +139,9 @@ function parse_results(in, settings)
 			printf("%s written\n", result_file);
 
 		case HIST_PRCTILE
+			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
 			result_file = sprintf("%s.prctile.dat", settings.simname);
-			dlmwrite( result_file, prctile(hist_miss_ratio',5), "");
+			dlmwrite( result_file, prctile(pointmisses',5), "");
 			printf("%s written\n", result_file);
 
 
