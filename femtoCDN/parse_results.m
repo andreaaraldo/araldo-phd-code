@@ -3,9 +3,10 @@ function parse_results(in, settings)
 	HIST_MISSES=7; HIST_AVG_ERR=8; HIST_NICE_ERR=9; HIST_INFTY_ERR=10; HIST_GHAT_AVG=11;
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
-	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21;
+	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22;
 
-	output = HIST_STEPS;
+
+	output = HIST_PRCTILE;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -137,6 +138,12 @@ function parse_results(in, settings)
 			result_file = sprintf("%s.ms.dat", settings.simname);
 			dlmwrite( result_file, (1-hist_cum_hit)', "");
 			printf("%s written\n", result_file);
+
+		case HIST_PRCTILE
+			result_file = sprintf("%s.prctile.dat", settings.simname);
+			dlmwrite( result_file, prctile(hist_miss_ratio',5), "");
+			printf("%s written\n", result_file);
+
 
 		case HIST_POINTMISSES
 			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
