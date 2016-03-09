@@ -142,7 +142,6 @@ function parse_results(in, settings)
 			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
 			vs = zeros(length(pointmisses));
 			for t=1:length(pointmisses)
-				vs(1:t)
 				vs(t) = prctile(pointmisses(1:t) ,5);
 			end
 			result_file = sprintf("%s.prctile.dat", settings.simname);
