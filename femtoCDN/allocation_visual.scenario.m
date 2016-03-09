@@ -27,7 +27,7 @@ coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
 coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
+tot_times = [5]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 
@@ -41,7 +41,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
 in.req_proportion=[0.13 0.75 0.02 .1]';
 
-ps = [10];
+ps = [4];
 Ks = [1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
