@@ -24,8 +24,8 @@ function [hit_ratio_improvement, value, theta] = optimum_nominal(in, settings, i
 		value
 		error("The improvement cannot be negative");
 	else
-	printf("improvement %d %g %g %.1g %g %g %s %g %g %g\n",...
-		N, in.overall_ctlg, in.ctlg_eps, in.K, in.alpha0, in.alpha_eps, in.req_str_inner, value*100, value_unif*100, hit_ratio_improvement*100 );
+	printf("improvement %d %g %g %.1g %g %g %g %g %g\n",...
+		N, in.overall_ctlg, in.ctlg_eps, in.K, in.alpha0, in.alpha_eps, value*100, value_unif*100, hit_ratio_improvement*100 );
 	%}HIT RATIO IMPROVEMENT
 
 
