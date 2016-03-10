@@ -149,8 +149,6 @@ function parse_results(in, settings)
 
 		case HIST_PRCTILE
 			pointmisses = sum(hist_num_of_misses,1) ./ hist_tot_requests;
-			pointmisses
-			error "ciao"
 			vs = zeros(length(pointmisses));
 			for t=1:length(pointmisses)
 				vs(t) = prctile(pointmisses(1:t)' ,5);
@@ -163,6 +161,8 @@ function parse_results(in, settings)
 			hist_num_of_misses_to_consider = hist_num_of_misses(1:3600/in.T);
 			hist_tot_requests_to_consider = hist_tot_requests(1:3600/in.T);
 			pointmisses = sum(hist_num_of_misses_to_consider,1) ./ hist_tot_requests_to_consider;
+			pointmisses
+			error "ciao"
 			vs = zeros(length(pointmisses));
 			for t=1:length(pointmisses)
 				vs(t) = prctile(pointmisses(1:t)' ,5);
