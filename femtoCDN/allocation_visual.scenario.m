@@ -16,7 +16,7 @@ settings.compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache", "unif", "optimum"};
-methods_ = {"opencache"};
+methods_ = {"optimum_nominal"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -42,7 +42,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.13 0.75 0.02 .1]';
 
 ps = [4];
-Ks = [1e6]; %cache slots
+Ks = [1e5]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
