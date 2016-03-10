@@ -164,7 +164,7 @@ function parse_results(in, settings)
 			pointmisses
 			vs = zeros(length(pointmisses));
 			for t=1:length(pointmisses)
-				vs(t) = prctile(pointmisses(1:t)' ,5);
+				vs(t) = prctile(pointmisses(1:t) ,5);
 
 				if t==10
 					vs
