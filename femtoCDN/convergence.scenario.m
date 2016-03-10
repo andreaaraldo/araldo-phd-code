@@ -41,7 +41,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [10];
-Ks = [1e6]; %cache slots
+Ks = [1e5]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
