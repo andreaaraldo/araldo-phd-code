@@ -42,7 +42,7 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 									end
 									%}
 
-									if !exist("in.normalize_str","var")
+									if !isfield(in,"normalize_str")
 										switch settings.normalize
 											case NORM_NO
 												in.normalize_str="no";
@@ -51,7 +51,7 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 										end
 									end
 
-									if !exist("in.coefficients_str","var")
+									if !isfield(in,"coefficients_str")
 										switch settings.coefficients
 											case COEFF_NO
 												in.coefficients_str="no";
@@ -71,7 +71,7 @@ global PROJECTION_NO; global PROJECTION_EUCLIDEAN;
 										end
 									end
 
-									if !exist("settings.projection_str","var")
+									if !isfield(settings,"projection_str")
 										switch settings.projection
 											case PROJECTION_NO
 												settings.projection_str="no";

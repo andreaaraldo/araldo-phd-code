@@ -78,7 +78,6 @@ global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2;
 
 
 ctlg_perms_to_consider = [1];
-
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
@@ -117,7 +116,6 @@ for seed = seeds
 		else
 			in.ctlg = in.req_proportion' .* overall_ctlg;
 		end
-
 
 			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
 			for in.tot_time = tot_times

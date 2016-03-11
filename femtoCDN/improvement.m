@@ -65,11 +65,11 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
 	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
 	global COEFF_LINEARHALVED5REINIT30MIN=34; global COEFF_LINEARHALVED5REINIT1DAY=35;
+	global COEFF_LINEARHALVED5REINIT2H=36; global COEFF_LINEARHALVED5REINIT3H=37;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
-
 
 
 
@@ -229,6 +229,10 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
 									case "halved5re1d"
 										settings.coefficients = COEFF_LINEARHALVED5REINIT1DAY;
+									case "halved5re2h"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT2H;
+									case "halved5re3h"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT3H;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -295,7 +299,7 @@ for seed = seeds
 										% To take into account the fact that only active objects generate
 										% requests
 										in.adjust_factor = 1.0/in.ONtime; 
-										in.lambda_per_CP = in.lambda .* in.req_proportion;
+										in.lambda_per_CP = in.lambda * in.adjust_factor .* in.req_proportion;
 
 
 										%}GENERATE lambdatau
