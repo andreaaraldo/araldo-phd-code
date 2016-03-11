@@ -328,6 +328,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			error "Copy and paste from LINEARHALVED5"
 
 		case COEFF_LINEARHALVED5
+			%{ FIND THE FIRST COEFFICIENT
 			how_many_initial_iterations=floor(360/in.T);
 			ghat_measure = 0; t=1;
 			while ghat_measure==0 && t<=size(hist_ghat,2)
@@ -339,10 +340,13 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			else
 				a=0;
 			end
+			%} FIND THE FIRST COEFFICIENT
 
 			if epoch*in.T <=360
+				%BOOTSTRAP
 				alpha_i = a;
 			elseif epoch*in.T <=3600
+				%ADAPTIVE
 				idx = (hist_tot_requests!=0);
 				% We are pessimistic: if we observe no request, we assume miss ratio is 1
 				hist_miss_ratio = ones( size(hist_tot_requests) );
