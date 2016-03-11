@@ -3,15 +3,15 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 settings.mdat_folder = "~/local_archive/femtoCDN/new";
-max_parallel = 7;
+max_parallel = 24;
 warning("error", "Octave:divide-by-zero");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 settings.compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
