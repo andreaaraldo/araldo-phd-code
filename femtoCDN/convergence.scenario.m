@@ -3,7 +3,7 @@ global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 settings.mdat_folder = "~/local_archive/femtoCDN/new";
-max_parallel = 7;
+max_parallel = 24;
 warning("error", "Octave:divide-by-zero");
 
 
@@ -45,7 +45,7 @@ Ks = [1e6]; %cache slots
 
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+seeds = 1:3;
 
 
 
