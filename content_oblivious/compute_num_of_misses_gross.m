@@ -9,9 +9,13 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 
 		cdf=zeros(in.p, 1);
 
-		for j=1:in.p			
+		for j=1:in.p
+			% estimated_rank(j,:) is a row with the object ids sorted starting from
+			% that one that is believed to be the most popular
+			in.estimated_rank = in.estimated_rank(j,:)';
 			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
-				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j));
+				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j), ...
+				estimated_rank);
 		end
 
 		%{ UPDATE LAST CDF VALUES

@@ -327,7 +327,7 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 		case COEFF_LINEARHALVED10
 			error "Copy and paste from LINEARHALVED5"
 
-		case COEFF_LINEARHALVED5
+		case COEFF_LINEARHALVED5 % Called Conditional in the ITC paper
 			%{ FIND THE FIRST COEFFICIENT
 			how_many_initial_iterations=floor(360/in.T);
 			ghat_measure = 0; t=1;

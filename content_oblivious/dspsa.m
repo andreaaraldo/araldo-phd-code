@@ -91,6 +91,20 @@ function dspsa(in, settings, infile)
 
 		in.last_cdf_values=in.last_zipf_points=zeros(in.p,1);
 		last_theta = repmat(0,in.p, 1);
+
+		%{ ESTIMATED RANK
+			% We compute the ranks of objects that each CP estimates
+			if in.know == Inf
+				% The CPs have perfect knowledge
+				estimated_rank = repmat(1:in.K,in.p, 1);
+			else
+				% lambdatau(j,:) is a row indicating the expected request rate
+				% for each object
+				in.R
+				error "ciao"
+				poissrnd(in.lambdatau);
+			end
+		%} ESTIMATED RANK
 	%} INITIALIZE
 
 	for i=1:settings.epochs

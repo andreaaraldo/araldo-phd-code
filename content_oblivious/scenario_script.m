@@ -2,13 +2,14 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 mdat_folder = "~/remote_archive/femtoCDN/new";
+mdat_folder = "/tmp";
 max_parallel = 1;
 
 
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
 methods_ = {"opencache"};
@@ -18,26 +19,25 @@ normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [100]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e2];
 ctlg_epss = [0];
-alpha0s = [1];
+alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
 
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
 
-ps = [10];
-Ks = [1e6]; %cache slots
+ps = [10]; % Number of CPs
+Ks = [1e1]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
+knows=[Inf]; %knowledge degree value
 seeds = 1;
-
 
 
 %{ CONSTANTS
@@ -106,6 +106,7 @@ for seed = seeds
 			in.catalog = ctlg_perms(:,ctlg_perm);
 			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
 			for tot_time = tot_times
+			for in.know = knows % knowledge degree value
 			for in.T = Ts
 				settings.epochs = round(tot_time*3600/in.T);
  				%{CHECK
@@ -305,10 +306,9 @@ for seed = seeds
 									req_str = sprintf("req_eps_%s", in.req_str_inner);
 								end
 
-
 								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time,   seed);
+									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-know_%g-seed_%d",...
+									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time, in.know, seed);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
@@ -407,6 +407,7 @@ for seed = seeds
 				end%R_perm for
 				end%lambda for
 			end%T for
+			end%know (knowledge degree values)
 			end%tot_time for
 		end%ctlg_perm for
 	end%p for

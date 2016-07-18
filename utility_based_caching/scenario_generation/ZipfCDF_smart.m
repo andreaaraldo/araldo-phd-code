@@ -1,18 +1,28 @@
-% current_cdf_value is the value of the cdf at value current_k. Starting from this data, the function returns
-% the value of the cdf at value k. N is the num of objects
+% Data:
+%	k, current_k: cache space
+% 	current_cdf_value: the value of the cdf at value current_k. 
+%	N: num of objects
+% 	estimated_rank: object ids starting from the one that is believed to
+%				be the most popular to the others. If the knowledge of the
+%				content popularity is perfect, estimated rank is 1,2,...,k
+%
+% Starting from this data, the function returns the value of the cdf at value k. 
 function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, current_cdf_value, ...
-			alpha, harmonic_num, N)
+			alpha, harmonic_num, N, estimated_rank)
 
 	global severe_debug;
 	max_vec_size = 1e5;
 	which_case=0;
 	
+	% cdf value means the expected hit ratio of the cache
 
 	if N==0
+		% If the catalog is empty, the cdf value is 0
 		if severe_debug; which_case=1; end;
 		cdf_value = 0;
 		harmonic_num_returned = 0;
 	elseif k==0
+		% If there is no cache, the cdf is always 0
 		if severe_debug; which_case=2; end;
 		cdf_value = 0;
 		harmonic_num_returned = harmonic_num;
@@ -27,22 +37,26 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		end
 		harmonic_num_returned = 1/partial_sum;
 
-		first_pop = harmonic_num_returned;
-		[cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, 1, first_pop, alpha, harmonic_num_returned, N);
+		% Popularity of the object that is believed to be
+		% the most popular
+		first_pop = harmonic_num_returned / (estimated_rank(1)^alpha );
+
+		[cdf_value, harmonic_num_returned] = ...
+			ZipfCDF_smart(k, 1, first_pop, alpha, harmonic_num_returned, N, estimated_rank);
 	elseif k==current_k
 		if severe_debug; which_case=4; end;
 		cdf_value = current_cdf_value;
 		harmonic_num_returned = harmonic_num;
 	elseif k>current_k
 		if severe_debug; which_case=5; end;
-		p = (current_k+1:k)' .^ alpha;
+		p = estimated_rank(current_k+1:k)' .^ alpha;
 		p = 1 ./ p;
 		cdf_value = current_cdf_value+harmonic_num * sum(p);
 		harmonic_num_returned = harmonic_num;
 	else %k is not zero and is < current_k
 		if current_k-k < k 
 			if severe_debug; which_case=6; end;
-			p = (k+1:current_k)' .^ alpha;
+			p = estimated_rank(k+1:current_k)' .^ alpha;
 			p = 1 ./ p;
 			cdf_value = current_cdf_value - harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;
@@ -50,7 +64,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			if severe_debug; which_case=7; end;
 			% It is more convenient, in terms of precision, to start computing
 			% from the beginning
-			p = (1:k)' .^ alpha;
+			p = estimated_rank(1:k)' .^ alpha;
 			p = 1 ./ p;
 			cdf_value = harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;
