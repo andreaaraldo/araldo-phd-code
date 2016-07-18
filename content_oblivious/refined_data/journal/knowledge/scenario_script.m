@@ -1,10 +1,11 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-addpath("~/software/araldo-phd-code/general/statistical/");
-settings.mdat_folder = "~/local_archive/femtoCDN/prova";
-max_parallel = 7;
+settings.mdat_folder = "~/remote_archive/femtoCDN/new";
+settings.mdat_folder = "/tmp";
+max_parallel = 1;
 warning("error", "Octave:divide-by-zero");
+warning ("error", "Octave:broadcast");
 
 
 
@@ -15,43 +16,36 @@ overwrite = true;
 settings.compact_name=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"opencache", "unif"};
-methods_ = {"unif"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"linearcutcautiousmod10", "linearcutcautious10"};
-coefficientss = {"linearhalved5", "halved5re30","halved5re1d"};
+coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [0.240]; %total time(hours)
-Ts = [10,100]; % epoch duration (s)
+tot_times = [0.1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [3.5e6];
-overall_ctlgs = [3.5e3];
-
+overall_ctlgs = [1e2];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
 alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
-ONtimes = [0.1];%Fraction of time the object is on.
-ONOFFspans = [10,70]; %How many days an ON-OFF cycle lasts on average
-ONOFFspans = [10]; %How many days an ON-OFF cycle lasts on average
+ONtimes = [1];%Fraction of time the object is on.
+ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
-in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
+in.req_proportion=[0.5 0.5]';
 
-
-ps = [10];
-Ks = [1e4]; %cache slots
-Ks = [1e2]; %cache slots
-
+ps = [length(in.req_proportion) ]; % Number of CPs
+Ks = [1e1]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-seeds = 1;
+knows=[0.1, 1, Inf]; %knowledge degree value
+seeds = 1:10;
 
 
 
@@ -76,6 +70,7 @@ global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2;
 	global PROJECTION_EUCLIDEAN=3;
 %} CONSTANTS
 
+warning("on", "backtrace");
 
 
 ctlg_perms_to_consider = [1];
@@ -116,12 +111,13 @@ for seed = seeds
 		if ctlg_eps!= CTLG_PROP
 			in.ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
 		else
-			in.ctlg = in.req_proportion' .* overall_ctlg;
+			in.ctlg = in.req_proportion .* overall_ctlg;
 		end
 
 
 			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
 			for in.tot_time = tot_times
+			for in.know = knows % knowledge degree values
 			for in.T = Ts
 				settings.epochs = round(in.tot_time*3600/in.T);
  				%{CHECK
@@ -288,13 +284,13 @@ for seed = seeds
 											fputs (fid, "Running"); fclose (fid);
 										end
 
-										%{GENERATE lambdatau
+										%{GENERATE popularity
 										in.last_cdf_values = in.harmonic_num = zeros(in.p,1);
 										in.last_zipf_points = ones(in.p,1);
 										for j=1:in.p
 											[cdf_value, harmonic_num] = ZipfCDF_smart(...
 													in.last_zipf_points(j), 0, [], in.alpha(j), [], ...
-													in.ctlg(j) );
+													in.ctlg(j), 1:in.ctlg(j) );
 											in.last_cdf_values(j) = cdf_value;
 											in.harmonic_num(j) = harmonic_num;
 										end
@@ -302,10 +298,34 @@ for seed = seeds
 										% To take into account the fact that only active objects generate
 										% requests
 										in.adjust_factor = 1.0/in.ONtime; 
-										in.lambda_per_CP = in.lambda * in.adjust_factor .* in.req_proportion;
+										in.lambda_per_CP = in.lambda * in.adjust_factor ...
+													.* in.req_proportion;
+										%}GENERATE popularity
 
+										%{ ESTIMATED RANK
+											% We compute the ranks of objects that each CP estimates
+											in.estimated_rank = zeros(in.p,max(in.ctlg) );
+											in.messy_popularity = zeros(in.p,max(in.ctlg) );
+											[obj_prob, harm_num] = ZipfPDF(in.alpha(j), ...
+													in.ctlg(j), in.harmonic_num(j) );
+											if in.know == Inf
+												for j=1:in.p
+													% The CPs have perfect knowledge
+													in.estimated_rank(j,1:in.ctlg(j) ) = 1:in.ctlg(j);
+													in.messy_popularity(j,:) = obj_prob';
+												end
+											else
+												for j=1:in.p
+													req_rate = obj_prob' * in.know * in.ctlg(j);
+													reqs = poissrnd(req_rate);
+													[reqs_sorted, in.estimated_rank(j,:) ] = ...
+															sort(reqs,"descend");
+													in.messy_popularity(j,:) = ...
+															obj_prob(in.estimated_rank(j,:) )';
+												end
+											end
+										%} ESTIMATED RANK
 
-										%}GENERATE lambdatau
 									end
 
 
@@ -375,6 +395,7 @@ for seed = seeds
 					end%K for
 				end%lambda for
 			end%T for
+			end%know (knowledge degree values)
 			end%tot_time for
 	end%p for
 	end%ctlg_eps for

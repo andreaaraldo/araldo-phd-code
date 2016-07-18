@@ -113,7 +113,7 @@ for seed = seeds
 		if ctlg_eps!= CTLG_PROP
 			in.ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
 		else
-			in.ctlg = in.req_proportion' .* overall_ctlg;
+			in.ctlg = in.req_proportion .* overall_ctlg;
 		end
 
 			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg

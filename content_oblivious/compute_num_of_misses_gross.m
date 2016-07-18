@@ -12,7 +12,7 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 		for j=1:in.p
 			% estimated_rank(j,:) is a row with the object ids sorted starting from
 			% that one that is believed to be the most popular
-			in.estimated_rank = in.estimated_rank(j,:)';
+			estimated_rank = in.estimated_rank(j,:)';
 			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
 				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j), ...
 				estimated_rank);
@@ -23,7 +23,9 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 		last_zipf_points_returned= in.last_zipf_points;
 		last_cdf_values_returned(theta!=0,1) = cdf(theta!=0) ;
 		last_zipf_points_returned(theta!=0,1)= theta(theta!=0);
-		if severe_debug && ( length(last_cdf_values_returned)!=in.p || length(last_zipf_points_returned)!=in.p)
+		if severe_debug && ( length(last_cdf_values_returned)!=in.p || ...
+				length(last_zipf_points_returned)!=in.p)
+
 			cdf_selected = cdf(theta!=0)
 			theta_selected = theta(theta!=0)
 			theta!=0
@@ -33,10 +35,11 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 		end
 		%} UPDATE LAST CDF VALUES
 
-
+		% in.lambda_per_CP(j,1) is the aggregated rate directed to the CP j
+		% cdf(j,1) is the expected hit ratio of CP j
+		expected_num_of_hits_per_each_CP = cdf .* in.lambda_per_CP * observation_time ;
 		expected_num_of_misses_per_each_CP = ( repmat(1,in.p,1) .- cdf ) .* in.lambda_per_CP * ....
 								observation_time ;
-		expected_num_of_hits_per_each_CP = cdf .* in.lambda_per_CP * observation_time ;
 
 
 

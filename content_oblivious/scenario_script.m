@@ -1,17 +1,21 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-mdat_folder = "~/remote_archive/femtoCDN/new";
-mdat_folder = "/tmp";
+settings.mdat_folder = "~/remote_archive/femtoCDN/new";
+settings.mdat_folder = "/tmp";
 max_parallel = 1;
+warning("error", "Octave:divide-by-zero");
+warning ("error", "Octave:broadcast");
 
 
-parse=false; % false if you want to run the experiment.
+
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = true;
+settings.compact_name=true;
 
-methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal"};
+methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache"};
 
 
@@ -22,22 +26,27 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req/s 
-tot_times = [100]; %total time(hours)
+tot_times = [0.1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e2];
+CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
 alpha0s = [0.8];
 alpha_epss = [0];
 req_epss = [-1]; % if -1, req_proportion must be explicitely set
+ONtimes = [1];%Fraction of time the object is on.
+ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
-in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01];
+in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
+in.req_proportion=[0.5 0.5]';
 
-ps = [10]; % Number of CPs
+ps = [length(in.req_proportion) ]; % Number of CPs
 Ks = [1e1]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-knows=[Inf]; %knowledge degree value
-seeds = 1;
+knows=[10]; %knowledge degree value
+seeds = 1:10;
+
 
 
 %{ CONSTANTS
@@ -54,7 +63,8 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D2=27;
 	global COEFF_LINEARCUTCAUTIOUS10D4=28; global COEFF_LINEARCUTCAUTIOUS10D8=29;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
-	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33; 
+	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
+	global COEFF_LINEARHALVED5REINIT30MIN=34; global COEFF_LINEARHALVED5REINIT1DAY=35;
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -64,7 +74,7 @@ warning("on", "backtrace");
 
 
 ctlg_perms_to_consider = [1];
-R_perms_to_consider = [1];
+
 active_processes = 0;
 for seed = seeds
 	settings.seed = seed;
@@ -98,65 +108,23 @@ for seed = seeds
 		in.alpha = in.alpha(randperm(size(in.alpha) ) );
 
 		avg_ctlg = overall_ctlg/p;
-		ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
-		ctlg_perms = [ctlg, flipud(ctlg)];
+		if ctlg_eps!= CTLG_PROP
+			in.ctlg = round(differentiated_vector(p, avg_ctlg, ctlg_eps) );
+		else
+			in.ctlg = in.req_proportion .* overall_ctlg;
+		end
 
-		for ctlg_perm=ctlg_perms_to_consider
-			in.ctlg_perm = ctlg_perm;
-			in.catalog = ctlg_perms(:,ctlg_perm);
-			zipf=[]; % I reset the zipf, since it depends on the alpha and the ctlg
-			for tot_time = tot_times
-			for in.know = knows % knowledge degree value
+
+			popularity=[]; % I reset the popularity, since it depends on the alpha and the ctlg
+			for in.tot_time = tot_times
+			for in.know = knows % knowledge degree values
 			for in.T = Ts
-				settings.epochs = round(tot_time*3600/in.T);
+				settings.epochs = round(in.tot_time*3600/in.T);
  				%{CHECK
 				if settings.epochs < 1; error("error");	end;
 				%}CHECK
 
 				for in.lambda = lambdas
-				%{BUILD R_perms
-				avg_req_per_epoch = in.lambda * in.T;
-				if req_eps != -1
-					avg_req_per_epoch_per_CP = avg_req_per_epoch/in.p;
-					R = differentiated_vector(p, avg_req_per_epoch_per_CP, req_eps); 
-					R_perms = [R, flipud(R)];
-				else
-					R = avg_req_per_epoch * in.req_proportion';
-					R_perms_to_consider = [1];
-					R_perms = R;
-				end
-					%{CHECK
-					if  severe_debug
-
-						%due to the rounding of epochs
-						additional_requests = ( settings.epochs-tot_time*3600/in.T) * in.lambda;
-
-						tot_effective_req = in.lambda*in.T*settings.epochs;
-						if any(abs(sum(R_perms*settings.epochs,1) - tot_effective_req )>1e-4)
-
-							exact_epochs = tot_time*3600/in.T
-							tot_effective_req
-							additional_requests
-							avg_req_per_epoch
-							req_per_permutation_per_epoch = sum(R_perms,1)
-							in.lambda
-							tot_seconds = tot_time*3600
-							R_perms'
-							epochs = settings.epochs
-							in.T
-							req_per_epoch = sum(R_perms,1)
-							avg_overall_req = in.lambda*tot_time*3600
-							tot_effective_req
-							difference = abs(sum(R_perms*settings.epochs,1) - tot_effective_req )
-							error("Total number of requests does not match");
-						end
-					end
-					%}CHECK
-				%}BUILD R_perms 
-
-				for R_perm=R_perms_to_consider
-					in.R_perm = R_perm;
-					in.R = R_perms(:,R_perm);
 					for K=Ks
 						in.K = K;
 
@@ -167,12 +135,9 @@ for seed = seeds
 
 							%{NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 							active_coefficientss = coefficientss;
-							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
-								active_coefficientss = {"no"};
-							end
-
 							active_projections = projections;
-							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif")
+							if strcmp(method,"optimum") || strcmp(method,"optimum_nominal") || strcmp(method,"csda") || strcmp(method,"unif") || strcmp(method,"declaration") 
+								active_coefficientss = {"no"};
 								active_projections = {"no"};
 							end
 
@@ -185,14 +150,16 @@ for seed = seeds
 							end
 							%}NORMALIZE, COEFF, PROJECTIONS AND T ONLY WHEN IT MATTERS
 
+							for in.ONtime = ONtimes
+							for in.ONOFFspan = ONOFFspans
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
-								coefficients = active_coefficientss{idx_coefficient};
-								normalize = normalizes{idx_normalize};
+								in.coefficients_str = active_coefficientss{idx_coefficient};
+								in.normalize_str = normalizes{idx_normalize};
 								settings.projection_str = projections{idx_projection};
 
-								switch coefficients
+								switch in.coefficients_str
 									case "no"
 										settings.coefficients = COEFF_NO;
 									case "simple"
@@ -261,6 +228,10 @@ for seed = seeds
 										settings.coefficients = COEFF_MODERATELONGNEW;
 									case "moderatenew"
 										settings.coefficients = COEFF_MODERATENEW;
+									case "halved5re30"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
+									case "halved5re1d"
+										settings.coefficients = COEFF_LINEARHALVED5REINIT1DAY;
 									otherwise
 										error "coefficients incorrect";
 								end
@@ -278,7 +249,7 @@ for seed = seeds
 										error "incorrect projection";
 								end
 
-								switch normalize
+								switch in.normalize_str
 									case "no"
 										settings.normalize = NORM_NO;
 									case "max"
@@ -286,34 +257,16 @@ for seed = seeds
 									case "norm"
 										settings.normalize = NORM_NORM;
 									otherwise
-										error (sprintf("normalize \"%s\" not recognized",normalize) );
+										error (sprintf("normalize \"%s\" not recognized",in.normalize_str) );
 								end
 
-								%{NAME
-								if strcmp(method,"optimum_nominal")
-									% These parameters do not influence the result and thus I 
-									% keep a unique name
-									settings.epochs = 1e6;
-									avg_overall_req=1e8;
-								end
-
-								req_str=[];in.req_str_inner=[];
-								if req_eps == -1
-									in.req_str_inner = strrep(strrep(strrep(mat2str(in.req_proportion,2), "[", ""), "]","")," ","_");
-									req_str = sprintf("req_prop_%s",in.req_str_inner);
-								else
-									in.req_str_inner = sprintf("%g", req_eps);
-									req_str = sprintf("req_eps_%s", in.req_str_inner);
-								end
-
-								settings.simname = ...
-									sprintf("%s/p_%d-ctlg_%.1g-ctlg_eps_%g-ctlg_perm_%d-alpha0_%g-alpha_eps_%g-lambda_%g-%s-R_perm_%d-T_%.1g-K_%.1g-%s-norm_%s-coeff_%s-projection_%s-boost_%g-tot_time_%g-know_%g-seed_%d",...
-									mdat_folder,p,overall_ctlg,ctlg_eps,   ctlg_perm,   alpha0,   alpha_eps,   in.lambda,req_str,R_perm, in.T,     K, method, normalize, coefficients, settings.projection_str,settings.boost, tot_time, in.know, seed);
+								%{FILES
+								settings.simname = compute_simname(settings, in);
 								settings.outfile = sprintf("%s.mdat",settings.simname);
 								settings.logfile = sprintf("%s.log",settings.simname);
 								settings.infile = sprintf("%s.in",settings.simname);
 								settings.tokenfile = sprintf("%s.token",settings.simname);
-								%{NAME
+								%}FILES
 
 								if clean_tokens
 									delete(settings.tokenfile);
@@ -322,25 +275,57 @@ for seed = seeds
 
 									if !parse
 										% To avoid duplicate exectution
-										fid = fopen (settings.tokenfile, "w");
-										fputs (fid, "Running"); fclose (fid);
-
-										%{GENERATE lambdatau
-										if length(zipf)==0
-											% the appropriate zipf has not been yet generated
-											zipf = zeros(p, max(in.catalog) );
-											for j=1:in.p
-												zipf(j, 1:in.catalog(j)) = ...
-													(ZipfPDF(in.alpha(j), in.catalog(j)) )';
-											end
-										%else it means that the zipf has already been generated
+										[fid, msg] = fopen (settings.tokenfile, "w");
+										if fid==-1
+											printf("Error in writing file %s. Error is: %s",...
+													settings.tokenfile, msg);
+											quit
+										else
+											fputs (fid, "Running"); fclose (fid);
 										end
 
-										in.lambdatau=[]; %avg #req per each object
+										%{GENERATE popularity
+										in.last_cdf_values = in.harmonic_num = zeros(in.p,1);
+										in.last_zipf_points = ones(in.p,1);
 										for j=1:in.p
-											in.lambdatau = [in.lambdatau;  zipf(j,:) .* in.R(j) ];
+											[cdf_value, harmonic_num] = ZipfCDF_smart(...
+													in.last_zipf_points(j), 0, [], in.alpha(j), [], ...
+													in.ctlg(j), 1:in.ctlg(j) );
+											in.last_cdf_values(j) = cdf_value;
+											in.harmonic_num(j) = harmonic_num;
 										end
-										%}GENERATE lambdatau
+
+										% To take into account the fact that only active objects generate
+										% requests
+										in.adjust_factor = 1.0/in.ONtime; 
+										in.lambda_per_CP = in.lambda * in.adjust_factor ...
+													.* in.req_proportion;
+										%}GENERATE popularity
+
+										%{ ESTIMATED RANK
+											% We compute the ranks of objects that each CP estimates
+											in.estimated_rank = zeros(in.p,max(in.ctlg) );
+											in.messy_popularity = zeros(in.p,max(in.ctlg) );
+											[obj_prob, harm_num] = ZipfPDF(in.alpha(j), ...
+													in.ctlg(j), in.harmonic_num(j) );
+											if in.know == Inf
+												for j=1:in.p
+													% The CPs have perfect knowledge
+													in.estimated_rank(j,1:in.ctlg(j) ) = 1:in.ctlg(j);
+													in.messy_popularity(j,:) = obj_prob';
+												end
+											else
+												for j=1:in.p
+													req_rate = obj_prob' * in.know * in.ctlg(j);
+													reqs = poissrnd(req_rate);
+													[reqs_sorted, in.estimated_rank(j,:) ] = ...
+															sort(reqs,"descend");
+													in.messy_popularity(j,:) = ...
+															obj_prob(in.estimated_rank(j,:) )';
+												end
+											end
+										%} ESTIMATED RANK
+
 									end
 
 
@@ -357,6 +342,8 @@ for seed = seeds
 										case "optimum_nominal"
 											function_name = "optimum_nominal";
 										case "unif"
+											function_name = "dspsa";
+										case "declaration"
 											function_name = "dspsa";
 										otherwise
 											method
@@ -403,13 +390,13 @@ for seed = seeds
 						end%projection
 						end%coefficient end
 						end%normalize for
+						end%ONtime for
+						end%ONOFFspan for
 					end%K for
-				end%R_perm for
 				end%lambda for
 			end%T for
 			end%know (knowledge degree values)
 			end%tot_time for
-		end%ctlg_perm for
 	end%p for
 	end%ctlg_eps for
 	end%overall_ctlg for
