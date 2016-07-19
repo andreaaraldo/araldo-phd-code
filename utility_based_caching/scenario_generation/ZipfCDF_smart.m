@@ -49,9 +49,6 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		harmonic_num_returned = harmonic_num;
 	elseif k>current_k
 		if severe_debug; which_case=5; end;
-		current_k
-		k
-		ciao_vediamo_estimated = estimated_rank(current_k+1:k)
 		p = estimated_rank(current_k+1:k)' .^ alpha;
 		p = 1 ./ p;
 		cdf_value = current_cdf_value+harmonic_num * sum(p);
