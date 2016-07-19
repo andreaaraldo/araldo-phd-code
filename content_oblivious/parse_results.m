@@ -7,7 +7,7 @@ function parse_results(in, settings)
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
 	MESSY_POPULARITY=24; ESTIMATED_RANK=25;
 
-	output = ESTIMATED_RANK;
+	output = MESSY_POPULARITY;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
