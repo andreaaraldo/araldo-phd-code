@@ -1,9 +1,8 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-settings.mdat_folder = "~/remote_archive/femtoCDN/new";
-settings.mdat_folder = "/tmp";
-max_parallel = 1;
+settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
+max_parallel = 22;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
@@ -28,7 +27,7 @@ boosts = [1];
 lambdas = [100]; %req/s 
 tot_times = [0.1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e2];
+overall_ctlgs = [1e4];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
 alpha0s = [0.8];
@@ -41,10 +40,10 @@ in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 in.req_proportion=[0.5 0.5]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e1]; %cache slots
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-knows=[10]; %knowledge degree value
+knows=[0.1,1,10,100,Inf]; %knowledge degree value
 seeds = 1:10;
 
 
@@ -318,8 +317,12 @@ for seed = seeds
 												for j=1:in.p
 													req_rate = obj_prob' * in.know * in.ctlg(j);
 													reqs = poissrnd(req_rate);
+													% displacer is needed in order to randomize the 
+													% reciprocal order between objects having the same 
+													% requests generated
+													displacer = rand(size(reqs) ) * 0.3;
 													[reqs_sorted, in.estimated_rank(j,:) ] = ...
-															sort(reqs,"descend");
+															sort(reqs+displacer,"descend");
 													in.messy_popularity(j,:) = ...
 															obj_prob(in.estimated_rank(j,:) )';
 												end

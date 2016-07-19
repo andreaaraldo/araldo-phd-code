@@ -5,9 +5,9 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
-	MESSY_POPULARITY=24;
+	MESSY_POPULARITY=24; ESTIMATED_RANK=25;
 
-	output = MESSY_POPULARITY;
+	output = ESTIMATED_RANK;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -225,9 +225,9 @@ function parse_results(in, settings)
 			dlmwrite( result_file, in.messy_popularity(1,:)', " ");
 			printf("%s written\n", result_file);
 
-		case MESSY_POPULARITY_INTEGRATED
-			result_file = sprintf("%s.messy_pop_int.dat", settings.simname);
-			dlmwrite( result_file, in.messy_popularity(1,:)', " ");
+		case ESTIMATED_RANK
+			result_file = sprintf("%s.est_rank.dat", settings.simname);
+			dlmwrite( result_file, in.estimated_rank(1,:)', " ");
 			printf("%s written\n", result_file);
 
 		otherwise
