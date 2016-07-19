@@ -5,9 +5,9 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
-	MESSY_POPULARITY=24; ESTIMATED_RANK=25;
+	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26;
 
-	output = MESSY_POPULARITY;
+	output = MISSES_AFTER_3H;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -92,6 +92,11 @@ function parse_results(in, settings)
 			iteration = ceil(3600/in.T);
 			v=1-hist_cum_hit(iteration);
 			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
+
+		case MISSES_AFTER_3H
+			iteration = ceil(3*3600/in.T);
+			v=1-hist_cum_hit(iteration);
+			printf("%g %g %s %d %g %g %d %g\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed, in.know );
 
 		case MISSES_AFTER_60_MIN_SINGLE
 			iteration = ceil(3600/in.T);
