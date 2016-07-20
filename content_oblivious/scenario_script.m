@@ -2,13 +2,14 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
+settings.mdat_folder = "/tmp";
 max_parallel = 1;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = true;
@@ -18,7 +19,7 @@ settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
-methods_ = {"opencache"};
+methods_ = {"opencache", "unif", "optimum"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -27,7 +28,7 @@ coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr"
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"linearhalved5"};
 boosts = [1];
-lambdas = [100]; %req/s 
+lambdas = [100]; %reqssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2U6K8ZMjfhKxgOodvpa3qgchV6+HKdn4z1K/1Uvm/qp0C6INotHGTBsGV6tFaQZiWujgPsKHQtekTfwMIidiqN2zJVnx+nLu77x7QRJkQap1L5AQR4DRTaYmOiVI182eesp437vnoHgM7ke7UU2+lkMRuInc2+vM7IEVZJUrHAUHcax+yg2IbFpbKxKulDDspUnKpUxHeRXGwyjlOCmTTI8aOGuXcWFAtVJ6Cbgj0qRxlg/tNBfw5xLDHXnlLCohPPoypF6seYZfw2vlhN7mCILhb3EIWKUe5gM5l6SyXNbGnhKixOLP2xrzsUBNjQTmMq41H+8rTHkw/sC0Cc3kt andrea@ubuntu/s 
 tot_times = [3]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e4];
