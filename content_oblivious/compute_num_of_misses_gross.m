@@ -1,11 +1,15 @@
 % Compute the number of misses
 % F is a vector whose single cell is the fraction of requests to a single CP
 
-function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_points_returned] =...
-				 compute_num_of_misses_gross(in, theta, observation_time)
+function [num_of_misses, tot_requests, F, last_cdf_values_returned, ...
+	last_zipf_points_returned] = compute_num_of_misses_gross(in, theta, observation_time)
 
 		addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 		global severe_debug;
+
+		if in.ONtime != 1
+			error "This computation is erroneous if in.ONtime is not 1"
+		end
 
 		cdf=zeros(in.p, 1);
 
@@ -13,9 +17,9 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, last_zipf_po
 			% estimated_rank(j,:) is a row with the object ids sorted starting from
 			% that one that is believed to be the most popular
 			estimated_rank = in.estimated_rank(j,:)';
-			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(theta(j), in.last_zipf_points(j), ...
-				in.last_cdf_values(j), in.alpha(j), in.harmonic_num(j), in.ctlg(j), ...
-				estimated_rank);
+			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(theta(j), ...
+				in.last_zipf_points(j),  in.last_cdf_values(j), in.alpha(j), ...
+				in.harmonic_num(j), in.ctlg(j), estimated_rank);
 		end
 
 		%{ UPDATE LAST CDF VALUES

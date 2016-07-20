@@ -1,33 +1,37 @@
 %
 function theta_opt = compute_optimum(in)
 	addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-	border=ones(in.p,1);
-	border_frequencies = harmonic_num = last_cdf_values = zeros(in.p,1);
-	for j=1:in.p
-		estimated_rank = 1:in.ctlg(j); % For computing the optimum I use the true rank
-		[cdf_value, harmonic_num_returned] = ...
-			ZipfCDF_smart(border(j), 0, [], in.alpha(j), [], in.ctlg(j),
-			estimated_rank);
-		last_cdf_values(j) = cdf_value;
-		border_frequencies(j) = cdf_value * in.req_proportion(j);
-		harmonic_num(j)= harmonic_num_returned;
-	end
+	if isfield(in,"theta_opt")
+		theta_opt = in.theta_opt;
+	else
+		border=ones(in.p,1);
+		border_frequencies = harmonic_num = last_cdf_values = zeros(in.p,1);
+		for j=1:in.p
+			estimated_rank = 1:in.ctlg(j); % For computing the optimum I use the true rank
+			[cdf_value, harmonic_num_returned] = ...
+				ZipfCDF_smart(border(j), 0, [], in.alpha(j), [], in.ctlg(j),
+				estimated_rank);
+			last_cdf_values(j) = cdf_value;
+			border_frequencies(j) = cdf_value * in.req_proportion(j);
+			harmonic_num(j)= harmonic_num_returned;
+		end
 
 
-	for i=1:in.K
-		% CPidx is the identifier of a CP
-		[border_pop, CPidx] = max(border_frequencies);
-		estimated_rank = 1:in.ctlg(CPidx); 	% For computing the optimum 
-											% I use the true rank
-		[cdf_value, harmonic_num_returned] = ...
-			ZipfCDF_smart(border(CPidx)+1, border(CPidx), last_cdf_values(CPidx), ...
-			in.alpha(CPidx), harmonic_num(CPidx), in.ctlg(CPidx), estimated_rank);
-		border(CPidx)++;
-		border_frequencies(CPidx) = (cdf_value - last_cdf_values(CPidx) )* in.req_proportion(CPidx);
-		last_cdf_values(CPidx) = cdf_value;
-	end%for
+		for i=1:in.K
+			% CPidx is the identifier of a CP
+			[border_pop, CPidx] = max(border_frequencies);
+			estimated_rank = 1:in.ctlg(CPidx); 	% For computing the optimum 
+												% I use the true rank
+			[cdf_value, harmonic_num_returned] = ...
+				ZipfCDF_smart(border(CPidx)+1, border(CPidx), last_cdf_values(CPidx), ...
+				in.alpha(CPidx), harmonic_num(CPidx), in.ctlg(CPidx), estimated_rank);
+			border(CPidx)++;
+			border_frequencies(CPidx) = (cdf_value - last_cdf_values(CPidx) )* in.req_proportion(CPidx);
+			last_cdf_values(CPidx) = cdf_value;
+		end%for
 
-	theta_opt = border .- ones(in.p,1);
+		theta_opt = border .- ones(in.p,1);
+	end%else
 end
 
 

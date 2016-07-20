@@ -1,10 +1,14 @@
 % Compute the number of misses
 % F is a vector whose single cell is the fraction of requests to a single CP
 
-function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in, current_theta,...
-	observation_time)
+function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in,...
+	current_theta, observation_time)
 
 		global severe_debug;
+
+		if in.know != Inf
+			error "This computation is erroneous if popularity knowledge is not perfect"
+		end
 
 		num_of_misses_per_CP = requests_per_CP = zeros(in.p, 1);
 		for j=1:in.p
@@ -12,7 +16,8 @@ function [num_of_misses_per_CP, tot_requests, F] = compute_num_of_misses_fine(in
 			cached_objs = active_obj_indices(1:current_theta(j) );
 			uncached_objs = [];
 			if current_theta(j) < length(active_obj_indices)
-				uncached_objs = active_obj_indices(current_theta(j)+1: length(active_obj_indices));
+				uncached_objs = active_obj_indices(...
+						current_theta(j)+1: length(active_obj_indices));
 			end
 			expected_hits  =in.lambda_per_CP(j) * observation_time *...
 							in.harmonic_num(j) * sum(1.0 ./(cached_objs.^in.alpha(j) ) );

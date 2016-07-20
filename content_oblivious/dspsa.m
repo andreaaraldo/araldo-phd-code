@@ -86,7 +86,8 @@ function dspsa(in, settings, infile)
 		% Historical num of misses. One row per each CP, one column per each epoch
 		hist_num_of_misses = hist_tot_requests = [];
 
-		in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = hist_activated_objects =...
+		in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = ...
+			hist_activated_objects = hist_trash = hist_unused = ...
 			hist_deactivated_objects = [];
 
 		in.last_cdf_values=in.last_zipf_points=zeros(in.p,1);
@@ -198,16 +199,38 @@ function dspsa(in, settings, infile)
 		end%test
 		%} RUN TESTS
 
-		% Historical data
 		if severe_debug && sum(num_of_misses)>tot_requests
 			num_of_misses
 			tot_requests
 			error "Error: misses are more than the requests: weird"
 		end
 
+		%{ HISTORICAL DATA
+		if settings.ON_hist_trash
+			unused = trash = 0;
+			in.theta_opt = compute_optimum(in);
+			for test = 1:size(test_theta, 2)
+				current_theta = test_theta(:,test);
+
+				cached_estimated_ranks = in.estimated_rank;
+				trash=0;
+				for j=1:in.p
+					cached_estimated_ranks(j,current_theta(j)+1 : end) = 0;
+					trash += sum ( cached_estimated_ranks(j,:)>in.theta_opt(j) ) ;
+				end
+				unused += in.K - sum(sum(cached_estimated_ranks>0) );
+			end
+
+			unused = unused / size(test_theta, 2);
+			trash = trash / size(test_theta, 2);
+			hist_unused = [hist_unused, unused];
+			hist_trash = [hist_trash, trash];
+		end
+
 		hist_num_of_misses = [hist_num_of_misses, sum(num_of_misses,2) ];
 		hist_tot_requests = [hist_tot_requests, sum(tot_requests,2) ];
 		hist_updates = [hist_updates, current_updates];
+		%} HISTORICAL DATA
 
 		%{ COMPUTE ghat
 			if variant==ORIG

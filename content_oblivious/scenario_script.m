@@ -2,20 +2,23 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
-max_parallel = 8;
+max_parallel = 1;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = true;
 settings.compact_name=true;
 
+settings.ON_hist_trash=true;
+
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -43,7 +46,7 @@ Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[0.1,1,10,Inf]; %knowledge degree value
-seeds = 1:10;
+seeds = 1;
 
 
 
@@ -153,6 +156,13 @@ for seed = seeds
 							for idx_normalize = 1:length(normalizes);
 							for idx_coefficient = 1:length(active_coefficientss)
 							for idx_projection = 1:length(projections)
+
+								%{ CHECKS
+									if in.ONtime != 1 && settings.ON_hist_trash
+										error "The computation of trash is erroneous when in.ONtime is not 1"
+									end
+								%} CHECKS
+
 								in.coefficients_str = active_coefficientss{idx_coefficient};
 								in.normalize_str = normalizes{idx_normalize};
 								settings.projection_str = projections{idx_projection};
