@@ -73,9 +73,9 @@ public:
 		severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
 		return 0;
 	}
-	virtual name_t get_object_id(){return __id(chunk_var);}
-	virtual name_t get_chunk_number(){return __chunk(chunk_var);}
-	virtual name_t get_representation_mask(){return __representation_mask(chunk_var);}
+	virtual name_t get_object_id(){return __id(getChunk());}
+	virtual name_t get_chunk_number(){return __chunk(getChunk());}
+	virtual name_t get_representation_mask(){return __representation_mask(getChunk());}
 };
 Register_Class(ccn_interest);
 #endif 

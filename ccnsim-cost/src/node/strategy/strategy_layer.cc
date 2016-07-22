@@ -26,6 +26,7 @@
 #include "strategy_layer.h"
 #include <sstream>
 #include "error_handling.h"
+#include "client.h"
 ifstream strategy_layer::fdist;
 ifstream strategy_layer::frouting;
 

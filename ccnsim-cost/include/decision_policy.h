@@ -32,7 +32,8 @@
  * This functions returns a boolean value which says if the given data chunk
  * needs to be cached or not.
  */
-class DecisionPolicy {
+class DecisionPolicy : public cSimpleModule
+{
     public:
 		virtual bool data_to_cache (ccn_data *)=0;
 

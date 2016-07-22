@@ -140,8 +140,8 @@ void statistics::initialize()
 
     for (int i = 0;i<topo.getNumNodes();i++)
     {
-		caches[i] = (base_cache *) (topo.getNode(i)->getModule()->getModuleByRelativePath("content_store"));
-		cores [i] = (core_layer *) (topo.getNode(i)->getModule()->getModuleByRelativePath("core_layer"));
+		caches[i] = (base_cache *) (topo.getNode(i)->getModule()->getSubmodule("content_store"));
+		cores [i] = (core_layer *) (topo.getNode(i)->getModule()->getSubmodule("core_layer"));
     }
 
     //Store samples for stabilization
@@ -174,7 +174,9 @@ void statistics::handleMessage(cMessage *in){
     switch (in->getKind()){
         case FULL_CHECK:
             for (int i = 0; i < num_nodes;i++)
+			{
                 full += (int)caches[i]->full();
+			}
 
             if (full >= partial_n || simTime()>=10*3600)
             {

@@ -32,6 +32,8 @@
 //<aa>
 #include "error_handling.h"
 //</aa>
+using namespace omnetpp;
+
 
 class ccn_data: public ccn_data_Base{
 protected:
@@ -62,10 +64,12 @@ public:
 			return 1;
 	};
 
-	const chunk_t get_chunk_id() const { return chunk_var;}
-	uint32_t get_object_id(){ return __id(chunk_var);}
-	uint32_t get_chunk_num(){ return __chunk(chunk_var);}
-	uint64_t get_next_chunk(){ return next_chunk(chunk_var); }
+	//getChunk() is a function generated at compile time from the attribute data
+	//defined in packets/ccn_data.msg by nedtool
+	const chunk_t get_chunk_id() const { return getChunk();}
+	uint32_t get_object_id(){ return __id(getChunk());}
+	uint32_t get_chunk_num(){ return __chunk(getChunk());}
+	uint64_t get_next_chunk(){ return next_chunk(getChunk()); }
 
 };
 Register_Class(ccn_data);

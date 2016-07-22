@@ -68,15 +68,15 @@ typedef uint32_t name_t; //represents the name part of the chunk
 typedef uint16_t cnumber_t; //represents the number part of the chunk
 typedef uint16_t representation_mask_t;
 
+using namespace omnetpp;
 
 //Useful data structure. Use that instead of cSimpleModule, when you deal with caches, strategy_layers, and core_layers
-#include "client.h"
 class abstract_node: public cSimpleModule{
     public:
 	abstract_node():cSimpleModule(){;}
 
 	virtual cModule *__find_sibling(std::string mod_name){
-	    return getParentModule()->getModuleByRelativePath(mod_name.c_str());
+	    return getParentModule()->getModuleByPath(mod_name.c_str());
 	}
 
 	virtual int __get_outer_interfaces(){
@@ -94,7 +94,7 @@ class abstract_node: public cSimpleModule{
 
 	//<aa>	If there is a client attached to the specified interface, it will be returned. 
 	//		Otherwise a null pointer will be returned
-	client* __get_attached_client(int interface)
+	cSimpleModule* __get_attached_client(int interface)
 	{
 		severe_error(__FILE__,__LINE__,"In this version of ccnSim this method has been removed");
 		return NULL;

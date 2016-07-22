@@ -57,7 +57,7 @@ void nrr::initialize(){
     for (int i = 0;i<topo.getNumNodes();i++)
 	{
 		if (i==getIndex()) continue;
-		base_cache *cptr = (base_cache *)topo.getNode(i)->getModule()->getModuleByRelativePath("content_store");
+		base_cache *cptr = (base_cache *)topo.getNode(i)->getModule()->getSubmodule("content_store");
 		//<aa>
 		const int_f FIB_entry = get_FIB_entry(i);
 		if (FIB_entry.len <= TTL)

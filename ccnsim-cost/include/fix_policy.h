@@ -31,6 +31,8 @@
 #include "error_handling.h"
 //</aa>
 
+using namespace omnetpp;
+
 /* Fixed probability policy: store a given chunk with a given (fixed)
  * probability. 
  */
@@ -38,9 +40,10 @@ class Fix: public DecisionPolicy{
     public:
 	Fix(double pc):p(pc){;}//Store the caching probability
 
-	virtual bool data_to_cache(ccn_data *){
+	virtual bool data_to_cache(ccn_data *)
+	{
 
-	    double x = dblrand();
+	    double x = getRNG(0)->doubleRand();
 
 	    if (x < p)
 			return true;

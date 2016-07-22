@@ -14,7 +14,7 @@ module node like Inode{
 	double betweenness = default (-1);
 	content_store.DS = default("lce");
 	
-	//<aa>if yes, the cache can store a chunk that is served by the attached repo
+	//<aa>if true, the cache can store a chunk that is served by the attached repo
 	bool cache_if_in_repo = default(true); 
 	//</aa>
 	

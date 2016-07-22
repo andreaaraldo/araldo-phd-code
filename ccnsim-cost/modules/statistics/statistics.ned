@@ -3,7 +3,8 @@ simple statistics{
     parameters:
 		// Look also at the record_cache_value constant in statistics.h
 
-		double ts = default(0.1);
+		double ts = default(0.1);	//ccnSim will check the stability 
+									//conditions every ts(simulation time)
 		double window = default (60);
 		double steady = default(1000);
 		double partial_n = default(10);
