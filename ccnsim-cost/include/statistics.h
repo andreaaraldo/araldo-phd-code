@@ -30,9 +30,10 @@
 #include <boost/unordered_map.hpp>
 #include <vector>
 #include <ctime>
+#include "client.h"
 
 
-class client;
+//class client;
 class core_layer;
 class base_cache;
 

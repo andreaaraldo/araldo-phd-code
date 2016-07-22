@@ -13,6 +13,11 @@
 // enable it for some runs, just to check that there are not erroneous things happening.
 // This does not affect in any way the results.
 //#define SEVERE_DEBUG
+
+//if OMNET5 is defined the code will be compatible with Omnet 5 but not with Omnet 4
+//if not defined, the contrary holds
+//#define OMNET5
+
 //#define ADDITIONAL_INFO
 
 
@@ -68,7 +73,9 @@ typedef uint32_t name_t; //represents the name part of the chunk
 typedef uint16_t cnumber_t; //represents the number part of the chunk
 typedef uint16_t representation_mask_t;
 
+#ifdef OMNET5
 using namespace omnetpp;
+#endif
 
 //Useful data structure. Use that instead of cSimpleModule, when you deal with caches, strategy_layers, and core_layers
 class abstract_node: public cSimpleModule{

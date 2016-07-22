@@ -32,7 +32,10 @@
 //<aa>
 #include "error_handling.h"
 //</aa>
+
+#ifdef OMNET5
 using namespace omnetpp;
+#endif
 
 
 class ccn_data: public ccn_data_Base{

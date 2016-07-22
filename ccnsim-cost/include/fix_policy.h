@@ -31,7 +31,6 @@
 #include "error_handling.h"
 //</aa>
 
-using namespace omnetpp;
 
 /* Fixed probability policy: store a given chunk with a given (fixed)
  * probability. 
