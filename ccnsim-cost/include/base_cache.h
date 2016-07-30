@@ -101,6 +101,8 @@ struct cache_stat_entry{
     double rate(){ return hit *1./(hit+miss);} //return the miss rate of the class
 };
 
+enum DumpType{DumpType_complete, DumpType_breakdown, DumpType_none};
+
 class base_cache : public abstract_node
 {
     friend class statistics;
@@ -110,12 +112,14 @@ class base_cache : public abstract_node
 		unsigned cache_slots;// <aa> A cache slot is the elementary unit of cache space. A chunk can occupy
 							 // one or more cache slots, depending on its representation level </aa>
     	uint32_t occupied_slots; //actual size of the cache
+		DumpType dump_type;
 		virtual void initialize();
 		virtual void initialize_cache_slots(unsigned cache_slots);
 		void handleMessage (cMessage *){;}
 		virtual void finish();
 
 		virtual const char* dump();
+		virtual std::vector<int> get_cache_breakdown(){std::vector<int> dummy; return dummy;};
 		virtual cache_item_descriptor* data_lookup(chunk_t) const;
 
 		//<aa>

@@ -186,6 +186,16 @@ void base_cache::initialize_(std::string decision_policy, unsigned cache_slots)
 
 	//<aa>
 	//{INTIALIZE DUMP
+	std::string dump_type_str = par("dump_type");
+	if ( dump_type_str.compare("complete")==0 )
+	{
+		dump_type = DumpType_complete;
+
+	}else if ( dump_type_str.compare("breakdown")==0 )
+	{	dump_type = DumpType_breakdown;
+	}else if ( dump_type_str.compare("none")==0 )
+		dump_type = DumpType_none;
+		
 	sprintf(dump_filename,"%s.cache-%d", statistics::logfile, getIndex());
 	ofstream out_f; out_f.open (dump_filename, std::ofstream::out);
 	out_f<<""<<endl; out_f.close();

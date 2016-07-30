@@ -330,11 +330,39 @@ const char* lru_cache::get_cache_content(const char* line_initiator, const char*
 	return content_str.str().c_str();
 }
 
+std::vector<int> lru_cache::get_cache_breakdown()
+{
+	int good, trash, unused;
+	good=trash=unused=0;
+	cache_item_descriptor *it = get_mru();
+    while (it)
+	{
+		__id(it->k) <= cache_slots ? good++ : trash++;
+		it = it->older;
+    }
+	unused = cache_slots-good-trash;
+	vector<int> breakdown = {trash,unused};
+	return breakdown;
+}
+
 const char* lru_cache::dump()
 {
-	ofstream out_f; out_f.open (dump_filename, std::ofstream::out | std::ofstream::app);
-	out_f<<get_cache_content(SIMTIME_STR(simTime())  ,"\n")<<endl;
-	out_f.close();
+	if (dump_type == DumpType_complete)
+	{
+			ofstream out_f; out_f.open (dump_filename, std::ofstream::out | std::ofstream::app);
+			const char* content=NULL;
+			content = get_cache_content(SIMTIME_STR(simTime())  ,"\n");
+			out_f<< content<<endl;
+			out_f.close();
+	}
+	else if (dump_type == DumpType_breakdown)
+	{
+			FILE * out_f;
+			out_f = fopen(dump_filename,"a");
+			vector<int> breakdown = get_cache_breakdown();		
+			fprintf(out_f, "%d %d\n", breakdown[0], breakdown[1]);
+			fclose(out_f);
+	}
 	return "ciao";
 }
 

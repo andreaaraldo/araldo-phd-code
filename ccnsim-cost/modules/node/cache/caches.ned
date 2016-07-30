@@ -3,14 +3,15 @@ package modules.node.cache;
 moduleinterface cache
 {
     parameters:
-	int C; 	//<aa> How many objects can be stored in the cache, supposing to store them at the
-			//highest representation </aa>
-	//<mt>
-	int NC; 
-	//</mt>
+		int C; 	//<aa> How many objects can be stored in the cache, supposing to store them at the
+				//highest representation </aa>
+		//<mt>
+		int NC; 
+		//</mt>
+		string dump_type;
 
     gates:
-	inout cache_port;
+		inout cache_port;
 }
 
 simple base_cache like cache
@@ -18,11 +19,12 @@ simple base_cache like cache
     parameters:
     	@display("i=block/buffer2;is=l");
 
-	string DS = default("lce");
-	int C;
-	int NC = default(C); //name cache dimension (in case of two_lru)
+		string DS = default("lce");
+		int C;
+		int NC = default(C); //name cache dimension (in case of two_lru)
+		string dump_type = default("none");
     gates:
-	inout cache_port;
+		inout cache_port;
 }
 
 

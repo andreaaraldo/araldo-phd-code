@@ -79,6 +79,7 @@ class lru_cache:public base_cache{
 		double get_average_price();
         virtual void remove_from_cache(cache_item_descriptor* descr);
 		virtual const char* dump();
+		virtual std::vector<int> get_cache_breakdown();
 		
 
     protected:		

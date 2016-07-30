@@ -1,5 +1,5 @@
 version 2
-run General-0-20160724-17:16:09-3959
+run General-0-20160730-18:52:33-5750
 attr C 1e2
 attr D lce
 attr F spr
@@ -8,7 +8,7 @@ attr a 1
 attr brates 1
 attr configname General
 attr ctlg 1e4
-attr datetime 20160724-17:16:09
+attr datetime 20160730-18:52:33
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars "$net=base, $rep=0, $lambda=100, $a=1, $ctlg=1e4, $brates=1, $F=spr, $ttl=1000, $D=lce, $R=lru, $proactiveprob=0, $C=1e2, $window=60, $variance=1000, $mytime=1800"
@@ -19,7 +19,7 @@ attr mytime 1800
 attr net base
 attr network networks.${net=base}_network
 attr proactiveprob 0
-attr processid 3959
+attr processid 5750
 attr rep 0
 attr repetition 0
 attr replication #0
