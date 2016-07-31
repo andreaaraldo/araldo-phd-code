@@ -69,6 +69,7 @@ class lru_cache:public base_cache{
 				const char* line_initiator,	  	// from the mru to the lru
 				const char* separator); 
 		
+		virtual void prefill();
 		#ifdef SEVERE_DEBUG
 		virtual void check_if_correct();
 		#endif
@@ -80,6 +81,7 @@ class lru_cache:public base_cache{
         virtual void remove_from_cache(cache_item_descriptor* descr);
 		virtual const char* dump();
 		virtual std::vector<int> get_cache_breakdown();
+
 		
 
     protected:		

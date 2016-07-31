@@ -185,6 +185,12 @@ class base_cache : public abstract_node
 
 		virtual double get_cache_value();
 		virtual double get_average_price();
+		virtual void prefill()
+		{
+			std::stringstream ermsg; 
+			ermsg<<"prefill() is not implemented for all caches";
+			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
+		}
 
 		#ifdef SEVERE_DEBUG
 			virtual bool is_initialized();

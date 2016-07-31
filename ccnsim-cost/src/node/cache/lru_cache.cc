@@ -345,6 +345,35 @@ std::vector<int> lru_cache::get_cache_breakdown()
 	return breakdown;
 }
 
+// Prefill the cache 
+void lru_cache::prefill()
+{
+	content_distribution* content_distribution_module = 
+			content_distribution::get_content_distribution_module();
+	int cardF = content_distribution_module->par("objects"); //Number of files within the system
+	while (get_occupied_slots() < cache_slots)
+	{
+		int obj_id = (chunk_t) intuniform(1,cardF);
+
+		chunk_t chunk = 0;
+		__sid(chunk, obj_id);
+		__schunk(chunk, 1);
+		__srepresentation_mask(chunk, 1);
+
+		double price =0;
+
+		cache_item_descriptor* old = data_lookup_receiving_data(chunk);
+		if (old == NULL)
+		{		
+			// There is no chunk already stored that can replace the incoming one.
+			// We need to store the incoming one.
+			insert_into_cache(new cache_item_descriptor(chunk, price )  );
+		} // else the object was already stored
+		dump();
+	}
+	cout<< "cache prefilled"<<endl;
+}
+
 const char* lru_cache::dump()
 {
 	if (dump_type == DumpType_complete)

@@ -170,8 +170,6 @@ void base_cache::initialize_(std::string decision_policy, unsigned cache_slots)
 	//</aa>
 
 
-
-
     //Cache statistics
     //--Average
     miss = 0;
@@ -201,10 +199,16 @@ void base_cache::initialize_(std::string decision_policy, unsigned cache_slots)
 	out_f<<""<<endl; out_f.close();
 	//}INTIALIZE DUMP
 
+	bool prefill_ = par("prefill");
+	if (prefill_)
+		prefill();
+
 	#ifdef SEVERE_DEBUG
     	initialized = true;
 		check_if_correct();
 	#endif
+
+
 	//</aa>
 
 }

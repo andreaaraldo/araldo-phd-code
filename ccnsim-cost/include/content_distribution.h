@@ -134,6 +134,42 @@ class content_distribution : public cSimpleModule
 		static const vector<int> get_repo_vector(name_t object_id);
 		static void set_num_of_chunks(name_t object_id, filesize_t num_of_chunks);
 		static void set_repo(name_t object_id, repo_t repo);
+
+		static content_distribution* get_content_distribution_module()
+		{
+			content_distribution* content_distribution_module_;
+		    vector<string> ctype;
+			ctype.push_back("modules.content.content_distribution");
+			cTopology topo;
+	   		topo.extractByNedTypeName(ctype);
+
+			// {CHECK
+			#ifdef SEVERE_DEBUG
+				int num_content_distribution_modules = topo.getNumNodes();
+				if (num_content_distribution_modules != 1){
+					std::stringstream msg; 
+					msg<<"Found "<< num_content_distribution_modules << 
+					" content_distributions modules. They must be 1. If you are not using"<<
+					" cost related functions, check that statistics::record_cache_value is "<<
+					" disabled. It may be the source of error.";
+					severe_error(__FILE__, __LINE__, msg.str().c_str() );
+				}
+			#endif
+			// }CHECK
+
+			cTopology::Node *content_distribution_node = topo.getNode(0);
+			content_distribution_module_ = 
+					(content_distribution*) content_distribution_node->getModule();
+
+			#ifdef SEVERE_DEBUG
+			if ( !content_distribution_module_->isInitialized() ){
+					std::stringstream msg; 
+					msg<<"content_distribution_module is not initialized";
+					severe_error(__FILE__, __LINE__, msg.str().c_str() );
+			}
+			#endif
+			return content_distribution_module_;
+		}
 		//</aa>
 
 

@@ -9,6 +9,7 @@ moduleinterface cache
 		int NC; 
 		//</mt>
 		string dump_type;
+		bool prefill;
 
     gates:
 		inout cache_port;
@@ -23,6 +24,7 @@ simple base_cache like cache
 		int C;
 		int NC = default(C); //name cache dimension (in case of two_lru)
 		string dump_type = default("none");
+		bool prefill = default(false);
     gates:
 		inout cache_port;
 }
