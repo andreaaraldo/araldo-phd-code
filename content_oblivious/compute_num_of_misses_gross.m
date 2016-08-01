@@ -27,6 +27,7 @@ function [num_of_misses, tot_requests, F, last_cdf_values_returned, ...
 		last_zipf_points_returned= in.last_zipf_points;
 		last_cdf_values_returned(theta!=0,1) = cdf(theta!=0) ;
 		last_zipf_points_returned(theta!=0,1)= theta(theta!=0);
+
 		if severe_debug && ( length(last_cdf_values_returned)!=in.p || ...
 				length(last_zipf_points_returned)!=in.p)
 
