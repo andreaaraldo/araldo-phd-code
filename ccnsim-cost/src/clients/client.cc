@@ -318,6 +318,7 @@ void client::request_file()
 	//</aa>
 
     name_t object_id = content_distribution::zipf.value(dblrand());
+	cout <<"requesting content "<< object_id<<" of CP "<<selected_CP<<endl;
 	int cardinality_per_each_CP = content_distribution::zipf.get_cardinality();
 	object_id = object_id + selected_CP * cardinality_per_each_CP;
 	cnumber_t chunk_num = 0;
