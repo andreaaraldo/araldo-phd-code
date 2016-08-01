@@ -7,16 +7,16 @@ import modules.clients.ProactiveComponent;
 
 module node like Inode{
     parameters:
-	string RS = default("lru_cache");
-	string FS = default("spr");
+		string RS = default("lru_cache");
+		string FS = default("spr");
 
-	int level = default (-1);
-	double betweenness = default (-1);
-	content_store.DS = default("lce");
+		int level = default (-1);
+		double betweenness = default (-1);
+		content_store.DS = default("lce");
 	
-	//<aa>if true, the cache can store a chunk that is served by the attached repo
-	bool cache_if_in_repo = default(true); 
-	//</aa>
+		//<aa>if true, the cache can store a chunk that is served by the attached repo
+		bool cache_if_in_repo = default(true); 
+		//</aa>
 	
 
 	@display("i=abstract/router;is=s");

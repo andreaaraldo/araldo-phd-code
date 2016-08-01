@@ -101,7 +101,7 @@ struct cache_stat_entry{
     double rate(){ return hit *1./(hit+miss);} //return the miss rate of the class
 };
 
-enum DumpType{DumpType_complete, DumpType_breakdown, DumpType_none};
+enum DumpType{DumpType_complete, DumpType_breakdown, DumpType_trash, DumpType_none};
 
 class base_cache : public abstract_node
 {
@@ -135,6 +135,7 @@ class base_cache : public abstract_node
 		virtual unordered_map<chunk_t,cache_item_descriptor *>::const_iterator beginning_of_cache() const;
 
 		char dump_filename[500]; // Cache content will be dumped here
+		unsigned trash, trash_samples;
 		//</aa>
 	
     public:
@@ -198,6 +199,11 @@ class base_cache : public abstract_node
 			virtual void check_if_correct();
 			virtual const char* get_cache_content();
 		#endif
+
+		//{ DATA FOR TRASH COMPUTATION
+		vector<double> opt_slot_allocation_among_CPs;
+		int cardinality_per_each_CP;
+		//} DATA FOR TRASH COMPUTATION
 		//</aa>
 
 		//{ DEPRECATED

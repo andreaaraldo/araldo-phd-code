@@ -69,6 +69,24 @@ void base_cache::initialize()
 	unsigned slots = par("C");
     initialize_(decision, slots );
 
+	//<aa>
+	//{ DATA FOR TRASH COMPUTATION
+	trash = trash_samples = 0;
+	int cardF = getParentModule()->getParentModule()->
+				getSubmodule("content_distribution")->par("objects");
+	cStringTokenizer tokenizer( getParentModule()->getParentModule()->
+			getSubmodule("content_distribution")->par("opt_allocation_among_CPs"),"_" 
+	);
+	opt_slot_allocation_among_CPs = tokenizer.asDoubleVector();
+	for (unsigned i=0; i<opt_slot_allocation_among_CPs.size(); i++)
+		opt_slot_allocation_among_CPs[i]= opt_slot_allocation_among_CPs[i]*cache_slots;
+
+	unsigned num_of_CPs = opt_slot_allocation_among_CPs.size();
+	cardinality_per_each_CP = cardF/num_of_CPs;
+	//} DATA FOR TRASH COMPUTATION
+	//</aa>
+
+
 	#ifdef SEVERE_DEBUG
 		check_representation_compatibility();
 	#endif
@@ -186,13 +204,13 @@ void base_cache::initialize_(std::string decision_policy, unsigned cache_slots)
 	//{INTIALIZE DUMP
 	std::string dump_type_str = par("dump_type");
 	if ( dump_type_str.compare("complete")==0 )
-	{
 		dump_type = DumpType_complete;
-
-	}else if ( dump_type_str.compare("breakdown")==0 )
-	{	dump_type = DumpType_breakdown;
-	}else if ( dump_type_str.compare("none")==0 )
+	else if ( dump_type_str.compare("breakdown")==0 )
+		dump_type = DumpType_breakdown;
+	else if ( dump_type_str.compare("none")==0 )
 		dump_type = DumpType_none;
+	else if ( dump_type_str.compare("trash")==0 )
+		dump_type = DumpType_trash;
 		
 	sprintf(dump_filename,"%s.cache-%d", statistics::logfile, getIndex());
 	ofstream out_f; out_f.open (dump_filename, std::ofstream::out);
@@ -326,6 +344,12 @@ void base_cache::finish(){
     recordScalar (name, miss);
 
 	//<aa>
+	if (trash_samples > 0)
+	{
+		sprintf ( name, "trash[%d]", getIndex());
+		recordScalar (name, (double)trash/trash_samples);
+	}
+
     sprintf ( name, "decision_yes[%d]", getIndex());
     recordScalar (name, decision_yes);
 

@@ -1,0 +1,105 @@
+version 2
+run General-1-20160801-15:31:13-22289
+attr C 1e2
+attr D fix0.5
+attr F spr
+attr R lru
+attr a 1
+attr brates 1
+attr configname General
+attr ctlg 1e4
+attr datetime 20160801-15:31:13
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=base, $rep=1, $lambda=100, $a=1, $ctlg=1e4, $brates=1, $F=spr, $ttl=1000, $D=fix0.5, $R=lru, $proactiveprob=0, $C=1e2, $window=60, $variance=1000, $mytime=100"
+attr iterationvars2 "$net=base, $rep=1, $lambda=100, $a=1, $ctlg=1e4, $brates=1, $F=spr, $ttl=1000, $D=fix0.5, $R=lru, $proactiveprob=0, $C=1e2, $window=60, $variance=1000, $mytime=100, $repetition=0"
+attr lambda 100
+attr measurement "$net=base, $rep=1, $lambda=100, $a=1, $ctlg=1e4, $brates=1, $F=spr, $ttl=1000, $D=fix0.5, $R=lru, $proactiveprob=0, $C=1e2, $window=60, $variance=1000, $mytime=100"
+attr mytime 100
+attr net base
+attr network networks.${net=base}_network
+attr proactiveprob 0
+attr processid 22289
+attr rep 1
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 1
+attr seedset 1
+attr ttl 1000
+attr variance 1000
+attr window 60
+param **.C "${C = 1e2}"
+param **.DS "\"${ D = lce, fix0.5, fix0.1, fix0.01, fix0.001}\""
+param **.FS "\"${ F = spr }\""
+param **.RS "\"${ R = lru}_cache\""
+param **.RTT 2
+param **.TTL1 ${ttl}
+param **.TTL2 "${ttl = 1000}"
+param **.alpha "${a = 1}"
+param **.cache_dump_interval 10
+param **.cache_if_in_repo true
+param **.check_time 0.1
+param **.client_type "\"client\""
+param **.content_distribution.CP_req_ratio "\"0.5_0.5\""
+param **.content_distribution.opt_allocation_among_CPs "\"0.5_0.5\""
+param **.content_distribution.representation_bitrates "\"${ brates = 1}\""
+param **.dump_type "\"trash\""
+param **.file_size 1
+param **.lambda "${ lambda = 100}"
+param **.node_clients "\"\""
+param **.num_clients 1
+param **.num_repos 1
+param **.objects "${ctlg = 1e4}"
+param **.partial_n -1
+param **.prefill true
+param **.proactive_probability "${proactiveprob = 0}"
+param **.routing_file "\"\""
+param **.runid "\"${runid}\""
+param **.steady "${ mytime = 100}"
+param **.ts 10
+param **.variance_threshold ${variance=1000}
+param **.window ${window=60}
+param *.replicas 1
+
+scalar . 	C 	1e2
+scalar . 	a 	1
+scalar . 	brates 	1
+scalar . 	ctlg 	1e4
+scalar . 	lambda 	100
+scalar . 	mytime 	100
+scalar . 	proactiveprob 	0
+scalar . 	rep 	1
+scalar . 	ttl 	1000
+scalar . 	variance 	1000
+scalar . 	window 	60
+scalar base_network.content_distribution 	repo-0 	0
+scalar base_network.content_distribution 	client-0 	0
+scalar base_network.content_distribution 	repo-0_card 	10000
+scalar base_network.content_distribution 	repo-0_price 	0
+scalar base_network.statistics 	stabilization_time 	70
+scalar base_network.statistics 	p_hit 	0.29764752791069
+scalar base_network.statistics 	interests 	10032
+scalar base_network.statistics 	data 	0
+scalar base_network.statistics 	hdistance 	0.70235247208931
+scalar base_network.statistics 	avg_time 	0
+scalar base_network.statistics 	downloads 	10032
+scalar base_network.statistics 	total_cost 	0
+scalar base_network.statistics 	total_replicas 	10000
+scalar base_network.statistics 	"slots_per_representation 100:" 	0
+scalar base_network.statistics 	inner_hit 	0.29764752791069
+scalar base_network.statistics 	execution_time 	1
+scalar base_network.node[0].core_layer 	interests[0] 	10032
+scalar base_network.node[0].core_layer 	repo_load[0] 	7046
+scalar base_network.node[0].core_layer 	data[0] 	0
+scalar base_network.node[0].core_layer 	slots_sent[face$o[1]->client[0]] 	1003200
+scalar base_network.node[0].content_store 	p_hit[0] 	0.29764752791069
+scalar base_network.node[0].content_store 	hits[0] 	2986
+scalar base_network.node[0].content_store 	misses[0] 	7046
+scalar base_network.node[0].content_store 	trash[0] 	-nan
+scalar base_network.node[0].content_store 	decision_yes[0] 	3521
+scalar base_network.node[0].content_store 	decision_no[0] 	3525
+scalar base_network.node[0].content_store 	decision_ratio[0] 	0.49971615100766
+scalar base_network.client[0] 	hdistance[0].real 	0.70235247208931
+scalar base_network.client[0] 	downloads[0].real 	10032
+scalar base_network.client[0] 	avg_time[0].real 	0

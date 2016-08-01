@@ -396,7 +396,8 @@ void statistics::finish(){
     // It is the fraction of traffic that is satisfied by some cache inside
     // the network and thus does not exit the network </aa>
     sprintf (name, "inner_hit");
-    recordScalar(name , (double) (global_tot_downloads - global_repo_load) / global_tot_downloads) ;
+    recordScalar(name , (double) (global_tot_downloads -
+			global_repo_load) / global_tot_downloads) ;
 
     #ifdef SEVERE_DEBUG
 	if (global_tot_downloads == 0)

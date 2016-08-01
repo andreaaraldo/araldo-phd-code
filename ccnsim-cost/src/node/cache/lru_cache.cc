@@ -337,7 +337,10 @@ std::vector<int> lru_cache::get_cache_breakdown()
 	cache_item_descriptor *it = get_mru();
     while (it)
 	{
-		__id(it->k) <= cache_slots ? good++ : trash++;
+		unsigned CP = __id(it->k)/cardinality_per_each_CP;
+		unsigned rank_internal_to_the_CP = __id(it->k)%cardinality_per_each_CP;
+		rank_internal_to_the_CP <= opt_slot_allocation_among_CPs[CP] ?
+				good++ : trash++;
 		it = it->older;
     }
 	unused = cache_slots-good-trash;
@@ -353,7 +356,7 @@ void lru_cache::prefill()
 	int cardF = content_distribution_module->par("objects"); //Number of files within the system
 	while (get_occupied_slots() < cache_slots)
 	{
-		int obj_id = (chunk_t) intuniform(1,cardF);
+		int obj_id = intuniform(1,cardF);
 
 		chunk_t chunk = 0;
 		__sid(chunk, obj_id);
@@ -369,16 +372,16 @@ void lru_cache::prefill()
 			// We need to store the incoming one.
 			insert_into_cache(new cache_item_descriptor(chunk, price )  );
 		} // else the object was already stored
-		dump();
 	}
-	cout<< "cache prefilled"<<endl;
+	cout<< "cache prefilled: BE CAREFUL: prefill does not work with video representation levels"<<endl;
 }
 
 const char* lru_cache::dump()
 {
 	if (dump_type == DumpType_complete)
 	{
-			ofstream out_f; out_f.open (dump_filename, std::ofstream::out | std::ofstream::app);
+			ofstream out_f; out_f.open (dump_filename, 
+				std::ofstream::out | std::ofstream::app);
 			const char* content=NULL;
 			content = get_cache_content(SIMTIME_STR(simTime())  ,"\n");
 			out_f<< content<<endl;
@@ -391,6 +394,18 @@ const char* lru_cache::dump()
 			vector<int> breakdown = get_cache_breakdown();		
 			fprintf(out_f, "%d %d\n", breakdown[0], breakdown[1]);
 			fclose(out_f);
+	}
+	else if (dump_type == DumpType_trash)
+	{
+			vector<int> breakdown = get_cache_breakdown();		
+			trash += breakdown[0];
+			trash_samples += 1;
+	}else
+	{
+			std::stringstream ermsg; 
+			ermsg<<"Cache dump type not recognized"<<endl;
+			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );		
+
 	}
 	return "ciao";
 }

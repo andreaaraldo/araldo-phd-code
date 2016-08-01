@@ -132,6 +132,9 @@ class client : public cSimpleModule
 		unsigned int tot_chunks;
 
 		//<aa>
+		std::vector<double> CP_req_ratio; 	//The fraction of requests going to each
+											//Content Provider (retrieved from content.ned)
+
 		#ifdef SEVERE_DEBUG
 		unsigned int interests_sent;
 		#endif

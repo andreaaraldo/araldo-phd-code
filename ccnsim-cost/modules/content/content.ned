@@ -8,6 +8,10 @@ simple content_distribution like IContentDistribution
 		double alpha = default (1);
 		double q = default(0);
 		double cut_off = default(1);
+		string CP_req_ratio = default("1"); //The fraction of requests going to each
+											//Content Provider
+		string opt_allocation_among_CPs = default("1");
+
 
 		// {MEANINGFUL ONLY WHEN OBJECT REPRESENTATION IS CONSIDERED
 		string representation_bitrates = default("1"); // in Mbps

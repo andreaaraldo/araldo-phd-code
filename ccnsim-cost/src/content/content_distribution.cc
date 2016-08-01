@@ -70,13 +70,44 @@ void content_distribution::initialize()
     replicas = getAncestorPar("replicas");
 
 	//<aa>
+	//{ DATA FOR TRASH COMPUTATION
+    cStringTokenizer tokenizer(par("CP_req_ratio"),"_");
+   	CP_req_ratio = tokenizer.asDoubleVector();
+    cStringTokenizer tokenizer2(par("opt_allocation_among_CPs"),"_");
+   	opt_allocation_among_CPs = tokenizer2.asDoubleVector();
+	//} DATA FOR TRASH COMPUTATION
+
 	// CHECK_INPUT{
-		if (cardF == 0){
+		if (cardF == 0)
+		{
 	        std::stringstream ermsg; 
-			ermsg<<"The catalog size is 0. Are you sure you intended this?If you are sure, please "<<
-				" disable this exception";
+			ermsg<<"The catalog size is 0. Are you sure you intended this?"<<
+				"If you are sure, please disable this exception";
 			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
 		}
+
+		if (std::accumulate(CP_req_ratio.begin(),CP_req_ratio.end(),0.0) != 1 )
+		{
+	        std::stringstream ermsg; 
+			ermsg<<"Error: CP_req_ratio must sum up to 1 but it is not";
+			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
+		}
+
+		if (cardF % CP_req_ratio.size() != 0 )
+		{
+	        std::stringstream ermsg; 
+			ermsg<<"Error: cardF must be divisible by the number of CPs";
+			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
+		}
+
+
+		if (CP_req_ratio.size() != opt_allocation_among_CPs.size() )
+		{
+	        std::stringstream ermsg; 
+			ermsg<<"Error: Paraeters CP_req_ratio and opt_allocation_among_CPs must have the same size";
+			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
+		}
+		
 	// }CHECK_INPUT
 	//</aa>
 
@@ -91,7 +122,7 @@ void content_distribution::initialize()
     //
     //Zipf initialization
     //
-    zipf = zipf_distribution(alpha,q,cardF);
+    zipf = zipf_distribution(alpha,q,cardF/CP_req_ratio.size() );
     zipf.zipf_initialize();
 
     cut_off = zipf.value(coff);
@@ -102,8 +133,9 @@ void content_distribution::initialize()
     //
     //Repositories initialization
     //
-    cStringTokenizer tokenizer(getAncestorPar("node_repos"),",");
-    repositories = init_repos(tokenizer.asIntVector());
+	repositories = init_repos(cStringTokenizer(
+				getAncestorPar("node_repos"),",").asIntVector()
+	);
 
 	//<aa>
 	repr_h = new RepresentationHandler(	par("representation_bitrates").stringValue() );

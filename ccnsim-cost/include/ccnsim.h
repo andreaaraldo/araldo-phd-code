@@ -16,7 +16,7 @@
 
 //if OMNET5 is defined the code will be compatible with Omnet 5 but not with Omnet 4
 //if not defined, the contrary holds
-//#define OMNET5
+#define OMNET5
 
 //#define ADDITIONAL_INFO
 

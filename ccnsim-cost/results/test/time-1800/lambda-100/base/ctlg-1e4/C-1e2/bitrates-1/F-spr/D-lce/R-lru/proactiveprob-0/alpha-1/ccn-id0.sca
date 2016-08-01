@@ -1,5 +1,5 @@
 version 2
-run General-0-20160731-16:29:26-8300
+run General-0-20160801-10:38:19-18915
 attr C 1e2
 attr D lce
 attr F spr
@@ -8,7 +8,7 @@ attr a 1
 attr brates 1
 attr configname General
 attr ctlg 1e4
-attr datetime 20160731-16:29:26
+attr datetime 20160801-10:38:19
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars "$net=base, $rep=0, $lambda=100, $a=1, $ctlg=1e4, $brates=1, $F=spr, $ttl=1000, $D=lce, $R=lru, $proactiveprob=0, $C=1e2, $window=60, $variance=1000, $mytime=1800"
@@ -19,7 +19,7 @@ attr mytime 1800
 attr net base
 attr network networks.${net=base}_network
 attr proactiveprob 0
-attr processid 8300
+attr processid 18915
 attr rep 0
 attr repetition 0
 attr replication #0
@@ -29,6 +29,36 @@ attr seedset 0
 attr ttl 1000
 attr variance 1000
 attr window 60
+param **.C "${C = 1e2}"
+param **.DS "\"${ D = lce, fix0.1, fix0.01, fix0.001}\""
+param **.FS "\"${ F = spr }\""
+param **.RS "\"${ R = lru}_cache\""
+param **.RTT 2
+param **.TTL1 ${ttl}
+param **.TTL2 "${ttl = 1000}"
+param **.alpha "${a = 1}"
+param **.cache_dump_interval 10
+param **.cache_if_in_repo true
+param **.check_time 0.1
+param **.client_type "\"client\""
+param **.content_distribution.representation_bitrates "\"${ brates = 1}\""
+param **.dump_type "\"breakdown\""
+param **.file_size 1
+param **.lambda "${ lambda = 100}"
+param **.node_clients "\"\""
+param **.num_clients 1
+param **.num_repos 1
+param **.objects "${ctlg = 1e4}"
+param **.partial_n -1
+param **.prefill true
+param **.proactive_probability "${proactiveprob = 0}"
+param **.routing_file "\"\""
+param **.runid "\"${runid}\""
+param **.steady "${ mytime = 1800}"
+param **.ts 10
+param **.variance_threshold ${variance=1000}
+param **.window ${window=60}
+param *.replicas 1
 
 scalar . 	C 	1e2
 scalar . 	a 	1
@@ -56,7 +86,7 @@ scalar base_network.statistics 	total_cost 	0
 scalar base_network.statistics 	total_replicas 	10000
 scalar base_network.statistics 	"slots_per_representation 100:" 	0
 scalar base_network.statistics 	inner_hit 	0.34154189869619
-scalar base_network.statistics 	execution_time 	2
+scalar base_network.statistics 	execution_time 	4
 scalar base_network.node[0].core_layer 	interests[0] 	179934
 scalar base_network.node[0].core_layer 	repo_load[0] 	118479
 scalar base_network.node[0].core_layer 	data[0] 	0

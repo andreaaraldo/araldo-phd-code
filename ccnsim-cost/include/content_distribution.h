@@ -93,6 +93,9 @@ class content_distribution : public cSimpleModule
 		int replicas; // <aa> The number of replicas for each object. If set to -1, the value will be ignored</aa>
 		int num_repos;
 		int cardF;
+		std::vector<double> CP_req_ratio; 	//The fraction of requests going to each
+											//Content Provider
+		std::vector<double> opt_allocation_among_CPs;
 
 
 

@@ -64,6 +64,16 @@ void client::initialize()
 		lambda          = par ("lambda");
 		RTT             = par("RTT");
 
+		//<aa>
+		if (! is_it_proactive_component_ )
+		{
+			cStringTokenizer tokenizer( getParentModule()->
+						getSubmodule("content_distribution")->par("CP_req_ratio"),"_" 
+			);
+		   	CP_req_ratio = tokenizer.asDoubleVector();
+		}
+		//</aa>
+
 		//Allocating file statistics
 		client_stats = new client_stat_entry[__file_bulk+1];
 
@@ -295,11 +305,24 @@ void client::request_file()
 			severe_error(__FILE__,__LINE__,ermsg.str().c_str() );
 		}
 	#endif
+
+	//{ SELECTION OF THE CP
+	double r = uniform(0,1);
+	double partial=0; unsigned selected_CP;
+	for (selected_CP = 0 ; selected_CP< CP_req_ratio.size() && partial < r; selected_CP++ )
+	{
+		partial += CP_req_ratio[selected_CP];
+	}
+	selected_CP--;
+	//} SELECTION OF THE CP
 	//</aa>
 
     name_t object_id = content_distribution::zipf.value(dblrand());
+	int cardinality_per_each_CP = content_distribution::zipf.get_cardinality();
+	object_id = object_id + selected_CP * cardinality_per_each_CP;
 	cnumber_t chunk_num = 0;
-	representation_mask_t repr_mask = content_distribution::get_repr_h()->get_possible_representation_mask();
+	representation_mask_t repr_mask = 
+		content_distribution::get_repr_h()->get_possible_representation_mask();
 
 	// We fill the representation mask with all 1s, meaning that, when the client requests some object, it accepts
 	// all the possible representations
