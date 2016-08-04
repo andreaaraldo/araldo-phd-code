@@ -1,0 +1,73 @@
+version 2
+run General-3-20160801-19:56:05-13283
+attr C 1e6
+attr D fix0.01
+attr F spr
+attr R lru
+attr a 0.8
+attr brates 1
+attr configname General
+attr ctlg 1e8
+attr datetime 20160801-19:56:05
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$net=base, $rep=1, $lambda=100, $a=0.8, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=fix0.01, $R=lru, $proactiveprob=0, $C=1e6, $window=60, $variance=1000, $mytime=360000"
+attr iterationvars2 "$net=base, $rep=1, $lambda=100, $a=0.8, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=fix0.01, $R=lru, $proactiveprob=0, $C=1e6, $window=60, $variance=1000, $mytime=360000, $repetition=0"
+attr lambda 100
+attr measurement "$net=base, $rep=1, $lambda=100, $a=0.8, $ctlg=1e8, $brates=1, $F=spr, $ttl=1000, $D=fix0.01, $R=lru, $proactiveprob=0, $C=1e6, $window=60, $variance=1000, $mytime=360000"
+attr mytime 360000
+attr net base
+attr network networks.${net=base}_network
+attr proactiveprob 0
+attr processid 13283
+attr rep 1
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 3
+attr seedset 1
+attr ttl 1000
+attr variance 1000
+attr window 60
+
+scalar . 	C 	1e6
+scalar . 	a 	0.8
+scalar . 	brates 	1
+scalar . 	ctlg 	1e8
+scalar . 	lambda 	100
+scalar . 	mytime 	360000
+scalar . 	proactiveprob 	0
+scalar . 	rep 	1
+scalar . 	ttl 	1000
+scalar . 	variance 	1000
+scalar . 	window 	60
+scalar base_network.content_distribution 	repo-0 	0
+scalar base_network.content_distribution 	client-0 	0
+scalar base_network.content_distribution 	repo-0_card 	100000000
+scalar base_network.content_distribution 	repo-0_price 	0
+scalar base_network.statistics 	stabilization_time 	70
+scalar base_network.statistics 	p_hit 	0.20978516887882
+scalar base_network.statistics 	interests 	35997764
+scalar base_network.statistics 	data 	0
+scalar base_network.statistics 	hdistance 	0.79021483112111
+scalar base_network.statistics 	avg_time 	0
+scalar base_network.statistics 	downloads 	35997764
+scalar base_network.statistics 	total_cost 	0
+scalar base_network.statistics 	total_replicas 	100000000
+scalar base_network.statistics 	"slots_per_representation 100:" 	0
+scalar base_network.statistics 	inner_hit 	0.20978516887882
+scalar base_network.statistics 	execution_time 	1475
+scalar base_network.node[0].core_layer 	interests[0] 	35997764
+scalar base_network.node[0].core_layer 	repo_load[0] 	28445967
+scalar base_network.node[0].core_layer 	data[0] 	0
+scalar base_network.node[0].core_layer 	slots_sent[face$o[1]->client[0]] 	3599776400
+scalar base_network.node[0].content_store 	p_hit[0] 	0.20978516887882
+scalar base_network.node[0].content_store 	hits[0] 	7551797
+scalar base_network.node[0].content_store 	misses[0] 	28445967
+scalar base_network.node[0].content_store 	trash[0] 	94804.517208811
+scalar base_network.node[0].content_store 	decision_yes[0] 	283902
+scalar base_network.node[0].content_store 	decision_no[0] 	28162065
+scalar base_network.node[0].content_store 	decision_ratio[0] 	0.0099803954634413
+scalar base_network.client[0] 	hdistance[0].real 	0.79021483112111
+scalar base_network.client[0] 	downloads[0].real 	35997764
+scalar base_network.client[0] 	avg_time[0].real 	0
