@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
-max_parallel = 20;
+max_parallel = 5;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
@@ -11,7 +11,7 @@ warning ("error", "Octave:broadcast");
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 settings.compact_name=true;
 
 settings.ON_hist_trash=true;
@@ -28,7 +28,7 @@ coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "tria
 coefficientss = {"linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req
-tot_times = [3,20]; %total time(hours)
+tot_times = [3,20,100]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
