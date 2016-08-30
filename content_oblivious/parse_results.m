@@ -214,11 +214,9 @@ function parse_results(in, settings)
 			
 
 		case HIST_TRASH
-			history = [hist_trash', hist_unused'];
-			hist_trash
-			error "ciao"
+			history_ = [hist_trash', hist_unused'];
 			result_file = sprintf("%s.trash.dat", settings.simname);
-			dlmwrite( result_file, history, " ");
+			dlmwrite( result_file, history_, " ");
 			printf("%s written\n", result_file);
 
 		case AVG_ALLOCATION
