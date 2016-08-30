@@ -18,7 +18,7 @@ settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
-methods_ = {"opencache", "unif", "optimum"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
