@@ -215,6 +215,8 @@ function parse_results(in, settings)
 
 		case HIST_TRASH
 			history = [hist_trash', hist_unused'];
+			hist_trash
+			error "ciao"
 			result_file = sprintf("%s.trash.dat", settings.simname);
 			dlmwrite( result_file, history, " ");
 			printf("%s written\n", result_file);
