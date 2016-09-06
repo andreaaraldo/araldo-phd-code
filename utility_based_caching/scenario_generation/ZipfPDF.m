@@ -5,7 +5,7 @@ function [ pdf, harmonic_num ] = ZipfPDF( alpha, N, harmonic_num )
 		p = (1:N)'.^alpha;
 		p = 1./p;
 
-		if harmonic_num == []
+		if length(harmonic_num) == 0
 			normalization_const = sum(p);
 			harmonic_num = 1/normalization_const;
 		% else I do not need to recompute it again
