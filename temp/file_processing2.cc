@@ -13,7 +13,7 @@ using namespace std;
 
 
 
-unsigned num_threads = 8;
+unsigned num_threads = 1;
 unsigned num_params = 9;
 
 // I assume we already know the number of lines 
@@ -31,6 +31,7 @@ class semaphore
 	  {
 		std::unique_lock<std::mutex> lck(mtx);
 		++last_row_read;
+		printf(" l%ld",last_row_read); fflush(stdout);
 		cv.notify_all();
 	  }
 
@@ -68,17 +69,17 @@ semaphore* s = new semaphore();
 
 void process_file(unsigned id) 
 {
-	for(long int wanna_read=id; wanna_read<=data_rows; wanna_read+=num_threads)
+	for(long int wanna_read=id; wanna_read<data_rows; wanna_read+=num_threads)
 	{
-		printf(" w%ld", wanna_read);
+		printf(" w%ld", wanna_read); fflush(stdout);
 		s->wait(wanna_read);
-		printf(" r%ld", wanna_read);
+		printf(" r%ld", wanna_read); fflush(stdout);
 		float dv = abs(fwdVel[wanna_read] - leadVehVel[wanna_read]);
 		float a = pow(fwdVel[wanna_read], (beta[wanna_read]/gamma_[wanna_read]));
 		float b = pow(dv, lambda[wanna_read]);
 		float c = pow(density[wanna_read],rho[wanna_read]);
 		result[wanna_read] = alpha[wanna_read] * a * b * c;
-		printf(" s%ld", wanna_read);
+		printf(" s%ld", wanna_read); fflush(stdout);
 	}
 }
 
@@ -106,6 +107,7 @@ int main() {
 				lambda+i, rho+i, stddev+i);
 
 			printf(" +%lu",i);
+			fflush(fp); fflush(stdout);
 			s->notify();
 			printf(" n%lu",i);
 
