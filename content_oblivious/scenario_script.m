@@ -2,7 +2,7 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
-max_parallel = 7;
+max_parallel = 6;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
