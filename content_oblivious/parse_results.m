@@ -5,9 +5,9 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
-	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27;
+	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; TOT_DOWNLOADS_TO_CACHE=28;
 
-	output = HIST_TRASH;
+	output = TOT_DOWNLOADS_TO_CACHE;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -39,7 +39,7 @@ function parse_results(in, settings)
 
 
 	[hist_allocation, hist_cum_tot_requests, hist_cum_hit] = compute_metrics(...
-		in, settings, hist_theta, hist_num_of_misses, hist_tot_requests);
+		in, settings, hist_theta, hist_nominal_misses, hist_tot_requests);
 
 	if output==HIST_REL_ERR || output==FINAL_CV || output==FINAL_ERR || output==ERR_HISTORY ||...
 		output==HIST_AVG_ERR || output==HIST_NICE_ERR || output==HIST_INFTY_ERR
@@ -54,7 +54,11 @@ function parse_results(in, settings)
 		hist_weigth_avg_err = (1/p) * (1./in.theta_opt)' * abs(hist_difference);
 	end
 
-	switch output
+	switch output		case MISSES_AFTER_60_MIN
+			iteration = ceil(3600/in.T);
+			v=1-hist_cum_hit(iteration);
+			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
+
 
 		case HIST_GHAT_AVG
 			partial_sum = zeros(in.p,1);
@@ -241,6 +245,11 @@ function parse_results(in, settings)
 			result_file = sprintf("%s.est_rank.dat", settings.simname);
 			dlmwrite( result_file, in.estimated_rank(1,:)', " ");
 			printf("%s written\n", result_file);
+
+		case TOT_DOWNLOADS_TO_CACHE
+			v = sum(sum(hist_downloads_to_cache));
+			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
+
 
 		otherwise
 			error "metric not recognized"

@@ -84,14 +84,13 @@ function dspsa(in, settings, infile)
 		convergence.duration = 0;
 
 		% Historical num of misses. One row per each CP, one column per each epoch
-		hist_num_of_misses = hist_tot_requests = [];
+		hist_nominal_misses = hist_tot_requests = [];
 
 		in.hist_theta = hist_ghat = hist_a = hist_thet = hist_updates = ...
 			hist_activated_objects = hist_trash = hist_unused = ...
-			hist_deactivated_objects = [];
+			hist_deactivated_objects = hist_downloads_to_cache = [];
 
-		in.last_cdf_values=in.last_zipf_points=zeros(in.p,1);
-		last_theta = repmat(0,in.p, 1);
+		in.last_cdf_vector = cdf = in.last_test_theta = zeros(in.p,1);
 	%} INITIALIZE
 
 	for i=1:settings.epochs
@@ -99,7 +98,10 @@ function dspsa(in, settings, infile)
 			printf("%g/%g=%d%%; ",i,settings.epochs, i*100/settings.epochs);
 		end
 
-		current_updates = 0; % Number of files proactively downloaded to the cache
+		% Number of objects downloaded to the cache in this iteration.
+		% These are the objects that are requested but are not present in the 
+		% cache at the moment of request
+		downloads_to_cache_in_iteration = zeros(in.p,1);
 
 		
 		if variant == ORIG || variant == OPENCACHE
@@ -127,7 +129,7 @@ function dspsa(in, settings, infile)
 			test_theta = in.theta_opt;
 		endif
 
-		%{CHECK CONFIG
+			%{CHECK CONFIG
 			if severe_debug && any( sum(test_theta, 1)>in.K ) 
 					theta
 					sum_of_theta=sum(theta)
@@ -139,12 +141,10 @@ function dspsa(in, settings, infile)
 
 		%{ RUN TESTS
 		% one row per each CP, one columns per each test
-		tot_requests = num_of_misses = vec_y = miss_ratio = [];
+		tot_requests = nominal_misses = vec_y = miss_ratio = [];
 		for test = 1:size(test_theta, 2)
 
-			current_theta = test_theta(:,test);
-
-			current_updates += sum(max(current_theta-last_theta, 0) ); last_theta=current_theta;
+			current_test_theta = test_theta(:,test);
 
 			%{ COMPUTE_NUM_OF_MISSES
 			% We divide lambdatau by the number of tests, because, for example if tests are 2,
@@ -154,21 +154,16 @@ function dspsa(in, settings, infile)
 
 			if variant==DECLARATION
 				error "not supported anymore"
-				active_lambdatau = in.ONobjects .* in.lambdatau;
-				requests_per_object = poissrnd(active_lambdatau*1.0/size(test_theta, 2) );
-				[current_num_of_misses, current_tot_requests, F] = ...
-					compute_num_of_misses_fine_old(settings, i, test, in, ...
-						current_theta, requests_per_object, cache_indicator_negated ...
-					);
 			elseif in.ONtime==1
-				[current_num_of_misses, current_tot_requests, F, last_cdf_values, last_zipf_points] = ...
-					compute_num_of_misses_gross(in, current_theta, in.T/size(test_theta, 2));
-				in.last_cdf_values=last_cdf_values; in.last_zipf_points=last_zipf_points;
+				[current_nominal_misses, current_tot_requests, F, cdf, downloads_to_cache] = ...
+					compute_num_of_misses_gross(in, current_test_theta, in.T/size(test_theta, 2));
+				downloads_to_cache_in_iteration = downloads_to_cache_in_iteration .+ downloads_to_cache;
+
 			else #in.ONtime<1
-				[current_num_of_misses, current_tot_requests, F] = ...
-					compute_num_of_misses_fine(in, current_theta, in.T/size(test_theta, 2) );
+				[current_nominal_misses, current_tot_requests, F] = ...
+					compute_num_of_misses_fine(in, current_test_theta, in.T/size(test_theta, 2) );
 			end
-			num_of_misses = [num_of_misses, current_num_of_misses];
+			nominal_misses = [nominal_misses, current_nominal_misses];
 			%} COMPUTE_NUM_OF_MISSES
 
 			tot_requests = [tot_requests, current_tot_requests];
@@ -177,7 +172,7 @@ function dspsa(in, settings, infile)
 			if variant == ORIG || variant == OPENCACHE
 				
 				if current_tot_requests != 0
-					current_vec_y = current_num_of_misses / current_tot_requests;
+					current_vec_y = current_nominal_misses / current_tot_requests;
 				else
 					current_vec_y = zeros(in.p,1);
 				end
@@ -186,7 +181,7 @@ function dspsa(in, settings, infile)
 				current_miss_ratio = zeros(in.p, 1);
 				idx_selector = (current_tot_requests .* F != zeros(in.p,1) );
 				current_miss_ratio(idx_selector) = ...
-					current_num_of_misses(idx_selector)...
+					current_nominal_misses(idx_selector)...
 					 ./ (current_tot_requests.* F)(idx_selector)  ;
 				miss_ratio = [miss_ratio, current_miss_ratio];
 			
@@ -196,11 +191,22 @@ function dspsa(in, settings, infile)
 			%	We do not need to do anything
 			end%if
 			%} COMPUTE vec_y
+
+			if severe_debug
+				if any( (cdf>0) .* (current_test_theta==0) )
+					cdf
+					current_test_theta
+					error "Found a CP which has zero slots but positive cdf (i.e. positive hit ratio). This is an error"
+				end
+			end
+
+			in.last_test_theta = current_test_theta;
+			in.last_cdf_vector=cdf;
 		end%test
 		%} RUN TESTS
 
-		if severe_debug && sum(num_of_misses)>tot_requests
-			num_of_misses
+		if severe_debug && sum(nominal_misses)>tot_requests
+			nominal_misses
 			tot_requests
 			error "Error: misses are more than the requests: weird"
 		end
@@ -210,12 +216,12 @@ function dspsa(in, settings, infile)
 			unused = trash = 0;
 			in.theta_opt = compute_optimum(in);
 			for test = 1:size(test_theta, 2)
-				current_theta = test_theta(:,test);
+				current_test_theta = test_theta(:,test);
 
 				cached_estimated_ranks = in.estimated_rank;
 				trash=0;
 				for j=1:in.p
-					cached_estimated_ranks(j,current_theta(j)+1 : end) = 0;
+					cached_estimated_ranks(j,current_test_theta(j)+1 : end) = 0;
 					trash += sum ( cached_estimated_ranks(j,:)>in.theta_opt(j) ) ;
 				end
 				unused += in.K - sum(sum(cached_estimated_ranks>0) );
@@ -227,9 +233,9 @@ function dspsa(in, settings, infile)
 			hist_trash = [hist_trash, trash];
 		end
 
-		hist_num_of_misses = [hist_num_of_misses, sum(num_of_misses,2) ];
+		hist_nominal_misses = [hist_nominal_misses, sum(nominal_misses,2) ];
 		hist_tot_requests = [hist_tot_requests, sum(tot_requests,2) ];
-		hist_updates = [hist_updates, current_updates];
+		hist_downloads_to_cache = [hist_downloads_to_cache, downloads_to_cache_in_iteration];
 		%} HISTORICAL DATA
 
 		%{ COMPUTE ghat
@@ -255,7 +261,9 @@ function dspsa(in, settings, infile)
 			%{CHECK
 			if severe_debug
 				if any(isnan(vec_y) )
-					error("Some element of ghat is NaN. This is an error.")
+					vec_y
+					current_tot_requests
+					error("Some element of vec_y is NaN. This is an error.")
 				end
 
 
@@ -268,7 +276,7 @@ function dspsa(in, settings, infile)
 
 		%{COEFFICIENT
 		last_coefficient = []; if i>1; last_coefficient=hist_a(end); end;
-		alpha_i =  compute_coefficient(in, settings, i, hist_num_of_misses, hist_tot_requests,...
+		alpha_i =  compute_coefficient(in, settings, i, hist_nominal_misses, hist_tot_requests,...
 			last_coefficient,how_many_step_updates, hist_ghat);
 		if length(hist_a)>0 && hist_a(end) != alpha_i
 			how_many_step_updates++;

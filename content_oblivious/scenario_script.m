@@ -2,34 +2,32 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
-max_parallel = 5;
+max_parallel = 7;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 settings.compact_name=true;
 
 settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
-methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"linearhalved5"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 boosts = [1];
 lambdas = [100]; %req
-tot_times = [3,20,100]; %total time(hours)
-tot_times = [20]; %total time(hours)
+tot_times = [1,5, 10, 50, 100]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
@@ -46,8 +44,8 @@ ps = [length(in.req_proportion) ]; % Number of CPs
 Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-knows=[0.1,1,10,Inf]; %knowledge degree value
-seeds = 1;
+knows=[Inf]; %knowledge degree value
+seeds = 1:20;
 
 
 
@@ -294,12 +292,14 @@ for seed = seeds
 										end
 
 										%{GENERATE popularity
-										in.last_cdf_values = in.harmonic_num = zeros(in.p,1);
+										in.last_cdf_values = zeros(in.p,1);
 										in.last_zipf_points = ones(in.p,1);
+										harmonic_num_void = [];
 										for j=1:in.p
 											[cdf_value, harmonic_num] = ZipfCDF_smart(...
-													in.last_zipf_points(j), 0, [], in.alpha(j), [], ...
-													in.ctlg(j), 1:in.ctlg(j) );
+													in.last_zipf_points(j), 0, [], in.alpha(j),...
+													harmonic_num_void, in.ctlg(j), 1:in.ctlg(j) 
+													);
 											in.last_cdf_values(j) = cdf_value;
 											in.harmonic_num(j) = harmonic_num;
 										end
