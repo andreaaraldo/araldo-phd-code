@@ -1,7 +1,8 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-settings.mdat_folder = "~/remote_archive/content_oblivious/journal/knowledge";
+settings.mdat_folder = "~/remote_archive/content_oblivious/journal/downloads";
+settings.mdat_folder = "/tmp";
 max_parallel = 6;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
@@ -32,6 +33,7 @@ boosts = [1];
 lambdas = [100]; %req
 tot_times = [1]; %total time(hours)
 Ts = [1,5, 10, 50, 100]; % epoch duration (s)
+Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
