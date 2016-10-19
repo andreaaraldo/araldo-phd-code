@@ -5,9 +5,9 @@ function parse_results(in, settings)
 	HIST_POINTMISSES=12; HIST_WINDOWEDMISSES=13; MISSES_AFTER_30_MIN=14; HIST_ALLOCATION=15;
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
-	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; TOT_DOWNLOADS_TO_CACHE=28;
+	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; CACHE_FILL_MISS=28;
 
-	output = TOT_DOWNLOADS_TO_CACHE;
+	output = CACHE_FILL_MISS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -246,8 +246,14 @@ function parse_results(in, settings)
 			dlmwrite( result_file, in.estimated_rank(1,:)', " ");
 			printf("%s written\n", result_file);
 
-		case TOT_DOWNLOADS_TO_CACHE
-			v = sum(sum(hist_downloads_to_cache));
+		case CACHE_FILL_MISS
+			% The miss ratio constituted by the downloads to the cache of
+			% objects that nominally have been allocated to cache but have to
+			% be moved there once they are requested once.
+			v = sum(sum(hist_downloads_to_cache)) / sum(hist_tot_requests);
+			printf("Verifico hist_tot_requests");
+			hist_tot_requests
+			error "ciao"
 			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
 
 

@@ -39,7 +39,8 @@ function [nominal_misses, tot_requests, F, cdf, downloads_to_cache] = ...
 
 
 		% Using the fact that the sum of poisson variables is a posson variable whose expected value is
-		% the sum of the expected values of the summands 
+		% the sum of the expected values of the summands.
+		% The following three column vectors have a cell per each CP
 		nominal_misses = poissrnd(expected_nominal_misses_per_each_CP);
 		num_of_hits = poissrnd(expected_num_of_hits_per_each_CP);
 		requests_per_each_CP = nominal_misses+num_of_hits;
@@ -66,7 +67,7 @@ function [nominal_misses, tot_requests, F, cdf, downloads_to_cache] = ...
 		%} COMPUTE DOWNLOADS_TO_CACHE
 
 
-		tot_requests = sum(requests_per_each_CP);
+		tot_requests = sum(requests_per_each_CP); %scalar
 		F = zeros(in.p, 1);
 		if tot_requests!=0
 			F = requests_per_each_CP / tot_requests;

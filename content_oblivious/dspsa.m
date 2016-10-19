@@ -166,7 +166,7 @@ function dspsa(in, settings, infile)
 			nominal_misses = [nominal_misses, current_nominal_misses];
 			%} COMPUTE_NUM_OF_MISSES
 
-			tot_requests = [tot_requests, current_tot_requests];
+			tot_requests = [tot_requests, current_tot_requests]; % One scalar cell per each test
 			
 			%{ COMPUTE vec_y or similar
 			if variant == ORIG || variant == OPENCACHE
