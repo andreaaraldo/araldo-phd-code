@@ -251,9 +251,6 @@ function parse_results(in, settings)
 			% objects that nominally have been allocated to cache but have to
 			% be moved there once they are requested once.
 			v = sum(sum(hist_downloads_to_cache)) / sum(hist_tot_requests);
-			printf("Verifico hist_tot_requests");
-			hist_tot_requests
-			error "ciao"
 			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
 
 
