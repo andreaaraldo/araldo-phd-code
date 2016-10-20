@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-settings.mdat_folder = "~/remote_archive/content_oblivious/journal/downloads";
+settings.mdat_folder = "~/local_archive/content_oblivious/journal/downloads";
 max_parallel = 3;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
