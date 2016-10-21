@@ -1,7 +1,7 @@
 %script
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-settings.mdat_folder = "~/pint_archive/content_oblivious/journal/downloads";
+settings.mdat_folder = "~/lame_archive/content_oblivious/journal/downloads";
 max_parallel = 6;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
@@ -46,7 +46,7 @@ Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
-seeds = 2;
+seeds = 3;
 
 
 
