@@ -8,7 +8,7 @@ warning ("error", "Octave:broadcast");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -18,6 +18,7 @@ settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -31,7 +32,7 @@ boosts = [1];
 lambdas = [100]; %req
 tot_times = [1]; %total time(hours)
 Ts = [1,5, 10, 50, 100]; % epoch duration (s)
-Ts = [10]; % epoch duration (s)
+Ts = [10, 50, 100]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -48,7 +49,7 @@ Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
-seeds = 3;
+seeds = 1;
 
 
 

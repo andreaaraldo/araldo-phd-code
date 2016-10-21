@@ -91,6 +91,7 @@ function dspsa(in, settings, infile)
 			hist_deactivated_objects = hist_downloads_to_cache = [];
 
 		in.last_cdf_vector = cdf = in.last_test_theta = zeros(in.p,1);
+		printf("Initialization complete\n");
 	%} INITIALIZE
 
 	for i=1:settings.epochs
