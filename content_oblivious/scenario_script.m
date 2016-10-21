@@ -29,7 +29,7 @@ coefficientss = {"triang", "moderate", "linearhalved5"};
 
 boosts = [1];
 lambdas = [100]; %req
-tot_times = [0.5]; %total time(hours)
+tot_times = [1]; %total time(hours)
 Ts = [1,5, 10, 50, 100]; % epoch duration (s)
 Ts = [100]; % epoch duration (s)
 overall_ctlgs = [1e8];
