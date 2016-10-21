@@ -62,10 +62,17 @@ function [nominal_misses, tot_requests, F, cdf, downloads_to_cache] = ...
 					% (i.e. it is in some slot in the interval 
 					%		[in.last_test_theta(j)+1, current_test_theta(j)]
 					% ) and has been requested more than once (whence the use of poissrnd)
+
+					popularity_of_k = [];
+					if in.know == Inf
+						popularity_of_k = in.harmonic_num(j) / k^in.alpha(j);
+					else
+						popularity_of_k = in.harmonic_num(j) / in.estimated_rank(j,k)^in.alpha(j);
+					end
 					downloads_to_cache(j,1) = downloads_to_cache(j,1) + ...
 						(
 							poissrnd(in.lambda_per_CP(j) * observation_time * ...
-							in.harmonic_num(j) / in.estimated_rank(k)^in.alpha(j) ) > 0
+							popularity_of_k ) > 0
 						);
 			end %for
 		end

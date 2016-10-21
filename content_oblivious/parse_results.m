@@ -8,7 +8,7 @@ function parse_results(in, settings)
 	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; CACHE_FILL_MISS=28;
 	HARMONIC_NUM=29;
 
-	output = HARMONIC_NUM;
+	output = CACHE_FILL_MISS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -251,7 +251,6 @@ function parse_results(in, settings)
 			% The miss ratio constituted by the downloads to the cache of
 			% objects that nominally have been allocated to cache but have to
 			% be moved there once they are requested once.
-			hist_downloads_to_cache
 			v = sum(sum(hist_downloads_to_cache)) / sum(hist_tot_requests);
 			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
 
