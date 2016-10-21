@@ -8,7 +8,7 @@ function parse_results(in, settings)
 	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; CACHE_FILL_MISS=28;
 	HARMONIC_NUM=29;
 
-	output = HARMONIC_NUM;
+	output = CACHE_FILL_MISS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
