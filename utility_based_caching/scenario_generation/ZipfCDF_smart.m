@@ -75,7 +75,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			cdf_value = current_cdf_value;
 		else
 			objs_to_consider = current_k+1:min(k,N);
-			if length(estimaed_rank)>0
+			if length(estimated_rank)>0
 				% Knowledge is imperfect
 				objs_to_consider = estimated_rank(current_k+1:min(k,N) );
 			end
@@ -89,7 +89,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			if severe_debug; which_case=6; end;
 
 			objs_to_consider = k+1:current_k;
-			if length(estimaed_rank)>0
+			if length(estimated_rank)>0
 				% Knowledge is imperfect
 				objs_to_consider = estimated_rank(k+1:current_k );
 			end
@@ -104,7 +104,7 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			% from the beginning
 
 			objs_to_consider = 1:k;
-			if length(estimaed_rank)>0
+			if length(estimated_rank)>0
 				% Knowledge is imperfect
 				objs_to_consider = estimated_rank(1:k );
 			end
