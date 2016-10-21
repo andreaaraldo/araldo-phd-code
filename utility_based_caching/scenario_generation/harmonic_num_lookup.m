@@ -7,4 +7,4 @@ function harmonic_num = harmonic_num_lookup(ctlg_size, alpha)
 end
 
 %% Test code
-harmonic_num = harmonic_num_lookup(1e8,0.8)
+harmonic_num = harmonic_num_lookup(1e8,0.7)

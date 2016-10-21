@@ -38,13 +38,18 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 		if severe_debug; which_case=3; end;
 		% The harmonic number has not yet been computed.
 		% We compute Zipf from the beginning
-		partial_sum =0;
-		for i=1:max_vec_size:N
-			p = (i:min(i+max_vec_size-1, N) )' .^ alpha;
-			p = 1./p;
-			partial_sum += sum(p);
+		% First, we try to lookup for an already computed harmonic number
+		harmonic_num_returned = harmonic_num_lookup(N,alpha);
+		if length(harmonic_num_returned)==0
+			% There is no value of harmonic num pre-computed. We have to compute it.
+			partial_sum =0;
+			for i=1:max_vec_size:N
+				p = (i:min(i+max_vec_size-1, N) )' .^ alpha;
+				p = 1./p;
+				partial_sum += sum(p);
+			end
+			harmonic_num_returned = 1/partial_sum;
 		end
-		harmonic_num_returned = 1/partial_sum;
 
 		% Popularity of the object that is believed to be
 		% the most popular
