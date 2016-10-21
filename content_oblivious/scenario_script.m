@@ -9,7 +9,7 @@ warning ("error", "Octave:broadcast");
 
 
 
-parse=true; % false if you want to run the experiment.
+parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -19,7 +19,6 @@ settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache","unif","optimum"};
-methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
@@ -27,14 +26,13 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
-coefficientss = { "linearhalved5"};
 
 boosts = [1];
 lambdas = [100]; %req
 tot_times = [0.5]; %total time(hours)
 Ts = [1,5, 10, 50, 100]; % epoch duration (s)
 Ts = [100]; % epoch duration (s)
-overall_ctlgs = [1e3];
+overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
 alpha0s = [0.8];
@@ -46,11 +44,11 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e2]; %cache slots
+Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
-seeds = 3;
+seeds = 1;
 
 
 
