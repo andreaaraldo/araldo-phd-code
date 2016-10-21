@@ -17,19 +17,19 @@ settings.compact_name=true;
 settings.ON_hist_trash=true;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
-methods_ = {"opencache","unif","optimum"};
+methods_ = {"opencache"};
 
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"triang"};
 
 boosts = [1];
 lambdas = [100]; %req
 tot_times = [1]; %total time(hours)
-Ts = [1,5, 10, 50, 100]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
