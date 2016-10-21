@@ -1,5 +1,5 @@
 %script
-global severe_debug = 1;
+global severe_debug = 0;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/pint_archive/content_oblivious/journal/downloads";
 max_parallel = 6;
