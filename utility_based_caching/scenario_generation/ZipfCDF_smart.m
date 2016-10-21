@@ -5,7 +5,7 @@
 %	N: num of objects
 % 	estimated_rank: object ids starting from the one that is believed to
 %				be the most popular to the others. If the knowledge of the
-%				content popularity is perfect, estimated rank is 1,2,...,k
+%				content popularity is perfect, estimated rank is [].
 %
 % Starting from these data, the function returns the value of the cdf at value k. 
 function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, current_cdf_value, ...
@@ -53,7 +53,12 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 
 		% Popularity of the object that is believed to be
 		% the most popular
-		first_pop = harmonic_num_returned / (estimated_rank(1)^alpha );
+		first_pop = harmonic_num_returned;
+		% If popularity knowledge is perfect, first_pop is already computed above. 
+		% Otherwise ....
+		if length(estimated_rank)>0
+			first_pop = harmonic_num_returned / (estimated_rank(1)^alpha );
+		end
 
 		[cdf_value, harmonic_num_returned] = ...
 			ZipfCDF_smart(k, 1, first_pop, alpha, harmonic_num_returned, N, estimated_rank);
@@ -69,7 +74,12 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 			% cover all the N objects in the catalog
 			cdf_value = current_cdf_value;
 		else
-			p = estimated_rank(current_k+1:min(k,N) )' .^ alpha;
+			objs_to_consider = current_k+1:min(k,N);
+			if length(estimaed_rank)>0
+				% Knowledge is imperfect
+				objs_to_consider = estimated_rank(current_k+1:min(k,N) );
+			end
+			p = objs_to_consider' .^ alpha;
 			p = 1 ./ p;
 			cdf_value = current_cdf_value+harmonic_num * sum(p);
 		end
@@ -77,15 +87,28 @@ function [cdf_value, harmonic_num_returned] = ZipfCDF_smart(k, current_k, curren
 	else %k is not zero and is < current_k
 		if current_k-k < k 
 			if severe_debug; which_case=6; end;
-			p = estimated_rank(k+1:current_k)' .^ alpha;
+
+			objs_to_consider = k+1:current_k;
+			if length(estimaed_rank)>0
+				% Knowledge is imperfect
+				objs_to_consider = estimated_rank(k+1:current_k );
+			end
+			p = objs_to_consider' .^ alpha;
 			p = 1 ./ p;
 			cdf_value = current_cdf_value - harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;
+
 		else
 			if severe_debug; which_case=7; end;
 			% It is more convenient, in terms of precision, to start computing
 			% from the beginning
-			p = estimated_rank(1:k)' .^ alpha;
+
+			objs_to_consider = 1:k;
+			if length(estimaed_rank)>0
+				% Knowledge is imperfect
+				objs_to_consider = estimated_rank(1:k );
+			end
+			p = objs_to_consider' .^ alpha;
 			p = 1 ./ p;
 			cdf_value = harmonic_num * sum(p);
 			harmonic_num_returned = harmonic_num;

@@ -314,17 +314,14 @@ for seed = seeds
 
 										%{ ESTIMATED RANK
 											% We compute the ranks of objects that each CP estimates
-											in.estimated_rank = zeros(in.p,max(in.ctlg) );
-											in.messy_popularity = zeros(in.p,max(in.ctlg) );
-											[obj_prob, harm_num] = ZipfPDF(in.alpha(j), ...
-													in.ctlg(j), in.harmonic_num(j) );
-											if in.know == Inf
-												for j=1:in.p
-													% The CPs have perfect knowledge
-													in.estimated_rank(j,1:in.ctlg(j) ) = 1:in.ctlg(j);
-													in.messy_popularity(j,:) = obj_prob';
-												end
-											else
+											in.estimated_rank = [];
+											in.messy_popularity = [];
+
+											if in.know < Inf
+												[obj_prob, harm_num] = ZipfPDF(in.alpha(j), ...
+														in.ctlg(j), in.harmonic_num(j) );
+												in.estimated_rank = zeros(in.p,max(in.ctlg) );
+												in.messy_popularity = zeros(in.p,max(in.ctlg) );
 												for j=1:in.p
 													req_rate = obj_prob' * in.know * in.ctlg(j);
 													reqs = poissrnd(req_rate);
@@ -376,7 +373,7 @@ for seed = seeds
 										pid = fork();
 										if pid==0
 											% I am the child
-											[exit_code, output] = system(command );
+											[exit_code, output] = system(command );obj_prob
 											if ( exit_code != 0)
 												error(sprintf("ERROR in executing %s\n\nError is %s. See %s",
 														command, output, settings.logfile) );

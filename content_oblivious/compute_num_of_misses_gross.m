@@ -24,7 +24,12 @@ function [nominal_misses, tot_requests, F, cdf, downloads_to_cache] = ...
 		for j=1:in.p
 			% estimated_rank(j,:) is a row with the object ids sorted starting from
 			% that one that is believed to be the most popular
-			estimated_rank = in.estimated_rank(j,:)';
+			estimated_rank = [];
+			if in.know < Inf
+				% If each CP knows exactly the popularity of its catalog,
+				% we do not need the estimated_rank data structure for our computation
+				estimated_rank = in.estimated_rank(j,:)';
+			end
 			[cdf(j,1), harmonic_num_returned] = ZipfCDF_smart(current_test_theta(j), ...
 				in.last_test_theta(j),  in.last_cdf_vector(j), in.alpha(j), ...
 				in.harmonic_num(j), in.ctlg(j), estimated_rank);

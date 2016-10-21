@@ -6,8 +6,9 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
 	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27; CACHE_FILL_MISS=28;
+	HARMONIC_NUM=29;
 
-	output = CACHE_FILL_MISS;
+	output = HARMONIC_NUM;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -254,6 +255,8 @@ function parse_results(in, settings)
 			v = sum(sum(hist_downloads_to_cache)) / sum(hist_tot_requests);
 			printf("%g %g %s %d %g %g %d\n", in.K, in.lambda, settings.method, settings.coefficients, in.T, v, settings.seed );
 
+		case HARMONIC_NUM
+			in.harmonic_num
 
 		otherwise
 			error "metric not recognized"

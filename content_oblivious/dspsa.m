@@ -151,7 +151,6 @@ function dspsa(in, settings, infile)
 			% at each epoch for half of the time we evaluate 
 			% test_c(:,1) and for the other half test_c(:,2). Therefore the frequency is halved
 
-
 			if variant==DECLARATION
 				error "not supported anymore"
 			elseif in.ONtime==1
@@ -219,10 +218,12 @@ function dspsa(in, settings, infile)
 				current_test_theta = test_theta(:,test);
 
 				cached_estimated_ranks = in.estimated_rank;
-				trash=0;
-				for j=1:in.p
-					cached_estimated_ranks(j,current_test_theta(j)+1 : end) = 0;
-					trash += sum ( cached_estimated_ranks(j,:)>in.theta_opt(j) ) ;
+				trash=0; % If knowledge is infinite the trash is zero, otherwise...
+				if in.know < Inf
+					for j=1:in.p
+						cached_estimated_ranks(j,current_test_theta(j)+1 : end) = 0;
+						trash += sum ( cached_estimated_ranks(j,:)>in.theta_opt(j) ) ;
+					end
 				end
 				unused += in.K - sum(sum(cached_estimated_ranks>0) );
 			end
