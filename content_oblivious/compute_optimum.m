@@ -5,7 +5,7 @@ function theta_opt = compute_optimum(in)
 		theta_opt = in.theta_opt;
 	elseif 	sum(in.alpha == repmat(0.8,10,1) )==10 && ...
 			sum(in.req_proportion == [0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]' )==10 && ...
-			overall_ctlg == 1e8 & in.K == 1e6
+			in.overall_ctlg == 1e8 & in.K == 1e6
 
 			printf ("Optimal allocation already computed\n");
 			theta_opt = [774004 0 203064 0 3822 3822 3822 3822 3822 3822]';
