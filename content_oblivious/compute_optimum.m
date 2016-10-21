@@ -3,6 +3,12 @@ function theta_opt = compute_optimum(in)
 	addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 	if isfield(in,"theta_opt")
 		theta_opt = in.theta_opt;
+	elseif 	sum(in.alpha == repmat(0.8,10,1) )==10 && ...
+			sum(in.req_proportion == [0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]' )==10 && ...
+			overall_ctlg == 1e8 & in.K == 1e6
+
+			% I already know the optimal allocation
+			theta_opt = [774004 0 203064 0 3822 3822 3822 3822 3822 3822]';
 	else
 		border=ones(in.p,1);
 		border_frequencies = harmonic_num = last_cdf_values = zeros(in.p,1);
