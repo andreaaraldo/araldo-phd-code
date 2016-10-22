@@ -25,11 +25,13 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"linearhalved5"};
+
 
 boosts = [1];
-lambdas = [100]; %req
+lambdas = [1,10,100,1000,10000]; %req
 tot_times = [1]; %total time(hours)
-Ts = [100, 50, 10, 5, 1]; % epoch duration (s)
+Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -42,7 +44,7 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e6]; %cache slots
+Ks = [1e4,1e5,1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
