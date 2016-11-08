@@ -1,14 +1,14 @@
 %script
 global severe_debug = 0;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
-settings.mdat_folder = "~/pint_archive/content_oblivious/journal/downloads";
+settings.mdat_folder = "~/pint_archive/content_oblivious/journal/knowledge-miss";
 max_parallel = 8;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
 
 
-parse=false; % false if you want to run the experiment.
+parse=true; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
 overwrite = false;
@@ -29,8 +29,8 @@ coefficientss = {"linearhalved5"};
 
 
 boosts = [1];
-lambdas = [1,10,100,1000,10000]; %req
-tot_times = [1]; %total time(hours)
+lambdas = [100]; %req
+tot_times = [3]; %total time(hours)
 Ts = [10]; % epoch duration (s)
 overall_ctlgs = [1e8];
 CTLG_PROP=-1; % To split the catalog as the request proportion
@@ -44,11 +44,11 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.70 0 0.24 0 0.01 0.01 0.01 0.01 0.01 0.01]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e4,1e5,1e6]; %cache slots
+Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
-knows=[Inf]; %knowledge degree value
-seeds = 1;
+knows=[0.1,1,10,Inf]; %knowledge degree value
+seeds = 1:20;
 
 
 
