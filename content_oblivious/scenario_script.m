@@ -2,14 +2,14 @@
 global severe_debug = 0;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 settings.mdat_folder = "~/pint_archive/content_oblivious/journal/knowledge-miss";
-max_parallel = 16;
+max_parallel = 20;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
 
 
 parse=false; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 settings.compact_name=true;
