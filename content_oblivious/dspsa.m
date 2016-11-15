@@ -398,11 +398,15 @@ function dspsa(in, settings, infile)
 
 	end%for iterations
 
+	%{ FILES
 	if settings.save_mdat_file
-
+		in.estimated_rank = in.messy_popularity = []; % to save disk space
 		save("-binary", settings.outfile);
 		disp (sprintf("\n%s written", settings.outfile) );
 	end
+	delete(settings.infile);
+	
+	%} FILES
 
 	printf("\nsuccess\n");
 end%function
