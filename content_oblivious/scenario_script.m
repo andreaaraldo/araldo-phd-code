@@ -9,7 +9,7 @@ warning ("error", "Octave:broadcast");
 
 
 parse=true; % false if you want to run the experiment.
-clean_tokens=false;
+clean_tokens=true;
 settings.save_mdat_file = true;
 overwrite = false;
 settings.compact_name=true;
@@ -48,7 +48,7 @@ Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[0.1,1,10,Inf]; %knowledge degree value
-seeds = 10:20;
+seeds = 1:20;
 
 
 
