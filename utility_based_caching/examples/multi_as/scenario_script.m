@@ -58,7 +58,7 @@ data.customtypes = {"float"}; % float or int
 			data.ASes_with_users = [3];
 		end%if 
 
-		data.cache_distributions = {"ubuquitous"}; % edge, ubiquitous or specific
+		data.cache_distributions = {"ubiquitous"}; % edge, ubiquitous or specific
 		if ( strcmp(data.cache_distributions, "specific")  )
 			data.ases_with_storage = [2];
 		end%if 
