@@ -33,16 +33,16 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.seeds = [1];
+data.seeds = [2];
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0]; # default 0.0001 (that means 0.01%)
 data.timelimits = [57700]; # default 1e75
-data.catalog_sizes = [10];
+data.catalog_sizes = [100];
 data.cache_to_ctlg_ratios = [1*10/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
-data.customtypes = {"int"}; % float or int	
+data.customtypes = {"int","float"}; % float or int	
 %{ TOPOLOGY
 	data.topofile="";
 	if ( strcmp(data.topofile,"") )
