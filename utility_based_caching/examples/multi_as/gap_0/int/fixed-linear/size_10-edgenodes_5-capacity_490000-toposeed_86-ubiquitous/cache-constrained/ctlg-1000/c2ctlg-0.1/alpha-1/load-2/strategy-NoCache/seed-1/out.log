@@ -11,11 +11,11 @@ MIP Presolve modified 8 coefficients.
 Aggregator did 172103 substitutions.
 Reduced MIP has 2307 rows, 13836 columns, and 25366 nonzeros.
 Reduced MIP has 6804 binaries, 7032 generals, 0 SOSs, and 0 indicators.
-Presolve time = 6,86 sec. (5773,52 ticks)
+Presolve time = 6,57 sec. (5773,52 ticks)
 Tried aggregator 1 time.
 Reduced MIP has 2307 rows, 13836 columns, and 25366 nonzeros.
 Reduced MIP has 6804 binaries, 7032 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0,04 sec. (22,35 ticks)
+Presolve time = 0,03 sec. (22,35 ticks)
 Probing time = 0,02 sec. (5,83 ticks)
 Clique table members: 1134.
 MIP emphasis: balance optimality and feasibility.
@@ -31,16 +31,16 @@ Root relaxation solution time = 0,03 sec. (13,86 ticks)
       0     0     3178,6667     2     3029,2000     3178,6667        1    4,93%
 *     0+    0                         3178,6000     3178,6667             0,00%
 *     0     0      integral     0     3178,6000     3178,6667        1    0,00%
-Elapsed time = 7,11 sec. (5908,05 ticks, tree = 0,00 MB, solutions = 3)
+Elapsed time = 6,80 sec. (5908,05 ticks, tree = 0,00 MB, solutions = 3)
 
 Root node processing (before b&c):
-  Real time             =    7,15 sec. (5945,39 ticks)
+  Real time             =    6,85 sec. (5945,39 ticks)
 Parallel b&c, 24 threads:
   Real time             =    0,00 sec. (0,00 ticks)
   Sync time (average)   =    0,00 sec.
   Wait time (average)   =    0,00 sec.
                           ------------
-Total (root+branch&cut) =    7,15 sec. (5945,39 ticks)
+Total (root+branch&cut) =    6,85 sec. (5945,39 ticks)
 
 <<< solve
 

@@ -83,7 +83,7 @@ data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
 data.loadds = [2];
 
 % DedicatedCache excluded
-data.strategys = {"NoCache"};
+data.strategys = {"RepresentationAware"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
