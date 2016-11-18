@@ -48,7 +48,7 @@ Ks = [1e6]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[0.1,1,10,Inf]; %knowledge degree value
-seeds = 13:20;
+seeds = [1,3,6,7,8,9,10,11,14,15,16,17,18,19,20];
 
 
 
