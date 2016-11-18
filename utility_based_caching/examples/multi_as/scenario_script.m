@@ -48,7 +48,7 @@ data.customtypes = {"float"}; % float or int
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
 		data.topology_size = 10;
-		data.edge_nodess = [5]; % How many edge nodes
+		data.edge_nodess = [data.topology_size/2]; % How many edge nodes
 		data.link_capacity = 490000;  % In Kbps
 
 		data.arcss={""}; % You can specify explitly with opl model syntax
