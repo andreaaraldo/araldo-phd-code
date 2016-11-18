@@ -42,7 +42,7 @@ data.catalog_sizes = [1000];
 data.cache_to_ctlg_ratios = [1*10/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
-data.customtypes = {"float"}; % float or int	
+data.customtypes = {"int"}; % float or int	
 %{ TOPOLOGY
 	data.topofile="";
 	if ( strcmp(data.topofile,"") )
@@ -83,7 +83,7 @@ data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
 data.loadds = [2];
 
 % DedicatedCache excluded
-data.strategys = {"RepresentationAware", "NoCache"};
+data.strategys = {"NoCache"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);
