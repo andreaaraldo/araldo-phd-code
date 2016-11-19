@@ -6,9 +6,9 @@ function parse_results(in, settings)
 	AVG_ALLOCATION=16; MISSES_AFTER_60_MIN=17; HIST_OBJECT_CHANGED=18; HIST_ACTIVATED=19;
 	GAIN_AFTER_60_MIN=20; MISSES_AFTER_60_MIN_SINGLE=21; HIST_PRCTILE=22; HIST_PRCTILE_1H=23;
 	MESSY_POPULARITY=24; ESTIMATED_RANK=25; MISSES_AFTER_3H=26; HIST_TRASH=27;
-	CACHE_FILL_MISS=28;	HARMONIC_NUM=29; OVERALL_MISSES=30;
+	CACHE_FILL_MISS=28;	HARMONIC_NUM=29; OVERALL_MISS=30;
 
-	output = OVERALL_MISSES;
+	output = OVERALL_MISS;
 
 	%printf("\n Loading %s\n", settings.outfile);
 
@@ -257,8 +257,8 @@ function parse_results(in, settings)
 
 		case OVERALL_MISS
 			cache_fill_miss_ratio = sum(sum(hist_downloads_to_cache)) / sum(hist_tot_requests);
-			nominal_miss_ratio = sum(sum(hist_nominal_miss)) / sum(hist_tot_requests);
-			overal_miss_ratio = cache_fill_miss_ratio + nominal_miss_ratio;
+			nominal_miss_ratio = sum(sum(hist_nominal_misses)) / sum(hist_tot_requests);
+			overall_miss_ratio = cache_fill_miss_ratio + nominal_miss_ratio;
 			printf("%s %d %g %d %g %g %g\n", settings.method, settings.coefficients, in.know,...
 				settings.seed, cache_fill_miss_ratio, nominal_miss_ratio, overall_miss_ratio );
 
