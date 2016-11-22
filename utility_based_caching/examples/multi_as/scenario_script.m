@@ -33,7 +33,7 @@ fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
 data.fixed_datas = [data.fixed_datas, fixed_data];
 
-data.seeds = [1];
+data.seeds = [2];
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0]; # default 0.0001 (that means 0.01%)
@@ -48,7 +48,7 @@ data.customtypes = {"float"}; % float or int
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
 		data.topology_size = 10;
-		data.edge_nodess = [5]; % How many edge nodes
+		data.edge_nodess = [data.topology_size/2]; % How many edge nodes
 		data.link_capacity = 490000;  % In Kbps
 
 		data.arcss={""}; % You can specify explitly with opl model syntax
@@ -83,7 +83,7 @@ data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
 data.loadds = [2];
 
 % DedicatedCache excluded
-data.strategys = {"RepresentationAware", "NoCache"};
+data.strategys = {"RepresentationAware"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);

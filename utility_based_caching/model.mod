@@ -157,7 +157,7 @@ execute PARAMS {
 //########################################################*/
 
 dvar CUSTOMTYPE+   ObjectRequestsServed[ObjRequests][QualityLevels];
-dvar boolean ObjectCached[Objects][QualityLevels][ASes];
+dvar CACHETYPE ObjectCached[Objects][QualityLevels][ASes];
 dvar float+  Flow[ObjRequests][QualityLevels][Arcs];
 dvar float+  TrafficDemand[ObjRequests][QualityLevels];
 
@@ -218,6 +218,14 @@ subject to {
 	ctTotalCacheSize:
 	  	sum ( o in Objects, q in QualityLevels, sourceAS in ASes ) ( ObjectCached[o][q][sourceAS] * CacheSpacePerQuality[q] ) <= MaxCacheStorage;
 
+	cCache1:
+	forall (o in Objects, q in QualityLevels, v in ASes)
+		ObjectCached[o][q][v] <= 1;
+		
+
+	cCache2:
+	forall (o in Objects, q in QualityLevels, v in ASes)
+		ObjectCached[o][q][v] >= 0;
 
 	// ####### OTHER STRATEGIES ########
 	/*NoCache
