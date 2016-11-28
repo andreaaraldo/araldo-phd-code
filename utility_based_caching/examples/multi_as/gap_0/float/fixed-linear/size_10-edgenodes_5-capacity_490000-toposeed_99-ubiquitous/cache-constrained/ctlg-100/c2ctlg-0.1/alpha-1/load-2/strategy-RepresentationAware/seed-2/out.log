@@ -1,0 +1,33 @@
+
+<<< setup
+
+
+<<< generate
+
+Parallel mode: deterministic, using up to 8 threads for concurrent optimization.
+Tried aggregator 1 time.
+LP Presolve eliminated 19926 rows and 58476 columns.
+Aggregator did 30400 substitutions.
+Reduced LP has 5528 rows, 31125 columns, and 138565 nonzeros.
+Presolve time = 0,54 sec. (881,55 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Dual objective     =        312635,816287
+Iteration:   439   Dual objective     =         20048,240651
+Reinitializing dual norms . . .
+
+Dual simplex solved model.
+
+
+<<< solve
+
+
+OBJECTIVE: 16326
+avg_utility = 1
+
+<<< post process
+
+
+<<< done
+
