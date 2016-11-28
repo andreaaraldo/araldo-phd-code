@@ -23,16 +23,16 @@ function run_list = divide_runs(experiment_name, data)
 		cache_distribution = data.cache_distributions{idx_cache_distribution};
 		server_position = data.server_positions{idx_server_position};
 		user_distribution = data.user_distributions{idx_user_distribution};
-		arcs = data.arcss{idx_arcs};
 		data.topologys = [];
 		command="";
-		topology.link_capacity = data.link_capacity;  % In Kbps
 		if ( strcmp(data.topofile,"") )
 			%{ GENERATE TOPO
 			size_ = data.topology_size;
 			topology_seed = randint(1,1,range=100,seed)(1,1);
 
 			topology.ases = 1:size_;
+			arcs = data.arcss{idx_arcs};
+			topology.link_capacity = data.link_capacity;  % In Kbps
 			command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d",...
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
