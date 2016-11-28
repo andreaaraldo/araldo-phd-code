@@ -43,12 +43,12 @@ function run_list = divide_runs(experiment_name, data)
 		%{ CHECK
 			if status!=0
 				error(sprintf("Error in executing command %s", command) );
-			end%if
+			end%if~/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0/float/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.1/alpha-1/load-2/strategy-RepresentationAware/seed-2/scenario.dat
 		%} CHECK
 
 		lines = strsplit(topodescription, del="\n");
 
-		topology.ases = strread(lines{1}, "%d");
+		topology.ases = strread(lines{1}, "%d")';
 
 		topology.ASes_with_users = [];
 		switch (user_distribution)
