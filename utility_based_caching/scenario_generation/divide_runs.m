@@ -27,16 +27,17 @@ function run_list = divide_runs(experiment_name, data)
 		data.topologys = [];
 		command="";
 		topology.link_capacity = data.link_capacity;  % In Kbps
+		topology.ases = 1:size_;
 		if ( strcmp(data.topofile,"") )
 			%{ GENERATE TOPO
 			size_ = data.topology_size;
 			topology_seed = randint(1,1,range=100,seed)(1,1);
 
-			topology.ases = 1:size_;
 			command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d",...
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
 		else
+			% The topology has already been created
 			command = sprintf("cat %s/topofiles/%s.net", data.path_base, data.topofile);
 		end%if
 
@@ -97,8 +98,6 @@ function run_list = divide_runs(experiment_name, data)
 						size_, edge_nodes, topology.link_capacity, topology_seed, ...
 						cache_distribution);
 		else
-			topology.ases = topology.ASes_with_users;
-			size_ = length(topology.ases);
 			topology.servers = topology.ASes_with_users;
 			topology.ases_with_storage = topology.ASes_with_users;
 			topology.name = data.topofile;
