@@ -44,6 +44,7 @@ data.cache_to_ctlg_ratios = [1*10/100];	% fraction of catalog we could store in 
 data.alphas = [1];
 data.customtypes = {"float"}; % float or int or veryfloat	
 %{ TOPOLOGY
+	data.arcss={""}; % You can specify explitly with opl model syntax
 	data.topofile="abilene";
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
@@ -51,7 +52,6 @@ data.customtypes = {"float"}; % float or int or veryfloat
 		data.edge_nodess = [data.topology_size/2]; % How many edge nodes
 		data.link_capacity = 490000;  % In Kbps
 
-		data.arcss={""}; % You can specify explitly with opl model syntax
 
 		data.user_distributions = {"edge"}; % edge or specific
 		if ( strcmp(data.user_distributions, "specific")  )
