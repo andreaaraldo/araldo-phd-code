@@ -8,9 +8,6 @@ function generate_opl_dat(singledata)
 	quality_level_num = length(singledata.fixed_data.rate_per_quality)-1; % number of qualities starting from q=1
 	quality_levels = 0:quality_level_num;
 
-	singledata.topology.ases
-	error "ciao"
-
 	ASes = represent_in_opl( "ASes", singledata.topology.ases, true, "set" );
 
 	Objects = represent_in_opl( "Objects", objects, true, "set" );
