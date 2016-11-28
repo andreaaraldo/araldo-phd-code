@@ -70,6 +70,7 @@ data.customtypes = {"float"}; % float or int or veryfloat
 		
 	else
 		data.edge_nodess = [5];
+		data.user_distributions = {"specific"};
 		data.ASes_with_users = [5,6,7,1,10];
 		data.cache_distributions = {"ubiquitous"};
 		data.server_positions = {"specific"};
