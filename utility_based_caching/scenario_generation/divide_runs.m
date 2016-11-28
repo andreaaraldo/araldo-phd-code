@@ -27,12 +27,11 @@ function run_list = divide_runs(experiment_name, data)
 		data.topologys = [];
 		command="";
 		topology.link_capacity = data.link_capacity;  % In Kbps
+		size_ = data.topology_size;
 		topology.ases = 1:size_;
 		if ( strcmp(data.topofile,"") )
 			%{ GENERATE TOPO
-			size_ = data.topology_size;
 			topology_seed = randint(1,1,range=100,seed)(1,1);
-
 			command = sprintf("%s/scenario_generation/graph_gen/barabasi.r %d %d %g %d",...
 					 data.path_base, size_, edge_nodes, data.link_capacity, topology_seed);
 			%} GENERATE_TOPO
