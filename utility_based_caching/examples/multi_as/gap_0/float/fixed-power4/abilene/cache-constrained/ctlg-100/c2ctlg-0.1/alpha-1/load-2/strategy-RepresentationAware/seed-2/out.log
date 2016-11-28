@@ -1,6 +1,0 @@
-
-<<< setup
-
-*** ERROR[DATA_001] at 2:13-14 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0/float/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.1/alpha-1/load-2/strategy-RepresentationAware/seed-2/scenario.dat: Data parsing error: syntax error, unexpected {, expecting ';'.
-*** ERROR[INTERFACE_056] at 10:19-20 /home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0/float/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.1/alpha-1/load-2/strategy-RepresentationAware/seed-2/scenario.dat: Data not consistent for "sourceAS": "2" not in "ASes".
-### OPL exception: Processing failed.
