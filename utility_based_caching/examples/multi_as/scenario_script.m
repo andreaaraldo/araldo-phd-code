@@ -45,7 +45,7 @@ data.alphas = [1];
 data.customtypes = {"float"}; % float or int or veryfloat	
 %{ TOPOLOGY
 	data.arcss={""}; % You can specify explitly with opl model syntax
-	data.topofile="abilene_constrained";
+	data.topofile="abilene";
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
 		data.topology_size = 10;
