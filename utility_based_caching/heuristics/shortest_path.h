@@ -26,6 +26,10 @@ using namespace boost;
 	typedef boost::iterator_property_map < Weight*, IndexMap, Weight, Weight& > DistanceMap;
 	typedef std::vector<Graph::edge_descriptor> PathType;
 	typedef std::pair<int, int> E;
-	typedef std::map< std::pair<Vertex, Vertex>, Weight > ClientSourceDistanceMap;
+
+	typedef uint8_t Quality;
+	typedef unsigned Object;
+	typedef std::list<std::pair<Quality,Vertex> > FileCollection;
+	typedef std::map<Object, FileCollection > ObjectMap;
 //} TYPES
 #endif
