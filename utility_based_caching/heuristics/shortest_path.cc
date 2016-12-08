@@ -17,19 +17,29 @@ using namespace boost;
 using namespace std;
 
 const float single_node_capacity = 10;
-Vertex clients_[] = {5};
-Vertex sources_[] = {8};
-Vertex repositories_[] = {8};
-E edges_[] = {E(1,2), E(1,0), E(2,0), E(10,0), E(2,3),
+Vertex sources_[] = {1,5,8};
+Vertex repositories_[] = {1,8};
+E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
 Weight weights[] = {1, 1, 1, 1, 1,
 						1, 1, 1, 1, 1.01, 1, 1,
 						1, 1};
+Weight utilities[] = {67, 80};
+Size sizes[] = {300,700};
+Quality qualities;
 
 Object num_objects = 3;
 Quality num_qualities =2;
 
+void initialize_requests(RequestSet& requests)
+{
+	requests.emplace(pair<Vertex,Object>(5,1) , 10) ;
+	requests.emplace(pair<Vertex,Object>(5,2) , 5) ;
+	requests.emplace(pair<Vertex,Object>(5,3) , 0) ;
+	requests.emplace(pair<Vertex,Object>(2,3) , 0) ;
+	requests.emplace(pair<Vertex,Object>(8,3) , 1) ;
+}
 
 unsigned count_nodes(vector<E> edges)
 {
@@ -40,12 +50,22 @@ unsigned count_nodes(vector<E> edges)
 	{
 		nodes.insert(edges[j].first); nodes.insert(edges[j].second);
 	}
-	int j=0;
-	for (set<int>::iterator it=nodes.begin(); it!=nodes.end(); ++it, j++)
-    	if(j!=*it){
-			cout<<"Nodes should be numbered from 0 to "<<nodes.size()-1<<endl; exit(0);
-		}
 	return nodes.size();
+}
+
+void find_clients(const RequestSet& requests, vector<Vertex>& clients)
+{
+	set<Vertex> client_set;
+	for (RequestSet::const_iterator it = requests.begin(); it!=requests.end(); ++it)
+	{
+		Requests num_req = (it->first).second;
+		if(num_req>0)
+		{
+			Vertex client = (it->first).first;
+			client_set.insert( client );
+		}
+	}
+	std::copy(client_set.begin(), client_set.end(), std::back_inserter(clients) );
 }
 
 
@@ -65,29 +85,13 @@ void compute_paths_from_source(
 		DistanceMap distanceMap(&out_distances[0], indexMap);
 		dijkstra_shortest_paths(G, source, 
 			distance_map(distanceMap).predecessor_map(predecessorMap) );
-/*
-		ClientSourceDistanceMap client_distances;
-		for (int j=0; j<clients.size(); j++)
-		{
-			Vertex client = vertex(clients[j],G);
-			client_distances.emplace(std::make_pair(client,source), distances[client]);
 
-			PathType path;
-			Vertex v=client;
-			for (Vertex u = predecessorMap[v]; u!=v; v=u, u=predecessorMap[v])
-			{
-				std::pair<Graph::edge_descriptor, bool> edgePair = boost::edge(u, v, G);
-				Graph::edge_descriptor edge = edgePair.first;		 
-				path.push_back( edge );
-			}
-		}
-	return client_distances;
-*/
 }
 
 void compute_shortest_paths	(const vector<Vertex>& sources, const vector<Vertex>& clients, Graph G,
-	map<Vertex, vector<Vertex> >& out_predecessors_to_source,
-	map<Vertex, vector<Weight> >& out_pair_distances)
+	MyMap<Vertex, vector<Vertex> >& out_predecessors_to_source,
+	MyMap< pair<Vertex,Vertex>,Weight >& out_pair_distances // The key is the (source,client) pair
+	)
 {
 	vector<Weight> distances(num_vertices(G));
 	vector<Vertex> predecessors(num_vertices(G));
@@ -96,51 +100,126 @@ void compute_shortest_paths	(const vector<Vertex>& sources, const vector<Vertex>
 	{
 		compute_paths_from_source(sources[s], clients, G,
 					distances, predecessors);
-		out_predecessors_to_source.emplace(sources[s], predecessors);
+		out_predecessors_to_source[sources[s] ] = predecessors;
 		for(unsigned c=0; c<clients.size(); c++)
 		{
-			out_pair_distances.emplace( pair(sources[s],clients[c]), distances[clients[c]]);
+			out_pair_distances[ pair<Vertex,Vertex>(sources[s],clients[c])] = 
+				distances[clients[c]];
 		}
 	}
 }
 
-// Returns the distance to the best repository
-void find_the_best_repository(const vector<Vector>& repositories, 
-		const map<Vertex, vector<Weight> >& distances_from_sources, Object o,
-		map< pair<Vertex,Vertex>, Weight >& out_best_repo_map)
+/*
+ * Returns the distance to the best repository.
+ * Each repository is assumed to hold all the objects at all the quality levels.
+ * out_best_repo_map will associate to each client a pair containing the best repo and the distance to reach it.
+ */
+void fill_best_repo_map(
+		const vector<Vertex>& repositories, 
+		const vector<Vertex>& clients,
+		const MyMap< pair<Vertex,Vertex>,Weight >& pair_distances, // The key is the 
+																// (source,client) pair,
+		MyMap< Vertex, OptimalClientValues >& out_best_repo_map
+		)
 {
-	unsigned repo_idx=0;
-	do
+	// Find the closest repo per each client
+	MyMap<Vertex, pair<Vertex, Weight> > closest_repo;
+
+	for(vector<Vertex>::const_iterator repo_it=repositories.begin(); 
+		repo_it != repositories.end(); ++repo_it
+	)
+	for(vector<Vertex>::const_iterator cli_it=clients.begin(); 
+		cli_it != clients.end(); ++cli_it
+	){
+		Vertex new_repo = *repo_it;
+		Vertex client = *cli_it;
+		Weight new_distance = pair_distances.at(pair<Vertex,Vertex>(new_repo,client) );
+
+		pair<MyMap<Vertex, pair<Vertex, Weight> >::iterator,bool> inserted = closest_repo.emplace( 
+			client,pair<Vertex, Weight>(new_repo,new_distance)
+			);
+		if (inserted.second == false)
+		{
+			// The new values have not been inserted. We check if they are better then the older
+			MyMap<Vertex, pair<Vertex, Weight> >::iterator old_pair = inserted.first;
+			Weight old_distance = (old_pair->second).second;
+			if (new_distance < old_distance)
+			{
+				(old_pair->second).first = new_repo;
+				(old_pair->second).second = new_distance;
+			}
+		}
+	}
+
+	cout<<"Check the closest repo"<<endl;
+	for (MyMap<Vertex, pair<Vertex, Weight> >::iterator it = closest_repo.begin();
+		it != closest_repo.end();
+		++it
+		)
 	{
-		Vertex repo = repositories[repo_idx];
-		distances_from_sources[repo];
-		repo_idx++;
-	}while(repo_idx<repositories.size() )
+		cout<< it->first << ":" << (it->second).first <<":"<<(it->second).second <<endl;
+	}
+
+	// Now, for each client we compute the optimal quality at which it has to download its requested objects
+	for (MyMap<Vertex, pair<Vertex, Weight> >::iterator it = closest_repo.begin();
+		it != closest_repo.end();
+		++it)
+	{
+		Vertex client = it->first;
+		Vertex repo = (it->second).first;
+		Weight distance = (it->second).second;
+		Quality best_q;
+		Weight best_utility;
+		for (Quality q=0; q<qualities; q++)
+		{
+			Weight new_utility = utilities[q] - sizes[q] * distance;
+			if (q==0 || new_utility > best_utility)
+			{
+				best_q = q; best_utility = new_utility;
+			}
+		}
+		OptimalClientValues best;
+		best.repo=repo; best.distance=distance; best.q= best_q; best.utility=best_utility;
+		out_best_repo_map.emplace(client, best );
+	}
+
+	CHECK NOW
 }
+
 
 
 int main(int,char*[])
 {
+	RequestSet requests;
+	initialize_requests(requests);
+
+	qualities = sizeof(utilities)/sizeof(utilities);
+	//{ CHECK INPUT	
+		if (qualities != sizeof(utilities)/sizeof(utilities) )
+			throw std::invalid_argument("Sizes are badly specified");
+	//} CHECK INPUT	
 
 	// writing out the edges in the graph
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
-	vector<Vertex> clients(clients_, clients_+
-		sizeof(clients_)/sizeof(Vertex) );
 	vector<Vertex> sources(sources_, sources_+
 		sizeof(sources_)/sizeof(Vertex) );
 	vector<Vertex> repositories(repositories_, repositories_+
 		sizeof(repositories_)/sizeof(Vertex) );
+	vector<Vertex> clients;
+	find_clients(requests,clients);
 	
 	unsigned num_nodes = count_nodes(edges);
 
     // declare a graph object
     Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights, num_nodes);
 
-	map<Vertex, vector<Vertex> > predecessors_to_source; // The key is the source
-	map< pair<Vertex,Vertex>,Weight > pair_distances; // The key is the source
+	MyMap<Vertex, vector<Vertex> > predecessors_to_source; // The key is the source
+	MyMap< pair<Vertex,Vertex>,Weight > pair_distances; // The key is the (source,client) pair
 
 	compute_shortest_paths(sources, clients, G, predecessors_to_source, pair_distances);
 
+	MyMap< Vertex, OptimalClientValues > best_repo_map;
+	fill_best_repo_map(repositories, clients, pair_distances, best_repo_map);
 	ObjectMap obj_distribution;
 
 	for(Object o=0; o<num_objects; o++)	
@@ -151,14 +230,12 @@ int main(int,char*[])
 			for(Quality q=0; q<num_qualities; q++)
 			{
 				Vertex best_source = repositories[0];
-				Weight best_distance = distances_from_sources[best_source][client];
+				Weight best_distance;
 				for ( FileCollection::iterator it = obj_distribution[o].begin(); 
 					it != obj_distribution[o].end();
 					++it
 					)
 				{
-					it->
-					cout<< "ciao"<<endl;
 				}
 			}
 		}

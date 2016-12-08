@@ -8,6 +8,8 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <unordered_map>
+#include <tuple>
 
 
 #ifndef SHORTEST_PATH_H_
@@ -27,9 +29,14 @@ using namespace boost;
 	typedef std::vector<Graph::edge_descriptor> PathType;
 	typedef std::pair<int, int> E;
 
+	template<typename T1, typename T2> using MyMap = std::map<T1,T2>;
 	typedef uint8_t Quality;
 	typedef unsigned Object;
+	typedef unsigned Requests;
+	typedef unsigned Size;
 	typedef std::list<std::pair<Quality,Vertex> > FileCollection;
-	typedef std::map<Object, FileCollection > ObjectMap;
+	typedef MyMap<Object, FileCollection > ObjectMap;
+	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
+	typedef struct{Vertex repo; Weight distance; Quality q; Weight utility;} OptimalClientValues;
 //} TYPES
 #endif
