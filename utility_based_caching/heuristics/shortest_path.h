@@ -33,9 +33,15 @@ using namespace boost;
 	typedef uint8_t Quality;
 	typedef unsigned Object;
 	typedef unsigned Requests;
-	typedef unsigned Size;
-	typedef std::list<std::pair<Quality,Vertex> > FileCollection;
-	typedef MyMap<Object, FileCollection > ObjectMap;
+	typedef float Size;
+	typedef struct{Object o; Quality q; Vertex v;} Incarnation;
+	std::ostream& operator<<(std::ostream& os, const Incarnation& inc)  
+	{  
+		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.v;  
+		return os;  
+	} 
+	typedef std::list< Incarnation > IncarnationCollection;
+	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
 	typedef struct{Vertex repo; Weight distance; Quality q; Weight utility;} OptimalClientValues;
 //} TYPES

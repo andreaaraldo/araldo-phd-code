@@ -17,20 +17,21 @@ using namespace boost;
 using namespace std;
 
 const float single_node_capacity = 10;
-Vertex sources_[] = {1,5,8};
+Vertex caches_[] = {5};
 Vertex repositories_[] = {1,8};
 E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
-Weight weights[] = {1, 1, 1, 1, 1,
-						1, 1, 1, 1, 1.01, 1, 1,
-						1, 1};
-Weight utilities[] = {67, 80};
+
+Weight init_w=0.0001; // Initialization weight
+Weight weights[] = {100*init_w, init_w, 100*init_w, init_w, 100*init_w,
+						init_w, init_w, init_w, init_w, init_w, init_w, init_w,
+						init_w, init_w};
+Weight utilities[] = {0.67, 0.80};
 Size sizes[] = {300,700};
 Quality qualities;
 
 Object num_objects = 3;
-Quality num_qualities =2;
 
 void initialize_requests(RequestSet& requests)
 {
@@ -53,19 +54,24 @@ unsigned count_nodes(vector<E> edges)
 	return nodes.size();
 }
 
-void find_clients(const RequestSet& requests, vector<Vertex>& clients)
+void fill_clients_and_objects(const RequestSet& requests, 
+		vector<Vertex>& out_clients, vector<Object>& out_objects)
 {
 	set<Vertex> client_set;
+	set<Object> object_set;
 	for (RequestSet::const_iterator it = requests.begin(); it!=requests.end(); ++it)
 	{
 		Requests num_req = (it->first).second;
 		if(num_req>0)
 		{
 			Vertex client = (it->first).first;
+			Object obj =  (it->first).second;
 			client_set.insert( client );
+			object_set.insert( obj );
 		}
 	}
-	std::copy(client_set.begin(), client_set.end(), std::back_inserter(clients) );
+	std::copy(client_set.begin(), client_set.end(), std::back_inserter(out_clients) );
+	std::copy(object_set.begin(), object_set.end(), std::back_inserter(out_objects) );
 }
 
 
@@ -151,15 +157,6 @@ void fill_best_repo_map(
 		}
 	}
 
-	cout<<"Check the closest repo"<<endl;
-	for (MyMap<Vertex, pair<Vertex, Weight> >::iterator it = closest_repo.begin();
-		it != closest_repo.end();
-		++it
-		)
-	{
-		cout<< it->first << ":" << (it->second).first <<":"<<(it->second).second <<endl;
-	}
-
 	// Now, for each client we compute the optimal quality at which it has to download its requested objects
 	for (MyMap<Vertex, pair<Vertex, Weight> >::iterator it = closest_repo.begin();
 		it != closest_repo.end();
@@ -183,7 +180,15 @@ void fill_best_repo_map(
 		out_best_repo_map.emplace(client, best );
 	}
 
-	CHECK NOW
+	cout<<"check"<<endl;
+	for (MyMap< Vertex, OptimalClientValues >::iterator it=out_best_repo_map.begin();
+		it != out_best_repo_map.end(); ++it
+		)
+	{
+		Vertex client = it->first;
+		OptimalClientValues best = it->second;
+		cout<<client<<":"<<best.repo<<":"<<best.distance<<":"<<unsigned(best.q)<<":"<<best.utility<<endl;
+	}
 }
 
 
@@ -193,20 +198,26 @@ int main(int,char*[])
 	RequestSet requests;
 	initialize_requests(requests);
 
-	qualities = sizeof(utilities)/sizeof(utilities);
+	qualities = sizeof(utilities)/sizeof(Weight);
 	//{ CHECK INPUT	
-		if (qualities != sizeof(utilities)/sizeof(utilities) )
+		if (qualities != sizeof(sizes)/sizeof(Size) )
 			throw std::invalid_argument("Sizes are badly specified");
 	//} CHECK INPUT	
 
-	// writing out the edges in the graph
+	//{ INITIALIZE INPUT DATA STRUCTURE
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
-	vector<Vertex> sources(sources_, sources_+
-		sizeof(sources_)/sizeof(Vertex) );
+	vector<Vertex> caches(caches_, caches_+
+		sizeof(caches_)/sizeof(Vertex) );
 	vector<Vertex> repositories(repositories_, repositories_+
 		sizeof(repositories_)/sizeof(Vertex) );
+	vector<Vertex> sources;
+	sources.reserve(caches.size()+repositories.size() );
+	sources.insert(sources.end(), caches.begin(), caches.end()); 
+	sources.insert(sources.end(), repositories.begin(), repositories.end());
 	vector<Vertex> clients;
-	find_clients(requests,clients);
+	vector<Object> objects;
+	fill_clients_and_objects(requests,clients,objects);
+	//} INITIALIZE INPUT DATA STRUCTURE
 	
 	unsigned num_nodes = count_nodes(edges);
 
@@ -220,25 +231,25 @@ int main(int,char*[])
 
 	MyMap< Vertex, OptimalClientValues > best_repo_map;
 	fill_best_repo_map(repositories, clients, pair_distances, best_repo_map);
-	ObjectMap obj_distribution;
 
-	for(Object o=0; o<num_objects; o++)	
+	IncarnationCollection unused_incarnations;
+	for(vector<Object>::iterator obj_it = objects.begin(); obj_it != objects.end(); ++obj_it)
+	for(vector<Vertex>::iterator cache_it = caches.begin(); cache_it != caches.end(); ++cache_it)
+	for(Quality q=0; q<qualities; q++)
 	{
-		for(unsigned id_cli=0; id_cli < clients.size(); id_cli++)
-		{
-			Vertex client = clients[id_cli];
-			for(Quality q=0; q<num_qualities; q++)
-			{
-				Vertex best_source = repositories[0];
-				Weight best_distance;
-				for ( FileCollection::iterator it = obj_distribution[o].begin(); 
-					it != obj_distribution[o].end();
-					++it
-					)
-				{
-				}
-			}
-		}
+		Incarnation inc; inc.o = *obj_it; inc.q = q; inc.v=*cache_it;
+		unused_incarnations.push_back(inc);
 	}
+	cout<<"Unused Incarnations"<<endl;
+	for (IncarnationCollection::iterator it=unused_incarnations.begin(); 
+			it!=unused_incarnations.end(); ++it)
+		cout<<*it<<endl;
+	compute_benefit();
+
+	//////////////////////////////////////////////////
+	//////// UNUSED INCARNATIONS MUST BE ORDERED /////
+	//////////////////////////////////////////////////
+
+
     return 0;
 }
