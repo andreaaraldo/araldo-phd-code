@@ -232,6 +232,7 @@ int main(int,char*[])
 	MyMap< Vertex, OptimalClientValues > best_repo_map;
 	fill_best_repo_map(repositories, clients, pair_distances, best_repo_map);
 
+	IncarnationCollection cached_incarnations; // It is initially empty
 	IncarnationCollection unused_incarnations;
 	for(vector<Object>::iterator obj_it = objects.begin(); obj_it != objects.end(); ++obj_it)
 	for(vector<Vertex>::iterator cache_it = caches.begin(); cache_it != caches.end(); ++cache_it)
