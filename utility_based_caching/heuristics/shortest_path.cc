@@ -31,7 +31,26 @@ Weight utilities[] = {0.67, 0.80};
 Size sizes[] = {300,700};
 Quality qualities;
 
-Object num_objects = 3;
+
+//{ DATA STRUCTURES
+
+	// Associates to each source a vector, having in the i-th position the predecessor of 
+	// the i-th node toward that source
+	MyMap<Vertex, vector<Vertex> > predecessors_to_source; 
+
+	// Associates to each source a map associating to each client the distance to that source
+	MyMap< Vertex, MyMap<Vertex,Weight > > distances;
+
+	// Associates to each client, the best repository and the corresponding optimal information
+	MyMap< Vertex, OptimalClientValues > best_repo_map;
+
+	// Associates to each object a map associating to each client the set of its optimal values
+	// to retrieve that object
+	BestSrcMap best_cache_map;
+
+
+//} DATA STRUCTURES
+
 
 void initialize_requests(RequestSet& requests)
 {
@@ -78,7 +97,7 @@ void fill_clients_and_objects(const RequestSet& requests,
 // Returns the distance between each client and the source
 void compute_paths_from_source(
 	Vertex source, const vector<Vertex>& clients, const Graph& G,
-	vector<Weight>& out_distances, vector<Vertex>& out_predecessors)
+	vector<Weight>& out_distances_from_single_source, vector<Vertex>& outpredecessors)
 {
 
 	IndexMap indexMap = boost::get(boost::vertex_index, G);
@@ -88,30 +107,33 @@ void compute_paths_from_source(
 
 		//it associates to each node its next node to the source
 		PredecessorMap predecessorMap(&out_predecessors[0], indexMap);
-		DistanceMap distanceMap(&out_distances[0], indexMap);
+		DistanceMap distanceMap(&out_distances_from_single_source[0], indexMap);
 		dijkstra_shortest_paths(G, source, 
 			distance_map(distanceMap).predecessor_map(predecessorMap) );
 
 }
 
-void compute_shortest_paths	(const vector<Vertex>& sources, const vector<Vertex>& clients, Graph G,
-	MyMap<Vertex, vector<Vertex> >& out_predecessors_to_source,
-	MyMap< pair<Vertex,Vertex>,Weight >& out_pair_distances // The key is the (source,client) pair
+void fill_distances	(const vector<Vertex>& sources, const vector<Vertex>& clients, Graph G,
+	MyMap<Vertex, vector<Vertex> >& out_predecessors_to_sources,
+	MyMap< Vertex, MyMap<Vertex,Weight> >& out_distances
 	)
 {
-	vector<Weight> distances(num_vertices(G));
-	vector<Vertex> predecessors(num_vertices(G));
+	vector<Weight> tmp_distances_from_single_source(num_vertices(G));
+	vector<Vertex> tmp_predecessors(num_vertices(G));
 
-	for(unsigned s=0; s<sources.size(); s++)
+	for(vector<Vertex> it_src = sources.begin(); it_src != sources.end(); ++it_src)
 	{
-		compute_paths_from_source(sources[s], clients, G,
-					distances, predecessors);
-		out_predecessors_to_source[sources[s] ] = predecessors;
-		for(unsigned c=0; c<clients.size(); c++)
+		Vertex src = *it_src;
+		compute_paths_from_source(src, clients, G,
+					tmp_distances_from_single_source, tmp_predecessors);
+		out_predecessors_to_sources[ src ] = tmp_predecessors;
+		MyMap<Vertex, Weight> tmp_distances_to_src_map;
+		for(vector<Vertex> it_cli = clients.begin(); it_cli != clients.end(); ++it_cli)
 		{
-			out_pair_distances[ pair<Vertex,Vertex>(sources[s],clients[c])] = 
-				distances[clients[c]];
+			Vertex cli = *it_cli;
+			tmp_distances_to_src_map.emplace(cli, tmp_distances_from_single_source[cli] );
 		}
+		out_distances.emplace(src, distances_to_src);
 	}
 }
 
@@ -123,8 +145,10 @@ void compute_shortest_paths	(const vector<Vertex>& sources, const vector<Vertex>
 void fill_best_repo_map(
 		const vector<Vertex>& repositories, 
 		const vector<Vertex>& clients,
-		const MyMap< pair<Vertex,Vertex>,Weight >& pair_distances, // The key is the 
-																// (source,client) pair,
+		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,// The key is the 
+																// source. The value is a map
+																// associating to each client
+																// its distance from the source
 		MyMap< Vertex, OptimalClientValues >& out_best_repo_map
 		)
 {
@@ -134,25 +158,31 @@ void fill_best_repo_map(
 	for(vector<Vertex>::const_iterator repo_it=repositories.begin(); 
 		repo_it != repositories.end(); ++repo_it
 	)
-	for(vector<Vertex>::const_iterator cli_it=clients.begin(); 
-		cli_it != clients.end(); ++cli_it
-	){
+	{
 		Vertex new_repo = *repo_it;
-		Vertex client = *cli_it;
-		Weight new_distance = pair_distances.at(pair<Vertex,Vertex>(new_repo,client) );
+		MyMap<Vertex,Weight>& distances_from_the_repo = distances.at(new_repo);
+		for(vector<Vertex>::const_iterator cli_it=clients.begin(); 
+			cli_it != clients.end(); ++cli_it
+		){
+			Vertex client = *cli_it;
+			Weight new_distance = distances_from_the_repo.at(client);
 
-		pair<MyMap<Vertex, pair<Vertex, Weight> >::iterator,bool> inserted = closest_repo.emplace( 
-			client,pair<Vertex, Weight>(new_repo,new_distance)
-			);
-		if (inserted.second == false)
-		{
-			// The new values have not been inserted. We check if they are better then the older
-			MyMap<Vertex, pair<Vertex, Weight> >::iterator old_pair = inserted.first;
-			Weight old_distance = (old_pair->second).second;
-			if (new_distance < old_distance)
+			pair<MyMap<Vertex, pair<Vertex, Weight> >::iterator,bool> inserted = 
+				closest_repo.emplace( 
+					client,pair<Vertex, Weight>(new_repo,new_distance)
+				);
+
+			if (inserted.second == false)
 			{
-				(old_pair->second).first = new_repo;
-				(old_pair->second).second = new_distance;
+				// The new values have not been inserted. This means that there was an old value
+				// already stored.
+				MyMap<Vertex, pair<Vertex, Weight> >::iterator old_pair = inserted.first;
+				Weight old_distance = (old_pair->second).second;
+				if (new_distance < old_distance)
+				{
+					(old_pair->second).first = new_repo;
+					(old_pair->second).second = new_distance;
+				}
 			}
 		}
 	}
@@ -193,7 +223,8 @@ void fill_best_repo_map(
 
 
 Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, const Graph& G,
-		const IncarnationCollection& cached_incarnations,
+		const IncarnationCollection& cached_incarnations, 
+		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map  )
 {
 	Weight benefit=0;
@@ -201,16 +232,27 @@ Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, con
 	Vertex src_new = inc.src;
 	Quality q_new = q;
 
-	vector<Weight> distances; // Distances of all clients from src_new
-	vector<Vertex> predecessors; // Unused
-
-	compute_paths_from_source(src_new, clients, G, distances, predecessors);
-
-	
-	
+	// distances associates to each source a map associating to each client the distance to that source
+	MyMap<Vertex,Weight> tmp_distances_to_incarnation = distances.at(src_new);
+		
 	for (const vector<Vertex>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		Weight u_new = utilities[q_new] - sizes[q_new] * 
+		Vertex cli = *it;
+		Weight distance_new = tmp_distances_to_incarnation.at(client);
+		Weight u_new = utilities[q_new] - sizes[q_new] * distance_new;
+		
+		OptimalClientValues& opt_val_to_repo = best_repo_map.at(client);
+		Weight utility_to_repo = opt_val_to_repo.utility;
+
+
+		Weight utility_to_cache;
+		MyMap<Vertex,OptimalClientValues>::const_iterator bit = best_cache_map.find(obj);
+		if(bit != best_cache_map.end() )
+		{
+			MyMap<Vertex,OptimalClientValues>& opt_cache_values_per_obj = 
+			OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
+			utility_to_cache = opt_val_to_cache.utility;
+		}else 
 	}
 }
 
@@ -247,14 +289,9 @@ int main(int,char*[])
     // declare a graph object
     Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights, num_nodes);
 
-	MyMap<Vertex, vector<Vertex> > predecessors_to_source; // The key is the source
-	MyMap< pair<Vertex,Vertex>,Weight > pair_distances; // The key is the (source,client) pair
+	fill_distances(sources, clients, G, predecessors_to_source, distances);
 
-	compute_shortest_paths(sources, clients, G, predecessors_to_source, pair_distances);
-
-	MyMap< Vertex, OptimalClientValues > best_repo_map;
-	fill_best_repo_map(repositories, clients, pair_distances, best_repo_map);
-	BestSrcMap best_cache_map;
+	fill_best_repo_map(repositories, clients, distances, best_repo_map);
 
 	IncarnationCollection cached_incarnations; // It is initially empty
 	IncarnationCollection unused_incarnations;
