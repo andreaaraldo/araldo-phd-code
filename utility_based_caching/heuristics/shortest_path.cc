@@ -77,7 +77,7 @@ void fill_clients_and_objects(const RequestSet& requests,
 
 // Returns the distance between each client and the source
 void compute_paths_from_source(
-	Vertex source, vector<Vertex> clients, Graph G,
+	Vertex source, const vector<Vertex>& clients, const Graph& G,
 	vector<Weight>& out_distances, vector<Vertex>& out_predecessors)
 {
 
@@ -192,6 +192,29 @@ void fill_best_repo_map(
 }
 
 
+Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, const Graph& G,
+		const IncarnationCollection& cached_incarnations,
+		const MyMap< Vertex, OptimalClientValues >& best_repo_map  )
+{
+	Weight benefit=0;
+	Object obj = inc.obj;
+	Vertex src_new = inc.src;
+	Quality q_new = q;
+
+	vector<Weight> distances; // Distances of all clients from src_new
+	vector<Vertex> predecessors; // Unused
+
+	compute_paths_from_source(src_new, clients, G, distances, predecessors);
+
+	
+	
+	for (const vector<Vertex>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		Weight u_new = utilities[q_new] - sizes[q_new] * 
+	}
+}
+
+
 
 int main(int,char*[])
 {
@@ -231,6 +254,7 @@ int main(int,char*[])
 
 	MyMap< Vertex, OptimalClientValues > best_repo_map;
 	fill_best_repo_map(repositories, clients, pair_distances, best_repo_map);
+	BestSrcMap best_cache_map;
 
 	IncarnationCollection cached_incarnations; // It is initially empty
 	IncarnationCollection unused_incarnations;

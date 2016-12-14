@@ -43,6 +43,7 @@ using namespace boost;
 	typedef std::list< Incarnation > IncarnationCollection;
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
-	typedef struct{Vertex repo; Weight distance; Quality q; Weight utility;} OptimalClientValues;
+	typedef struct{Vertex src; Weight distance; Quality q; Weight utility;} OptimalClientValues;
+	typedef MyMap<Object, MyMap<Vertex, OptimalClientValues> > BestSrcMap;
 //} TYPES
 #endif
