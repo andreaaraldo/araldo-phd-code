@@ -17,18 +17,18 @@ using namespace boost;
 using namespace std;
 
 const float single_node_capacity = 10;
-Vertex caches_[] = {5};
-Vertex repositories_[] = {1,8};
+Vertex caches_[] = {5,4};
+Vertex repositories_[] = {8};
 E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
 
-Weight init_w=0.0001; // Initialization weight
-Weight weights[] = {100*init_w, init_w, 100*init_w, init_w, 100*init_w,
+Weight init_w=1; // Initialization weight
+Weight weights[] = {init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w, init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w};
-Weight utilities[] = {0.67, 0.80};
-Size sizes[] = {300,700};
+Weight utilities[] = {1};
+Size sizes[] = {1};
 Quality qualities;
 
 
@@ -57,11 +57,8 @@ Quality qualities;
 
 void initialize_requests(RequestSet& requests)
 {
-	requests.emplace(pair<Vertex,Object>(5,1) , 10) ;
-	requests.emplace(pair<Vertex,Object>(5,2) , 5) ;
-	requests.emplace(pair<Vertex,Object>(5,3) , 0) ;
-	requests.emplace(pair<Vertex,Object>(2,3) , 0) ;
-	requests.emplace(pair<Vertex,Object>(8,3) , 1) ;
+	requests.emplace(pair<Vertex,Object>(1,1) , 10) ;
+	requests.emplace(pair<Vertex,Object>(1,2) , 10) ;
 }
 
 unsigned count_nodes(vector<E> edges)
@@ -99,13 +96,12 @@ void fill_clients_and_objects(const RequestSet& requests,
 
 // Returns the distance between each client and the source
 void compute_paths_from_source(
-	Vertex source, const vector<Vertex>& clients, const Graph& G,
+	Vertex source, const vector<Vertex>& clients, Graph& G,
 	vector<Weight>& out_distances_from_single_source, vector<Vertex>& out_predecessors
 ){
 
 	IndexMap indexMap = boost::get(boost::vertex_index, G);
-	boost::property_map<Graph, boost::edge_weight_t>::type EdgeWeightMap = 
-				get(boost::edge_weight_t(), G);
+	property_map<Graph, edge_weight_t>::type EdgeWeightMap = get(edge_weight, G);
 
 
 		//it associates to each node its next node to the source
@@ -271,9 +267,10 @@ Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, con
 		if (u_new > u_best)
 		{
 			Requests n = requests.at(pair<Vertex,Object>(cli,obj) );
-			benefit += n * (u_new - u_best)/q_new;
+			benefit += n * (u_new - u_best)/sizes[q_new];
 		} // else the benefit is not incremented
 	}
+	return benefit;
 }
 
 
@@ -324,7 +321,12 @@ int main(int,char*[])
 	cout<<"Unused Incarnations"<<endl;
 	for (IncarnationCollection::iterator it=unused_incarnations.begin(); 
 			it!=unused_incarnations.end(); ++it)
-		cout<<*it<<endl;
+	{
+		Incarnation inc = *it;
+		Weight b= compute_benefit(inc, clients, G,
+			cached_incarnations, distances, best_repo_map, best_cache_map);
+		cout<<*it<<":"<<b<<endl;
+	}
 
 
 	//////////////////////////////////////////////////
