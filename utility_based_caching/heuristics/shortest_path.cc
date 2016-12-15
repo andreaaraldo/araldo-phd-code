@@ -34,6 +34,9 @@ Quality qualities;
 
 //{ DATA STRUCTURES
 
+	RequestSet requests;
+
+
 	// Associates to each source a vector, having in the i-th position the predecessor of 
 	// the i-th node toward that source
 	MyMap<Vertex, vector<Vertex> > predecessors_to_source; 
@@ -97,8 +100,8 @@ void fill_clients_and_objects(const RequestSet& requests,
 // Returns the distance between each client and the source
 void compute_paths_from_source(
 	Vertex source, const vector<Vertex>& clients, const Graph& G,
-	vector<Weight>& out_distances_from_single_source, vector<Vertex>& outpredecessors)
-{
+	vector<Weight>& out_distances_from_single_source, vector<Vertex>& out_predecessors
+){
 
 	IndexMap indexMap = boost::get(boost::vertex_index, G);
 	boost::property_map<Graph, boost::edge_weight_t>::type EdgeWeightMap = 
@@ -121,19 +124,21 @@ void fill_distances	(const vector<Vertex>& sources, const vector<Vertex>& client
 	vector<Weight> tmp_distances_from_single_source(num_vertices(G));
 	vector<Vertex> tmp_predecessors(num_vertices(G));
 
-	for(vector<Vertex> it_src = sources.begin(); it_src != sources.end(); ++it_src)
-	{
+	for(vector<Vertex>::const_iterator it_src = sources.begin(); 
+			it_src != sources.end(); ++it_src
+	){
 		Vertex src = *it_src;
 		compute_paths_from_source(src, clients, G,
 					tmp_distances_from_single_source, tmp_predecessors);
 		out_predecessors_to_sources[ src ] = tmp_predecessors;
 		MyMap<Vertex, Weight> tmp_distances_to_src_map;
-		for(vector<Vertex> it_cli = clients.begin(); it_cli != clients.end(); ++it_cli)
-		{
+		for(vector<Vertex>::const_iterator it_cli = clients.begin(); 
+				it_cli != clients.end(); ++it_cli
+		){
 			Vertex cli = *it_cli;
 			tmp_distances_to_src_map.emplace(cli, tmp_distances_from_single_source[cli] );
 		}
-		out_distances.emplace(src, distances_to_src);
+		out_distances.emplace(src, tmp_distances_to_src_map);
 	}
 }
 
@@ -160,7 +165,7 @@ void fill_best_repo_map(
 	)
 	{
 		Vertex new_repo = *repo_it;
-		MyMap<Vertex,Weight>& distances_from_the_repo = distances.at(new_repo);
+		MyMap<Vertex,Weight> distances_from_the_repo = distances.at(new_repo);
 		for(vector<Vertex>::const_iterator cli_it=clients.begin(); 
 			cli_it != clients.end(); ++cli_it
 		){
@@ -206,7 +211,7 @@ void fill_best_repo_map(
 			}
 		}
 		OptimalClientValues best;
-		best.repo=repo; best.distance=distance; best.q= best_q; best.utility=best_utility;
+		best.src=repo; best.distance=distance; best.q= best_q; best.utility=best_utility;
 		out_best_repo_map.emplace(client, best );
 	}
 
@@ -217,7 +222,7 @@ void fill_best_repo_map(
 	{
 		Vertex client = it->first;
 		OptimalClientValues best = it->second;
-		cout<<client<<":"<<best.repo<<":"<<best.distance<<":"<<unsigned(best.q)<<":"<<best.utility<<endl;
+		cout<<client<<":"<<best.src<<":"<<best.distance<<":"<<unsigned(best.q)<<":"<<best.utility<<endl;
 	}
 }
 
@@ -225,34 +230,49 @@ void fill_best_repo_map(
 Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, const Graph& G,
 		const IncarnationCollection& cached_incarnations, 
 		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
-		const MyMap< Vertex, OptimalClientValues >& best_repo_map  )
-{
+		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
+		const BestSrcMap& best_cache_map
+){
 	Weight benefit=0;
-	Object obj = inc.obj;
+	Object obj = inc.o;
 	Vertex src_new = inc.src;
-	Quality q_new = q;
+	Quality q_new = inc.q;
 
 	// distances associates to each source a map associating to each client the distance to that source
 	MyMap<Vertex,Weight> tmp_distances_to_incarnation = distances.at(src_new);
 		
-	for (const vector<Vertex>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (vector<Vertex>::const_iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		Vertex cli = *it;
-		Weight distance_new = tmp_distances_to_incarnation.at(client);
+		Weight distance_new = tmp_distances_to_incarnation.at(cli);
 		Weight u_new = utilities[q_new] - sizes[q_new] * distance_new;
 		
-		OptimalClientValues& opt_val_to_repo = best_repo_map.at(client);
-		Weight utility_to_repo = opt_val_to_repo.utility;
+		OptimalClientValues opt_val_to_repo = best_repo_map.at(cli);
+		Weight u_repo = opt_val_to_repo.utility;
+		Quality q_repo = opt_val_to_repo.q;
 
 
-		Weight utility_to_cache;
-		MyMap<Vertex,OptimalClientValues>::const_iterator bit = best_cache_map.find(obj);
-		if(bit != best_cache_map.end() )
+		Weight u_best;
+		BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
+		if(bcp_it != best_cache_map.end() )
 		{
-			MyMap<Vertex,OptimalClientValues>& opt_cache_values_per_obj = 
+			// Recall that if there is an entry in best_cache_map, it means that the cache location
+			// pointed there is better than all the repos, i.e., it guarantess a higher utility
+			MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second; 
 			OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
-			utility_to_cache = opt_val_to_cache.utility;
-		}else 
+			u_best = opt_val_to_cache.utility;
+		}else
+		{
+			// There is no good cache location, and thus the best utility we could get (before
+			// considering the new incarnation) is provided by the best repo
+			u_best = u_repo;
+		}
+
+		if (u_new > u_best)
+		{
+			Requests n = requests.at(pair<Vertex,Object>(cli,obj) );
+			benefit += n * (u_new - u_best)/q_new;
+		} // else the benefit is not incremented
 	}
 }
 
@@ -260,7 +280,6 @@ Weight compute_benefit(const Incarnation& inc, const vector<Vertex> clients, con
 
 int main(int,char*[])
 {
-	RequestSet requests;
 	initialize_requests(requests);
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -299,14 +318,14 @@ int main(int,char*[])
 	for(vector<Vertex>::iterator cache_it = caches.begin(); cache_it != caches.end(); ++cache_it)
 	for(Quality q=0; q<qualities; q++)
 	{
-		Incarnation inc; inc.o = *obj_it; inc.q = q; inc.v=*cache_it;
+		Incarnation inc; inc.o = *obj_it; inc.q = q; inc.src=*cache_it;
 		unused_incarnations.push_back(inc);
 	}
 	cout<<"Unused Incarnations"<<endl;
 	for (IncarnationCollection::iterator it=unused_incarnations.begin(); 
 			it!=unused_incarnations.end(); ++it)
 		cout<<*it<<endl;
-	compute_benefit();
+
 
 	//////////////////////////////////////////////////
 	//////// UNUSED INCARNATIONS MUST BE ORDERED /////

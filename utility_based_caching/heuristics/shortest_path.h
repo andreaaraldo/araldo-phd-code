@@ -34,16 +34,16 @@ using namespace boost;
 	typedef unsigned Object;
 	typedef unsigned Requests;
 	typedef float Size;
-	typedef struct{Object o; Quality q; Vertex v;} Incarnation;
+	typedef struct{Object o; Quality q; Vertex src;} Incarnation;
 	std::ostream& operator<<(std::ostream& os, const Incarnation& inc)  
 	{  
-		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.v;  
+		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.src;  
 		return os;  
 	} 
 	typedef std::list< Incarnation > IncarnationCollection;
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
 	typedef struct{Vertex src; Weight distance; Quality q; Weight utility;} OptimalClientValues;
-	typedef MyMap<Object, MyMap<Vertex, OptimalClientValues> > BestSrcMap;
+	typedef MyMap<Object, MyMap<Vertex,OptimalClientValues> > BestSrcMap;
 //} TYPES
 #endif
