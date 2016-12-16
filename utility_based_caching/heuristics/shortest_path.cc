@@ -318,7 +318,7 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 
 Weight compute_per_req_utility(const Incarnation& inc, Vertex cli)
 {
-	Weight d = distances.at(inc.src).at(cli);max_size
+	Weight d = distances.at(inc.src).at(cli);
 	return utilities[inc.q] - sizes[inc.q] * d;
 }
 
@@ -387,13 +387,20 @@ int main(int,char*[])
 		cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 		#ifdef SEVERE_DEBUG
+		cout<< "Selected incarnation "<<best_inc<<endl;
 		for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
 			it!=cache_occupancy.end(); ++it)
 		{
 			Vertex cache = it->first;
 			Size s = it->second;
 			if (s>single_storage*max_size)
-				throw std::invalid_argument("Storage constraints not verified");
+			{
+				char msg[200];
+				sprintf(msg,"Storage constraints not verified:single_storage=%g; \
+						cache %lu has %g of space occupied",
+					single_storage, cache, s);
+				throw std::invalid_argument(msg);
+			}
 		}
 		#endif
 
@@ -420,7 +427,7 @@ int main(int,char*[])
 			inc_c_it != unused_incarnations.end(); ++inc_c_it
 		)
 		{
-			Incarnation inc = *inc_c_t;
+			Incarnation& inc = *inc_c_it;
 			inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
 				best_cache_map, cache_occupancy, changing_clients);
 		}
@@ -439,11 +446,12 @@ int main(int,char*[])
 		}
 		//} PURGE USELESS INCARNATIONS
 
-		cout<< "Selected incarnation "<<best_inc<<endl;
 		print_occupancy(cache_occupancy);
 		cout<< "Now unused_incarnations is "<<endl;
 		print_collection(unused_incarnations);
 	}
+
+	cout << "end"<<endl;
 
 		
 
