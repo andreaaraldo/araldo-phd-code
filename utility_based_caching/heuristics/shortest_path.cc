@@ -397,9 +397,8 @@ int main(int,char*[])
 		}
 		#endif
 
-		vector<Vertex> changing_clients; // I am not interested in this for the
-								
-					// time being
+		vector<Vertex> changing_clients; 	// I am not interested in this for 
+											// the time being
 		Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
 			best_cache_map, cache_occupancy, changing_clients);
 
@@ -416,8 +415,17 @@ int main(int,char*[])
 			best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
 		}
 
-		RECOMPUTE BENEFITS
-
+		//{ RECOMPUTE THE BENEFITS
+		for (IncarnationCollection::iterator inc_c_it = unused_incarnations.begin();
+			inc_c_it != unused_incarnations.end(); ++inc_c_it
+		)
+		{
+			Incarnation inc = *inc_c_t;
+			inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
+				best_cache_map, cache_occupancy, changing_clients);
+		}
+		//} RECOMPUTE THE BENEFITS
+			
 		unused_incarnations.sort(compare_incarnations);
 		//std::sort(unused_incarnations.rbegin(), unused_incarnations.rend() );
 
