@@ -34,16 +34,31 @@ using namespace boost;
 	typedef unsigned Object;
 	typedef unsigned Requests;
 	typedef float Size;
-	typedef struct{Object o; Quality q; Vertex src;} Incarnation;
+
+	struct IncarnationStruct
+	{	
+		Object o; Quality q; Vertex src; Weight benefit; 
+		IncarnationStruct() : benefit(0) {};
+	};
+	typedef IncarnationStruct Incarnation;
 	std::ostream& operator<<(std::ostream& os, const Incarnation& inc)  
 	{  
-		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.src;  
+		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.src<<":"<<inc.benefit;  
 		return os;  
 	} 
-	typedef std::list< Incarnation > IncarnationCollection;
+	bool compare_incarnations(const Incarnation& inc1, const Incarnation& inc2)	
+	{
+		return (inc1.benefit > inc2.benefit);
+	}
+
+
+	// TODO: vector is not the best option maybe
+	typedef std::list< Incarnation > IncarnationCollection; 
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
-	typedef struct{Vertex src; Weight distance; Quality q; Weight utility;} OptimalClientValues;
+	typedef struct{
+		Vertex src; Weight distance; Quality q; Weight per_req_utility;
+	} OptimalClientValues;
 	typedef MyMap<Object, MyMap<Vertex,OptimalClientValues> > BestSrcMap;
 //} TYPES
 #endif
