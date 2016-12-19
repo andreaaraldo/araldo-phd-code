@@ -60,5 +60,12 @@ using namespace boost;
 		Vertex src; Weight distance; Quality q; Weight per_req_utility;
 	} OptimalClientValues;
 	typedef MyMap<Object, MyMap<Vertex,OptimalClientValues> > BestSrcMap;
+	std::ostream& operator<<(std::ostream& os, const OptimalClientValues& ocv)  
+	{  
+		os<<"q:"<<unsigned(ocv.q) << "-src:" << ocv.src<<"-d:"<<ocv.distance<<
+				"-u:"<<ocv.per_req_utility;
+		return os;  
+	} 
+
 //} TYPES
 #endif
