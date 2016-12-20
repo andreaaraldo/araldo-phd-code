@@ -28,8 +28,8 @@ Weight init_w=0.000070; // Initialization weight
 Weight weights[] = {init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w, init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w};
-Weight utilities[] = {0.2,1};
-Size sizes[] = {300,3500};
+Weight utilities[] = {0.6,1};
+Size sizes[] = {1500,3500};
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
 
@@ -37,8 +37,10 @@ void initialize_requests(RequestSet& requests)
 {
 	requests.emplace(pair<Vertex,Object>(1,1) , 100) ;
 	requests.emplace(pair<Vertex,Object>(1,2) , 50) ;
+	requests.emplace(pair<Vertex,Object>(1,3) , 1) ;
 	requests.emplace(pair<Vertex,Object>(5,1) , 100) ;
 	requests.emplace(pair<Vertex,Object>(5,2) , 50) ;
+	requests.emplace(pair<Vertex,Object>(5,3) , 1) ;
 }
 
 
@@ -292,6 +294,16 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 		}
 	} 	//else benefit remains 0, in order to avoid to insert this element, since there is no room
 		// for it
+
+	#ifdef SEVERE_DEBUG
+	if (benefit>0 && out_potential_additional_clients.size()==0 )
+	{
+		stringstream os; os<<"Incarnation "<<inc<<" has benefit "<< benefit << " but no clients"<<
+			" are affected";
+		std::invalid_argument(os.str().c_str() );
+	}
+	#endif
+
 	return benefit;
 }
 
@@ -320,19 +332,41 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 }
 
 
-void print_best_cache_map(const BestSrcMap& best_cache_map)
-{
-	cout<<"best_repo_map"<<endl;
+void print_best_src_map(const vector<Vertex>& clients,
+	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
+	const BestSrcMap& best_cache_map
+){
+	cout<<"best_cache_map"<<endl;
 	for (BestSrcMap::const_iterator it = best_cache_map.begin();
 		it != best_cache_map.end(); ++it
 	){
 		Object o = it->first;
-		for(MyMap<Vertex,OptimalClientValues>::const_iterator it2 = (it->second).begin();
-			it2 != it->second.end(); ++it2
+		for (vector<Vertex>::const_iterator cli_it=clients.begin(); 
+			cli_it!=clients.end(); ++cli_it
 		){
-			Vertex cli = it2->first;
-			cout<<"Object "<<o<<" is served to client "<<cli<<" through "<<it2->second<<endl;
-		}
+			OptimalClientValues ocv;
+			Vertex cli = *cli_it;
+			MyMap<Vertex,OptimalClientValues>::const_iterator ocv_it = (it->second).find(cli);
+			if (ocv_it != (it->second).end() )
+			{
+				ocv = ocv_it->second;
+				#ifdef SEVERE_DEBUG
+				OptimalClientValues repo_ocv = best_repo_map.at(cli);
+				if (repo_ocv.per_req_utility > ocv.per_req_utility)
+				{
+					stringstream os; os<<"Client "<<cli<<" downloads obj "<<o<<" from cache "<<
+						ocv.src<<" with an utility "<<ocv.per_req_utility<<
+						" but if it downloaded from repository the utility would be "<<
+						repo_ocv.per_req_utility;
+					throw std::invalid_argument(os.str().c_str() );
+				}
+				#endif
+			}else{
+				// the object is served by the best repository
+				ocv = best_repo_map.at(cli);
+			}
+			cout<<"Object "<<o<<" is served to client "<<cli<<" through "<<ocv<<endl;
+		}		
 	}
 }
 
@@ -411,7 +445,6 @@ int main(int,char*[])
 	{
 		Incarnation best_inc = unused_incarnations.front();
 		unused_incarnations.pop_front();
-		cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 		#ifdef SEVERE_DEBUG
 		cout<< "Selected incarnation "<<best_inc<<endl;
@@ -437,6 +470,13 @@ int main(int,char*[])
 		Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
 			best_cache_map, cache_occupancy, changing_clients);
 
+		#ifdef SEVERE_DEBUG
+		if (changing_clients.size()==0)
+			throw std::invalid_argument("Storing last incarnation seems not to influence any\
+				client, and thus is useless");
+		#endif
+
+		cout<<"changing clients:";
 		// Update best_cache_map
 		for(vector<Vertex>::iterator cli_it = changing_clients.begin(); 
 			cli_it != changing_clients.end(); ++cli_it
@@ -448,9 +488,13 @@ int main(int,char*[])
 			new_opt_val_to_cache.q = best_inc.q;
 			new_opt_val_to_cache.per_req_utility = compute_per_req_utility(best_inc, cli);
 			best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
+			cout<<cli<<":";
 		}
+		cout<<endl;
 
 		//{ RECOMPUTE THE BENEFITS
+		cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
+
 		for (IncarnationCollection::iterator inc_c_it = unused_incarnations.begin();
 			inc_c_it != unused_incarnations.end(); ++inc_c_it
 		)
@@ -478,7 +522,7 @@ int main(int,char*[])
 		//} PURGE USELESS INCARNATIONS
 
 	}
-	print_best_cache_map(best_cache_map);
+	print_best_src_map(clients, best_repo_map, best_cache_map);
 
 	cout << "end"<<endl;
 
