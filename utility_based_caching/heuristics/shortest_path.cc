@@ -377,9 +377,8 @@ Weight compute_per_req_utility(const Incarnation& inc, Vertex cli)
 	return utilities[inc.q] - sizes[inc.q] * d;
 }
 
-int main(int,char*[])
+void greedy()
 {
-	initialize_requests(requests);
 
 	qualities = sizeof(utilities)/sizeof(Weight);
 	//{ CHECK INPUT	
@@ -464,69 +463,82 @@ int main(int,char*[])
 		}
 		#endif
 
-		// I retrieve the clients that experience an improvement from the addition of best_inc
-		// since only them change the associated source
-		vector<Vertex> changing_clients;
-		Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
-			best_cache_map, cache_occupancy, changing_clients);
-
-		#ifdef SEVERE_DEBUG
-		if (changing_clients.size()==0)
-			throw std::invalid_argument("Storing last incarnation seems not to influence any\
-				client, and thus is useless");
-		#endif
-
-		cout<<"changing clients:";
-		// Update best_cache_map
-		for(vector<Vertex>::iterator cli_it = changing_clients.begin(); 
-			cli_it != changing_clients.end(); ++cli_it
-		){
-			Vertex cli = *cli_it;
-			OptimalClientValues new_opt_val_to_cache;
-			new_opt_val_to_cache.src = best_inc.src;
-			new_opt_val_to_cache.distance = distances.at(best_inc.src).at(cli);
-			new_opt_val_to_cache.q = best_inc.q;
-			new_opt_val_to_cache.per_req_utility = compute_per_req_utility(best_inc, cli);
-			best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
-			cout<<cli<<":";
-		}
-		cout<<endl;
-
-		//{ RECOMPUTE THE BENEFITS
-		cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
-
-		for (IncarnationCollection::iterator inc_c_it = unused_incarnations.begin();
-			inc_c_it != unused_incarnations.end(); ++inc_c_it
-		)
-		{
-			Incarnation& inc = *inc_c_it;
-			inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
+		//{ UPDATE DATA AFTER SELECTION
+			// I retrieve the clients that experience an improvement from the addition of best_inc
+			// since only them change the associated source
+			vector<Vertex> changing_clients;
+			Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
 				best_cache_map, cache_occupancy, changing_clients);
-		}
-		//} RECOMPUTE THE BENEFITS
+
+			#ifdef SEVERE_DEBUG
+			if (changing_clients.size()==0)
+				throw std::invalid_argument("Storing last incarnation seems not to influence any\
+					client, and thus is useless");
+			#endif
+
+			//{ UPDATE EDGE LOADS
+				// Walk through the path of the incarnation
+				Usa predecessors_to_source
+				// Add the load on each edge
+			//} UPDATE EDGE LOADS
+
+			cout<<"changing clients:";
+			// Update best_cache_map
+			for(vector<Vertex>::iterator cli_it = changing_clients.begin(); 
+				cli_it != changing_clients.end(); ++cli_it
+			){
+				Vertex cli = *cli_it;
+				OptimalClientValues new_opt_val_to_cache;
+				new_opt_val_to_cache.src = best_inc.src;
+				new_opt_val_to_cache.distance = distances.at(best_inc.src).at(cli);
+				new_opt_val_to_cache.q = best_inc.q;
+				new_opt_val_to_cache.per_req_utility = compute_per_req_utility(best_inc, cli);
+				best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
+				cout<<cli<<":";
+			}
+			cout<<endl;
+
+			//{ RECOMPUTE THE BENEFITS
+			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
+
+			for (IncarnationCollection::iterator inc_c_it = unused_incarnations.begin();
+				inc_c_it != unused_incarnations.end(); ++inc_c_it
+			)
+			{
+				Incarnation& inc = *inc_c_it;
+				inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
+					best_cache_map, cache_occupancy, changing_clients);
+			}
+			//} RECOMPUTE THE BENEFITS
 			
-		unused_incarnations.sort(compare_incarnations);
-		//std::sort(unused_incarnations.rbegin(), unused_incarnations.rend() );
+			unused_incarnations.sort(compare_incarnations);
+			//std::sort(unused_incarnations.rbegin(), unused_incarnations.rend() );
 
-		print_occupancy(cache_occupancy);
-		print_collection(unused_incarnations);
+			print_occupancy(cache_occupancy);
+			print_collection(unused_incarnations);
 
-		//{ PURGE USELESS INCARNATIONS
-		// At the end we find all the zero-benefit incarnations
-		Incarnation worst_inc = unused_incarnations.back();
-		while (worst_inc.benefit == 0)
-		{
-			unused_incarnations.pop_back();
-			worst_inc = unused_incarnations.back();
-		}
-		//} PURGE USELESS INCARNATIONS
+			//{ PURGE USELESS INCARNATIONS
+			// At the end we find all the zero-benefit incarnations
+			Weight worst_benefit = unused_incarnations.back().benefit;
+			while (worst_benefit == 0)
+			{
+				unused_incarnations.pop_back();
+				if (unused_incarnations.size()>0)
+					worst_benefit = unused_incarnations.back().benefit;
+				else worst_benefit = 1; // Just to get out of the while
+			}
+			//} PURGE USELESS INCARNATIONS
+		//{ UPDATE DATA AFTER SELECTION
 
 	}
 	print_best_src_map(clients, best_repo_map, best_cache_map);
 
-	cout << "end"<<endl;
+	cout << "end of greedy"<<endl;
+}
 
-		
-
-    return 0;
+int main(int,char*[])
+{
+	initialize_requests(requests);
+	greedy();
+	return 0;
 }
