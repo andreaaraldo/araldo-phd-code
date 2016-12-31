@@ -1,0 +1,23 @@
+// Topologia con 1 nodo produttore
+//
+// 10 richieste servite dal nodo stesso
+// Utilità: 30
+
+ASes = {1,2,3,4,5,6,7,8,9,10,11};
+Objects = {1, 2, 3};
+QualityLevels = {0, 1, 2};
+//Strategy = 6;
+
+
+Arcs = {<1,2,490000>, <1,11,490000>, <2,11,490000>, <10,11,490000>, <2,3,490000>, 
+	<3,4,490000>, <4,5,490000>, <5,6,490000>, <6,7,490000>, <4,8,490000>, <7,8,490000>, <3,9,490000>,
+	<8,9,490000>, <9,10,490000>};
+ObjRequests = {<1,1,100>, <2,1,50>, <3,1,100>, <1,5,100>, <2,5,50>, <3,5,100>};
+
+RatePerQuality = [0 1500 3500];
+CacheSpacePerQuality = [0 1500 3500];
+UtilityPerQuality = [0 0.6 1];
+ObjectsPublishedByProducers = [ [ 0  0  0  0  0  0  0  1  0  0  0 ]  [ 0  0  0  0  0  0  0  1  0  0  0 ] [ 0  0  0  0  0  0  0  1  0  0  0 ] ];
+
+MaxCacheStorageAtSingleAS = [0 3500 0 3500 0 0 0 0 3500 0 0];
+MaxCacheStorage = 10500;

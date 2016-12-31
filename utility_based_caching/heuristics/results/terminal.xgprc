@@ -1,0 +1,14 @@
+# !/usr/bin/perl -w 
+# local xgp resources
+
+$terminal{grayscale} = {term => 'postscript dashed dashlength 3', 
+                     opt => 'enhanced  "Times-Roman" 22',
+                     ext => 'eps'};
+
+$terminal{color} = {term => 'postscript', 
+                     opt => 'enhanced  color "Times-Roman" 22',
+                     ext => 'eps'};
+
+$terminal{svg} = {term => 'svg dashed', 
+                     opt => 'enhanced fname "Times-Roman" fsize 14',
+                     ext => 'svg'};

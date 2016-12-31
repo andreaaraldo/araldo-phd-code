@@ -11,6 +11,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "shortest_path.h"
+#include <cmath> // for sqrt()
 
 #define SEVERE_DEBUG
 
@@ -24,16 +25,18 @@ E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
 
+Size link_capacity = 490000; // In Kbps
 Weight init_w=0.000070; // Initialization weight
 Weight weights[] = {init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w, init_w, init_w, init_w, init_w, init_w,
 						init_w, init_w};
 Weight utilities[] = {0.6,1};
-Size sizes[] = {1500,3500};
+Size sizes[] = {1500,3500}; // In Kbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
 
-void initialize_requests(RequestSet& requests)
+// Returns the total number of requests
+Requests initialize_requests(RequestSet& requests)
 {
 	requests.emplace(pair<Vertex,Object>(1,1) , 100) ;
 	requests.emplace(pair<Vertex,Object>(1,2) , 50) ;
@@ -41,6 +44,13 @@ void initialize_requests(RequestSet& requests)
 	requests.emplace(pair<Vertex,Object>(5,1) , 100) ;
 	requests.emplace(pair<Vertex,Object>(5,2) , 50) ;
 	requests.emplace(pair<Vertex,Object>(5,3) , 1) ;
+
+	Requests tot_requests = 0;
+	for (RequestSet::iterator it = requests.begin(); it!=requests.end(); ++it)
+	{
+		tot_requests += it->second;
+	}
+	return tot_requests;
 }
 
 
@@ -69,6 +79,8 @@ void initialize_requests(RequestSet& requests)
 	MyMap<Vertex,Size> cache_occupancy;
 
 	Size max_size;
+
+	EdgeLoads edge_loads;
 //} DATA STRUCTURES
 
 
@@ -332,10 +344,60 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 }
 
 
-void print_best_src_map(const vector<Vertex>& clients,
+Weight compute_per_req_utility(const Incarnation& inc, Vertex cli)
+{
+	Weight d = distances.at(inc.src).at(cli);
+	return utilities[inc.q] - sizes[inc.q] * d;
+}
+
+void add_load(EdgeLoads& loads, const E e, const Weight load)
+{
+	throw invalid_argument("Implement this");
+}
+
+void update_load(EdgeLoads& edge_loads, 
+	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const Vertex src, const Vertex cli, const Weight load
+){
+	// Associates to each source a vector, having in the i-th position the predecessor of 
+	// the i-th node toward that source
+	const vector<Vertex> path = predecessors_to_source.at(src);
+	cout << "Path from client " << cli << " to source "<< src<<": ";
+	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
+	graph_traits< Graph >::vertex_descriptor current;
+	for (current=cli; current!= src; current =  path[current] )
+	{
+		EdgeDescriptor e = edge(current,path[current],G).first;
+		cout<<e<<"-";
+		Weight old_load = 0;
+		EdgeLoads::iterator it = edge_loads.find(e) ;
+		if (it != edge_loads.end() )
+			old_load = it->second;
+		edge_loads[e] = old_load + load;
+	}
+	cout<<endl;
+}
+
+void print_edge_loads(const EdgeLoads& edge_loads)
+{
+	for (EdgeLoads::const_iterator it = edge_loads.begin(); it!=edge_loads.end() ; ++it)
+	{
+		cout<< it->first << ":" << it->second << " ";
+	}
+	cout <<endl;
+}
+
+// Return the average pure utility
+Weight compute_edge_loads_and_pure_utility(EdgeLoads& edge_loads, 
+	const Graph& G,
+	const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const vector<E>& edges, 
+	const vector<Vertex>& clients,
 	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
 	const BestSrcMap& best_cache_map
 ){
+	Weight tot_pure_utility=0;
+	edge_loads.clear();
 	cout<<"best_cache_map"<<endl;
 	for (BestSrcMap::const_iterator it = best_cache_map.begin();
 		it != best_cache_map.end(); ++it
@@ -365,19 +427,21 @@ void print_best_src_map(const vector<Vertex>& clients,
 				// the object is served by the best repository
 				ocv = best_repo_map.at(cli);
 			}
+			Quality q = ocv.q;
+			Vertex src = ocv.src;
+			Requests n = requests.at(pair<Vertex,Object>(cli,o) );
+			Weight load = n * sizes[q];
+			tot_pure_utility += utilities[q] * n;
+			update_load(edge_loads, G, predecessors_to_source, src, cli, load );
+			
 			cout<<"Object "<<o<<" is served to client "<<cli<<" through "<<ocv<<endl;
-		}		
+		}
 	}
+	return tot_pure_utility;
 }
 
-
-Weight compute_per_req_utility(const Incarnation& inc, Vertex cli)
-{
-	Weight d = distances.at(inc.src).at(cli);
-	return utilities[inc.q] - sizes[inc.q] * d;
-}
-
-void greedy()
+// Returns the tot_pure_utility
+Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 {
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -387,7 +451,6 @@ void greedy()
 	//} CHECK INPUT	
 
 	//{ INITIALIZE INPUT DATA STRUCTURE
-	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
 	vector<Vertex> caches(caches_, caches_+
 		sizeof(caches_)/sizeof(Vertex) );
 	vector<Vertex> repositories(repositories_, repositories_+
@@ -403,10 +466,6 @@ void greedy()
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	//} INITIALIZE INPUT DATA STRUCTURE
 	
-	unsigned num_nodes = count_nodes(edges);
-
-    // declare a graph object
-    Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights, num_nodes);
 
 	fill_distances(sources, clients, G, predecessors_to_source, distances);
 
@@ -476,12 +535,6 @@ void greedy()
 					client, and thus is useless");
 			#endif
 
-			//{ UPDATE EDGE LOADS
-				// Walk through the path of the incarnation
-				Usa predecessors_to_source
-				// Add the load on each edge
-			//} UPDATE EDGE LOADS
-
 			cout<<"changing clients:";
 			// Update best_cache_map
 			for(vector<Vertex>::iterator cli_it = changing_clients.begin(); 
@@ -531,14 +584,58 @@ void greedy()
 		//{ UPDATE DATA AFTER SELECTION
 
 	}
-	print_best_src_map(clients, best_repo_map, best_cache_map);
 
-	cout << "end of greedy"<<endl;
+	Weight tot_pure_utility = compute_edge_loads_and_pure_utility(edge_loads, G,
+			predecessors_to_source, edges, 
+			clients, best_repo_map, best_cache_map);
+	return tot_pure_utility;
 }
 
 int main(int,char*[])
 {
-	initialize_requests(requests);
-	greedy();
+	Requests tot_requests = initialize_requests(requests);
+	
+
+	//{ INITIALIZE INPUT DATA STRUCTURE
+	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
+	//} INITIALIZE INPUT DATA STRUCTURE
+
+	Weight tot_pure_utility;
+	for (unsigned k=1; k<=200; k++)
+	{
+		unsigned num_nodes = count_nodes(edges);
+		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights, num_nodes);
+
+		tot_pure_utility = greedy(edge_loads, edges, G);
+		Weight tot_brut_utility = tot_pure_utility;
+		print_edge_loads(edge_loads);
+		
+		// Compute the violations
+		Weight violations[edges.size()];
+		Weight norm_squared=0;
+		for (unsigned eid=0; eid<edges.size(); eid++)
+		{
+			EdgeDescriptor e = edge(edges[eid].first, edges[eid].second ,G).first;
+			violations[eid] = edge_loads[e] - link_capacity;
+			norm_squared += violations[eid]*violations[eid];
+			tot_brut_utility -=  weights[eid] * violations[eid];
+			cout<< "violation on "<< e <<" = "<< violations[eid] <<endl;
+		}
+
+		float big_const = 100;
+		float step =big_const * init_w / ( big_const+k * sqrt(norm_squared ) );
+		for (unsigned eid=0; eid<edges.size(); eid++)
+			weights[eid] = weights[eid] + step * violations[eid] > 0 ? 
+							weights[eid] + step * violations[eid] :0;
+
+
+		cout<<"New weights: "<<endl;
+		for (unsigned eid=0; eid<edges.size(); eid++)
+			cout << weights[eid] <<" ";
+		cout <<endl;
+
+		cout<<"tot_requests="<<tot_requests<<endl;
+		cout<<"avg tot_brut_utility="<<tot_brut_utility/tot_requests<<endl;
+	}
 	return 0;
 }

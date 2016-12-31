@@ -12,6 +12,7 @@
 #include <tuple>
 
 
+
 #ifndef SHORTEST_PATH_H_
 #define SHORTEST_PATH_H_
 
@@ -51,6 +52,7 @@ using namespace boost;
 		return (inc1.benefit > inc2.benefit);
 	}
 
+	typedef graph_traits < Graph >::edge_descriptor EdgeDescriptor;
 
 	typedef std::list< Incarnation > IncarnationCollection; 
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
@@ -65,7 +67,7 @@ using namespace boost;
 				"-u:"<<ocv.per_req_utility;
 		return os;  
 	} 
-	typedef vector<Weight> EdgeLoads;
+	typedef std::map<EdgeDescriptor,Weight> EdgeLoads;
 
 //} TYPES
 #endif
