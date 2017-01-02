@@ -12,8 +12,10 @@
 #include <boost/graph/graphviz.hpp>
 #include "shortest_path.h"
 #include <cmath> // for sqrt()
+#include "zipf.h"
 
 #define SEVERE_DEBUG
+//#define VERBOSE
 
 
 using namespace boost;
@@ -21,29 +23,63 @@ using namespace std;
 
 Vertex caches_[] = {2,9,4};
 Vertex repositories_[] = {8};
+Vertex clients_[] = {1,5};
 E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
 
 Size link_capacity = 490000; // In Kbps
-Weight init_w=0.000070; // Initialization weight
-Weight weights[] = {init_w, init_w, init_w, init_w, init_w,
-						init_w, init_w, init_w, init_w, init_w, init_w, init_w,
-						init_w, init_w};
-Weight utilities[] = {0.6,1};
-Size sizes[] = {1500,3500}; // In Kbps
+Weight utilities[] = {0.67, 0.80, 0.88, 0.95, 1};
+Size sizes[] = {300, 700, 1500, 2500, 3500}; // In Kbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
+unsigned seed = 1;
+
+//step parameters
+float eps = 1.0/100;
+
+unsigned multiplier = 1;
+
+Requests generate_requests(RequestSet& requests, const float alpha, const Object ctlg,
+	const float load
+){
+	Requests tot_requests = 0;
+	Requests avg_tot_requests = (Requests) (load*link_capacity/sizes[0] );
+
+	ZipfGenerator zipf(alpha, ctlg, seed, avg_tot_requests);
+	for (Vertex cli_id = 0; cli_id < sizeof(clients_)/sizeof(Vertex); cli_id++ )
+	for(Object o=1; o<=ctlg; o++)
+	{
+		Requests n = zipf.generate_requests(o);
+		requests.emplace(pair<Vertex,Object>(clients_[cli_id],o) , n) ;
+		tot_requests += n;
+	}
+	#ifdef VERBOSE
+	cout <<"Generated "<< tot_requests<<endl;
+	#endif
+	return tot_requests;
+}
 
 // Returns the total number of requests
 Requests initialize_requests(RequestSet& requests)
 {
-	requests.emplace(pair<Vertex,Object>(1,1) , 100) ;
-	requests.emplace(pair<Vertex,Object>(1,2) , 50) ;
-	requests.emplace(pair<Vertex,Object>(1,3) , 1) ;
-	requests.emplace(pair<Vertex,Object>(5,1) , 100) ;
-	requests.emplace(pair<Vertex,Object>(5,2) , 50) ;
-	requests.emplace(pair<Vertex,Object>(5,3) , 1) ;
+	requests.emplace(pair<Vertex,Object>(1,1) , 100*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,2) , 50*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,3) , 25*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,4) , 13*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,5) , 6*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,6) , 3*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,7) , 2*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(1,8) , 1*multiplier) ;
+
+	requests.emplace(pair<Vertex,Object>(2,1) , 100*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,2) , 50*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,3) , 25*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,4) , 13*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,5) , 6*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,6) , 3*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,7) , 2*multiplier) ;
+	requests.emplace(pair<Vertex,Object>(2,8) , 1*multiplier) ;
 
 	Requests tot_requests = 0;
 	for (RequestSet::iterator it = requests.begin(); it!=requests.end(); ++it)
@@ -80,7 +116,7 @@ Requests initialize_requests(RequestSet& requests)
 
 	Size max_size;
 
-	EdgeLoads edge_loads;
+	EdgeValues edge_load_map;
 //} DATA STRUCTURES
 
 
@@ -175,8 +211,7 @@ void fill_best_repo_map(
 																// associating to each client
 																// its distance from the source
 		MyMap< Vertex, OptimalClientValues >& out_best_repo_map
-		)
-{
+){
 	// Find the closest repo per each client
 	MyMap<Vertex, pair<Vertex, Weight> > closest_repo;
 
@@ -230,12 +265,18 @@ void fill_best_repo_map(
 				best_q = q; best_utility = new_utility;
 			}
 		}
-		OptimalClientValues best;
-		best.src=repo; best.distance=distance; best.q= best_q; best.per_req_utility=best_utility;
-		out_best_repo_map.emplace(client, best );
+		if (best_utility>0)
+		{
+			OptimalClientValues best;
+			best.src=repo; best.distance=distance; 
+			best.q= best_q; best.per_req_gross_utility=best_utility;
+			out_best_repo_map.emplace(client, best );
+		}//else it is better not to serve this object than retrieving it from the repository.
+		 // Still, we may find a placement in the cache that allows us to retrieve it
 	}
 
-	cout<<"cli-repo:"<<endl;
+	#ifdef VERBOSE
+	cout<<"cli-repo association:"<<endl;
 	for (MyMap< Vertex, OptimalClientValues >::iterator it=out_best_repo_map.begin();
 		it != out_best_repo_map.end(); ++it
 		)
@@ -243,8 +284,9 @@ void fill_best_repo_map(
 		Vertex client = it->first;
 		OptimalClientValues best = it->second;
 		cout<<client<<":"<<best.src<<":"<<best.distance<<":"<<
-				unsigned(best.q)<<":"<<best.per_req_utility<<endl;
+				unsigned(best.q)<<":"<<best.per_req_gross_utility<<endl;
 	}
+	#endif
 }
 
 
@@ -256,6 +298,7 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 		vector<Vertex>& out_potential_additional_clients
 ){
 	Weight benefit=0;
+
 	Object obj = inc.o;
 	Vertex src_new = inc.src;
 	Quality q_new = inc.q;
@@ -273,38 +316,57 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 			Vertex cli = *it;
 			Weight distance_new = tmp_distances_to_incarnation.at(cli);
 			Weight u_new = utilities[q_new] - sizes[q_new] * distance_new;
-		
-			OptimalClientValues opt_val_to_repo = best_repo_map.at(cli);
-			Weight u_repo = opt_val_to_repo.per_req_utility;
-			Quality q_repo = opt_val_to_repo.q;
-
-			Weight u_best=u_repo;
-			BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
-			if(bcp_it != best_cache_map.end() )
-			{
-				// Recall that if there is an entry in best_cache_map, it means that the cache 
-				// location pointed there is better than all the repos, i.e., it 
-				// guarantess a higher utility
-				MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
-				MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
-						opt_cache_values_per_obj.find(cli);
-				if (ocv_it != opt_cache_values_per_obj.end() )
-				{
-					OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
-					u_best = opt_val_to_cache.per_req_utility;
-				} // else there is no cache location that is associated to that object and 
-				  // that client
-			}// else There is no good cache location, and thus the best utility we could 
-			 // get (before considering the new incarnation) is provided by the best repo
-
 			Requests n = requests.at(pair<Vertex,Object>(cli,obj) );
-			if (u_new > u_best && n>0)
+
+			if (u_new>0 && n>0)
 			{
-				benefit += n * (u_new - u_best)/sizes[q_new];
-				out_potential_additional_clients.push_back(cli);
-			} // else the benefit is not incremented
-		}
-	} 	//else benefit remains 0, in order to avoid to insert this element, since there is no room
+				Weight u_cache = 0;
+				BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
+				if(bcp_it != best_cache_map.end() )
+				{
+					MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
+					MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
+							opt_cache_values_per_obj.find(cli);
+					if (ocv_it != opt_cache_values_per_obj.end() )
+					{
+						OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
+						u_cache = opt_val_to_cache.per_req_gross_utility;
+					} // else there is no cache location that serves that object to
+					  // that client
+				}// else There is no good cache location, and thus the best utility we could 
+				 // get (before considering the new incarnation) is provided by the best repo
+
+				Weight u_best=0; 	// If the best_utility remains 0, it means that the object is 
+									// currently not served to the client
+				if (u_cache > 0)
+				{
+					// We found some cache serving that object to that client. By construction
+					// it is better than any repo.
+					u_best = u_cache;
+				}else{
+					// No cache is serving that object to that client. We verify whether there is 
+					// a repository serving that
+					MyMap< Vertex, OptimalClientValues >::const_iterator opt_val_to_repo_it =
+						best_repo_map.find(cli);
+					if (opt_val_to_repo_it != best_repo_map.end() )
+					{
+						// There is a repository currently serving cli
+						OptimalClientValues opt_val_to_repo = opt_val_to_repo_it->second;
+						u_best = opt_val_to_repo.per_req_gross_utility;
+						#ifdef SEVERE_DEBUG
+							if(u_best<=0) throw invalid_argument("u_repo cannot be negative");
+						#endif
+					}
+				}
+
+				if (u_new > u_best)
+				{
+					benefit += n * (u_new - u_best)/sizes[q_new];
+					out_potential_additional_clients.push_back(cli);
+				} // else the benefit is not incremented
+			}
+		} //end of for
+	} 	// Else benefit remains 0, in order to avoid to insert this element, since there is no room
 		// for it
 
 	#ifdef SEVERE_DEBUG
@@ -319,20 +381,33 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 	return benefit;
 }
 
-void print_collection(const IncarnationCollection& ic )
+template <typename T>
+float compute_norm(const T& ic )
 {
-	cout<<"Incarnations"<<endl;
-	for (IncarnationCollection::const_iterator it=ic.begin(); 
+	float norm=0;
+	for (typename T::const_iterator it=ic.begin(); 
 			it!=ic.end(); ++it)
 	{
-		Incarnation inc = *it;
-		cout<<*it<<":"<<endl;
+		norm += (*it) * (*it);
 	}
+	return sqrt(norm);
+}
+
+
+template <typename T>
+void print_collection(const T& ic )
+{
+	for (typename T::const_iterator it=ic.begin(); 
+			it!=ic.end(); ++it)
+	{
+		cout<<*it<<" ";
+	}
+	cout<<endl;
 }
 
 void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 {
-	cout<<"Occupancy"<<endl;
+	cout<<"Occupancy: ";
 	for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
 			it!=cache_occupancy.end(); ++it)
 	{
@@ -344,104 +419,145 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 }
 
 
-Weight compute_per_req_utility(const Incarnation& inc, Vertex cli)
+Weight compute_per_req_gross_utility(const Incarnation& inc, Vertex cli)
 {
 	Weight d = distances.at(inc.src).at(cli);
 	return utilities[inc.q] - sizes[inc.q] * d;
 }
 
-void add_load(EdgeLoads& loads, const E e, const Weight load)
+void add_load(EdgeValues& loads, const E e, const Weight load)
 {
 	throw invalid_argument("Implement this");
 }
 
-void update_load(EdgeLoads& edge_loads, 
+void update_load(EdgeValues& edge_load_map, 
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
 	const Vertex src, const Vertex cli, const Weight load
 ){
 	// Associates to each source a vector, having in the i-th position the predecessor of 
 	// the i-th node toward that source
 	const vector<Vertex> path = predecessors_to_source.at(src);
-	cout << "Path from client " << cli << " to source "<< src<<": ";
 	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
 	graph_traits< Graph >::vertex_descriptor current;
 	for (current=cli; current!= src; current =  path[current] )
 	{
 		EdgeDescriptor e = edge(current,path[current],G).first;
-		cout<<e<<"-";
 		Weight old_load = 0;
-		EdgeLoads::iterator it = edge_loads.find(e) ;
-		if (it != edge_loads.end() )
+		EdgeValues::iterator it = edge_load_map.find(e) ;
+		if (it != edge_load_map.end() )
 			old_load = it->second;
-		edge_loads[e] = old_load + load;
+		edge_load_map[e] = old_load + load;
 	}
-	cout<<endl;
 }
 
-void print_edge_loads(const EdgeLoads& edge_loads)
+void print_path(const EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
+	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const Vertex src, const Vertex cli
+){
+	// Associates to each source a vector, having in the i-th position the predecessor of 
+	// the i-th node toward that source
+	const vector<Vertex> path = predecessors_to_source.at(src);
+	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
+	graph_traits< Graph >::vertex_descriptor current;
+	for (current=cli; current!= src; current =  path[current] )
+	{
+		const EdgeDescriptor ed = edge(current,path[current],G).first;
+		cout<<ed<<":l"<< edge_load_map.find(ed)->second<<":w"<< 
+				edge_weight_map.find(ed)->second <<"-";
+	}
+}
+
+
+void print_edge_load_map(const EdgeValues& edge_load_map)
 {
-	for (EdgeLoads::const_iterator it = edge_loads.begin(); it!=edge_loads.end() ; ++it)
+	for (EdgeValues::const_iterator it = edge_load_map.begin(); it!=edge_load_map.end() ; ++it)
 	{
 		cout<< it->first << ":" << it->second << " ";
 	}
 	cout <<endl;
 }
 
+void print_mappings(const EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
+	const RequestSet& requests, const Graph& G,
+	const MyMap<Vertex, vector<Vertex> >& predecessors_to_source
+){
+	for (RequestSet::const_iterator r_it = requests.begin(); 
+		r_it != requests.end() ; ++r_it
+	){
+		Vertex cli = r_it->first.first;
+		Object o = r_it->first.second;
+		OptimalClientValues ocv;
+		BestSrcMap::const_iterator bcp_it = 
+				best_cache_map.find(o);
+		if ( bcp_it != best_cache_map.end() && 
+			//bcp_it->second is a map of type <client, OptimalCacheValues> 
+			bcp_it->second.find(cli) != bcp_it->second.end()
+		){	// The object is downloaded by the cli from some cache
+			ocv = bcp_it->second.find(cli)->second;
+		}else{
+			// the object is served by the best repository
+			ocv = best_repo_map.at(cli);
+		}
+
+		Quality q = ocv.q;
+		Vertex src = ocv.src;		
+		cout<<o<<"->"<<cli<<":"<<ocv<<":";
+		print_path(edge_load_map,edge_weight_map, G, predecessors_to_source, src, cli);
+		cout<<endl;
+	}
+}
+
 // Return the average pure utility
-Weight compute_edge_loads_and_pure_utility(EdgeLoads& edge_loads, 
+Weight compute_edge_load_map_and_pure_utility(EdgeValues& edge_load_map, 
 	const Graph& G,
 	const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
 	const vector<E>& edges, 
-	const vector<Vertex>& clients,
+	const RequestSet& requests,
 	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
 	const BestSrcMap& best_cache_map
 ){
 	Weight tot_pure_utility=0;
-	edge_loads.clear();
-	cout<<"best_cache_map"<<endl;
-	for (BestSrcMap::const_iterator it = best_cache_map.begin();
-		it != best_cache_map.end(); ++it
+	edge_load_map.clear();
+	for (RequestSet::const_iterator r_it = requests.begin(); 
+		r_it != requests.end() ; ++r_it
 	){
-		Object o = it->first;
-		for (vector<Vertex>::const_iterator cli_it=clients.begin(); 
-			cli_it!=clients.end(); ++cli_it
-		){
-			OptimalClientValues ocv;
-			Vertex cli = *cli_it;
-			MyMap<Vertex,OptimalClientValues>::const_iterator ocv_it = (it->second).find(cli);
-			if (ocv_it != (it->second).end() )
+		Vertex cli = r_it->first.first;
+		Object o = r_it->first.second;
+		Requests n = r_it->second;
+		bool is_served = false;
+		OptimalClientValues ocv;
+		BestSrcMap::const_iterator bcp_it = 
+				best_cache_map.find(o);
+		if ( bcp_it != best_cache_map.end() && 
+			//bcp_it->second is a map of type <client, OptimalCacheValues> 
+			bcp_it->second.find(cli) != bcp_it->second.end()
+		){	// The object is downloaded by the cli from some cache
+			ocv = bcp_it->second.find(cli)->second;
+			is_served = true;
+		}else{
+			MyMap< Vertex, OptimalClientValues >::const_iterator brm_it = best_repo_map.find(cli);
+			if (brm_it != best_repo_map.end() )
 			{
-				ocv = ocv_it->second;
-				#ifdef SEVERE_DEBUG
-				OptimalClientValues repo_ocv = best_repo_map.at(cli);
-				if (repo_ocv.per_req_utility > ocv.per_req_utility)
-				{
-					stringstream os; os<<"Client "<<cli<<" downloads obj "<<o<<" from cache "<<
-						ocv.src<<" with an utility "<<ocv.per_req_utility<<
-						" but if it downloaded from repository the utility would be "<<
-						repo_ocv.per_req_utility;
-					throw std::invalid_argument(os.str().c_str() );
-				}
-				#endif
-			}else{
 				// the object is served by the best repository
 				ocv = best_repo_map.at(cli);
+				is_served = true;
 			}
+		}
+
+		if (is_served)
+		{
 			Quality q = ocv.q;
 			Vertex src = ocv.src;
-			Requests n = requests.at(pair<Vertex,Object>(cli,o) );
 			Weight load = n * sizes[q];
 			tot_pure_utility += utilities[q] * n;
-			update_load(edge_loads, G, predecessors_to_source, src, cli, load );
-			
-			cout<<"Object "<<o<<" is served to client "<<cli<<" through "<<ocv<<endl;
+			update_load(edge_load_map, G, predecessors_to_source, src, cli, load );
 		}
 	}
 	return tot_pure_utility;
 }
 
 // Returns the tot_pure_utility
-Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
+Weight greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector<E>& edges, Graph& G)
 {
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -472,11 +588,14 @@ Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 	fill_best_repo_map(repositories, clients, distances, best_repo_map);
 
 	for (vector<Vertex>::iterator it=caches.begin(); it!= caches.end(); ++it)
-	{	Vertex cache = *it; cache_occupancy.emplace(cache,0);
+	{
+		Vertex cache = *it; cache_occupancy.emplace(cache,0);
 	}
 
 	//{ INITIALIZE INCARNATIONS
+	#ifdef VERBOSE	
 	cout << "Initializing incarnations"<<endl;
+	#endif
 	for(vector<Object>::iterator obj_it = objects.begin(); obj_it != objects.end(); ++obj_it)
 	for(vector<Vertex>::iterator cache_it = caches.begin(); cache_it != caches.end(); ++cache_it)
 	for(Quality q=0; q<qualities; q++)
@@ -487,14 +606,15 @@ Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 		Weight b= compute_benefit(inc, clients, G, distances, best_repo_map, 
 			best_cache_map, cache_occupancy, potential_additional_clients);
 		inc.benefit=b;
-		cout<<inc<<endl;
 		if (inc.benefit > 0)
 			unused_incarnations.push_back(inc);
 		// else it is not worth considering it
 	}
 	unused_incarnations.sort(compare_incarnations);
+	#ifdef VERBOSE
+	cout<<"unused incarnations: "; print_collection(unused_incarnations);
 	print_occupancy(cache_occupancy);
-	print_collection(unused_incarnations);
+	#endif
 	//} INITIALIZE INCARNATIONS
 
 
@@ -535,7 +655,9 @@ Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 					client, and thus is useless");
 			#endif
 
+			#ifdef VERBOSE
 			cout<<"changing clients:";
+			#endif
 			// Update best_cache_map
 			for(vector<Vertex>::iterator cli_it = changing_clients.begin(); 
 				cli_it != changing_clients.end(); ++cli_it
@@ -545,11 +667,15 @@ Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 				new_opt_val_to_cache.src = best_inc.src;
 				new_opt_val_to_cache.distance = distances.at(best_inc.src).at(cli);
 				new_opt_val_to_cache.q = best_inc.q;
-				new_opt_val_to_cache.per_req_utility = compute_per_req_utility(best_inc, cli);
+				new_opt_val_to_cache.per_req_gross_utility = compute_per_req_gross_utility(best_inc, cli);
 				best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
+				#ifdef VERBOSE
 				cout<<cli<<":";
+				#endif
 			}
+			#ifdef VERBOSE
 			cout<<endl;
+			#endif
 
 			//{ RECOMPUTE THE BENEFITS
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
@@ -567,75 +693,121 @@ Weight greedy(EdgeLoads& edge_loads, vector<E>& edges, Graph& G)
 			unused_incarnations.sort(compare_incarnations);
 			//std::sort(unused_incarnations.rbegin(), unused_incarnations.rend() );
 
+			#ifdef VERBOSE
 			print_occupancy(cache_occupancy);
-			print_collection(unused_incarnations);
+			cout<<"unused incarnation: "; print_collection(unused_incarnations); cout<<endl;
+			#endif
 
 			//{ PURGE USELESS INCARNATIONS
 			// At the end we find all the zero-benefit incarnations
-			Weight worst_benefit = unused_incarnations.back().benefit;
-			while (worst_benefit == 0)
+			IncarnationCollection::iterator ui_it = unused_incarnations.end();
+			while (ui_it->benefit <= 0 && ui_it != unused_incarnations.begin() )
 			{
-				unused_incarnations.pop_back();
-				if (unused_incarnations.size()>0)
-					worst_benefit = unused_incarnations.back().benefit;
-				else worst_benefit = 1; // Just to get out of the while
+				--ui_it;
 			}
+			unused_incarnations.erase(ui_it, unused_incarnations.end() );
 			//} PURGE USELESS INCARNATIONS
 		//{ UPDATE DATA AFTER SELECTION
 
 	}
 
-	Weight tot_pure_utility = compute_edge_loads_and_pure_utility(edge_loads, G,
+	Weight tot_pure_utility = compute_edge_load_map_and_pure_utility(
+			edge_load_map, G,
 			predecessors_to_source, edges, 
-			clients, best_repo_map, best_cache_map);
+			requests, best_repo_map, best_cache_map);
+	#ifdef VERBOSE
+	print_mappings(edge_load_map, edge_weight_map, requests, G, predecessors_to_source);
+	#endif
 	return tot_pure_utility;
 }
 
-int main(int,char*[])
+void fill_weight_map(EdgeValues& edge_weight_map, 
+	const vector<E> edges, const vector<Weight> weights, const Graph& G)
 {
-	Requests tot_requests = initialize_requests(requests);
+	for (unsigned e_id=0; e_id<weights.size(); e_id++)
+	{
+		EdgeDescriptor ed = edge(edges.at(e_id).first, edges.at(e_id).second ,G).first;
+		edge_weight_map[ed] = weights[e_id];
+	}
+}
+
+int main(int argc,char* argv[])
+{
+	if (argc != 5)
+	{
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations>"<<endl;
+		exit(1);
+	}
+	float alpha = atof(argv[1]);
+	Object ctlg = strtoul(argv[2], NULL, 0);
+	float load = atof(argv[3]);
+	unsigned num_iterations = strtoul(argv[4], NULL, 0);
 	
+	// Parameter for the step update
+	unsigned M = num_iterations*100;
+
+	// Requests tot_requests = initialize_requests(requests);
+	Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
 
 	//{ INITIALIZE INPUT DATA STRUCTURE
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
+	vector<Size> tmp_sizevec(sizes, sizes+sizeof(sizes)/sizeof(Size)  );
+	float avg_size = compute_norm(tmp_sizevec );
+	Weight init_w=1/(avg_size * tot_requests); // Initialization weight
+	vector<Weight>weights(sizeof(edges_)/sizeof(E), init_w);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
 	Weight tot_pure_utility;
-	for (unsigned k=1; k<=200; k++)
+	Weight first_violation_norm=0;
+	float first_step, old_step;
+	for (unsigned k=1; k<=num_iterations; k++)
 	{
 		unsigned num_nodes = count_nodes(edges);
-		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights, num_nodes);
+		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights.data(), num_nodes);
+		EdgeValues edge_weight_map;
+		fill_weight_map(edge_weight_map, edges, weights, G);
 
-		tot_pure_utility = greedy(edge_loads, edges, G);
+		tot_pure_utility = greedy(edge_load_map, edge_weight_map, edges, G);
+	
 		Weight tot_brut_utility = tot_pure_utility;
-		print_edge_loads(edge_loads);
+		cout<<"edge_load_map: "; 	print_edge_load_map(edge_load_map);
 		
 		// Compute the violations
-		Weight violations[edges.size()];
-		Weight norm_squared=0;
+		vector<Weight> violations; violations.reserve(edges.size());
 		for (unsigned eid=0; eid<edges.size(); eid++)
 		{
 			EdgeDescriptor e = edge(edges[eid].first, edges[eid].second ,G).first;
-			violations[eid] = edge_loads[e] - link_capacity;
-			norm_squared += violations[eid]*violations[eid];
+			violations[eid] = edge_load_map[e] - link_capacity;
+			if (k==1) first_violation_norm += violations[eid]*violations[eid] ;
 			tot_brut_utility -=  weights[eid] * violations[eid];
-			cout<< "violation on "<< e <<" = "<< violations[eid] <<endl;
 		}
 
-		float big_const = 100;
-		float step =big_const * init_w / ( big_const+k * sqrt(norm_squared ) );
+		//{ STEP SIZE
+		float step;
+		if (k==1)
+		{
+			first_violation_norm = sqrt(first_violation_norm);
+			first_step = init_w / first_violation_norm;
+			step = first_step;
+		}else
+		{
+			step = old_step * pow( 1- 1/ (1+M+k), 0.5+eps );
+		}
+		old_step = step;
+		//} STEP SIZE
+
+		cout<<"violations ";
+		for (unsigned eid=0; eid<edges.size(); eid++) cout<<violations[eid]<<" ";
+		cout<<endl;
+
 		for (unsigned eid=0; eid<edges.size(); eid++)
 			weights[eid] = weights[eid] + step * violations[eid] > 0 ? 
 							weights[eid] + step * violations[eid] :0;
 
+		cout<<"new_weights: "; print_collection(weights);
 
-		cout<<"New weights: "<<endl;
-		for (unsigned eid=0; eid<edges.size(); eid++)
-			cout << weights[eid] <<" ";
-		cout <<endl;
-
-		cout<<"tot_requests="<<tot_requests<<endl;
-		cout<<"avg tot_brut_utility="<<tot_brut_utility/tot_requests<<endl;
+		cout<<"tot_requests "<<tot_requests<<endl;
+		cout<<"avg tot_brut_utility "<<tot_brut_utility/tot_requests<<endl;
 	}
 	return 0;
 }

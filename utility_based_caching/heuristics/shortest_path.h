@@ -58,16 +58,15 @@ using namespace boost;
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
 	typedef struct{
-		Vertex src; Weight distance; Quality q; Weight per_req_utility;
+		Vertex src; Weight distance; Quality q; Weight per_req_gross_utility;
 	} OptimalClientValues;
 	typedef MyMap<Object, MyMap<Vertex,OptimalClientValues> > BestSrcMap;
 	std::ostream& operator<<(std::ostream& os, const OptimalClientValues& ocv)  
 	{  
 		os<<"q:"<<unsigned(ocv.q) << "-src:" << ocv.src<<"-d:"<<ocv.distance<<
-				"-u:"<<ocv.per_req_utility;
-		return os;  
+				"-u:"<<ocv.per_req_gross_utility;
 	} 
-	typedef std::map<EdgeDescriptor,Weight> EdgeLoads;
+	typedef std::map<EdgeDescriptor,Weight> EdgeValues;
 
 //} TYPES
 #endif

@@ -1,0 +1,10 @@
+#!/bin/bash
+EXECUTABLE=approx.o
+ALPHA=1
+CTLG=1000
+LOAD=0.5 #Per each client
+ITERATIONS=100
+
+echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS
+
+./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS > /tmp/log.log
