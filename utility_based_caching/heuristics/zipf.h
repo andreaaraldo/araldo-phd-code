@@ -59,7 +59,7 @@ class ZipfGenerator
 
 		unsigned long generate_requests(unsigned long obj)
 		{
-			float prob = harm_num_ * 1/ pow(obj,alpha_);
+			float prob = 1/ (pow(obj,alpha_) * harm_num_);
 			float avg_requests = prob * avg_tot_requests_;
 			std::poisson_distribution<unsigned> distribution(avg_requests);
 			return distribution(generator_);
