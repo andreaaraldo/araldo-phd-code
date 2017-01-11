@@ -20,9 +20,9 @@ using namespace boost;
 
 //{ TYPES
 	// create a typedef for the Graph type
-	typedef float Weight;
+	typedef double Weight;
 	typedef adjacency_list<vecS, vecS, undirectedS,
-		no_property, property<edge_weight_t, float> > Graph;
+		no_property, property<edge_weight_t, double> > Graph;
 	typedef graph_traits<Graph>::vertex_descriptor Vertex;
 	typedef boost::property_map < Graph, boost::vertex_index_t >::type IndexMap;
 	typedef boost::iterator_property_map < Vertex*, IndexMap, Vertex, Vertex& > PredecessorMap;
@@ -34,7 +34,7 @@ using namespace boost;
 	typedef uint8_t Quality;
 	typedef unsigned Object;
 	typedef unsigned Requests;
-	typedef float Size;
+	typedef double Size;
 
 	struct IncarnationStruct
 	{	

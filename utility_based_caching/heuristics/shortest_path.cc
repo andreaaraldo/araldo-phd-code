@@ -21,27 +21,27 @@
 using namespace boost;
 using namespace std;
 
-Vertex caches_[] = {8};//{1,2,3,4,5,6,7,8,9,10,11};
+Vertex caches_[] = {1,2,3,4,5,6,7,8,9,10,11};
 Vertex repositories_[] = {8};
-Vertex clients_[] = {9};//{5,6,7,1,10};
+Vertex clients_[] = {5,6,7,1,10};
 E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(3,4), E(4,5), E(5,6), E(6,7), E(4,8), E(7,8), E(3,9), 
 		E(8,9), E(9,10)};
 
-Size link_capacity = 490000; // In Kbps
+Size link_capacity = 490.000; // In Mbps
 Weight utilities[] = {0.67, 0.80, 0.88, 0.95, 1};
-Size sizes[] = {300, 700, 1500, 2500, 3500}; // In Kbps
+Size sizes[] = {0.300, 0.700, 1.500, 2.500, 3.500}; // In Mbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
 unsigned seed = 1;
 
 //step parameters
-float eps = 1.0/100;
+double eps = 1.0/100;
 
 unsigned multiplier = 1;
 
-Requests generate_requests(RequestSet& requests, const float alpha, const Object ctlg,
-	const float load
+Requests generate_requests(RequestSet& requests, const double alpha, const Object ctlg,
+	const double load
 ){
 	Requests tot_requests = 0;
 	Requests avg_tot_requests = (Requests) (load*link_capacity/sizes[0] );
@@ -407,9 +407,9 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 }
 
 template <typename T>
-float compute_norm(const T& ic )
+double compute_norm(const T& ic )
 {
-	float norm=0;
+	double norm=0;
 	for (typename T::const_iterator it=ic.begin(); 
 			it!=ic.end(); ++it)
 	{
@@ -816,7 +816,7 @@ void fill_weight_map(EdgeValues& edge_weight_map,
 	}
 }
 
-void update_weights(vector<Weight>& weights, float step, const vector<Weight>& violations)
+void update_weights(vector<Weight>& weights, double step, const vector<Weight>& violations)
 {
 	for (unsigned eid=0; eid<weights.size(); eid++)
 			weights[eid] = weights[eid] + step * violations[eid] > 0 ? 
@@ -830,9 +830,9 @@ int main(int argc,char* argv[])
 		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations>"<<endl;
 		exit(1);
 	}
-	float alpha = atof(argv[1]);
+	double alpha = atof(argv[1]);
 	Object ctlg = strtoul(argv[2], NULL, 0);
-	float load = atof(argv[3]);
+	double load = atof(argv[3]);
 	unsigned num_iterations = strtoul(argv[4], NULL, 0);
 	
 	// Parameter for the step update
@@ -844,13 +844,13 @@ int main(int argc,char* argv[])
 	//{ INITIALIZE INPUT DATA STRUCTURE
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
 	vector<Size> tmp_sizevec(sizes, sizes+sizeof(sizes)/sizeof(Size)  );
-	float avg_size = compute_norm(tmp_sizevec );
+	double avg_size = compute_norm(tmp_sizevec );
 	Weight init_w=10.0/(tot_requests*avg_size); // Initialization weight
 	vector<Weight>weights(sizeof(edges_)/sizeof(E), init_w);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
 	Weight first_violation_norm=0;
-	float first_step, old_step;
+	double first_step, old_step;
 	for (unsigned k=1; k<=num_iterations; k++)
 	{
 		cout<<"\n\n################# ITER "<<k<<endl;
@@ -879,9 +879,10 @@ int main(int argc,char* argv[])
 			#endif
 		}
 		#ifdef SEVERE_DEBUG
-			if ( abs(tot_gross_utility - tot_gross_utility_2 ) / tot_requests > 1e-3 )
+			if ( abs(tot_gross_utility - tot_gross_utility_2 ) / tot_requests > 1e-2 )
 			{
-				stringstream os; os<<"Error in utility computation: gross_utility="<<
+				stringstream os; os<<"Error in utility computation at iteration "<<
+					k<<": gross_utility="<<
 					tot_gross_utility/tot_requests<<"; gross_utility_2="<<
 					tot_gross_utility_2/tot_requests;
 				throw invalid_argument(os.str().c_str());
@@ -895,7 +896,7 @@ int main(int argc,char* argv[])
 		#endif
 
 		//{ STEP SIZE
-		float step;
+		double step;
 		if (k==1)
 		{
 			first_violation_norm = sqrt(first_violation_norm);
