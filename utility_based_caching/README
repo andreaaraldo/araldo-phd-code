@@ -1,1 +1,1 @@
-To launch experiment, use examples/launcher
+To launch an experiment, cd to examples/multias, modify scenario_script.m and use launcher.bash
