@@ -29,7 +29,7 @@ E edges_[] = {E(1,2), E(1,11), E(2,11), E(10,11), E(2,3),
 		E(8,9), E(9,10)};
 
 Size link_capacity = 490.000; // In Mbps
-Weight utilities[] = {0.67, 0.80, 0.88, 0.95, 1};
+Weight utilities[] = {67, 80, 88, 95, 100};
 Size sizes[] = {0.300, 0.700, 1.500, 2.500, 3.500}; // In Mbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
@@ -109,6 +109,7 @@ Requests initialize_requests(RequestSet& requests)
 	MyMap<Vertex,Size> cache_occupancy;
 
 	Size max_size;
+	Weight max_utility;
 
 	EdgeValues edge_load_map;
 //} DATA STRUCTURES
@@ -630,6 +631,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 	fill_clients_and_objects(requests,clients,objects);
 	
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
+	max_utility=0; for (const Weight& u: utilities) if (u>max_utility) max_utility=u;
 	//} INITIALIZE INPUT DATA STRUCTURE
 	
 	// Associates to each source a map associating to each client the distance to that source
@@ -845,7 +847,7 @@ int main(int argc,char* argv[])
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
 	vector<Size> tmp_sizevec(sizes, sizes+sizeof(sizes)/sizeof(Size)  );
 	double avg_size = compute_norm(tmp_sizevec );
-	Weight init_w=10.0/(tot_requests*avg_size); // Initialization weight
+	Weight init_w=1000.0/(tot_requests*avg_size); // Initialization weight
 	vector<Weight>weights(sizeof(edges_)/sizeof(E), init_w);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
@@ -879,7 +881,7 @@ int main(int argc,char* argv[])
 			#endif
 		}
 		#ifdef SEVERE_DEBUG
-			if ( abs(tot_gross_utility - tot_gross_utility_2 ) / tot_requests > 1e-2 )
+			if ( abs(tot_gross_utility - tot_gross_utility_2 ) / tot_requests > max_utility )
 			{
 				stringstream os; os<<"Error in utility computation at iteration "<<
 					k<<": gross_utility="<<

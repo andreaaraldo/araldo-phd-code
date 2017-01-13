@@ -1,7 +1,7 @@
 #!/bin/bash
 EXECUTABLE=approx.o
 ALPHA=1
-CTLG=1000
+CTLG=100
 LOAD=2 #Per each client
 ITERATIONS=10000
 
