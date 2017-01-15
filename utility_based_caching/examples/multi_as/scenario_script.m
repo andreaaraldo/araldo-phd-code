@@ -36,7 +36,7 @@ fixed_data.name = "linear";
 data.seeds = [2];
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0]; # default 0.0001 (that means 0.01%)
+data.solutiongaps = [0.0001]; # default 0.0001 (that means 0.01%)
 data.timelimits = [57700]; # default 1e75
 data.catalog_sizes = [100];
 data.cache_to_ctlg_ratios = [11*1/100];	% fraction of catalog we could store in the overall cache space
@@ -86,7 +86,8 @@ data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
 data.loadds = [2];
 
 % DedicatedCache excluded
-data.strategys = {"RepresentationAware"};
+%data.strategys = {"AlwaysHighQuality","RepresentationAware"};
+data.strategys = {"AlwaysHighQuality"};
 
 data.path_base= path_base;
 launch_runs(experiment_name, data);

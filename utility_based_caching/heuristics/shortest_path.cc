@@ -14,8 +14,8 @@
 #include <cmath> // for sqrt()
 #include "zipf.h"
 
-#define SEVERE_DEBUG
-#define VERBOSE
+//#define SEVERE_DEBUG
+//#define VERBOSE
 
 
 using namespace boost;
@@ -34,7 +34,7 @@ Size sizes[] = {0.300, 0.700, 1.500, 2.500, 3.500}; // In Mbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
 unsigned seed = 1;
-
+bool improved = true;
 //step parameters
 double eps = 1.0/100;
 
@@ -110,8 +110,6 @@ Requests initialize_requests(RequestSet& requests)
 
 	Size max_size;
 	Weight max_utility;
-
-	EdgeValues edge_load_map;
 //} DATA STRUCTURES
 
 
@@ -321,7 +319,8 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
 		const BestSrcMap& best_cache_map, 
 		const MyMap<Vertex,Size>& cache_occupancy,
-		vector<Vertex>& out_potential_additional_clients
+		vector<Vertex>& out_potential_additional_clients,
+		const bool normalized // if "normalized", the gross utility will be divided by size 
 ){
 	Weight benefit=0;
 
@@ -387,7 +386,8 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 
 				if (u_new > u_best)
 				{
-					benefit += n * (u_new - u_best)/sizes[q_new];
+					benefit += n * (u_new - u_best);
+					if (normalized) benefit = benefit / sizes[q_new];
 					out_potential_additional_clients.push_back(cli);
 				} // else the benefit is not incremented
 			}
@@ -480,6 +480,34 @@ void update_load(EdgeValues& edge_load_map,
 	}
 }
 
+// Returns the amount of requests that can be satisfied considering the 
+// bottleneck of the path
+Requests compute_satisfiable(const EdgeValues& edge_load_map, 
+	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const Vertex src, const Vertex cli, const Quality q
+){
+	bool overload = false;
+	// Associates to each source a vector, having in the i-th position the predecessor of 
+	// the i-th node toward that source
+	const vector<Vertex> path = predecessors_to_source.at(src);
+	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
+	graph_traits< Graph >::vertex_descriptor current;
+	Requests satisfiable;
+	for (current=cli; current!= src && overload==false; current =  path[current] )
+	{
+		EdgeDescriptor e = edge(current,path[current],G).first;
+		Weight old_load = 0;
+		EdgeValues::const_iterator it = edge_load_map.find(e) ;
+		if (it != edge_load_map.end() )
+			old_load = it->second;
+		if (old_load>=link_capacity) return 0;
+		else if ( current==cli || (Requests) ( (link_capacity - old_load)/  sizes[q]) < satisfiable)
+			satisfiable = (Requests) ( (link_capacity - old_load)/  sizes[q]);
+	}
+	return satisfiable;
+}
+
+
 void print_path(const EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
 	const Vertex src, const Vertex cli
@@ -541,23 +569,26 @@ void print_mappings(const EdgeValues& edge_load_map, const EdgeValues& edge_weig
 // Return the average pure utility
 void compute_edge_load_map_and_pure_utility(EdgeValues& edge_load_map, 
 	const Graph& G,
-	const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const MyMap<Vertex, 	vector<Vertex> >& predecessors_to_source, 
 	const vector<E>& edges, 
 	const RequestSet& requests,
 	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
 	const BestSrcMap& best_cache_map,
 	Weight& out_tot_pure_utility,
-	Weight& out_tot_gross_utility
+	Weight& out_tot_gross_utility,
+	const bool overload_possible
 ){
 	out_tot_pure_utility=0;
 	out_tot_gross_utility = 0;
 	edge_load_map.clear();
-	for (RequestSet::const_iterator r_it = requests.begin(); 
-		r_it != requests.end() ; ++r_it
+
+	multimap< Requests, pair<Vertex,Object> > requests_flipped = flip_map(requests);
+	for (multimap< Requests, pair<Vertex,Object> >::reverse_iterator r_it = requests_flipped.rbegin(); 
+		r_it != requests_flipped.rend() ; ++r_it
 	){
-		Vertex cli = r_it->first.first;
-		Object o = r_it->first.second;
-		Requests n = r_it->second; // How many times o is requested by cli
+		Vertex cli = r_it->second.first;
+		Object o = r_it->second.second;
+		Requests n = r_it->first; // How many times o is requested by cli
 		bool is_served = false;
 		OptimalClientValues ocv;
 		BestSrcMap::const_iterator bcp_it = 
@@ -586,29 +617,41 @@ void compute_edge_load_map_and_pure_utility(EdgeValues& edge_load_map,
 		{
 			Quality q = ocv.q;
 			Vertex src = ocv.src;
-			Weight load = n * sizes[q];
-			out_tot_pure_utility += utilities[q] * n;
-			out_tot_gross_utility += ( utilities[q] - ocv.distance * sizes[q] ) * n;
+			Requests satisfied;
+			if (!overload_possible)
+			{
+				satisfied = compute_satisfiable(edge_load_map, 
+					G, predecessors_to_source, src, cli, q );
+				if (satisfied>n) satisfied = n;
+			}else
+				satisfied = n;
+
+			Weight load = satisfied * sizes[q];
+			out_tot_pure_utility += utilities[q] * satisfied;
+			out_tot_gross_utility += ( utilities[q] - ocv.distance * sizes[q] ) * satisfied;
 			#ifdef SEVERE_DEBUG
-				if (utilities[q] - ocv.distance * sizes[q] != ocv.per_req_gross_utility )
-				{
-					throw invalid_argument("Invalid ocv");
-				}
-				if(ocv.per_req_gross_utility<0)
-				{
-					stringstream os; os << "This OptimalClientValues is erroneous as the gross "
-						<<"utility cannot be negative: "<<ocv;
-					throw invalid_argument(os.str().c_str());
-				}
+					if (utilities[q] - ocv.distance * sizes[q] != ocv.per_req_gross_utility )
+					{
+						throw invalid_argument("Invalid ocv");
+					}
+					if(ocv.per_req_gross_utility<0)
+					{
+						stringstream os; os << "This OptimalClientValues is erroneous as the gross "
+							<<"utility cannot be negative: "<<ocv;
+						throw invalid_argument(os.str().c_str());
+					}
 			#endif
 			update_load(edge_load_map, G, predecessors_to_source, src, cli, load );
+			
 		}
 	}
 }
 
 // Returns the tot_pure_utility
-void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector<E>& edges, Graph& G,
-	Weight& tot_pure_utility, Weight& tot_gross_utility
+void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
+	const vector<E>& edges, const Graph& G,
+	Weight& tot_pure_utility_cleaned, Weight& tot_gross_utility, 
+	const bool normalized // Paramater of compute_benefit
 ){
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -662,7 +705,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 		vector<Vertex> potential_additional_clients; // I am not interested in this for the
 															// time being
 		Weight b= compute_benefit(inc, clients, G, distances, best_repo_map, 
-			best_cache_map, cache_occupancy, potential_additional_clients);
+			best_cache_map, cache_occupancy, potential_additional_clients, normalized);
 		inc.benefit=b;
 		if (inc.benefit > 0)
 			unused_incarnations.push_back(inc);
@@ -685,6 +728,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 		#endif
 		Incarnation best_inc = unused_incarnations.front();
 		unused_incarnations.pop_front();
+//		selected_incarnations.push_back();
 
 		#ifdef SEVERE_DEBUG
 		cout<< "Selected incarnation "<<best_inc<<endl;
@@ -717,7 +761,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 			// since only them change the associated source
 			vector<Vertex> changing_clients;
 			Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
-				best_cache_map, cache_occupancy, changing_clients);
+				best_cache_map, cache_occupancy, changing_clients, normalized);
 
 			#ifdef SEVERE_DEBUG
 			if (changing_clients.size()==0)
@@ -761,7 +805,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 			{
 				Incarnation& inc = *inc_c_it;
 				inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
-					best_cache_map, cache_occupancy, changing_clients);
+					best_cache_map, cache_occupancy, changing_clients, normalized);
 			}
 			//} RECOMPUTE THE BENEFITS
 			
@@ -797,15 +841,28 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, vector
 
 	}
 
+	bool overload_possible = true;
+	Weight tot_pure_utility_tmp;
 	compute_edge_load_map_and_pure_utility(
 			edge_load_map, G,
 			predecessors_to_source, edges, 
 			requests, best_repo_map, best_cache_map,
-			tot_pure_utility, tot_gross_utility);
+			tot_pure_utility_tmp, tot_gross_utility, 
+			overload_possible);
 	#ifdef VERBOSE
 	print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
 		predecessors_to_source);
 	#endif
+
+	overload_possible = false;
+	EdgeValues edge_load_map_cleaned;
+	Weight tot_gross_utility_tmp;
+	compute_edge_load_map_and_pure_utility(
+			edge_load_map_cleaned, G,
+			predecessors_to_source, edges, 
+			requests, best_repo_map, best_cache_map,
+			tot_pure_utility_cleaned, tot_gross_utility_tmp, 
+			overload_possible);
 }
 
 void fill_weight_map(EdgeValues& edge_weight_map, 
@@ -821,7 +878,7 @@ void fill_weight_map(EdgeValues& edge_weight_map,
 void update_weights(vector<Weight>& weights, double step, const vector<Weight>& violations)
 {
 	for (unsigned eid=0; eid<weights.size(); eid++)
-			weights[eid] = weights[eid] + step * violations[eid] > 0 ? 
+			weights[eid] =	weights[eid] + step * violations[eid] > 0 ? 
 							weights[eid] + step * violations[eid] :0;
 }
 
@@ -847,7 +904,7 @@ int main(int argc,char* argv[])
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
 	vector<Size> tmp_sizevec(sizes, sizes+sizeof(sizes)/sizeof(Size)  );
 	double avg_size = compute_norm(tmp_sizevec );
-	Weight init_w=1000.0/(tot_requests*avg_size); // Initialization weight
+	Weight init_w=0/(tot_requests*avg_size); // Initialization weight
 	vector<Weight>weights(sizeof(edges_)/sizeof(E), init_w);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
@@ -860,8 +917,44 @@ int main(int argc,char* argv[])
 		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights.data(), num_nodes);
 		EdgeValues edge_weight_map;
 		fill_weight_map(edge_weight_map, edges, weights, G);
-		Weight tot_pure_utility, tot_gross_utility;
-		greedy(edge_load_map, edge_weight_map, edges, G, tot_pure_utility, tot_gross_utility);
+
+		//{ COMPUTE THE UTILITY
+		Weight tot_pure_utility_cleaned, tot_gross_utility,
+			tot_pure_utility_cleaned_with_normalization, tot_gross_utility_with_normalization,
+			tot_pure_utility_cleaned_without_normalization, tot_gross_utility_without_normalization;
+		bool normalized=true;
+		EdgeValues edge_load_map, edge_load_map_with_normalization, 
+				edge_load_map_without_normalization;
+
+		greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
+			tot_pure_utility_cleaned_with_normalization, tot_gross_utility_with_normalization,
+			normalized
+		);
+		if (improved)
+		{
+			normalized=false;
+			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
+				tot_pure_utility_cleaned_without_normalization, tot_gross_utility_without_normalization,
+				normalized
+			);
+		}
+
+		if (tot_gross_utility_with_normalization >= tot_gross_utility_without_normalization ||
+			!improved
+		){
+			normalized=true;
+			tot_gross_utility = tot_gross_utility_with_normalization;
+			tot_pure_utility_cleaned = tot_pure_utility_cleaned_with_normalization;
+			edge_load_map = edge_load_map_with_normalization;
+		}
+		else{
+			normalized=false;
+			tot_gross_utility = tot_gross_utility_without_normalization;
+			tot_pure_utility_cleaned = tot_pure_utility_cleaned_without_normalization;
+			edge_load_map = edge_load_map_without_normalization;
+		}
+		//} COMPUTE THE UTILITY
+		
 	
 		#ifdef SEVERE_DEBUG
 			Weight tot_gross_utility_2 = tot_pure_utility;
@@ -902,7 +995,7 @@ int main(int argc,char* argv[])
 		if (k==1)
 		{
 			first_violation_norm = sqrt(first_violation_norm);
-			first_step = init_w / first_violation_norm;
+			first_step = link_capacity / first_violation_norm;
 			step = first_step;
 		}else
 		{
@@ -920,7 +1013,10 @@ int main(int argc,char* argv[])
 
 		cout<<"new_weights: "; print_collection(weights);
 		cout<<"tot_requests "<<tot_requests<<endl;
-		cout<<"avg tot_gross_utility "<<tot_gross_utility/tot_requests<<endl;
+		cout<<"avg_gross_utility "<<tot_gross_utility/tot_requests<<endl;
+		cout<<"avg_pure_utility_cleaned "<<tot_pure_utility_cleaned/tot_requests<<endl;
+
+		Implement the tilde{psi} di math_paper
 	}
 	return 0;
 }
