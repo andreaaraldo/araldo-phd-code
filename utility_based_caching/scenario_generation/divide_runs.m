@@ -27,6 +27,7 @@ function run_list = divide_runs(experiment_name, data)
 		data.topologys = [];
 		command="";
 		topology.link_capacity = data.link_capacity;  % In Kbps
+		size_=-1; % It will be set later
 		if ( strcmp(data.topofile,"") )
 			%{ GENERATE TOPO
 			size_ = data.topology_size;
@@ -43,12 +44,18 @@ function run_list = divide_runs(experiment_name, data)
 		%{ CHECK
 			if status!=0
 				error(sprintf("Error in executing command %s", command) );
-			end%if~/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0/float/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.1/alpha-1/load-2/strategy-RepresentationAware/seed-2/scenario.dat
+			end%i
 		%} CHECK
 
 		lines = strsplit(topodescription, del="\n");
 
 		topology.ases = strread(lines{1}, "%d")';
+		%{ CHECK
+			if strcmp(data.topofile,"") && size_!= length(topology.ases)
+				error "The size of the network that has been generated is not correctly recognized"
+			end
+		%} CHECK
+		size_ = length(topology.ases);
 
 		topology.ASes_with_users = [];
 		switch (user_distribution)
@@ -69,8 +76,6 @@ function run_list = divide_runs(experiment_name, data)
 		topology.servers = [];
 		topology_name = [];
 
-		if ( strcmp(data.topofile,"") )
-			% Topology has been generated
 			switch (server_position)
 				case "edges"
 					topology.servers = topology.ASes_with_users;
@@ -93,13 +98,14 @@ function run_list = divide_runs(experiment_name, data)
 				otherwise
 					error("Unrecognized cache distribution");					
 			endswitch
-	
+
+
+		if ( strcmp(data.topofile,"") )
+			% Topology has been generated	
 			topology.name = sprintf("size_%d-edgenodes_%d-capacity_%g-toposeed_%d-%s", ...
 						size_, edge_nodes, topology.link_capacity, topology_seed, ...
 						cache_distribution);
 		else
-			topology.servers = topology.ASes_with_users;
-			topology.ases_with_storage = topology.ASes_with_users;
 			topology.name = data.topofile;
 		end%if
 

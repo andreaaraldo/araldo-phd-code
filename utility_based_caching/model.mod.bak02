@@ -67,6 +67,7 @@ CUSTOMTYPE HowManyRequestsPerQuality[QualityLevels];
 float transmissions_from_cache[ASes][QualityLevels];
 
 int total_requests = 0;
+int is_total_requests_computed = 0; // 1 if yes, 0 if not
 
 float total_utility = 0;
 int is_total_utility_computed = 0;
@@ -108,9 +109,6 @@ execute
 			MaxQualityLevel = q;
 	}
 	//} FIND MAX QUALITY LEVEL
-
-	for (var r in ObjRequests )
-	{	total_requests += r.numOfObjectRequests; }
 
 
   //</aa> 	  
@@ -174,7 +172,7 @@ dvar float+  FlowServedByCache[ObjRequests][QualityLevels][ASes];
 //########################################################*/
 
 maximize 
-	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] / total_requests ) ;
+	sum( r in ObjRequests, q in QualityLevels ) ( ObjectRequestsServed[r][q] * UtilityPerQuality[q] ) ;
 
 subject to {
 
@@ -317,7 +315,15 @@ execute DEFINING_FUNCTIONS
 	
 	function compute_total_requests()
 	{
-		return total_requests;	
+		if (!is_total_requests_computed)
+		{
+			total_requests = 0;	
+			for (var r in ObjRequests )
+				total_requests += r.numOfObjectRequests;
+			is_total_requests_computed = 1;
+		}
+		return total_requests;
+			
 	}
 	
 	function compute_total_utility()

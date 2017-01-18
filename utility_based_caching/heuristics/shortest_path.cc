@@ -54,9 +54,7 @@ Requests generate_requests(RequestSet& requests, const double alpha, const Objec
 		requests.emplace(pair<Vertex,Object>(clients_[cli_id],o) , n) ;
 		tot_requests += n;
 	}
-	#ifdef VERBOSE
-	cout <<"Generated "<< tot_requests<<endl;
-	#endif
+	cout <<"tot_requests "<< tot_requests<<endl;
 	return tot_requests;
 }
 
