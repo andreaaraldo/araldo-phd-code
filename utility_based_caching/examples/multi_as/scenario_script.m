@@ -18,7 +18,7 @@ run_ = true;
 experiment_name = "multi_as";
 
 data.fixed_datas = [];
-fixed_data.parallel_processes = 8;
+fixed_data.parallel_processes = 1;
 fixed_data.path_base = path_base;
 fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
@@ -26,7 +26,7 @@ fixed_data.cache_space_at_low_quality = 11.25;% In MB
 
 fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
 fixed_data.name = "linear";
-%data.fixed_datas = [data.fixed_datas, fixed_data];
+data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
@@ -84,7 +84,7 @@ data.customtypes = {"int"}; % float or int or veryfloat
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
-data.loadds = [1];
+data.loadds = [0.5 1 1.5 2];
 
 % DedicatedCache excluded
 %data.strategys = {"AlwaysHighQuality","RepresentationAware"};
