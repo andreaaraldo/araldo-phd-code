@@ -2,9 +2,15 @@
 EXECUTABLE=approx.o
 ALPHA=1
 CTLG=100
-LOAD=1 #Per each client
-ITERATIONS=1000
+LOAD=2 #Per each client
+ITERATIONS=10000
 
-echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS
 
-./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS > /tmp/log.log
+for LOAD in 0.5 1 1.5 2;  do
+for SEED in `seq 3 20`;  do
+echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED
+DIR=output/seed-$SEED
+mkdir -p $DIR
+./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED > $DIR/log-load_$LOAD.log
+done
+done

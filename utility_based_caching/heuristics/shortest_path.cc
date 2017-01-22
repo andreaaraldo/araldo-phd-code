@@ -33,7 +33,7 @@ Weight utilities[] = {67, 80, 88, 95, 100};
 Size sizes[] = {0.300, 0.700, 1.500, 2.500, 3.500}; // In Mbps
 Size single_storage=1; //As a multiple of the highest quality size
 Quality qualities;
-unsigned seed = 1;
+unsigned seed;
 bool improved = true;
 //step parameters
 double eps = 1.0/100;
@@ -882,15 +882,16 @@ void update_weights(vector<Weight>& weights, double step, const vector<Weight>& 
 
 int main(int argc,char* argv[])
 {
-	if (argc != 5)
+	if (argc != 6)
 	{
-		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations>"<<endl;
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed>"<<endl;
 		exit(1);
 	}
 	double alpha = atof(argv[1]);
 	Object ctlg = strtoul(argv[2], NULL, 0);
 	double load = atof(argv[3]);
 	unsigned num_iterations = strtoul(argv[4], NULL, 0);
+	seed = strtoul(argv[5], NULL, 0);
 	
 	// Parameter for the step update
 	unsigned M = num_iterations/10;
@@ -1014,7 +1015,7 @@ int main(int argc,char* argv[])
 		cout<<"avg_gross_utility "<<tot_gross_utility/tot_requests<<endl;
 		cout<<"avg_pure_utility_cleaned "<<tot_pure_utility_cleaned/tot_requests<<endl;
 
-		Implement the tilde{psi} di math_paper
+		//Implement the tilde{psi} di math_paper
 	}
 	return 0;
 }
