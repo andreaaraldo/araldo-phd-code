@@ -13,6 +13,11 @@
 #include "shortest_path.h"
 #include <cmath> // for sqrt()
 #include "zipf.h"
+#include <fstream>
+#include <string>
+
+#include <climits>
+#include <boost/tokenizer.hpp>
 
 //#define SEVERE_DEBUG
 //#define VERBOSE
@@ -39,6 +44,40 @@ bool improved = true;
 double eps = 1.0/100;
 
 unsigned multiplier = 1;
+
+
+Requests load_requests(RequestSet& requests, const stringstream& filepath, 
+	const unsigned seed, const double load
+){
+	stringstream filename; 
+	filename<<filepath.str().c_str()<<"/load-"<<load<<"/seed-"<<seed<<"/req.dat";
+	ifstream myf;
+	myf.open(filename.str().c_str() );
+	if(!myf.is_open() )
+	{
+		cout<<"Error reading file "<<filename.str().c_str()<<endl;
+		exit(1);
+	}
+	string line;
+	getline(myf,line) ;
+	char_separator<char> sep("<>"); //Inspired by http://stackoverflow.com/a/55680/2110769
+    tokenizer< char_separator<char> > tokens(line, sep);
+	Requests tot_requests =0;
+	unsigned count=1;
+    for (const auto& t : tokens) 
+	{
+		if (count%2==0)
+		{
+			unsigned o,cli,n; o=cli=n=0;
+			sscanf(t.c_str(), "%u,%u,%u", &o,&cli,&n);
+			requests.emplace(pair<Vertex,Object>(cli,o) , n) ;
+			tot_requests += n;
+		}
+		count++;
+    }
+	myf.close();
+	return tot_requests;
+}
 
 Requests generate_requests(RequestSet& requests, const double alpha, const Object ctlg,
 	const double load
@@ -339,56 +378,60 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 			Vertex cli = *it;
 			Weight distance_new = tmp_distances_to_incarnation.at(cli);
 			Weight u_new = utilities[q_new] - sizes[q_new] * distance_new;
-			Requests n = requests.at(pair<Vertex,Object>(cli,obj) );
-
-			if (u_new>0 && n>0)
+			RequestSet::const_iterator req_it = requests.find(pair<Vertex,Object>(cli,obj) );
+			
+			if(req_it != requests.end() )
 			{
-				Weight u_cache = 0;
-				BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
-				if(bcp_it != best_cache_map.end() )
+				Requests n = req_it->second;
+				if (u_new>0 && n>0)
 				{
-					MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
-					MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
-							opt_cache_values_per_obj.find(cli);
-					if (ocv_it != opt_cache_values_per_obj.end() )
+					Weight u_cache = 0;
+					BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
+					if(bcp_it != best_cache_map.end() )
 					{
-						OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
-						u_cache = opt_val_to_cache.per_req_gross_utility;
-					} // else there is no cache location that serves that object to
-					  // that client
-				}// else There is no good cache location, and thus the best utility we could 
-				 // get (before considering the new incarnation) is provided by the best repo
+						MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
+						MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
+								opt_cache_values_per_obj.find(cli);
+						if (ocv_it != opt_cache_values_per_obj.end() )
+						{
+							OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
+							u_cache = opt_val_to_cache.per_req_gross_utility;
+						} // else there is no cache location that serves that object to
+						  // that client
+					}// else There is no good cache location, and thus the best utility we could 
+					 // get (before considering the new incarnation) is provided by the best repo
 
-				Weight u_best=0; 	// If the best_utility remains 0, it means that the object is 
-									// currently not served to the client
-				if (u_cache > 0)
-				{
-					// We found some cache serving that object to that client. By construction
-					// it is better than any repo.
-					u_best = u_cache;
-				}else{
-					// No cache is serving that object to that client. We verify whether there is 
-					// a repository serving that
-					MyMap< Vertex, OptimalClientValues >::const_iterator opt_val_to_repo_it =
-						best_repo_map.find(cli);
-					if (opt_val_to_repo_it != best_repo_map.end() )
+					Weight u_best=0; 	// If the best_utility remains 0, it means that the object is 
+										// currently not served to the client
+					if (u_cache > 0)
 					{
-						// There is a repository currently serving cli
-						OptimalClientValues opt_val_to_repo = opt_val_to_repo_it->second;
-						u_best = opt_val_to_repo.per_req_gross_utility;
-						#ifdef SEVERE_DEBUG
-							if(u_best<=0) throw invalid_argument("u_repo cannot be negative");
-						#endif
+						// We found some cache serving that object to that client. By construction
+						// it is better than any repo.
+						u_best = u_cache;
+					}else{
+						// No cache is serving that object to that client. We verify whether there is 
+						// a repository serving that
+						MyMap< Vertex, OptimalClientValues >::const_iterator opt_val_to_repo_it =
+							best_repo_map.find(cli);
+						if (opt_val_to_repo_it != best_repo_map.end() )
+						{
+							// There is a repository currently serving cli
+							OptimalClientValues opt_val_to_repo = opt_val_to_repo_it->second;
+							u_best = opt_val_to_repo.per_req_gross_utility;
+							#ifdef SEVERE_DEBUG
+								if(u_best<=0) throw invalid_argument("u_repo cannot be negative");
+							#endif
+						}
 					}
-				}
 
-				if (u_new > u_best)
-				{
-					benefit += n * (u_new - u_best);
-					if (normalized) benefit = benefit / sizes[q_new];
-					out_potential_additional_clients.push_back(cli);
-				} // else the benefit is not incremented
-			}
+					if (u_new > u_best)
+					{
+						benefit += n * (u_new - u_best);
+						if (normalized) benefit = benefit / sizes[q_new];
+						out_potential_additional_clients.push_back(cli);
+					} // else the benefit is not incremented
+				}
+			} // else there are no requests for that object from that client
 		} //end of for
 	} 	// Else benefit remains 0, in order to avoid to insert this element, since there is no room
 		// for it
@@ -887,6 +930,7 @@ int main(int argc,char* argv[])
 		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed>"<<endl;
 		exit(1);
 	}
+	Weight min_gross_utility = DBL_MAX;
 	double alpha = atof(argv[1]);
 	Object ctlg = strtoul(argv[2], NULL, 0);
 	double load = atof(argv[3]);
@@ -896,8 +940,13 @@ int main(int argc,char* argv[])
 	// Parameter for the step update
 	unsigned M = num_iterations/10;
 
+	//{ CREATE REQUESTS
 	// Requests tot_requests = initialize_requests(requests);
-	Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
+	// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
+	stringstream filepath; filepath<<"/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-1";
+	Requests tot_requests = load_requests(requests, filepath, seed, load);
+
+	//} CREATE REQUESTS
 
 	//{ INITIALIZE INPUT DATA STRUCTURE
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
@@ -1009,10 +1058,13 @@ int main(int argc,char* argv[])
 		cout<<endl;
 
 		update_weights(weights, step, violations);
+		if (tot_gross_utility < min_gross_utility)
+			min_gross_utility = tot_gross_utility;
 
 		cout<<"new_weights: "; print_collection(weights);
 		cout<<"tot_requests "<<tot_requests<<endl;
 		cout<<"avg_gross_utility "<<tot_gross_utility/tot_requests<<endl;
+		cout<<"min_gross_utility "<<min_gross_utility/tot_requests<<endl;
 		cout<<"avg_pure_utility_cleaned "<<tot_pure_utility_cleaned/tot_requests<<endl;
 
 		//Implement the tilde{psi} di math_paper
