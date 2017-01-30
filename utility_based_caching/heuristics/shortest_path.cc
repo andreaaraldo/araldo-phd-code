@@ -930,6 +930,7 @@ int main(int argc,char* argv[])
 		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed>"<<endl;
 		exit(1);
 	}
+	cout<<"eps "<<eps<<endl;
 	Weight min_gross_utility = DBL_MAX;
 	double alpha = atof(argv[1]);
 	Object ctlg = strtoul(argv[2], NULL, 0);
@@ -943,7 +944,7 @@ int main(int argc,char* argv[])
 	//{ CREATE REQUESTS
 	// Requests tot_requests = initialize_requests(requests);
 	// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
-	stringstream filepath; filepath<<"/home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-1";
+	stringstream filepath; filepath<<"/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-1";
 	Requests tot_requests = load_requests(requests, filepath, seed, load);
 
 	//} CREATE REQUESTS
@@ -1047,7 +1048,8 @@ int main(int argc,char* argv[])
 			step = first_step;
 		}else
 		{
-			double multiplier = pow( 1- 1/ (1+M+k), 0.5+eps );
+			double multiplier = pow( 1.0- 1.0/ (1.0+M+k), 0.5+eps );
+			cout << "multiplier "<<multiplier<<endl;
 			step = old_step * multiplier;
 		}
 		old_step = step;
