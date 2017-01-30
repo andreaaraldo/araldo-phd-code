@@ -7,7 +7,7 @@ ITERATIONS=10000
 
 
 for LOAD in 0.5 1 1.5 2;  do
-for SEED in `seq 3 20`;  do
+for SEED in `seq 1 20`;  do
 echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED
 DIR=output/seed-$SEED
 mkdir -p $DIR

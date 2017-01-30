@@ -943,7 +943,7 @@ int main(int argc,char* argv[])
 	//{ CREATE REQUESTS
 	// Requests tot_requests = initialize_requests(requests);
 	// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
-	stringstream filepath; filepath<<"/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-1";
+	stringstream filepath; filepath<<"/home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-1";
 	Requests tot_requests = load_requests(requests, filepath, seed, load);
 
 	//} CREATE REQUESTS
