@@ -1047,7 +1047,8 @@ int main(int argc,char* argv[])
 			step = first_step;
 		}else
 		{
-			step = old_step * pow( 1- 1/ (1+M+k), 0.5+eps );
+			double multiplier = pow( 1- 1/ (1+M+k), 0.5+eps );
+			step = old_step * multiplier;
 		}
 		old_step = step;
 		cout <<"step "<<step<<endl;
