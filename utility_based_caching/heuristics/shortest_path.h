@@ -19,8 +19,14 @@
 using namespace boost;
 
 //{ TYPES
+	enum input_type{automatic, direct};
+	enum serving_type{cache, repo, no};
+	
+
 	// create a typedef for the Graph type
 	typedef double Weight;
+	Weight WEIGHT_MAX = std::numeric_limits<Weight>::max();
+
 	typedef adjacency_list<vecS, vecS, undirectedS,
 		no_property, property<edge_weight_t, double> > Graph;
 	typedef graph_traits<Graph>::vertex_descriptor Vertex;
@@ -39,12 +45,14 @@ using namespace boost;
 	struct IncarnationStruct
 	{	
 		Object o; Quality q; Vertex src; Weight benefit; 
-		IncarnationStruct() : benefit(0) {};
+		bool valid; // True only if the benefit has been computed
+		IncarnationStruct() : benefit(0), valid(false) {};
 	};
 	typedef IncarnationStruct Incarnation;
 	std::ostream& operator<<(std::ostream& os, const Incarnation& inc)  
 	{  
-		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.src<<":"<<inc.benefit;  
+		os << inc.o << ':' << unsigned(inc.q) << ':' << inc.src;
+		if(inc.valid) os<<":"<<inc.benefit;  
 		return os;  
 	} 
 	bool compare_incarnations(const Incarnation& inc1, const Incarnation& inc2)	
