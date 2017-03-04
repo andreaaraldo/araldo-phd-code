@@ -2,13 +2,6 @@
 ITERATIONS=1000000
 EXECUTABLE=approx.o
 
-DATFILE='toy_cases/toy_case_2.dat'
-grep "ObjRequests" $DATFILE > /tmp/req.dat
-./$EXECUTABLE /tmp/req.dat $ITERATIONS
-
-
-
-exit
 
 ## This is the other type
 ALPHA=1
