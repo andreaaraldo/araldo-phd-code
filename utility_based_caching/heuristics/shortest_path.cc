@@ -22,8 +22,8 @@
 // Change here to change the network
 #include "networks/abilene.hpp"
 
-#define SEVERE_DEBUG
-#define VERBOSE
+//#define SEVERE_DEBUG
+//#define VERBOSE
 
 
 using namespace boost;
@@ -495,9 +495,6 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 	}
 	cout<<endl;
 }
-	// Associates to each source a map associating to each client the distance to that source
-	;
-
 
 Weight compute_per_req_gross_utility(const Incarnation& inc, Vertex cli,
 	const MyMap< Vertex, MyMap<Vertex,Weight > >& distances
@@ -558,7 +555,6 @@ Requests compute_satisfiable(const EdgeValues& edge_load_map,
 	}
 	return satisfiable;
 }
-
 
 void print_path(const EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
@@ -787,7 +783,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	MyMap< Vertex, MyMap<Vertex,Weight > > distances;
 	fill_distances(sources, clients, G, predecessors_to_source, distances);
 	#ifdef VERBOSE
-		print_distances(sources, clients, G);
+	print_distances(sources, clients, G);
 	#endif
 
 	// Associates to each client, the best repository and the corresponding optimal information
@@ -915,7 +911,10 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
 				best_cache_map, cache_occupancy, changing_clients, normalized);
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
+
+			#ifdef VERBOSE
 			print_occupancy(cache_occupancy);
+			#endif
 
 			#ifdef SEVERE_DEBUG
 			if (changing_clients.size()==0)
@@ -1165,9 +1164,8 @@ int main(int argc,char* argv[])
 		//} COMPUTE THE UTILITY
 		
 	
-		#ifdef VERBOSE
-			cout<<"edge_load_map: "; 	print_edge_load_map(edge_load_map);
-		#endif
+		cout<<"edge_load_map: "; 	print_edge_load_map(edge_load_map);
+
 		// Compute the violations
 		vector<Weight> violations; violations.reserve(edges.size());
 		for (unsigned eid=0; eid<edges.size(); eid++)

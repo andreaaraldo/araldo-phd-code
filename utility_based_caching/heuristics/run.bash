@@ -9,7 +9,9 @@ CTLG=100
  #LOAD is Per each client
 
 for LOAD in 0.5 1 1.5 2;  do
+#for LOAD in 1.5;  do
 for SEED in `seq 1 20`;  do
+#for SEED in `seq 1 1`;  do
 echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED
 DIR=output/seed-$SEED
 mkdir -p $DIR

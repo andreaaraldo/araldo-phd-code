@@ -21,7 +21,7 @@ using namespace boost;
 //{ TYPES
 	enum input_type{automatic, direct};
 	enum serving_type{cache, repo, no};
-	
+
 
 	// create a typedef for the Graph type
 	typedef double Weight;
