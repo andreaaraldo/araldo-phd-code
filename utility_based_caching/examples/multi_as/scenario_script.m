@@ -34,13 +34,13 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 
-data.seeds = 3:20;
+data.seeds = 1:1;
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001
 data.timelimits = [57700]; # default 1e75
-data.catalog_sizes = [100];
-data.cache_to_ctlg_ratios = [11*1/100];	% fraction of catalog we could store in the overall cache space
+data.catalog_sizes = [2];
+data.cache_to_ctlg_ratios = [0*11*1/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"int"}; % float or int or veryfloat	
@@ -84,7 +84,7 @@ data.customtypes = {"int"}; % float or int or veryfloat
 % It is expressed as a multiple of link capacity we would use to transmit 
 % all the requested objects at low quality
 data.loadds = [0.25 0.5 0.75 1 1.25 1.5 1.75 2];
-data.loadds = [0.5 1 1.5 2];
+data.loadds = [1];
 
 % DedicatedCache excluded
 %data.strategys = {"AlwaysHighQuality","RepresentationAware"};
