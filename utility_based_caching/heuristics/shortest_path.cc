@@ -1064,9 +1064,10 @@ int main(int argc,char* argv[])
 	Object ctlg;
 	double load;
 	unsigned num_iterations;
+	double slowdown;
 	const char* filename;
 
-	if (argc==6)
+	if (argc==7)
 	{
 		input = automatic;
 		alpha = atof(argv[1]);
@@ -1074,6 +1075,7 @@ int main(int argc,char* argv[])
 		load = atof(argv[3]);
 		num_iterations = strtoul(argv[4], NULL, 0);
 		seed = strtoul(argv[5], NULL, 0);
+		slowdown = atof(argv[6]);
 
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
@@ -1084,21 +1086,23 @@ int main(int argc,char* argv[])
 		filename = ssfilename.str().c_str() ;
 		//} REQUESTS
 
-	} else if(argc==3)
+	} else if(argc==4)
 	{
 		input = direct;
 		filename = argv[1];
 		num_iterations = strtoul(argv[2], NULL, 0);
+		slowdown = atof(argv[3]);
 	}else
 	{
-		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> \n or"<<endl;
-		cout<<"\t"<<argv[0]<<" <req_filename> <iterations>"<<endl;
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown>\n or"<<endl;
+		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown>"<<endl;
 		exit(1);
 	}
 	//} INPUT
 
 	cout<<"eps "<<eps<<endl;
 	Weight min_gross_utility = DBL_MAX;
+	Weight max_tot_feasible_utility = 0;
 
 	
 	// Parameter for the step update
@@ -1120,6 +1124,8 @@ int main(int argc,char* argv[])
 	for (unsigned k=1; k<=num_iterations; k++)
 	{
 		cout<<"\n\n################# ITER "<<k<<endl;
+		cout<<"new_weights "; print_collection(weights);
+
 		unsigned num_nodes = count_nodes(edges);
 		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights.data(), num_nodes);
 		EdgeValues edge_weight_map;
@@ -1192,7 +1198,7 @@ int main(int argc,char* argv[])
 			step = first_step;
 		}else
 		{
-			double multiplier = pow( 1.0- 1.0/ (1.0+M+(k/500)+1), 0.5+eps );
+			double multiplier = pow( 1.0- 1.0/ (1.0+M+((double)k/slowdown)+1), 0.5+eps );
 			cout << "multiplier "<<multiplier<<endl;
 			step = old_step * multiplier;
 		}
@@ -1200,19 +1206,31 @@ int main(int argc,char* argv[])
 		cout <<"step "<<step<<endl;
 		//} STEP SIZE
 
+		//{ VIOLATIONS
+		Weight tot_violations=0;
 		cout<<"violations ";
-		for (unsigned eid=0; eid<edges.size(); eid++) cout<<violations[eid]<<" ";
+		for (unsigned eid=0; eid<edges.size(); eid++)
+		{
+			Weight single_violation = violations[eid];
+			if (single_violation > 0)
+				tot_violations += single_violation;
+			cout<< single_violation <<" ";
+		}
 		cout<<endl;
+		cout << "tot_violation "<< tot_violations << endl;
+		//} VIOLATION
 
 		update_weights(weights, step, violations);
 		if (lagrangian_value < min_gross_utility)
 			min_gross_utility = lagrangian_value;
+		if (tot_feasible_utility_cleaned > max_tot_feasible_utility)
+			max_tot_feasible_utility = tot_feasible_utility_cleaned;
 
-		cout<<"new_weights: "; print_collection(weights);
 		cout<<"tot_requests "<<tot_requests<<endl;
 		cout<<"current_lagrangian "<<lagrangian_value/tot_requests<<endl;
 		cout<<"min_lagrangian "<<min_gross_utility/tot_requests<<endl;
-		cout<<"avg_feasible_utility_cleaned "<<tot_feasible_utility_cleaned/tot_requests<<endl;
+		cout<<"current_avg_feasible_utility "<<tot_feasible_utility_cleaned/tot_requests<<endl;
+		cout<<"max_avg_feasible_utility "<<max_tot_feasible_utility / tot_requests<<endl;
 
 		//Implement the tilde{psi} di math_paper
 	}

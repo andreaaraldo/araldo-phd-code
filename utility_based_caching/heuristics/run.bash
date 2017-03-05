@@ -1,5 +1,5 @@
 #!/bin/bash
-ITERATIONS=1000000
+ITERATIONS=100
 EXECUTABLE=approx.o
 
 
@@ -8,13 +8,13 @@ ALPHA=1
 CTLG=100
  #LOAD is Per each client
 
-for LOAD in 0.5 1 1.5 2;  do
-#for LOAD in 1.5;  do
-for SEED in `seq 1 20`;  do
-#for SEED in `seq 1 1`;  do
-echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED
-DIR=output/seed-$SEED
+for SLOWDOWN in 1 10 100; do
+for LOAD in 0.5 1 1.5 2;  do #0.5 1 1.5 2
+for SEED in `seq 1 1`;  do #seq 1 20
+echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN
+DIR=output/slowdown-$SLOWDOWN/seed-$SEED
 mkdir -p $DIR
-./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED > $DIR/log-load_$LOAD.log &
+./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN > $DIR/log-load_$LOAD.log &
+done
 done
 done
