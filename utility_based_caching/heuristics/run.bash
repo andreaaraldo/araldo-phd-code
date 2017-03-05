@@ -1,5 +1,5 @@
 #!/bin/bash
-ITERATIONS=100
+ITERATIONS=11
 EXECUTABLE=approx.o
 
 
@@ -8,8 +8,8 @@ ALPHA=1
 CTLG=100
  #LOAD is Per each client
 
-for SLOWDOWN in 1 10 100; do
-for LOAD in 0.5 1 1.5 2;  do #0.5 1 1.5 2
+for SLOWDOWN in 10; do
+for LOAD in 1;  do #0.5 1 1.5 2
 for SEED in `seq 1 1`;  do #seq 1 20
 echo ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN
 DIR=output/slowdown-$SLOWDOWN/seed-$SEED
