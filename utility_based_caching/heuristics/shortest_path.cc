@@ -365,7 +365,8 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 		const BestSrcMap& best_cache_map, 
 		const MyMap<Vertex,Size>& cache_occupancy,
 		vector<Vertex>& out_potential_additional_clients,
-		const bool normalized // if "normalized", the gross utility will be divided by size 
+		const bool normalized, // if "normalized", the gross utility will be divided by size 
+		const Size single_storage
 ){
 	Weight benefit=0;
 
@@ -741,7 +742,8 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
 	const vector<E>& edges, const Graph& G,
 	Weight& tot_feasible_utility_cleaned, Weight& lagrangian_value, 
-	const bool normalized // Paramater of compute_benefit
+	const bool normalized, // Paramater of compute_benefit
+	Size single_storage
 ){
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -803,7 +805,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		vector<Vertex> potential_additional_clients; // I am not interested in this for the
 															// time being
 		Weight b= compute_benefit(inc, clients, G, distances, best_repo_map, 
-			best_cache_map, cache_occupancy, potential_additional_clients, normalized);
+			best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage);
 		if (inc.benefit > 0)
 			available_incarnations.push_back(inc);
 		else 
@@ -909,7 +911,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			// since only them change the associated source
 			vector<Vertex> changing_clients;
 			Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
-				best_cache_map, cache_occupancy, changing_clients, normalized);
+				best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 			#ifdef VERBOSE
@@ -957,7 +959,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			for (Incarnation& inc : available_incarnations)
 			{
 				inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
-					best_cache_map, cache_occupancy, changing_clients, normalized);
+					best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
 			}
 			//} RECOMPUTE THE BENEFITS
 			
@@ -1064,10 +1066,12 @@ int main(int argc,char* argv[])
 	Object ctlg;
 	double load;
 	unsigned num_iterations;
-	double slowdown;
+	int slowdown;
 	const char* filename;
+	Size single_storage; //As a multiple of the highest quality size
+	
 
-	if (argc==7)
+	if (argc==8)
 	{
 		input = automatic;
 		alpha = atof(argv[1]);
@@ -1075,27 +1079,29 @@ int main(int argc,char* argv[])
 		load = atof(argv[3]);
 		num_iterations = strtoul(argv[4], NULL, 0);
 		seed = strtoul(argv[5], NULL, 0);
-		slowdown = atof(argv[6]);
+		slowdown = atoi(argv[6]);
+		single_storage = atof(argv[7]);
 
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
-		stringstream filepath; filepath<<"/home/araldo_local/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-100/alpha-"<<alpha;
+		stringstream filepath; filepath<<"/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-"<< ctlg <<"/alpha-"<<alpha;
 		stringstream ssfilename; 
 		ssfilename<<filepath.str().c_str()<<"/load-"<<load<<"/seed-"<<seed<<"/req.dat";	
 		filename = ssfilename.str().c_str() ;
 		//} REQUESTS
 
-	} else if(argc==4)
+	} else if(argc==5)
 	{
 		input = direct;
 		filename = argv[1];
 		num_iterations = strtoul(argv[2], NULL, 0);
-		slowdown = atof(argv[3]);
+		slowdown = atoi(argv[3]);
+		single_storage = atof(argv[4]);
 	}else
 	{
-		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown>\n or"<<endl;
-		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown>"<<endl;
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown> <single_storage>\n or"<<endl;
+		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown> <single_storage>"<<endl;
 		exit(1);
 	}
 	//} INPUT
@@ -1144,12 +1150,12 @@ int main(int argc,char* argv[])
 			normalized=false;
 			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization,
-				normalized
+				normalized, single_storage
 			);
 		}else
 			greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_with_normalization, lagrangian_value_with_normalization,
-				normalized
+				normalized, single_storage
 			);
 
 
@@ -1198,9 +1204,12 @@ int main(int argc,char* argv[])
 			step = first_step;
 		}else
 		{
-			double multiplier = pow( 1.0- 1.0/ (1.0+M+((double)k/slowdown)+1), 0.5+eps );
+			/*
+			double multiplier = pow( 1.0- 1.0/ (1.0+M+(k/slowdown)+1), 0.5+eps );
 			cout << "multiplier "<<multiplier<<endl;
 			step = old_step * multiplier;
+*/
+			step = 1.0/ (k/slowdown + 1);
 		}
 		old_step = step;
 		cout <<"step "<<step<<endl;
