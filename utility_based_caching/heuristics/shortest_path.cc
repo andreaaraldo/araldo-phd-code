@@ -493,6 +493,15 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
 		Vertex cache = it->first;
 		Size s = it->second;
 		cout<<cache<<":"<<s<<"----";
+		#ifdef SEVERE_DEBUG
+			if (s>single_storage*max_size)
+			{
+				char msg[200];
+				sprintf(msg,"Storage constraints not verified:single_storage=%g HQ objects, which means space %g of storage. Despite this, cache %lu has %g of space occupied",
+					single_storage, single_storage*max_size, cache, s);
+				throw std::invalid_argument(msg);
+			}
+		#endif
 	}
 	cout<<endl;
 }
@@ -895,9 +904,8 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			if (s>single_storage*max_size)
 			{
 				char msg[200];
-				sprintf(msg,"Storage constraints not verified:single_storage=%g; \
-						cache %lu has %g of space occupied",
-					single_storage, cache, s);
+				sprintf(msg,"Storage constraints not verified:single_storage=%g HQ objects, which means space %g of storage. Despite this, cache %lu has %g of space occupied",
+					single_storage, single_storage*max_size, cache, s);
 				throw std::invalid_argument(msg);
 			}
 		}
