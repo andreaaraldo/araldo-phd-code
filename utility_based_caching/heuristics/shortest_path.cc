@@ -484,7 +484,7 @@ void print_collection(const T& ic )
 	cout<<endl;
 }
 
-void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy )
+void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
 {
 	cout<<"Occupancy(cache:occupation): ";
 	for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
@@ -832,7 +832,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	#ifdef VERBOSE
 	cout<<"available incarnations (o:q:src:benefit): "; print_collection(available_incarnations);
 	cout<<"useless incarnations (o:q:src:benefit): "; print_collection(useless_incarnations);
-	print_occupancy(cache_occupancy);
+	print_occupancy(cache_occupancy, single_storage);
 	unsigned greedy_iteration = 0;
 	#endif
 
@@ -923,7 +923,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 			#ifdef VERBOSE
-			print_occupancy(cache_occupancy);
+			print_occupancy(cache_occupancy, single_storage);
 			#endif
 
 			#ifdef SEVERE_DEBUG
