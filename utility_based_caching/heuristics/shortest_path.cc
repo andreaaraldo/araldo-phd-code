@@ -1056,6 +1056,20 @@ void update_weights(vector<Weight>& weights, double step, const vector<Weight>& 
 							weights[eid] + step * violations[eid] :0;
 }
 
+step_type parse_steps (string s)
+{
+	step_type value;
+	if (s=="triangle")
+		value = triangle;
+	else if (s=="moderate")
+		value = moderate;
+	else{
+		stringstream msg; msg<< s << " is not a valid step";
+		throw invalid_argument(msg.str() );
+	}
+	return value;
+}
+
 int main(int argc,char* argv[])
 {
 
@@ -1069,10 +1083,12 @@ int main(int argc,char* argv[])
 	int slowdown;
 	const char* filename;
 	Size single_storage; //As a multiple of the highest quality size
+	step_type steps;
 	
 
-	if (argc==8)
+	if (argc==9)
 	{
+		// The demand is taken from the corresponding CPLEX run
 		input = automatic;
 		alpha = atof(argv[1]);
 		ctlg = strtoul(argv[2], NULL, 0);
@@ -1081,6 +1097,8 @@ int main(int argc,char* argv[])
 		seed = strtoul(argv[5], NULL, 0);
 		slowdown = atoi(argv[6]);
 		single_storage = atof(argv[7]);
+		steps = parse_steps (argv[8]);
+		
 
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
@@ -1093,15 +1111,18 @@ int main(int argc,char* argv[])
 
 	} else if(argc==5)
 	{
+		// The demand is taken from the input file
 		input = direct;
 		filename = argv[1];
 		num_iterations = strtoul(argv[2], NULL, 0);
 		slowdown = atoi(argv[3]);
 		single_storage = atof(argv[4]);
+		steps = parse_steps (argv[5]);
+		
 	}else
 	{
-		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown> <single_storage>\n or"<<endl;
-		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown> <single_storage>"<<endl;
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown> <single_storage> <steps>\n or"<<endl;
+		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown> <single_storage> <steps>"<<endl;
 		exit(1);
 	}
 	//} INPUT
@@ -1204,12 +1225,14 @@ int main(int argc,char* argv[])
 			step = first_step;
 		}else
 		{
-			/*
-			double multiplier = pow( 1.0- 1.0/ (1.0+M+(k/slowdown)+1), 0.5+eps );
-			cout << "multiplier "<<multiplier<<endl;
-			step = old_step * multiplier;
-*/
-			step = 1.0/ (k/slowdown + 1);
+			if (steps == moderate)
+			{
+				double multiplier = pow( 1.0- 1.0/ (1.0+M+(k/slowdown)+1), 0.5+eps );
+				cout << "multiplier "<<multiplier<<endl;
+				step = old_step * multiplier;
+			} else if (steps == triangle)
+				step = 1.0/ (k/slowdown + 1);
+			else throw invalid_argument("Step size incorrect");
 		}
 		old_step = step;
 		cout <<"step "<<step<<endl;

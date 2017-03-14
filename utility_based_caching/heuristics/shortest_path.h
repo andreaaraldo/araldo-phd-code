@@ -21,6 +21,7 @@ using namespace boost;
 //{ TYPES
 	enum input_type{automatic, direct};
 	enum serving_type{cache, repo, no};
+	enum step_type{triangle,moderate};
 
 
 	// create a typedef for the Graph type
@@ -92,4 +93,6 @@ using namespace boost;
 		               flip_pair<A,B>);
 		return dst;
 	}
+
+	
 #endif
