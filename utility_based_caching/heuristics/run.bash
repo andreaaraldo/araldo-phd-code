@@ -1,5 +1,5 @@
 #!/bin/bash
-ITERATIONS=1000
+ITERATIONS=10
 EXECUTABLE=approx.o
 
 
@@ -13,11 +13,11 @@ for SLOWDOWN in 1 10 100; do
 for LOAD in 1;  do #0.5 1 1.5 2
 for SEED in `seq 1 1`;  do #seq 1 20
 for STEPS in triangle moderate; do
-COMMAND= ./$EXECUTABLE $ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN $SINGLE_STORAGE $STEPS
+ARGS="$ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN $SINGLE_STORAGE $STEPS"
 DIR=output/slowdown-$SLOWDOWN/seed-$SEED/singlestorage-$SINGLE_STORAGE/ctlg-$CTLG/steps-$STEPS
 mkdir -p $DIR
-echo $COMMAND
-$COMMAND > $DIR/log-load_$LOAD.log &
+echo "running" $ARGS
+./approx.o $ARGS > $DIR/log-load_$LOAD.log 2>&1 &
 done
 done
 done
