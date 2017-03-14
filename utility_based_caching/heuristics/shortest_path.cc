@@ -23,7 +23,7 @@
 #include "networks/abilene.hpp"
 
 #define SEVERE_DEBUG
-#define VERBOSE
+//#define VERBOSE
 
 
 using namespace boost;
