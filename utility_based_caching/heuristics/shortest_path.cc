@@ -494,7 +494,7 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size singl
 		Size s = it->second;
 		cout<<cache<<":"<<s<<"----";
 		#ifdef SEVERE_DEBUG
-			if (s>single_storage*max_size)
+			if (s>single_storage*max_size + 1e5)
 			{
 				char msg[200];
 				sprintf(msg,"Storage constraints not verified:single_storage=%g HQ objects, which means space %g of storage. Despite this, cache %lu has %g of space occupied",
@@ -896,19 +896,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			throw std::invalid_argument(os.str().c_str() );
 		}
 
-		for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
-			it!=cache_occupancy.end(); ++it)
-		{
-			Vertex cache = it->first;
-			Size s = it->second;
-			if (s>single_storage*max_size)
-			{
-				char msg[200];
-				sprintf(msg,"Storage constraints not verified:single_storage=%g HQ objects, which means space %g of storage. Despite this, cache %lu has %g of space occupied",
-					single_storage, single_storage*max_size, cache, s);
-				throw std::invalid_argument(msg);
-			}
-		}
+		print_occupancy(cache_occupancy, single_storage);
 		#endif
 		#ifdef VERBOSE
 		cout<< "Selected incarnation "<<best_inc<<endl;
