@@ -486,13 +486,17 @@ void print_collection(const T& ic )
 
 void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
 {
+	#ifdef VERBOSE
 	cout<<"Occupancy(cache:occupation): ";
+	#endif
 	for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
 			it!=cache_occupancy.end(); ++it)
 	{
 		Vertex cache = it->first;
 		Size s = it->second;
+		#ifdef VERBOSE
 		cout<<cache<<":"<<s<<"----";
+		#endif
 		#ifdef SEVERE_DEBUG
 			if (s>single_storage*max_size + 1e5)
 			{
@@ -503,7 +507,9 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size singl
 			}
 		#endif
 	}
+	#ifdef VERBOSE
 	cout<<endl;
+	#endif
 }
 
 Weight compute_per_req_gross_utility(const Incarnation& inc, Vertex cli,
