@@ -1105,7 +1105,7 @@ int main(int argc,char* argv[])
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
 		stringstream ssfilename; 
 		ssfilename << "/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.11/alpha-1/load-"<< load
-			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat
+			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat";
 		reqfilename = ssfilename.str().c_str() ;
 		//} REQUESTS
 
