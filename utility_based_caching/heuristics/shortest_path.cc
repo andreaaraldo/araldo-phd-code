@@ -22,8 +22,8 @@
 // Change here to change the network
 #include "networks/abilene.hpp"
 
-//#define SEVERE_DEBUG
-#define VERBOSE
+#define SEVERE_DEBUG
+//#define VERBOSE
 
 
 using namespace boost;
