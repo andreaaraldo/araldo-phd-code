@@ -42,13 +42,13 @@ double eps = 1.0/100;
 unsigned multiplier = 1;
 
 
-Requests load_requests(RequestSet& requests, const char* filename)
+Requests load_requests(RequestSet& requests, const char* reqfilename)
 {
 	ifstream myf;
-	myf.open(filename );
+	myf.open(reqfilename );
 	if(!myf.is_open() )
 	{
-		cout<<"Error reading file "<<filename<<endl;
+		cout<<"Error reading file "<<reqfilename<<endl;
 		exit(1);
 	}
 	string line;
@@ -1081,7 +1081,7 @@ int main(int argc,char* argv[])
 	double load;
 	unsigned num_iterations;
 	int slowdown;
-	const char* filename;
+	const char* reqfilename;
 	Size single_storage; //As a multiple of the highest quality size
 	step_type steps;
 	
@@ -1103,17 +1103,17 @@ int main(int argc,char* argv[])
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
-		stringstream filepath; filepath<<"/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/request_files/abilene/ctlg-"<< ctlg <<"/alpha-"<<alpha;
 		stringstream ssfilename; 
-		ssfilename<<filepath.str().c_str()<<"/load-"<<load<<"/seed-"<<seed<<"/req.dat";	
-		filename = ssfilename.str().c_str() ;
+		ssfilename << "/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.11/alpha-1/load-"<< load
+			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat
+		reqfilename = ssfilename.str().c_str() ;
 		//} REQUESTS
 
 	} else if(argc==5)
 	{
 		// The demand is taken from the input file
 		input = direct;
-		filename = argv[1];
+		reqfilename = argv[1];
 		num_iterations = strtoul(argv[2], NULL, 0);
 		slowdown = atoi(argv[3]);
 		single_storage = atof(argv[4]);
@@ -1135,7 +1135,7 @@ int main(int argc,char* argv[])
 	// Parameter for the step update
 	unsigned M = num_iterations/(10);
 
-	Requests tot_requests = load_requests(requests, filename );
+	Requests tot_requests = load_requests(requests, reqfilename );
 
 	//{ INITIALIZE INPUT DATA STRUCTURE
 	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
