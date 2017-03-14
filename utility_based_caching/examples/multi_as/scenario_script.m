@@ -39,7 +39,11 @@ data.seeds = 1:1;
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001
 data.timelimits = [57700]; # default 1e75
+<<<<<<< HEAD
+data.catalog_sizes = [2];
+=======
 data.catalog_sizes = [1];
+>>>>>>> 1cfcb02b2744bc5b26c4fe7747e0bfb4d7843b67
 data.cache_to_ctlg_ratios = [0*11*1/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
