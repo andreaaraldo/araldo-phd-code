@@ -5,8 +5,8 @@ EXECUTABLE=approx.o
 
 ## This is the other type
 ALPHA=1
-CTLG=1
-SINGLE_STORAGE=0
+CTLG=100
+SINGLE_STORAGE=10
  #LOAD is Per each client
 
 for SLOWDOWN in 1 10 100; do
