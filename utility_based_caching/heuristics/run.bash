@@ -1,5 +1,5 @@
 #!/bin/bash
-ITERATIONS=10000
+ITERATIONS=100000
 EXECUTABLE=approx.o
 
 
