@@ -35,7 +35,7 @@ using namespace std;
 
 Quality qualities;
 unsigned seed;
-bool improved = true;
+bool improved = true; // Implements Algorithm 3 of Horel, T. (2015). Notes on Greedy Algorithms for Submodular Maximization.
 //step parameters
 double eps = 1.0/100;
 
@@ -779,7 +779,6 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	vector<Vertex> clients;
 	vector<Object> objects;
 	fill_clients_and_objects(requests,clients,objects);
-	std::cout<<"Clients are "; print_collection(clients); std::cout<<std::endl;
 	
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	max_utility=0; for (const Weight& u: utilities)
@@ -798,6 +797,16 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	// Associates to each object a map associating to each client the set of its optimal values
 	// to retrieve that object
 	BestSrcMap best_cache_map;
+
+	#ifdef SEVERE_DEBUG
+	if (edge_weight_map.size()==0)
+		throw std::runtime_error("edge_weight_map is empty");
+	Weight tot_gross_utility_computed_cumulatively = 0;
+	for (const std::pair<EdgeDescriptor,Weight> edgeValue : edge_weight_map)	
+	{
+		tot_gross_utility_computed_cumulatively += edgeValue.second * link_capacity;
+	}
+	#endif
 
 	//} INITIALIZE DATA STRUCTURES
 	
@@ -832,12 +841,15 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			// it is not worth considering it
 			useless_incarnations.push_back(inc);
 	}
+
 	available_incarnations.sort(compare_incarnations);
 	#ifdef SEVERE_DEBUG
 	for (const Incarnation& inc : available_incarnations)
 		if (!inc.valid) throw runtime_error("One available incarnation is not valid");
 	for (const Incarnation& inc : useless_incarnations)
 		if (!inc.valid) throw runtime_error("One available incarnation is not valid");
+	if (objects.size()==0 || caches.size()==0 || qualities==0)
+		throw ("objects.size()==0 || caches.size()==0 || qualities==0");
 	#endif
 
 	#ifdef VERBOSE
@@ -863,8 +875,10 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		if (s>0)
 			throw runtime_error("I have just started. The cache cannot be occupied");
 	}
+
 	#endif
 	//} INITIALIZE INCARNATIONS
+
 
 	while (available_incarnations.size()>0)
 	{
@@ -907,7 +921,19 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			throw std::invalid_argument(os.str().c_str() );
 		}
 
+		if (sizes[best_inc.q] <= 0)
+		{
+			stringstream os; os << "sizes[best_inc.q] = "<< sizes[best_inc.q] <<
+				" and best_inc.q = "<< best_inc.q;
+			throw std::invalid_argument(os.str().c_str() );
+		}
+
 		print_occupancy(cache_occupancy, single_storage);
+		if (!normalized) 
+			tot_gross_utility_computed_cumulatively += best_inc.benefit;
+		else
+			tot_gross_utility_computed_cumulatively += best_inc.benefit * sizes[best_inc.q];
+
 		#endif
 		#ifdef VERBOSE
 		cout<< "Selected incarnation "<<best_inc<<endl;
@@ -1044,6 +1070,24 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			edge_weight_map,
 			cache_occupancy);
 	//} COMPUTE THE FEASIBLE UTILITY
+	Requests tot_requests = 0;
+	for (RequestSet::iterator it = requests.begin(); it!=requests.end(); ++it)
+	{
+		tot_requests += it->second;
+	}
+
+	if (tot_feasible_utility_cleaned/ tot_requests > 48)
+	{
+		print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
+			predecessors_to_source, best_cache_map);
+
+		Print the objects stored in each cache
+
+		stringstream msg; msg<< "tot_feasible_utility_cleaned="<< 
+			tot_feasible_utility_cleaned/ tot_requests 
+			<<std::endl;
+		throw runtime_error(msg.str() );
+	}
 }
 
 void fill_weight_map(EdgeValues& edge_weight_map, 
@@ -1105,15 +1149,21 @@ int main(int argc,char* argv[])
 		slowdown = atoi(argv[6]);
 		single_storage = atof(argv[7]);
 		steps = parse_steps (argv[8]);
+
+		float c2ctlg = single_storage * ( float(sizeof(caches_) ) / sizeof(Vertex) ) / ctlg;
 		
 
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
 		stringstream ssfilename; 
-		ssfilename << "/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-100/c2ctlg-0.11/alpha-1/load-"<< load
+		ssfilename << "/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-"<< ctlg<<"/c2ctlg-"<< c2ctlg <<
+			"/alpha-"<<alpha <<"/load-"<< load
 			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat";
 		reqfilename = ssfilename.str().c_str() ;
+
+		
+		std::cout<<"reqfilename = "<< reqfilename << std::endl;
 		//} REQUESTS
 
 	} else if(argc==5)
@@ -1166,29 +1216,34 @@ int main(int argc,char* argv[])
 		fill_weight_map(edge_weight_map, edges, weights, G);
 
 		//{ COMPUTE THE UTILITY
-		Weight tot_feasible_utility_cleaned, lagrangian_value,
-			tot_feasible_utility_cleaned_with_normalization, lagrangian_value_with_normalization,
-			tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization;
-		bool normalized=true;
+		Weight tot_feasible_utility_cleaned, lagrangian_value;
+		Weight tot_feasible_utility_cleaned_with_normalization = 0;
+		Weight lagrangian_value_with_normalization = 0;
+		Weight tot_feasible_utility_cleaned_without_normalization = 0;
+		Weight lagrangian_value_without_normalization = 0;
+		bool normalized;
 		EdgeValues edge_load_map, edge_load_map_with_normalization, 
 				edge_load_map_without_normalization;
 
 		if (improved)
-		{
+		{	// I also compute the solution without normalization of the benefit
 			normalized=false;
+			std::cout<<"ciao, lancio greedy non normalized"<<std::endl;
 			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization,
 				normalized, single_storage
 			);
-		}else
-			greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
+		}
+
+		normalized = true;
+		greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_with_normalization, lagrangian_value_with_normalization,
 				normalized, single_storage
 			);
 
 
-		if (lagrangian_value_with_normalization >= lagrangian_value_without_normalization ||
-			!improved
+		if (!improved || 
+			lagrangian_value_with_normalization >= lagrangian_value_without_normalization
 		){
 			normalized=true;
 			lagrangian_value = lagrangian_value_with_normalization;
@@ -1270,6 +1325,7 @@ int main(int argc,char* argv[])
 		cout<<"min_lagrangian "<<min_gross_utility/tot_requests<<endl;
 		cout<<"current_avg_feasible_utility "<<tot_feasible_utility_cleaned/tot_requests<<endl;
 		cout<<"max_avg_feasible_utility "<<max_tot_feasible_utility / tot_requests<<endl;
+
 
 		//Implement the tilde{psi} di math_paper
 	}
