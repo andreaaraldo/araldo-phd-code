@@ -781,7 +781,11 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	fill_clients_and_objects(requests,clients,objects);
 	
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
-	max_utility=0; for (const Weight& u: utilities) if (u>max_utility) max_utility=u;
+	max_utility=0; for (const Weight& u: utilities)
+	{
+		 if (u>max_utility) max_utility=u;
+		//std::cout <<"ciao u="<<u<<std::endl;
+	}
 
 	IncarnationCollection available_incarnations, useless_incarnations;
 	MyMap<Vertex,Size> cache_occupancy;
@@ -1233,7 +1237,7 @@ int main(int argc,char* argv[])
 				cout << "multiplier "<<multiplier<<endl;
 				step = old_step * multiplier;
 			} else if (steps == triangle)
-				step = 1.0/ (k/slowdown + 1);
+				step = first_step / (k/slowdown + 1);
 			else throw invalid_argument("Step size incorrect");
 		}
 		old_step = step;

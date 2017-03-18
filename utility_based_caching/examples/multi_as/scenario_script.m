@@ -24,9 +24,9 @@ fixed_data.rate_per_quality = [0, 300, 700, 1500, 2500, 3500]; % In Kpbs
 fixed_data.cache_space_at_low_quality = 11.25;% In MB
 
 
-fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
-fixed_data.name = "linear";
-data.fixed_datas = [data.fixed_datas, fixed_data];
+%fixed_data.utilities = [0, 1/5, 2/5, 3/5, 4/5, 5/5 ];
+%fixed_data.name = "linear";
+%data.fixed_datas = [data.fixed_datas, fixed_data];
 
 fixed_data.utilities = [0, 1**(1/4)/5**(1/4), 2**(1/4)/5**(1/4), 3**(1/4)/5**(1/4), 4**(1/4)/5**(1/4), 5**(1/4)/5**(1/4)];
 fixed_data.name = "power4";
@@ -39,12 +39,8 @@ data.seeds = 1:1;
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.01]; # default 0.0001
 data.timelimits = [57700]; # default 1e75
-<<<<<<< HEAD
-data.catalog_sizes = [2];
-=======
-data.catalog_sizes = [1];
->>>>>>> 1cfcb02b2744bc5b26c4fe7747e0bfb4d7843b67
-data.cache_to_ctlg_ratios = [0*11*1/100];	% fraction of catalog we could store in the overall cache space
+data.catalog_sizes = [50];
+data.cache_to_ctlg_ratios = [11.0/50];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"int"}; % float or int or veryfloat	
@@ -74,7 +70,7 @@ data.customtypes = {"int"}; % float or int or veryfloat
 		end%if 
 		
 	else
-		data.edge_nodess = [5];
+		data.edge_nodess = [1,2,3,4,5,6,7,8,9,10,11];
 		data.user_distributions = {"specific"};
 		data.ASes_with_users = [1]; %[5,6,7,1,10];
 		data.cache_distributions = {"ubiquitous"};
