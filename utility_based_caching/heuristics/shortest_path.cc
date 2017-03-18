@@ -79,11 +79,11 @@ Requests generate_requests(RequestSet& requests, const double alpha, const Objec
 	Requests avg_tot_requests = (Requests) (load*link_capacity/sizes[0] );
 
 	ZipfGenerator zipf(alpha, ctlg, seed, avg_tot_requests);
-	for (Vertex cli_id = 0; cli_id < sizeof(clients_)/sizeof(Vertex); cli_id++ )
+	for (Vertex cli_id = 0; cli_id < sizeof(clients_in_case_of_generation)/sizeof(Vertex); cli_id++ )
 	for(Object o=1; o<=ctlg; o++)
 	{
 		Requests n = zipf.generate_requests(o);
-		requests.emplace(pair<Vertex,Object>(clients_[cli_id],o) , n) ;
+		requests.emplace(pair<Vertex,Object>(clients_in_case_of_generation[cli_id],o) , n) ;
 		tot_requests += n;
 	}
 	cout <<"tot_requests "<< tot_requests<<endl;
@@ -779,6 +779,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	vector<Vertex> clients;
 	vector<Object> objects;
 	fill_clients_and_objects(requests,clients,objects);
+	std::cout<<"Clients are "; print_collection(clients); std::cout<<std::endl;
 	
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	max_utility=0; for (const Weight& u: utilities)
