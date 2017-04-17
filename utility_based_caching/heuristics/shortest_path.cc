@@ -800,7 +800,6 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	max_utility=0; for (const Weight& u: utilities)
 	{
 		 if (u>max_utility) max_utility=u;
-		//std::cout <<"ciao u="<<u<<std::endl;
 	}
 
 	IncarnationCollection available_incarnations, useless_incarnations;
@@ -822,7 +821,10 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	{
 		tot_gross_utility_computed_cumulatively += edgeValue.second * link_capacity;
 	}
+
+	std::multimap<Vertex,Incarnation > cache_content;
 	#endif
+
 
 	//} INITIALIZE DATA STRUCTURES
 	
@@ -950,6 +952,9 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		else
 			tot_gross_utility_computed_cumulatively += best_inc.benefit * sizes[best_inc.q];
 
+
+		//Add the selected incarnation to the cache
+		cache_content.insert( std::pair<Vertex,Incarnation> (best_inc.src,best_inc)   );
 		#endif
 		#ifdef VERBOSE
 		cout<< "Selected incarnation "<<best_inc<<endl;
@@ -1111,6 +1116,13 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
 			predecessors_to_source, best_cache_map);
 
+		//{ PRINT CACHE CONTENT
+		for (multimap<Vertex, Incarnation>::iterator it = cache_content.begin(); it != cache_content.end(); ++it)
+		{
+			cout<<"cache "<<it->first <<" contains "<<it->second << std::endl; 
+		}
+		//} PRINT CACHE CONTENT
+
 
 		stringstream msg; msg<< "tot_feasible_utility_cleaned="<< 
 			tot_feasible_utility_cleaned/ tot_requests 
@@ -1257,7 +1269,6 @@ int main(int argc,char* argv[])
 		if (improved)
 		{	// I also compute the solution without normalization of the benefit
 			normalized=false;
-			std::cout<<"ciao, lancio greedy non normalized"<<std::endl;
 			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization,
 				normalized, single_storage
