@@ -1072,6 +1072,19 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			overload_possible,
 			edge_weight_map,
 			cache_occupancy);
+
+	#ifdef SEVERE_DEBUG
+	for (std::pair<EdgeDescriptor,Weight> p : edge_load_map_cleaned)
+	{
+		EdgeDescriptor e = p.first;
+		Weight load = p.second;
+		if (p.second > link_capacity)
+		{
+			std::stringstream msg; msg << "Load on link "<<e<<" is "<<load<<" while link capacity is "<<link_capacity;
+			throw std::runtime_error(msg.str());
+		}
+	}
+	#endif
 	//} COMPUTE THE FEASIBLE UTILITY
 	Requests tot_requests = 0;
 	for (RequestSet::iterator it = requests.begin(); it!=requests.end(); ++it)
