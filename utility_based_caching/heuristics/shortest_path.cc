@@ -484,20 +484,14 @@ void print_collection(const T& ic )
 	cout<<endl;
 }
 
-void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
+#ifdef SEVERE_DEBUG
+void verify_cache(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
 {
-	#ifdef VERBOSE
-	cout<<"Occupancy(cache:occupation): ";
-	#endif
 	for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
 			it!=cache_occupancy.end(); ++it)
 	{
 		Vertex cache = it->first;
 		Size s = it->second;
-		#ifdef VERBOSE
-		cout<<cache<<":"<<s<<"----";
-		#endif
-		#ifdef SEVERE_DEBUG
 			if (s>single_storage*max_size + 1e5)
 			{
 				char msg[200];
@@ -505,10 +499,32 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size singl
 					single_storage, single_storage*max_size, cache, s);
 				throw std::invalid_argument(msg);
 			}
-		#endif
 	}
-	#ifdef VERBOSE
+}
+#endif
+
+
+void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
+{
+	cout<<"Occupancy(cache:occupation): ";
+	for (MyMap<Vertex,Size>::const_iterator it=cache_occupancy.begin(); 
+			it!=cache_occupancy.end(); ++it)
+	{
+		Vertex cache = it->first;
+		Size s = it->second;
+		cout<<cache<<":"<<s<<"----";
+			if (s>single_storage*max_size + 1e5)
+			{
+				char msg[200];
+				sprintf(msg,"Storage constraints not verified:single_storage=%g HQ objects, which means space %g of storage. Despite this, cache %lu has %g of space occupied",
+					single_storage, single_storage*max_size, cache, s);
+				throw std::invalid_argument(msg);
+			}
+	}
 	cout<<endl;
+
+	#ifdef SEVERE_DEBUG
+	verify_cache(cache_occupancy, single_storage);
 	#endif
 }
 
@@ -779,10 +795,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	vector<Vertex> clients;
 	vector<Object> objects;
 	fill_clients_and_objects(requests,clients,objects);
-<<<<<<< HEAD
-=======
-	
->>>>>>> f7df3c4c2e1603cf3d019e4efcf4687b200e9cb0
+
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	max_utility=0; for (const Weight& u: utilities)
 	{
@@ -931,7 +944,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			throw std::invalid_argument(os.str().c_str() );
 		}
 
-		print_occupancy(cache_occupancy, single_storage);
+		verify_cache(cache_occupancy, single_storage);
 		if (!normalized) 
 			tot_gross_utility_computed_cumulatively += best_inc.benefit;
 		else
@@ -1084,6 +1097,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			throw std::runtime_error(msg.str());
 		}
 	}
+	verify_cache(cache_occupancy, single_storage);
 	#endif
 	//} COMPUTE THE FEASIBLE UTILITY
 	Requests tot_requests = 0;
@@ -1097,7 +1111,6 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
 			predecessors_to_source, best_cache_map);
 
-		Print the objects stored in each cache
 
 		stringstream msg; msg<< "tot_feasible_utility_cleaned="<< 
 			tot_feasible_utility_cleaned/ tot_requests 
