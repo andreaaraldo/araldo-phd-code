@@ -10,7 +10,7 @@ SINGLE_STORAGE=1
  #LOAD is Per each client
 
 for SLOWDOWN in 1 10 100 ; do
-for LOAD in 1 ;  do #in 0.5 1 1.5 2 ;
+for LOAD in 0.5 1 1.5 2 ;  do #in 0.5 1 1.5 2 ;
 for SEED in 1 ;  do #`seq 1 20`
 for STEPS in triangle moderate  ; do #triangle moderate
 ARGS="$ALPHA $CTLG $LOAD $ITERATIONS $SEED $SLOWDOWN $SINGLE_STORAGE $STEPS"

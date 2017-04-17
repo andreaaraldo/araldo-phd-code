@@ -779,8 +779,6 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	vector<Vertex> clients;
 	vector<Object> objects;
 	fill_clients_and_objects(requests,clients,objects);
-	std::cout<<"Clients are "; print_collection(clients); std::cout<<std::endl;
-	
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	max_utility=0; for (const Weight& u: utilities)
 	{
