@@ -543,7 +543,10 @@ void add_load(EdgeValues& loads, const E e, const Weight load)
 // Add load to the links of the best path between src and cli
 void update_load(EdgeValues& edge_load_map, 
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
-	const Vertex src, const Vertex cli, const Weight load
+	const Vertex src, const Vertex cli, const Weight load 
+	#ifdef SEVERE_DEBUG
+	, vector<EdgeDescriptor>& affected_edges
+	#endif
 ){
 	// Associates to each source a vector, having in the i-th position the predecessor of 
 	// the i-th node toward that source
@@ -558,6 +561,9 @@ void update_load(EdgeValues& edge_load_map,
 		if (it != edge_load_map.end() )
 			old_load = it->second;
 		edge_load_map[e] = old_load + load;
+		#ifdef SEVERE_DEBUG
+		affected_edges.push_back(e);
+		#endif
 	}
 }
 
@@ -679,6 +685,11 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	const EdgeValues& edge_weight_map,
 	const MyMap<Vertex,Size>& cache_occupancy
 ){
+	#ifdef SEVERE_DEBUG
+	struct Transmission{ Object o; Quality q; Requests satisfied; Weight load; };
+	std::multimap<EdgeDescriptor,Transmission> transmissions; 
+	#endif
+
 	out_tot_feasible_utility=0;
 	out_lagrangian_value = 0;
 	edge_load_map.clear();
@@ -758,7 +769,21 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 					}
 			#endif
 			//cout <<"updating load for o "<<o<<", src "<<src <<", cli "<<cli<<", q "<<unsigned(q)<<endl;
-			update_load(edge_load_map, G, predecessors_to_source, src, cli, load );
+			#ifdef SEVERE_DEBUG
+			vector<EdgeDescriptor> affected_edges;
+			#endif
+			update_load(edge_load_map, G, predecessors_to_source, src, cli, load
+				#ifdef SEVERE_DEBUG
+				, affected_edges
+				#endif
+			);
+			#ifdef SEVERE_DEBUG
+			Transmission t; t.o=o; t.q=q; t.satisfied=satisfied; t.load=load;
+			for (const EdgeDescriptor& e : affected_edges)
+			{
+				transmissions.insert(std::pair<EdgeDescriptor, Transmission> (e,t) );
+			}
+			#endif
 		}
 	}
 
@@ -767,6 +792,36 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	{
 		out_lagrangian_value += p.second * link_capacity;
 	}
+
+	#ifdef SEVERE_DEBUG
+	for (const std::pair<EdgeDescriptor,Weight>& p: edge_load_map)
+	{
+		EdgeDescriptor e = p.first;
+		Weight edge_load_computed_before = p.second;
+
+		std::pair <std::multimap<EdgeDescriptor,Transmission>::iterator, std::multimap<EdgeDescriptor,Transmission>::iterator> ret;
+		ret = transmissions.equal_range(e);
+		std::cout<<"Transmission on edge "<<e<<": ";
+		Weight edge_load = 0;
+		for (std::multimap<EdgeDescriptor,Transmission>::iterator it=ret.first; it!=ret.second; ++it)
+		{
+			Object o = (it->second).o;
+			Quality q = (it->second).q;
+			Requests satisfied = (it->second).satisfied;
+			Weight transmission_load = (it->second).load;
+			edge_load += transmission_load;
+			std::cout<<"o:"<<o<<",q:"<<q<<",satisfied:"<<satisfied<<",load:"<<transmission_load<<"   ";
+		}
+		std::cout<<endl;
+		if (edge_load != edge_load_computed_before)
+		{
+			std::stringstream msg; msg<<"On edge "<<e<<" I computed an edge_load_computed_before="<<
+				edge_load_computed_before<<", while now edge_load="<<edge_load;
+			throw runtime_error(msg.str());
+		}
+	}
+	#endif
+
 }
 
 // Returns the tot_feasible_utility
