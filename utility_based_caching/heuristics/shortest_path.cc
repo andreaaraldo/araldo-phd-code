@@ -621,7 +621,7 @@ void print_mappings(const EdgeValues& edge_load_map, const EdgeValues& edge_weig
 	const MyMap<Vertex, vector<Vertex> >& predecessors_to_source,
 	const BestSrcMap& best_cache_map
 ){
-	
+	std::cout<<__FUNCTION__ <<":"<<std::endl;
 	for (RequestSet::const_iterator r_it = requests.begin(); 
 		r_it != requests.end() ; ++r_it
 	){
@@ -698,7 +698,7 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 			bcp_it != best_cache_map.end() && 
 
 			// The client is downloading that object from some cache
-			// bcp_it->second is a map of type <client, OptimalCacheValues> 
+			// ( bcp_it->second is a map of type <client, OptimalClientValues> )
 			bcp_it->second.find(cli) != bcp_it->second.end()
 
 		){
@@ -1007,6 +1007,48 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			}
 			#ifdef VERBOSE
 			cout<<endl;
+			#endif
+
+			#ifdef SEVERE_DEBUG
+			//We verify now whether best_cache_map relies on incarnations that are really 
+			//cached
+			for (const std::pair<Object, MyMap<Vertex,OptimalClientValues> >& p : best_cache_map)
+			{
+				Object o = p.first;
+
+				for (const pair<Vertex,OptimalClientValues>& pp : p.second)
+				{
+					Vertex src = pp.second.src;
+					Quality q = pp.second.q;
+
+					//{ VERIFY IF THE OBJECT IS REALLY CACHED AT THE INTENDED QUALITY
+					bool found = false;
+					std::pair <std::multimap<Vertex,Incarnation>::iterator, std::multimap<Vertex,Incarnation>::iterator> ret;
+					ret = cache_content.equal_range(src);
+					for (std::multimap<Vertex,Incarnation>::iterator it=ret.first; it!=ret.second; ++it)
+					{
+						Object cached_o = (it->second).o;
+						Quality cached_q = (it->second).q;
+						if (cached_o == o && cached_q == q)
+						{
+							if (found == true)
+							{
+								std::stringstream msg; msg<<"You found object "<<o<<" at quality "<<q<<
+									", which was already found in the same cache";
+								throw std::runtime_error(msg.str() );
+							}
+							found = true;
+						}
+					}
+					if (!found)
+					{
+						std::stringstream msg; msg<<"I thought object "<<o<<" was served by cache "<<src<<
+							" at quality "<<q<<", but it is not the case";
+						throw std::runtime_error(msg.str() );
+					}
+					//} VERIFY IF THE OBJECT IS REALLY CACHED AT THE INTENDED QUALITY
+				}
+			}
 			#endif
 
 			//{ RECOMPUTE THE BENEFITS
