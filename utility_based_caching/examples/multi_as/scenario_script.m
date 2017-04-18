@@ -70,7 +70,7 @@ data.customtypes = {"int"}; % float or int or veryfloat
 		end%if 
 		
 	else
-		data.edge_nodess = [1,2,3,4,5,6,7,8,9,10,11];
+		data.edge_nodess = [11]; % Important only if the cache strategy is "edge"
 		data.user_distributions = {"specific"};
 		data.ASes_with_users =[5,6,7,1,10];
 		data.cache_distributions = {"ubiquitous"};

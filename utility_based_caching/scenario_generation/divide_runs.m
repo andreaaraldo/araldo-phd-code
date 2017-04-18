@@ -1,6 +1,26 @@
 %ciao
 function run_list = divide_runs(experiment_name, data)
 	run_list = [];
+
+	#{
+	"data.seeds", data.seeds
+	"data.catalog_sizes", data.catalog_sizes
+	"data.cache_to_ctlg_ratios", data.cache_to_ctlg_ratios
+	"data.alphas", data.alphas
+	"data.timelimits", data.timelimits
+	"data.solutiongaps", data.solutiongaps
+	"data.fixed_datas", data.fixed_datas
+	"length(data.cache_allocations)",length(data.cache_allocations)	
+	"data.loadds",data.loadds
+	"length(data.strategys)",length(data.strategys)
+	"length(data.customtypes)",length(data.customtypes)
+	"data.edge_nodess", data.edge_nodess
+	"length(data.cache_distributions)",length(data.cache_distributions)
+	"length(data.server_positions)",length(data.server_positions)
+	"length(data.user_distributions)",length(data.user_distributions)
+	"length(data.arcss)",length(data.arcss)
+	#}
+
 	for seed = data.seeds
 	for catalog_size = data.catalog_sizes
 	for cache_to_ctlg_ratio =  data.cache_to_ctlg_ratios
@@ -18,6 +38,7 @@ function run_list = divide_runs(experiment_name, data)
 	for idx_user_distribution = 1:length(data.user_distributions)
 	for idx_arcs = 1:length(data.arcss)
 
+		"This is a single run"
 
 		%{TOPOLOGY
 		cache_distribution = data.cache_distributions{idx_cache_distribution};
