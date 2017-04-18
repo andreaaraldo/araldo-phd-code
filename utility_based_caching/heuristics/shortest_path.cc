@@ -823,7 +823,7 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 			Requests satisfied = (it->second).satisfied;
 			Weight transmission_load = (it->second).load;
 			edge_load += transmission_load;
-			std::cout<<"o:"<<o<<",q:"<<q<<",satisfied:"<<satisfied<<",load:"<<transmission_load<<"   ";
+			std::cout<<"o:"<<o<<",q:"<<unsigned(q)<<",satisfied:"<<satisfied<<",load:"<<transmission_load<<"   ";
 		}
 		std::cout<<endl;
 		if (edge_load != edge_load_computed_before)
