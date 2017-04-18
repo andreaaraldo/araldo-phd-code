@@ -1165,6 +1165,8 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		}
 		//} PRINT CACHE CONTENT
 
+		cout<<"edge_load_map_cleaned: "; print_edge_load_map(edge_load_map_cleaned);	
+
 
 		stringstream msg; msg<< "tot_feasible_utility_cleaned="<< 
 			tot_feasible_utility_cleaned/ tot_requests 
