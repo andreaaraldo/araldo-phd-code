@@ -37,10 +37,10 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 data.seeds = 1:1;
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.01]; # default 0.0001
-data.timelimits = [57700]; # default 1e75
-data.catalog_sizes = [50];
-data.cache_to_ctlg_ratios = [11.0/50];	% fraction of catalog we could store in the overall cache space
+data.solutiongaps = [0.0001]; # default 0.0001
+data.timelimits = [100700]; # default 1e75
+data.catalog_sizes = [100];
+data.cache_to_ctlg_ratios = [11.0/100];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"int"}; % float or int or veryfloat	
@@ -72,7 +72,7 @@ data.customtypes = {"int"}; % float or int or veryfloat
 	else
 		data.edge_nodess = [1,2,3,4,5,6,7,8,9,10,11];
 		data.user_distributions = {"specific"};
-		data.ASes_with_users = [1]; %[5,6,7,1,10];
+		data.ASes_with_users =[5,6,7,1,10];
 		data.cache_distributions = {"ubiquitous"};
 		data.server_positions = {"specific"};
 		data.servers = [8];
