@@ -750,40 +750,53 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 			}else
 				satisfied = n;
 
-			Weight load = satisfied * sizes[q];	// The load imposed by the satisfaction of 
-												// this request across all the links of the 
-												// path
-			out_tot_feasible_utility += utilities[q] * satisfied;
-			out_lagrangian_value += ( utilities[q] - ocv.distance * sizes[q] ) * satisfied;
-
 			#ifdef SEVERE_DEBUG
-					if (utilities[q] - ocv.distance * sizes[q] != ocv.per_req_gross_utility )
-					{
-						throw invalid_argument("Invalid ocv");
-					}
-					if(ocv.per_req_gross_utility<0)
-					{
-						stringstream os; os << "This OptimalClientValues is erroneous as the gross "
-							<<"utility cannot be negative: "<<ocv;
-						throw invalid_argument(os.str().c_str());
-					}
-			#endif
-			//cout <<"updating load for o "<<o<<", src "<<src <<", cli "<<cli<<", q "<<unsigned(q)<<endl;
-			#ifdef SEVERE_DEBUG
-			vector<EdgeDescriptor> affected_edges;
-			#endif
-			update_load(edge_load_map, G, predecessors_to_source, src, cli, load
-				#ifdef SEVERE_DEBUG
-				, affected_edges
-				#endif
-			);
-			#ifdef SEVERE_DEBUG
-			Transmission t; t.o=o; t.q=q; t.satisfied=satisfied; t.load=load;
-			for (const EdgeDescriptor& e : affected_edges)
+			if (satisfied == 0 && overload_possible)
 			{
-				transmissions.insert(std::pair<EdgeDescriptor, Transmission> (e,t) );
+				stringstream msg; msg<<"Object o could be served from src "<<src<<" at quality "<<
+					q<<" but it is satisfied 0 times";
+				throw runtime_error(msg.str() );
 			}
 			#endif
+
+
+			if (satisfied>0)
+			{
+				Weight load = satisfied * sizes[q];	// The load imposed by the satisfaction of 
+													// this request across all the links of the 
+													// path
+				out_tot_feasible_utility += utilities[q] * satisfied;
+				out_lagrangian_value += ( utilities[q] - ocv.distance * sizes[q] ) * satisfied;
+
+				#ifdef SEVERE_DEBUG
+						if (utilities[q] - ocv.distance * sizes[q] != ocv.per_req_gross_utility )
+						{
+							throw invalid_argument("Invalid ocv");
+						}
+						if(ocv.per_req_gross_utility<0)
+						{
+							stringstream os; os << "This OptimalClientValues is erroneous as the gross "
+								<<"utility cannot be negative: "<<ocv;
+							throw invalid_argument(os.str().c_str());
+						}
+				#endif
+				//cout <<"updating load for o "<<o<<", src "<<src <<", cli "<<cli<<", q "<<unsigned(q)<<endl;
+				#ifdef SEVERE_DEBUG
+				vector<EdgeDescriptor> affected_edges;
+				#endif
+				update_load(edge_load_map, G, predecessors_to_source, src, cli, load
+					#ifdef SEVERE_DEBUG
+					, affected_edges
+					#endif
+				);
+				#ifdef SEVERE_DEBUG
+				Transmission t; t.o=o; t.q=q; t.satisfied=satisfied; t.load=load;
+				for (const EdgeDescriptor& e : affected_edges)
+				{
+					transmissions.insert(std::pair<EdgeDescriptor, Transmission> (e,t) );
+				}
+				#endif
+			}
 		}
 	}
 
