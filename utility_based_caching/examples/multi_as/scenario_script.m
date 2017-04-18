@@ -37,7 +37,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 data.seeds = 1:1;
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.0002]; # default 0.0001
+data.solutiongaps = [0.0001]; # default 0.0001
 data.timelimits = [100700]; # default 1e75
 data.catalog_sizes = [100];
 data.cache_to_ctlg_ratios = [11.0/100.0];	% fraction of catalog we could store in the overall cache space
