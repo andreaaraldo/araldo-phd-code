@@ -34,7 +34,7 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 
-data.seeds = 1:1;
+data.seeds = 2:2;
 
 data.cache_allocations = {"constrained"}; # constrained or free
 data.solutiongaps = [0.0001]; # default 0.0001
