@@ -22,7 +22,7 @@
 // Change here to change the network
 #include "networks/abilene.hpp"
 
-#define SEVERE_DEBUG
+//#define SEVERE_DEBUG
 //#define VERBOSE
 
 
@@ -1221,6 +1221,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		tot_requests += it->second;
 	}
 
+	#ifdef SEVERE_DEBUG
 	if (tot_feasible_utility_cleaned/ tot_requests > 48)
 	{
 		print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
@@ -1241,6 +1242,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			<<std::endl;
 		throw runtime_error(msg.str() );
 	}
+	#endif
 }
 
 void fill_weight_map(EdgeValues& edge_weight_map, 

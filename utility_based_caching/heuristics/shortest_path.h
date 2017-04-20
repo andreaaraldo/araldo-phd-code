@@ -28,7 +28,7 @@ using namespace boost;
 	typedef double Weight;
 	Weight WEIGHT_MAX = std::numeric_limits<Weight>::max();
 
-	typedef adjacency_list<vecS, vecS, bidirectionalS,
+	typedef adjacency_list<vecS, vecS, directedS,
 		no_property, property<edge_weight_t, double> > Graph;
 	typedef graph_traits<Graph>::vertex_descriptor Vertex;
 	typedef boost::property_map < Graph, boost::vertex_index_t >::type IndexMap;
