@@ -2,8 +2,8 @@
 global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
-settings.mdat_folder = "~/local_archive/femtoCDN/journal";
-max_parallel = 1;
+settings.mdat_folder = "/home/andrea/Dropbox/universita_in_fieri/phd/pers/21.content_oblivious/journal_extension/allocation_visual/octave_results";
+max_parallel = 3;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
@@ -30,10 +30,10 @@ coefficientss = {"linearhalved5"};
 
 
 boosts = [1];
-lambdas = [100]; %req/s 
-tot_times = [1]; %total time(hours)
+lambdas = [10000000]; %req/s 
+tot_times = [20]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e2];
+overall_ctlgs = [1e8];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -46,11 +46,11 @@ ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 in.req_proportion=[0.13 0.75 0.02 .1]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e1]; %cache slots
+Ks = [1e5]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
-seeds = 1;
+seeds = 1:20;
 
 
 
