@@ -328,31 +328,37 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 			error "Copy and paste from LINEARHALVED5"
 
 		case COEFF_LINEARHALVED5 % Called Conditional in the ITC paper
+			bootstrap_phase = 360;
+			bootstrap_and_adaptive_phases = bootstrap_phase*10;
+			epsilon_ = 0.001;
+
 			%{ FIND THE FIRST COEFFICIENT
-			how_many_initial_iterations=floor(360/in.T);
+			how_many_initial_iterations=floor(bootstrap_phase/in.T);
 			ghat_measure = 0; t=1;
 			while ghat_measure==0 && t<=size(hist_ghat,2)
 				ghat_measure=sum(abs(hist_ghat(:,t)  ) );
 				t++;
 			end
 			if ghat_measure>0
-				a = (in.K - in.p/2) / (how_many_initial_iterations * ghat_measure/in.p);
+				K_prime = in.K - in.p/2;
+				a = K_prime / (how_many_initial_iterations * ghat_measure/in.p);
 			else
 				a=0;
 			end
+			b = a/10; % The value of the coefficient in case the linear slope is followed
 			%} FIND THE FIRST COEFFICIENT
 
-			if epoch*in.T <=360
+			if epoch*in.T <=bootstrap_phase
 				%BOOTSTRAP
 				alpha_i = a;
-			elseif epoch*in.T <=3600
+			elseif epoch*in.T <=bootstrap_and_adaptive_phases
 				%ADAPTIVE
 				idx = (hist_tot_requests!=0);
 				% We are pessimistic: if we observe no request, we assume miss ratio is 1
 				hist_miss_ratio = ones( size(hist_tot_requests) );
 				hist_miss_ratio(idx) = (sum(hist_num_of_misses,1)(idx) ) ./hist_tot_requests(idx);
 				miss_ratio_past = prctile(hist_miss_ratio',5);
-				denominator = 3600/in.T - epoch+1;
+				denominator = bootstrap_and_adaptive_phases/in.T - epoch+1;
 				if hist_miss_ratio(end) <= miss_ratio_past
 					if denominator==0
 						disp denominator; disp in.T; disp epoch;
@@ -360,21 +366,22 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 					end
 					% We decrease more
 					alpha_i_first = last_coefficient /2;
-					alpha_i_second = last_coefficient - (last_coefficient - a/10)/denominator;
+					alpha_i_second = last_coefficient - (last_coefficient - b)/denominator;
 					alpha_i=min(alpha_i_first, alpha_i_second);
-					alpha_i=max(alpha_i, a/10);
+					alpha_i=max(alpha_i, b);
 				else
-					alpha_i = last_coefficient - (last_coefficient - a/10)/denominator;
+					alpha_i = last_coefficient - (last_coefficient - b)/denominator;
 				end
 			else
 				iterations_in_10h = 3600*10/in.T;
-				denominator = 1+0.1*iterations_in_10h + epoch - 3600/in.T;
+				denominator = 1+0.1*iterations_in_10h + epoch - bootstrap_and_adaptive_phases/in.T;
 				if denominator==0
 					disp denominator; disp iterations_in_10h; disp epoch; disp in.T;
 					error "denominator cannot be zero"
 				end
-				alpha_i = last_coefficient * (1- 1/denominator )^0.501;
+				alpha_i = last_coefficient * (1- 1/denominator )^(0.5+epsilon_);
 			end
+
 
 		case COEFF_LINEARHALVED5REINIT30MIN
 			reinit_period = 30*60; % in seconds

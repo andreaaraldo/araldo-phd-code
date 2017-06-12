@@ -12,7 +12,7 @@ warning ("error", "Octave:broadcast");
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = true;
+overwrite = false;
 settings.compact_name=true;
 
 settings.ON_hist_trash=true;
@@ -26,7 +26,7 @@ normalizes = {"no"};
 coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
 coefficientss = {"triang", "moderate", "linearhalved5"};
-coefficientss = {"linearhalved5"};
+coefficientss = {"triang", "moderate", "linearhalved5"};
 
 
 boosts = [1];
