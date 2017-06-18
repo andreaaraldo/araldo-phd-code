@@ -1,9 +1,9 @@
 %script
-global severe_debug = 1;
+global severe_debug = 0;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 settings.mdat_folder = "/home/andrea/Dropbox/universita_in_fieri/phd/pers/21.content_oblivious/journal_extension/allocation_visual/octave_results";
-max_parallel = 3;
+max_parallel = 4;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
@@ -23,10 +23,9 @@ methods_ = {"opencache"};
 
 normalizes = {"no", "max", "norm"};
 normalizes = {"no"};
-coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang"};
+coefficientss = {"no", "simple", "every10","every100", "adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang","linearhalved5_fixeda"};
 coefficientss = {"adaptive","adaptiveaggr", "insensitive", "smoothtriang", "triang", "smartsmooth", "linear", "moderate", "moderatelong", "linearlong","linearsmart10", "linearsmart100"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
-coefficientss = {"triang", "moderate", "linearhalved5"};
+coefficientss = {"moderate_fixeda-m3600-eps_0.001-a_4e8","moderate_fixeda-m36000-eps_0.001-a_4e8","moderate_fixeda-m3600-eps_0.25-a_4e8","moderate_fixeda-m36000-eps_0.25-a_4e8"};
 
 
 boosts = [1];
@@ -50,7 +49,7 @@ Ks = [1e5]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
-seeds = 1:20;
+seeds = 1:10;
 
 
 
@@ -70,6 +69,10 @@ global COEFF_NO=0; global COEFF_SIMPLE=1; global COEFF_10=2; global COEFF_100=3;
 	global COEFF_LINEARCUTCAUTIOUS10D16=30; global COEFF_LINEARCUTCAUTIOUS10Dp=31;
 	global COEFF_MODERATELONGNEW=32; global COEFF_MODERATENEW=33;
 	global COEFF_LINEARHALVED5REINIT30MIN=34; global COEFF_LINEARHALVED5REINIT1DAY=35;
+	global COEFF_LINEARHALVED5_FIXEDA=36; global COEFF_LINEARHALVED5_ENHANCED = 37;
+	global COEFF_MODERATE_FIXEDA_M3600_E001 = 38; global COEFF_MODERATE_FIXEDA_M36000_E001 = 39;
+	global COEFF_MODERATE_FIXEDA_M3600_E25 = 40; global COEFF_MODERATE_FIXEDA_M36000_E25 = 41;
+
 global NORM_NO=0; global NORM_MAX=1; global NORM_NORM=2;
 global PROJECTION_NO=0; global PROJECTION_FIXED=1; global PROJECTION_PROP=2; 
 	global PROJECTION_EUCLIDEAN=3;
@@ -244,6 +247,16 @@ for seed = seeds
 										settings.coefficients = COEFF_LINEARHALVED5REINIT30MIN;
 									case "halved5re1d"
 										settings.coefficients = COEFF_LINEARHALVED5REINIT1DAY;
+									case "linearhalved5_fixeda"
+										settings.coefficients = COEFF_LINEARHALVED5_FIXEDA;
+									case "moderate_fixeda-m3600-eps_0.001-a_4e8"
+										settings.coefficients = COEFF_MODERATE_FIXEDA_M3600_E001;
+									case "moderate_fixeda-m36000-eps_0.001-a_4e8"
+										settings.coefficients = COEFF_MODERATE_FIXEDA_M36000_E001;
+									case "moderate_fixeda-m3600-eps_0.25-a_4e8"
+										settings.coefficients = COEFF_MODERATE_FIXEDA_M3600_E25;
+									case "moderate_fixeda-m36000-eps_0.25-a_4e8"
+										settings.coefficients = COEFF_MODERATE_FIXEDA_M36000_E25;
 									otherwise
 										error "coefficients incorrect";
 								end
