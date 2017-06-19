@@ -1,9 +1,9 @@
 %script
-global severe_debug = 0;
+global severe_debug = 1;
 addpath("~/software/araldo-phd-code/utility_based_caching/scenario_generation");
 addpath("~/software/araldo-phd-code/general/statistical/");
 settings.mdat_folder = "/home/andrea/Dropbox/universita_in_fieri/phd/pers/21.content_oblivious/journal_extension/allocation_visual/octave_results";
-max_parallel = 4;
+max_parallel = 1;
 warning("error", "Octave:divide-by-zero");
 warning ("error", "Octave:broadcast");
 
@@ -12,10 +12,10 @@ warning ("error", "Octave:broadcast");
 parse=false; % false if you want to run the experiment.
 clean_tokens=false;
 settings.save_mdat_file = true;
-overwrite = false;
+overwrite = true;
 settings.compact_name=true;
 
-settings.ON_hist_trash=true;
+settings.ON_hist_trash=false;
 
 methods_ = {"csda", "dspsa_orig", "opencache", "optimum", "unif", "optimum_nominal","declaration"};
 methods_ = {"opencache"};
@@ -30,9 +30,9 @@ coefficientss = {"moderate_fixeda-m3600-eps_0.001-a_4e8","moderate_fixeda-m36000
 
 boosts = [1];
 lambdas = [10000000]; %req/s 
-tot_times = [20]; %total time(hours)
+tot_times = [1]; %total time(hours)
 Ts = [10]; % epoch duration (s)
-overall_ctlgs = [1e8];
+overall_ctlgs = [1e3];
 
 CTLG_PROP=-1; % To split the catalog as the request proportion
 ctlg_epss = [0];
@@ -42,10 +42,10 @@ req_epss = [-1]; % if -1, req_proportion must be explicitely set
 ONtimes = [1];%Fraction of time the object is on.
 ONOFFspans = [70]; %How many days an ON-OFF cycle lasts on average
 
-in.req_proportion=[0.13 0.75 0.02 .1]';
+in.req_proportion=[0.75 0.02 .1 0.13]';
 
 ps = [length(in.req_proportion) ]; % Number of CPs
-Ks = [1e5]; %cache slots
+Ks = [1e2]; %cache slots
 projections = {"no", "fixed", "prop", "euclidean"};
 projections = {"euclidean"};
 knows=[Inf]; %knowledge degree value
@@ -295,8 +295,9 @@ for seed = seeds
 
 								if clean_tokens
 									delete(settings.tokenfile);
-								elseif ( !exist(settings.outfile) &&  !exist(settings.tokenfile) )...
-										|| overwrite || parse
+								elseif ( ( !exist(settings.outfile) &&  !exist(settings.tokenfile) )...
+										|| overwrite || parse )
+									
 
 									if !parse
 										% To avoid duplicate exectution
@@ -384,8 +385,10 @@ for seed = seeds
 											sprintf("octave --quiet --eval \"%s([], [], '%s') \" > %s 2>&1",...
 											function_name, settings.infile, settings.logfile);
 										if active_processes >= max_parallel
+											printf("ciao %d\n", active_processes);
 											waitpid(-1);
 											active_processes--;
+											printf("ciao now %d", active_processes);
 										end
 										pid = fork();
 										if pid==0

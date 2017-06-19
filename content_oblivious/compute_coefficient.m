@@ -182,26 +182,26 @@ function alpha_i = compute_coefficient(in, settings, epoch, hist_num_of_misses, 
 		case COEFF_MODERATE_FIXEDA_M3600_E001
 			M = 3600/in.T;
 			a = 4e8;
-			epsilon = 0.001
+			epsilon = 0.001;
 			alpha_i = a /( ( 1 + M + epoch )^(0.5+epsilon) );
 
 		case COEFF_MODERATE_FIXEDA_M36000_E001
 			M = 36000/in.T;
 			a = 4e8;
-			epsilon = 0.001
+			epsilon = 0.001;
 			alpha_i = a /( ( 1 + M + epoch )^(0.5+epsilon) );
 
 
 		case COEFF_MODERATE_FIXEDA_M3600_E25
 			M = 3600/in.T;
 			a = 4e8;
-			epsilon = 0.25
+			epsilon = 0.25;
 			alpha_i = a /( ( 1 + M + epoch )^(0.5+epsilon) );
 
 		case COEFF_MODERATE_FIXEDA_M36000_E25
 			M = 36000/in.T;
 			a = 4e8;
-			epsilon = 0.25
+			epsilon = 0.25;
 			alpha_i = a /( ( 1 + M + epoch )^(0.5+epsilon) );
 
 		case COEFF_LINEAR
