@@ -677,7 +677,7 @@ void print_mappings(const EdgeValues& edge_load_map, const EdgeValues& edge_weig
 		   This value only makes sense if overload is not possible. Otherwise, you must
 		   ignore it.
  * @return out_lagrangian_value: value of the lagrangian, which is the total benefit - 
- *		   cost of transmitting object
+ *		   cost of transmitting object. This value only 
  */
 void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map, 
 	const Graph& G,
