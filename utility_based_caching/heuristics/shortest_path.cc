@@ -670,7 +670,15 @@ void print_mappings(const EdgeValues& edge_load_map, const EdgeValues& edge_weig
 	}
 }
 
-// Return the average feasible utility
+/**
+ * @param overload_possible: if true, we admit solutions in which the transmissions on 
+ *		  the links exceed the bandwidth.
+ * @return out_tot_feasible_utility: utility of the feasible solution.
+		   This value only makes sense if overload is not possible. Otherwise, you must
+		   ignore it.
+ * @return out_lagrangian_value: value of the lagrangian, which is the total benefit - 
+ *		   cost of transmitting object
+ */
 void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map, 
 	const Graph& G,
 	const MyMap<Vertex, 	
@@ -679,8 +687,8 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	const RequestSet& requests,
 	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
 	const BestSrcMap& best_cache_map,
-	Weight& out_tot_feasible_utility,	// It is the utility of the feasible solution
-	Weight& out_lagrangian_value,	// It is the value of the lagrangian
+	Weight& out_tot_feasible_utility,
+	Weight& out_lagrangian_value,
 	const bool overload_possible,
 	const EdgeValues& edge_weight_map,
 	const MyMap<Vertex,Size>& cache_occupancy
@@ -837,7 +845,14 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 
 }
 
-// Returns the tot_feasible_utility
+/**
+ * It computes an allocation of incarnations based on the greedy principle of placing the 
+ * incarnations that guarantee the largest gross utility first. 
+ * @return tot_feasible_utility_cleaned net utility provided by placing the incarnations
+ * 			such that the bandwidth constraints are not violated
+ * @return lagrangian_value utility minus the cost of transmitting the objects
+ * Computes the tot_feasible_utility. This is the utility 
+ */
 void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
 	const vector<E>& edges, const Graph& G,
 	Weight& tot_feasible_utility_cleaned, Weight& lagrangian_value, 

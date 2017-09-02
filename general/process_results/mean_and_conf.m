@@ -1,4 +1,4 @@
-#! /usr/bin/octave -qf
+#! /usr/local/bin/octave -qf
 addpath("~/software/araldo-phd-code/general/process_results" );
 
 
