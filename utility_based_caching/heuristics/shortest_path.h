@@ -66,9 +66,18 @@ using namespace boost;
 	typedef std::list< Incarnation > IncarnationCollection; 
 	typedef std::unordered_map<Object, IncarnationCollection > ObjectMap;
 	typedef MyMap< std::pair<Vertex,Object> , Requests> RequestSet;
+
+	/**
+	 * Parameters for the transmission to a client
+	 */
 	typedef struct{
 		Vertex src; Weight distance; Quality q; Weight per_req_gross_utility;
-	} OptimalClientValues;
+	} OptimalClientValues; 
+
+	/**
+	 * Associates to an object and a client node, the parameters for the transmission
+	 * of that object
+	 */
 	typedef MyMap<Object, MyMap<Vertex,OptimalClientValues> > BestSrcMap;
 	std::ostream& operator<<(std::ostream& os, const OptimalClientValues& ocv)  
 	{  

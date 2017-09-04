@@ -15,6 +15,7 @@
 #include "zipf.h"
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #include <climits>
 #include <boost/tokenizer.hpp>
@@ -22,8 +23,8 @@
 // Change here to change the network
 #include "networks/abilene.hpp"
 
-//#define SEVERE_DEBUG
-//#define VERBOSE
+#define SEVERE_DEBUG
+#define VERBOSE
 
 
 using namespace boost;
@@ -35,14 +36,15 @@ using namespace std;
 
 Quality qualities;
 unsigned seed;
-bool improved = true; // Implements Algorithm 3 of Horel, T. (2015). Notes on Greedy Algorithms for Submodular Maximization.
+bool improved = false; // Implements Algorithm 3 of Horel, T. (2015). Notes on Greedy Algorithms for Submodular Maximization.
+bool simple_greedy = false; // See the "simple" parameter of greedy
 //step parameters
 double eps = 1.0/100;
 
 unsigned multiplier = 1;
 
 
-Requests load_requests(RequestSet& requests, const char* reqfilename)
+Requests load_requests(RequestSet& requests, const string reqfilename)
 {
 	ifstream myf;
 	myf.open(reqfilename );
@@ -358,92 +360,219 @@ void fill_best_repo_map(
 	#endif
 }
 
+// Add load to the links of the best path between src and cli
+void update_load(EdgeValues& edge_load_map, 
+	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const Vertex src, const Vertex cli, const Weight load 
+	#ifdef SEVERE_DEBUG
+	, vector<EdgeDescriptor>& affected_edges
+	#endif
+){
+	// Associates to each source a vector, having in the i-th position the predecessor of 
+	// the i-th node toward that source
+	const vector<Vertex> path = predecessors_to_source.at(src);
+	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
+	graph_traits< Graph >::vertex_descriptor current;
+	for (current=cli; current!= src; current =  path[current] )
+	{
+		EdgeDescriptor e = edge(current,path[current],G).first;
+		Weight old_load = 0;
+		EdgeValues::iterator it = edge_load_map.find(e) ;
+		if (it != edge_load_map.end() )
+			old_load = it->second;
+		edge_load_map[e] = old_load + load;
+		#ifdef SEVERE_DEBUG
+		affected_edges.push_back(e);
+		#endif
+	}
+}
 
-Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Graph& G,
+/**
+ * Returns true if transmitting a load from src to cli would exceed the
+ * bandwidth in some link to exceed the bandwidth constraint
+ */
+bool check_if_overload(const EdgeValues& current_edge_load_map, 
+	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
+	const Vertex src, const Vertex cli, const Weight transmission_load
+){
+	#ifdef SEVERE_DEBUG
+	vector<EdgeDescriptor> affected_edges;
+	#endif
+	// In edge_load_map_after we will report the load on each edge supposing that we 
+	// trasnmit a load from src to cli. We intialize to the value of current_edge_load_map.
+	EdgeValues edge_load_map_after = current_edge_load_map;
+	update_load(edge_load_map_after,G, predecessors_to_source,src,cli,transmission_load
+	#ifdef SEVERE_DEBUG
+		,affected_edges
+	#endif
+	);
+	for (pair<EdgeDescriptor,Weight> p : edge_load_map_after)
+	{
+		Weight load = p.second;
+		if (load>link_capacity)
+			return true;
+	}
+	return false;
+}
+
+/**
+ * DO NOT USE IT DIRECTLY
+ * It computes the benefit of adding that incarnation to the current allocation. The benefits
+ * is the difference between the gross utility after and before adding this incarnation, 
+ * divided by the size of the incarnation, in case normalized=true.
+ * @param incarnation: the incarnation of which we want to compute the benefit
+ * @param normalized: if true, the benefit of the incarnation is computed as gross utility
+ * 		divided by the size of the incarnation. Otherwise, it is just the gross utility
+ * @param cache_occupancy: associates the current occupancy to each node
+ * @param best_cache_map: associates to each object and each client node, the cache and the
+ * 		from which it is optimal and the quality
+ * 		to retrieve it or nothing if the object is not cached
+ * @param edge_load_map: the bandwidth occupied on each link by the current allocation
+ * @param overload_possible: if yes, we admit transmissions above the edge capacity
+ */
+Weight compute_benefit(Incarnation& inc, 
+		const vector<Vertex> clients, 
+		const Graph& G,
 		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
 		const BestSrcMap& best_cache_map, 
 		const MyMap<Vertex,Size>& cache_occupancy,
 		vector<Vertex>& out_potential_additional_clients,
-		const bool normalized, // if "normalized", the gross utility will be divided by size 
-		const Size single_storage
+		const bool normalized, 
+		const Size single_storage,
+		const EdgeValues& edge_load_map,
+		const bool overload_possible
 ){
+	#ifdef SEVERE_DEBUG
+	if (!overload_possible)
+	{
+		for (const pair< Vertex, MyMap<Vertex,Weight > >& p : distances)
+		{
+			const MyMap<Vertex,Weight >& vertex_vs_distances = p.second;
+			for (const pair<Vertex, Weight>& pp : vertex_vs_distances)
+			{
+				const Weight distance = pp.second;
+				if (distance > link_capacity)
+					throw runtime_error("You are computing the benefit without admitting link overloading. However you are considering non-zero distances. This should not happen");
+			}
+		}
+	}
+	#endif
 	Weight benefit=0;
 
 	Object obj = inc.o;
 	Vertex src_new = inc.src;
 	Quality q_new = inc.q;
 	Size size_new = sizes[q_new];
+	EdgeValues edge_load_map_in_case_of_placement_of_the_incarnation = edge_load_map;
 	
 	if ( cache_occupancy.at(src_new) + size_new <= single_storage * max_size + 1e-5)
 	{	// We have space to place this incarnation and the benefit may be > 0
 
 		// distances associates to each source a map associating to each client the 
 		// distance to that source
+		// Therefore, in the next line we retrieve the distances between each client and the 
+		// node where the incarnation should be placed
 		MyMap<Vertex,Weight> tmp_distances_to_incarnation = distances.at(src_new);
 		
-		for (vector<Vertex>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+		for ( const Vertex cli : clients)
 		{
-			Vertex cli = *it;
+
 			Weight distance_new = tmp_distances_to_incarnation.at(cli);
-			Weight u_new = utilities[q_new] - sizes[q_new] * distance_new;
+			Weight u_new = utilities[q_new] - size_new * distance_new;  // gross utility that
+																			// the incarnation 
+																			// gives at each
+																			// transmission
 			RequestSet::const_iterator req_it = requests.find(pair<Vertex,Object>(cli,obj) );
 			
 			if(req_it != requests.end() )
 			{
-				// cli is requesting this object
 				Requests n = req_it->second;
 				if (u_new>0 && n>0)
 				{
-					Weight u_cache = 0;
-					BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
-					if(bcp_it != best_cache_map.end() )
-					{
-						// This object is already in some cache
-						MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
-						MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
-								opt_cache_values_per_obj.find(cli);
-						if (ocv_it != opt_cache_values_per_obj.end() )
-						{
-							OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
-							u_cache = opt_val_to_cache.per_req_gross_utility;
-						} // else there is no cache location that serves that object to
-						  // that client
-					}// else There is no good cache location, and thus the best utility we could 
-					 // get (before considering the new incarnation) is provided by the best repo
+					// It is worth storing this object and cli is requesting this object
 
-					Weight u_best=0; 	// If the best_utility remains 0, it means that the object is 
-										// currently not served to the client
-					if (u_cache > 0)
-					{
-						// We found some cache serving that object to that client. By construction
-						// it is better than any repo.
-						u_best = u_cache;
-					}else{
-						// No cache is serving that object to that client. We verify whether there is 
-						// a repository serving that
-						MyMap< Vertex, OptimalClientValues >::const_iterator opt_val_to_repo_it =
-							best_repo_map.find(cli);
-						if (opt_val_to_repo_it != best_repo_map.end() )
+					bool isThereAnOverload = false;	// true if the transmission of the incarnation
+													// to the requester in cli would imply exceeding
+													// the capacity on some link
+
+					if (!overload_possible)
+					{	// Check if transmitting this incarnation to the client violate the 
+						// bandwidth constraint
+						Weight load = size_new * n;
+						isThereAnOverload = 
+							check_if_overload(edge_load_map_in_case_of_placement_of_the_incarnation, 
+								G, predecessors_to_source, src_new, cli, load);
+						if (!isThereAnOverload)
 						{
-							// There is a repository currently serving cli
-							OptimalClientValues opt_val_to_repo = opt_val_to_repo_it->second;
-							u_best = opt_val_to_repo.per_req_gross_utility;
 							#ifdef SEVERE_DEBUG
-								if(u_best<=0) throw invalid_argument("u_repo cannot be negative");
+							vector<EdgeDescriptor> affected_edges;
 							#endif
+							update_load(edge_load_map_in_case_of_placement_of_the_incarnation, 
+								G, predecessors_to_source, src_new, cli, load
+							#ifdef SEVERE_DEBUG
+								,affected_edges
+							#endif
+							);
 						}
 					}
 
-					if (u_new > u_best)
+					if (overload_possible || !isThereAnOverload)
 					{
-						benefit += n * (u_new - u_best);
-						if (normalized) benefit = benefit / sizes[q_new];
-						out_potential_additional_clients.push_back(cli);
-					} // else the benefit is not incremented
-				}
+						Weight u_cache = 0;
+						BestSrcMap::const_iterator bcp_it = best_cache_map.find(obj);
+						if(bcp_it != best_cache_map.end() )
+						{
+							// This object is already incarnated in some cache. If in the current allocation 
+							// this objectis transmitted to client cli thorough a cache, we check if 
+							// transmitting it through the new incarnation is better
+							MyMap<Vertex,OptimalClientValues> opt_cache_values_per_obj = bcp_it->second;
+							MyMap<Vertex,OptimalClientValues>::iterator ocv_it = 
+									opt_cache_values_per_obj.find(cli);
+							if (ocv_it != opt_cache_values_per_obj.end() )
+							{
+								OptimalClientValues& opt_val_to_cache = opt_cache_values_per_obj.at(cli);
+								u_cache = opt_val_to_cache.per_req_gross_utility;
+							} // else there is no cache location that serves that object to
+							  // that client
+						}// else Thereòis no good cache location, and thus the best utility we could 
+						 // get (before considering the new incarnation) is provided by the best repo
+
+						Weight u_best=0; 	// If the best_utility remains 0, it means that the object is 
+											// currently not served to the client
+						if (u_cache > 0)
+						{
+							// We found some cache serving that object to that client. By construction
+							// it is better than any repo.
+							u_best = u_cache;
+						}else{
+							// No cache is serving that object to that client. We verify whether there is 
+							// a repository serving that
+							MyMap< Vertex, OptimalClientValues >::const_iterator opt_val_to_repo_it =
+								best_repo_map.find(cli);
+							if (opt_val_to_repo_it != best_repo_map.end() )
+							{
+								// There is a repository currently serving cli
+								OptimalClientValues opt_val_to_repo = opt_val_to_repo_it->second;
+								u_best = opt_val_to_repo.per_req_gross_utility;
+								#ifdef SEVERE_DEBUG
+									if(u_best<=0) throw invalid_argument("u_repo cannot be negative");
+								#endif
+							}
+						}
+
+						if (u_new > u_best)
+						{
+							benefit += n * (u_new - u_best);
+							if (normalized) benefit = benefit / sizes[q_new];
+							out_potential_additional_clients.push_back(cli);
+						} // else the benefit is not incremented
+					}// else transmitting that incarnation to cli would imply an overload on some link and 
+					 // we don't admit it. In this case, we skip this incarnation, i.e., we would never 
+					 // place it.	
+				} // Either there are 0 reqeuests for that object from that client, or the utility is 0
 			} // else there are no requests for that object from that client
-		} //end of for
+		} //end of for cli
 	} 	// Else benefit remains 0, in order to avoid to insert this element, since there is no room
 		// for it
 
@@ -458,7 +587,59 @@ Weight compute_benefit(Incarnation& inc, const vector<Vertex> clients, const Gra
 
 	inc.benefit = benefit; inc.valid=true;
 	return benefit;
+} // compute_benefit
+
+/**
+ * The benefit of an incarnation is the additional gross utility (either normalized or not to the
+ * incarnation size) that we obtain by placing it. Note that the gross utility is obtained 
+ * subtracting from the net utility the penalization for the bandwidth utilized for the 
+ * transmission. Note also that it is possible than the transmission of this incarnation imply 
+ * exceeding the link capacity. We admit this.
+ */
+Weight compute_benefit_for_lagrangian_greedy(Incarnation& inc, 
+		const vector<Vertex> clients, 
+		const Graph& G,
+		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
+		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
+		const BestSrcMap& best_cache_map, 
+		const MyMap<Vertex,Size>& cache_occupancy,
+		vector<Vertex>& out_potential_additional_clients,
+		const bool normalized, 
+		const Size single_storage
+){
+	bool overload_possible = true;
+	EdgeValues edge_load_map_dummy ;
+	return compute_benefit(inc,clients,G,distances,best_repo_map,best_cache_map, 
+		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
+		edge_load_map_dummy,overload_possible);
 }
+
+
+/**
+ * The benefit of an incarnation is the additional net utility (either normalized or not to the
+ * incarnation size) that we obtain by placing it. Note that this utility is the "net" utility, i.e.
+ * it does include the penalization for the bandwidth utilization. Note that we do not admit 
+ * trasmitting the incarnation to a client node if this would imply an overload of some of the links
+ * in the path.
+ */
+Weight compute_benefit_for_simple_greedy(Incarnation& inc, 
+		const vector<Vertex> clients, 
+		const Graph& G,
+		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
+		const BestSrcMap& best_cache_map, 
+		const MyMap<Vertex,Size>& cache_occupancy,
+		vector<Vertex>& out_potential_additional_clients,
+		const bool normalized, 
+		const Size single_storage,
+		const EdgeValues& edge_load_map
+){
+	MyMap< Vertex, MyMap<Vertex,Weight > > distances_dummy;
+	bool overload_possible = false;
+	return compute_benefit(inc,clients,G,distances_dummy,best_repo_map,best_cache_map, 
+		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
+		edge_load_map, overload_possible);
+}
+
 
 template <typename T>
 double compute_norm(const T& ic )
@@ -540,32 +721,9 @@ void add_load(EdgeValues& loads, const E e, const Weight load)
 	throw invalid_argument("Implement this");
 }
 
-// Add load to the links of the best path between src and cli
-void update_load(EdgeValues& edge_load_map, 
-	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
-	const Vertex src, const Vertex cli, const Weight load 
-	#ifdef SEVERE_DEBUG
-	, vector<EdgeDescriptor>& affected_edges
-	#endif
-){
-	// Associates to each source a vector, having in the i-th position the predecessor of 
-	// the i-th node toward that source
-	const vector<Vertex> path = predecessors_to_source.at(src);
-	// Iteration through the path inspired by http://stackoverflow.com/a/12676435
-	graph_traits< Graph >::vertex_descriptor current;
-	for (current=cli; current!= src; current =  path[current] )
-	{
-		EdgeDescriptor e = edge(current,path[current],G).first;
-		Weight old_load = 0;
-		EdgeValues::iterator it = edge_load_map.find(e) ;
-		if (it != edge_load_map.end() )
-			old_load = it->second;
-		edge_load_map[e] = old_load + load;
-		#ifdef SEVERE_DEBUG
-		affected_edges.push_back(e);
-		#endif
-	}
-}
+
+
+
 
 // Returns the amount of requests that can be satisfied considering the 
 // bottleneck of the path
@@ -846,8 +1004,14 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 }
 
 /**
+ * DO NOT USE DIRECTLY
  * It computes an allocation of incarnations based on the greedy principle of placing the 
- * incarnations that guarantee the largest gross utility first. 
+ * incarnations that guarantee the largest benefit first. 
+ * @param simple: if true, the benefit of an incarnation is its net utility and is non-null 
+ *		only if its transmission does not imply exceeding any of the link capacity. If false,
+ *		we are computing a "lagrangian" greedy, where the benefit of an incarnation is the 
+ *		gross utility (net utility - penalization for bandwidth utilization) and we also admit
+ *		exceeding some of the link capacities.
  * @return tot_feasible_utility_cleaned net utility provided by placing the incarnations
  * 			such that the bandwidth constraints are not violated
  * @return lagrangian_value utility minus the cost of transmitting the objects
@@ -856,8 +1020,8 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
 	const vector<E>& edges, const Graph& G,
 	Weight& tot_feasible_utility_cleaned, Weight& lagrangian_value, 
-	const bool normalized, // Paramater of compute_benefit
-	Size single_storage
+	const bool normalized, // Paramater of compute_benefit_for_lagrangian_greedy
+	Size single_storage, bool simple
 ){
 
 	qualities = sizeof(utilities)/sizeof(Weight);
@@ -923,19 +1087,28 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	fill_best_repo_map(repositories, clients, distances, best_repo_map);
 
 
-	//{ INITIALIZE INCARNATIONS
+	//{ INITIALIZE INCARNATIONS AND THEIR BENEFITS
 	#ifdef VERBOSE	
 	cout << "Initializing incarnations"<<endl;
 	#endif
-	for(vector<Object>::iterator obj_it = objects.begin(); obj_it != objects.end(); ++obj_it)
-	for(vector<Vertex>::iterator cache_it = caches.begin(); cache_it != caches.end(); ++cache_it)
+	for(const Object o : objects)
+	for(const Vertex cache_node : caches)
 	for(Quality q=0; q<qualities; q++)
 	{
-		Incarnation inc; inc.o = *obj_it; inc.q = q; inc.src=*cache_it;
+		Incarnation inc; inc.o = o; inc.q = q; inc.src=cache_node;
 		vector<Vertex> potential_additional_clients; // I am not interested in this for the
 															// time being
-		Weight b= compute_benefit(inc, clients, G, distances, best_repo_map, 
-			best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage);
+		Weight b;
+		if (simple)
+		{
+			b= compute_benefit_for_simple_greedy(inc, clients, G, best_repo_map, 
+				best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage,
+				edge_load_map);
+		}else
+		{
+			b= compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, best_repo_map, 
+				best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage);
+		}
 		if (inc.benefit > 0)
 			available_incarnations.push_back(inc);
 		else 
@@ -978,7 +1151,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	}
 
 	#endif
-	//} INITIALIZE INCARNATIONS
+	//} INITIALIZE INCARNATIONS AND THEIR BENEFITS
 
 
 	while (available_incarnations.size()>0)
@@ -1047,7 +1220,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			// I retrieve the clients that experience an improvement from the addition of best_inc
 			// since only them change the associated source
 			vector<Vertex> changing_clients;
-			Weight b= compute_benefit(best_inc, clients, G, distances, best_repo_map, 
+			Weight b= compute_benefit_for_lagrangian_greedy(best_inc, clients, G, distances, best_repo_map, 
 				best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
@@ -1137,7 +1310,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			//{ RECOMPUTE THE BENEFITS
 			for (Incarnation& inc : available_incarnations)
 			{
-				inc.benefit = compute_benefit(inc, clients, G, distances, best_repo_map, 
+				inc.benefit = compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, best_repo_map, 
 					best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
 			}
 			//} RECOMPUTE THE BENEFITS
@@ -1302,7 +1475,7 @@ int main(int argc,char* argv[])
 	double load;
 	unsigned num_iterations;
 	int slowdown;
-	const char* reqfilename;
+	string reqfilename = "";
 	Size single_storage; //As a multiple of the highest quality size
 	step_type steps;
 	
@@ -1326,16 +1499,16 @@ int main(int argc,char* argv[])
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
-		stringstream ssfilename; 
-		ssfilename << "/home/andrea/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-"<< ctlg<<"/c2ctlg-"<< c2ctlg <<
+		stringstream ssfilename;  ssfilename.str("");
+		ssfilename << "/home/araldo/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-"<< ctlg<<"/c2ctlg-"<< 
+			c2ctlg <<
 			"/alpha-"<<alpha <<"/load-"<< load
 			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat";
-		reqfilename = ssfilename.str().c_str() ;
+		reqfilename = ssfilename.str() ;
 
 		
-		std::cout<<"reqfilename = "<< reqfilename << std::endl;
+		std::cout<<__FILE__<<":"<<__LINE__<<": reqfilename = "<< reqfilename << std::endl;
 		//} REQUESTS
-
 	} else if(argc==5)
 	{
 		// The demand is taken from the input file
@@ -1397,17 +1570,19 @@ int main(int argc,char* argv[])
 
 		if (improved)
 		{	// I also compute the solution without normalization of the benefit
+			// In the improved version I take the best between the solution with and 
+			// without normalization
 			normalized=false;
 			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization,
-				normalized, single_storage
+				normalized, single_storage, simple_greedy
 			);
 		}
 
 		normalized = true;
 		greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
 				tot_feasible_utility_cleaned_with_normalization, lagrangian_value_with_normalization,
-				normalized, single_storage
+				normalized, single_storage, simple_greedy
 			);
 
 
