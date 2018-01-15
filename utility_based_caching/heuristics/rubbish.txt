@@ -1,0 +1,19 @@
+Requests generate_requests(RequestSet& requests, const double alpha, const Object ctlg,
+	const double load, Size link_capacity
+){
+	Requests tot_requests = 0;
+	Requests avg_tot_requests = (Requests) (load*link_capacity/sizes[0] );
+
+	ZipfGenerator zipf(alpha, ctlg, seed, avg_tot_requests);
+	for (Vertex cli_id = 0; cli_id < sizeof(clients_in_case_of_generation)/sizeof(Vertex); 
+		cli_id++ )
+	for(Object o=1; o<=ctlg; o++)
+	{
+		Requests n = zipf.generate_requests(o);
+		requests.emplace(pair<Vertex,Object>(clients_in_case_of_generation[cli_id],o) , n) ;
+		tot_requests += n;
+	}
+	cout <<"tot_requests "<< tot_requests<<endl;
+	return tot_requests;
+}
+

@@ -37,8 +37,14 @@ using namespace boost;
 	typedef std::vector<Graph::edge_descriptor> PathType;
 	typedef std::pair<int, int> E;
 
+	std::ostream& operator<< (std::ostream& os, const E& edge) 
+	{
+		os << edge.first<<"->"<<edge.second;
+		return os;
+	}
+
 	template<typename T1, typename T2> using MyMap = std::map<T1,T2>;
-	typedef uint8_t Quality;
+	typedef unsigned Quality;
 	typedef unsigned Object;
 	typedef unsigned Requests;
 	typedef double Size;

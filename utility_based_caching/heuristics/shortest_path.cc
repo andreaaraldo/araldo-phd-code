@@ -21,7 +21,7 @@
 #include <boost/tokenizer.hpp>
 
 // Change here to change the network
-#include "networks/abilene.hpp"
+//#include "networks/abilene.hpp"
 
 #define SEVERE_DEBUG
 #define VERBOSE
@@ -34,7 +34,6 @@ using namespace std;
 
 
 
-Quality qualities;
 unsigned seed;
 bool improved = false; // Implements Algorithm 3 of Horel, T. (2015). Notes on Greedy Algorithms for Submodular Maximization.
 bool simple_greedy = false; // See the "simple" parameter of greedy
@@ -43,54 +42,353 @@ double eps = 1.0/100;
 
 unsigned multiplier = 1;
 
-
-Requests load_requests(RequestSet& requests, const string reqfilename)
+template <typename T>
+double compute_norm(const T& ic )
 {
+	double norm=0;
+	for (typename T::const_iterator it=ic.begin(); 
+			it!=ic.end(); ++it)
+	{
+		norm += (*it) * (*it);
+	}
+	return sqrt(norm);
+}
+
+
+template <typename T>
+void print_collection(const T& ic )
+{
+	for (typename T::const_iterator it=ic.begin(); 
+			it!=ic.end(); ++it)
+	{
+		cout<<*it<<" ";
+	}
+	cout<<endl;
+}
+
+void print_requests(const RequestSet& reqs)
+{
+	for (pair< pair<Vertex,Object> , Requests> p : reqs)
+	{
+		cout<<"v"<<p.first.first<<", o"<<p.first.second<<": "<<p.second<<";   ";
+	}
+	cout<<endl;
+}
+
+
+void parse_cplex_file(RequestSet& requests, Requests& tot_requests, 
+	vector<Vertex> nodes, vector<Vertex> repositories, vector<Vertex>& caches, 
+	Size& single_storage, vector<Size>& sizes, vector<Weight>& utilities,
+	set<Vertex>& clients, vector<E>& edges,  Size& link_capacity,
+	const string cplex_filename, set<Object>& objects, vector<Quality>& qualities)
+{
+	#ifdef SEVERE_DEBUG
+	if ( !requests.empty() || ! nodes.empty() || !repositories.empty() || 
+		!caches.empty() || !objects.empty() || !qualities.empty() )
+	{
+		cout<<"The datastructures in input are not empty"<<endl;
+		exit(0);
+	}
+	#endif	
+
+	Size node_capacity_cache_space;
+	Size max_qual_cache_space = -1;
+
 	ifstream myf;
-	myf.open(reqfilename );
+
+	tot_requests =0;
+
+	myf.open(cplex_filename );
 	if(!myf.is_open() )
 	{
-		cout<<"Error reading file "<<reqfilename<<endl;
+		cout<<"Error reading file "<<cplex_filename<<endl;
 		exit(1);
 	}
 	string line;
-	getline(myf,line) ;
-	char_separator<char> sep("<>"); //Inspired by http://stackoverflow.com/a/55680/2110769
-    tokenizer< char_separator<char> > tokens(line, sep);
-	Requests tot_requests =0;
-	unsigned count=1;
-    for (const auto& t : tokens) 
+	#ifdef SEVERE_DEBUG
+	bool obj_requests_found=false; bool ases_found=false;  bool objects_found=false;  
+		bool quality_levels_found=false;  bool arcs_found,
+		rate_per_quality_found=false;  bool cache_space_per_quality_found=false;  
+		bool utility_per_quality_found=false;
+		bool objects_published_by_producers_found=false;  
+		bool max_cache_storage_at_single_as_found=false;
+	#endif
+	while ( !myf.eof() )
 	{
-		if (count%2==0)
+		getline(myf,line) ;
+		if (line.rfind("ObjRequests",0) == 0 )
 		{
-			unsigned o,cli,n; o=cli=n=0;
-			sscanf(t.c_str(), "%u,%u,%u", &o,&cli,&n);
-			requests.emplace(pair<Vertex,Object>(cli,o) , n) ;
-			tot_requests += n;
+			#ifdef SEVERE_DEBUG
+			obj_requests_found=true;
+			#endif
+			line.erase(0, string("ObjRequests = {").length() );
+			char_separator<char> sep("<>"); //Inspired by http://stackoverflow.com/a/55680/2110769
+			tokenizer< char_separator<char> > tokens(line, sep);
+			unsigned count=1;
+			for (const auto& t : tokens) 
+			{
+				if (count%2==0)
+				{
+					unsigned o,cli,n; o=cli=n=0;
+					sscanf(t.c_str(), "%u,%u,%u", &o,&cli,&n);
+					requests.emplace(pair<Vertex,Object>(cli,o) , n) ;
+					tot_requests += n;
+				}
+				count++;
+			}
+		} else if (line.rfind("ASes",0) ==0 )
+		{
+			#ifdef SEVERE_DEBUG
+			ases_found = true;
+			#endif
+			line.erase(0, string("ASes= {").length() );
+
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			Vertex node_id;
+			while (ss >> node_id)
+			{
+				nodes.push_back(node_id);
+				if (ss.peek() == ',') ss.ignore();
+			}
+		}else if (line.rfind("Objects",0) ==0 )
+		{
+			#ifdef SEVERE_DEBUG
+			objects_found = true;
+			#endif
+			line.erase(0, string("Objects= {").length() );
+
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			Object obj_id;
+			while (ss >> obj_id)
+			{
+				objects.insert(obj_id);
+				if (ss.peek() == ',') ss.ignore();
+			}
+		} else if (line.rfind("QualityLevels",0) ==0 )
+		{
+			#ifdef SEVERE_DEBUG
+			quality_levels_found = true;
+			#endif
+			line.erase(0, string("QualityLevels= {").length() );
+
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			unsigned quality;
+			while (ss >> quality)
+			{
+				qualities.push_back(quality);
+				if (ss.peek() == ',') ss.ignore();
+			}
+
+			#ifdef SEVERE_DEBUG
+			if (qualities[0]!=0)
+			{
+				cout<<"The first quality is "<<qualities[0]<<" instead of 0"<<endl;
+				exit(0);
+			}
+			#endif
+			qualities.erase(qualities.begin() ); // We remove the first quality, which is 0
+			
+		} else if (line.rfind("ObjectsPublishedByProducers",0) ==0 )
+		{
+			cout<<"\n\n\n\nI am here\n\n\n\n\n"<<endl;
+			#ifdef SEVERE_DEBUG
+			objects_published_by_producers_found=true;
+			#endif
+			line.erase(0, string("ObjectsPublishedByProducers=[").length() );
+			char_separator<char> sep("[]"); //Inspired by http://stackoverflow.com/a/55680/2110769
+			tokenizer< char_separator<char> > tokens(line, sep);
+			int NOT_FOUND = -1; int repository = NOT_FOUND;
+			unsigned count=1;
+			for (const auto& t : tokens) 
+			{
+				if (count%2==0)
+				{
+					unsigned node_id, non_important;
+					sscanf(t.c_str(), "%u %u %u", &node_id, &non_important, &non_important);
+					if (repository == NOT_FOUND)
+					{
+						repository = node_id;
+						repositories.push_back(node_id) ;
+					}
+					else if (repository != node_id)
+					{
+						cout<<"Found two repositories: "<< repository<<","<<node_id<<
+							". For the moment, onlu one repository is \
+							guaranteed to work"<<endl;
+						exit(0);
+					}
+				}
+				count++;
+			}
+			#ifdef SEVERE_DEBUG
+			if (repositories.empty() )
+			{
+				cout<<"No repositories were found"<<endl;
+				exit(0);
+			}		
+			#endif
+		} // end of retrieving repos
+		else if (line.rfind("MaxCacheStorageAtSingleAS",0) ==0)
+		{
+			#ifdef SEVERE_DEBUG
+			max_cache_storage_at_single_as_found = true;
+			#endif
+			line.erase(0, string("MaxCacheStorageAtSingleAS= [").length() );
+
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			Vertex node_id = 1;
+			Size UNASSIGNED = 0;
+			Size node_capacity_cache_space_tmp = UNASSIGNED;
+			node_capacity_cache_space = UNASSIGNED;
+			while (ss >> node_capacity_cache_space_tmp)
+			{
+				if (node_capacity_cache_space_tmp>0)
+				{
+					if (node_capacity_cache_space != UNASSIGNED && node_capacity_cache_space_tmp != node_capacity_cache_space)
+					{
+						cout<<"Only one value of node capacity is admitted for now"<<endl;
+						exit(0);
+					}
+					node_capacity_cache_space = node_capacity_cache_space_tmp;
+					caches.push_back(node_id);
+				}
+
+				node_id++;
+			}
 		}
-		count++;
-    }
-	myf.close();
-	return tot_requests;
-}
+		else if (line.rfind("RatePerQuality",0) ==0)
+		{
+			#ifdef SEVERE_DEBUG
+			rate_per_quality_found = true;
+			#endif
+			line.erase(0, string("RatePerQuality= [").length() );
 
-Requests generate_requests(RequestSet& requests, const double alpha, const Object ctlg,
-	const double load
-){
-	Requests tot_requests = 0;
-	Requests avg_tot_requests = (Requests) (load*link_capacity/sizes[0] );
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			float size_;
+			ss>>size_;
+			if (size_!=0)
+			{
+				cout<<"The first size is supposed to be zero"<<endl;
+				exit(0);
+			}
+			while (ss >> size_)
+			{
+				sizes.push_back(size_);
+			}
+		}
+		else if (line.rfind("CacheSpacePerQuality",0) ==0)
+		{
+			#ifdef SEVERE_DEBUG
+			cache_space_per_quality_found = true;
+			#endif
+			line.erase(0, string("CacheSpacePerQuality= [").length() );
 
-	ZipfGenerator zipf(alpha, ctlg, seed, avg_tot_requests);
-	for (Vertex cli_id = 0; cli_id < sizeof(clients_in_case_of_generation)/sizeof(Vertex); cli_id++ )
-	for(Object o=1; o<=ctlg; o++)
-	{
-		Requests n = zipf.generate_requests(o);
-		requests.emplace(pair<Vertex,Object>(clients_in_case_of_generation[cli_id],o) , n) ;
-		tot_requests += n;
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			float tmp;
+			stringstream ss(line);
+			while (ss >> tmp)
+			{
+				max_qual_cache_space = tmp;
+			}
+		}
+		else if (line.rfind("UtilityPerQuality",0) ==0)
+		{
+			#ifdef SEVERE_DEBUG
+			utility_per_quality_found = true;
+			#endif
+			line.erase(0, string("UtilityPerQuality= [").length() );
+
+			//Inspired by https://stackoverflow.com/a/18336124/2110769
+			stringstream ss(line);
+			float utility;
+			ss>>utility;
+			if (utility!=0)
+			{
+				cout<<"The first utility is supposed to be zero"<<endl;
+				exit(0);
+			}
+			while (ss >> utility)
+			{
+				utilities.push_back(utility);
+			}
+		}else if (line.rfind("Arcs",0) == 0 )
+		{
+			#ifdef SEVERE_DEBUG
+			arcs_found=true;
+			#endif
+			link_capacity = 0;
+			line.erase(0, string("Arcs = {").length() );
+			char_separator<char> sep("<>"); //Inspired by http://stackoverflow.com/a/55680/2110769
+			tokenizer< char_separator<char> > tokens(line, sep);
+			unsigned count=1;
+			for (const auto& t : tokens) 
+			{
+				if (count%2!=0)
+				{
+					unsigned from_node,to_node,this_link_capacity ;
+					sscanf(t.c_str(), "%u,%u,%u", &from_node,&to_node,&this_link_capacity);
+					if (link_capacity!=0 && link_capacity!=this_link_capacity)
+					{
+						cout<<"Only one value of link_capacity is admissible for the moment"
+							<<endl;
+						exit(0);
+					}
+					link_capacity = this_link_capacity;
+					edges.push_back(E(from_node,to_node) );
+					
+				}
+				count++;
+			}
+		}
 	}
-	cout <<"tot_requests "<< tot_requests<<endl;
-	return tot_requests;
+	
+
+	myf.close();
+
+	for ( const pair<pair<Vertex,Object>, Requests> p : requests)
+	{
+		clients.insert(p.first.first);
+	}
+
+
+	// How many high quality objects we can put in a single cache
+	single_storage = (Size)node_capacity_cache_space / max_qual_cache_space;
+
+	cout<<"Nodes are: "; print_collection(nodes);
+	cout<<"Requests are: "; print_requests(requests);
+	cout<<"Repositories are: "; print_collection(repositories);
+	cout<<"max_qual_cache_space: "<<max_qual_cache_space<<endl;
+	cout<<"Caches are: "; print_collection(caches);
+	cout<<"Sizes are: "; print_collection(sizes);
+	cout<<"single_storage is "<<single_storage<<endl;
+	cout<<"Utilities are: "; print_collection(utilities);
+	cout<<"Clients are: "; print_collection(clients);
+	cout<<"Link capacity is: "<<link_capacity<<endl;
+	cout<<"Edges: "; print_collection(edges);
+	cout<<"Qualities "; print_collection(qualities);
+
+	#ifdef SEVERE_DEBUG
+	if (!obj_requests_found || !ases_found || !objects_found || !quality_levels_found || 
+		!arcs_found ||
+		!rate_per_quality_found || !cache_space_per_quality_found || 
+		!utility_per_quality_found ||
+		!objects_published_by_producers_found || !max_cache_storage_at_single_as_found)
+	{
+		cout<<"Something has not been found: "<<
+		obj_requests_found<<ases_found<<objects_found<<quality_levels_found<<arcs_found<<
+		rate_per_quality_found<<cache_space_per_quality_found<<utility_per_quality_found<<
+		objects_published_by_producers_found << max_cache_storage_at_single_as_found
+		<<endl;
+		exit(0);
+	}
+	#endif
 }
+
 
 // Returns the total number of requests
 Requests initialize_requests(RequestSet& requests)
@@ -163,30 +461,10 @@ unsigned count_nodes(vector<E> edges)
 	return nodes.size();
 }
 
-void fill_clients_and_objects(const RequestSet& requests, 
-		vector<Vertex>& out_clients, vector<Object>& out_objects)
-{
-	set<Vertex> client_set;
-	set<Object> object_set;
-	for (RequestSet::const_iterator it = requests.begin(); it!=requests.end(); ++it)
-	{
-		Requests num_req = (it->first).second;
-		if(num_req>0)
-		{
-			Vertex client = (it->first).first;
-			Object obj =  (it->first).second;
-			client_set.insert( client );
-			object_set.insert( obj );
-		}
-	}
-	std::copy(client_set.begin(), client_set.end(), std::back_inserter(out_clients) );
-	std::copy(object_set.begin(), object_set.end(), std::back_inserter(out_objects) );
-}
-
 
 // Returns the distance between each client and the source
 void compute_paths_from_source(
-	Vertex source, const vector<Vertex>& clients, Graph& G,
+	Vertex source, Graph& G,
 	vector<Weight>& out_distances_from_single_source, vector<Vertex>& out_predecessors
 ){
 
@@ -202,7 +480,7 @@ void compute_paths_from_source(
 
 }
 
-void print_distances (const vector<Vertex>& sources, const vector<Vertex>& clients, Graph G)
+void print_distances (const vector<Vertex>& sources, const set<Vertex>& clients, Graph G)
 {
 	vector<Weight> tmp_distances_from_single_source(num_vertices(G));
 	vector<Vertex> tmp_predecessors(num_vertices(G));
@@ -212,13 +490,11 @@ void print_distances (const vector<Vertex>& sources, const vector<Vertex>& clien
 			it_src != sources.end(); ++it_src
 	){
 		Vertex src = *it_src;
-		compute_paths_from_source(src, clients, G,
+		compute_paths_from_source(src, G,
 					tmp_distances_from_single_source, tmp_predecessors);
 		MyMap<Vertex, Weight> tmp_distances_to_src_map;
-		for(vector<Vertex>::const_iterator it_cli = clients.begin(); 
-				it_cli != clients.end(); ++it_cli
-		){
-			Vertex cli = *it_cli;
+		for(Vertex cli: clients)
+		{
 			tmp_distances_to_src_map.emplace(cli, tmp_distances_from_single_source[cli] );
 			cout<<"d("<<src<<","<<cli<<")="<<tmp_distances_from_single_source[cli]<<"; ";
 		}
@@ -227,7 +503,7 @@ void print_distances (const vector<Vertex>& sources, const vector<Vertex>& clien
 }
 
 
-void fill_distances	(const vector<Vertex>& sources, const vector<Vertex>& clients, Graph G,
+void fill_distances	(const vector<Vertex>& sources, const set<Vertex>& clients, Graph G,
 	MyMap<Vertex, vector<Vertex> >& out_predecessors_to_sources,
 	MyMap< Vertex, MyMap<Vertex,Weight> >& out_distances
 	)
@@ -239,14 +515,12 @@ void fill_distances	(const vector<Vertex>& sources, const vector<Vertex>& client
 			it_src != sources.end(); ++it_src
 	){
 		Vertex src = *it_src;
-		compute_paths_from_source(src, clients, G,
+		compute_paths_from_source(src, G,
 					tmp_distances_from_single_source, tmp_predecessors);
 		out_predecessors_to_sources[ src ] = tmp_predecessors;
 		MyMap<Vertex, Weight> tmp_distances_to_src_map;
-		for(vector<Vertex>::const_iterator it_cli = clients.begin(); 
-				it_cli != clients.end(); ++it_cli
-		){
-			Vertex cli = *it_cli;
+		for(const Vertex cli: clients)
+		{
 			tmp_distances_to_src_map.emplace(cli, tmp_distances_from_single_source[cli] );
 		}
 		out_distances.emplace(src, tmp_distances_to_src_map);
@@ -262,12 +536,14 @@ void fill_distances	(const vector<Vertex>& sources, const vector<Vertex>& client
  */
 void fill_best_repo_map(
 		const vector<Vertex>& repositories, 
-		const vector<Vertex>& clients,
+		const set<Vertex>& clients,
 		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,// The key is the 
 																// source. The value is a map
 																// associating to each client
 																// its distance from the source
-		MyMap< Vertex, OptimalClientValues >& out_best_repo_map
+		MyMap< Vertex, OptimalClientValues >& out_best_repo_map,
+		const vector<Quality>& qualities, const vector<Size>& sizes,
+		const vector<Weight>& utilities
 ){
 	// {FIND THE CLOSEST REPOS
 	// For each client, we compute its closest repo
@@ -279,10 +555,8 @@ void fill_best_repo_map(
 	{
 		Vertex new_repo = *repo_it;
 		MyMap<Vertex,Weight> distances_from_the_repo = distances.at(new_repo);
-		for(vector<Vertex>::const_iterator cli_it=clients.begin(); 
-			cli_it != clients.end(); ++cli_it
-		){
-			Vertex client = *cli_it;
+		for(const Vertex client: clients)
+		{
 			Weight new_distance = distances_from_the_repo.at(client);
 
 			pair<MyMap<Vertex, pair<Vertex, Weight> >::iterator,bool> inserted = 
@@ -321,7 +595,7 @@ void fill_best_repo_map(
 		Weight distance = (it->second).second;
 		Quality best_q;
 		Weight best_utility;
-		for (Quality q=0; q<qualities; q++)
+		for (Quality q : qualities)
 		{
 			Weight new_utility = utilities[q] - sizes[q] * distance;
 			if (q==0 || new_utility > best_utility)
@@ -393,7 +667,7 @@ void update_load(EdgeValues& edge_load_map,
  */
 bool check_if_overload(const EdgeValues& current_edge_load_map, 
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
-	const Vertex src, const Vertex cli, const Weight transmission_load
+	const Vertex src, const Vertex cli, const Weight transmission_load, const Size link_capacity
 ){
 	#ifdef SEVERE_DEBUG
 	vector<EdgeDescriptor> affected_edges;
@@ -431,7 +705,7 @@ bool check_if_overload(const EdgeValues& current_edge_load_map,
  * @param overload_possible: if yes, we admit transmissions above the edge capacity
  */
 Weight compute_benefit(Incarnation& inc, 
-		const vector<Vertex> clients, 
+		const set<Vertex> clients, 
 		const Graph& G,
 		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
@@ -441,7 +715,8 @@ Weight compute_benefit(Incarnation& inc,
 		const bool normalized, 
 		const Size single_storage,
 		const EdgeValues& edge_load_map,
-		const bool overload_possible
+		const bool overload_possible,
+		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities
 ){
 	#ifdef SEVERE_DEBUG
 	if (!overload_possible)
@@ -502,7 +777,7 @@ Weight compute_benefit(Incarnation& inc,
 						Weight load = size_new * n;
 						isThereAnOverload = 
 							check_if_overload(edge_load_map_in_case_of_placement_of_the_incarnation, 
-								G, predecessors_to_source, src_new, cli, load);
+								G, predecessors_to_source, src_new, cli, load, link_capacity);
 						if (!isThereAnOverload)
 						{
 							#ifdef SEVERE_DEBUG
@@ -592,12 +867,12 @@ Weight compute_benefit(Incarnation& inc,
 /**
  * The benefit of an incarnation is the additional gross utility (either normalized or not to the
  * incarnation size) that we obtain by placing it. Note that the gross utility is obtained 
- * subtracting from the net utility the penalization for the bandwidth utilized for the 
+ * subtracting from the pure utility the penalization for the bandwidth utilized for the 
  * transmission. Note also that it is possible than the transmission of this incarnation imply 
  * exceeding the link capacity. We admit this.
  */
 Weight compute_benefit_for_lagrangian_greedy(Incarnation& inc, 
-		const vector<Vertex> clients, 
+		const set<Vertex> clients, 
 		const Graph& G,
 		const MyMap< Vertex, MyMap<Vertex,Weight > >& distances,
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
@@ -605,25 +880,26 @@ Weight compute_benefit_for_lagrangian_greedy(Incarnation& inc,
 		const MyMap<Vertex,Size>& cache_occupancy,
 		vector<Vertex>& out_potential_additional_clients,
 		const bool normalized, 
-		const Size single_storage
+		const Size single_storage, const Size link_capacity,
+		const vector<Size>& sizes, const vector<Weight>& utilities
 ){
 	bool overload_possible = true;
 	EdgeValues edge_load_map_dummy ;
 	return compute_benefit(inc,clients,G,distances,best_repo_map,best_cache_map, 
 		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
-		edge_load_map_dummy,overload_possible);
+		edge_load_map_dummy,overload_possible, link_capacity, sizes, utilities);
 }
 
 
 /**
- * The benefit of an incarnation is the additional net utility (either normalized or not to the
- * incarnation size) that we obtain by placing it. Note that this utility is the "net" utility, i.e.
+ * The benefit of an incarnation is the additional pure utility (either normalized or not to the
+ * incarnation size) that we obtain by placing it. Note that this utility is the "pure" utility, i.e.
  * it does include the penalization for the bandwidth utilization. Note that we do not admit 
  * trasmitting the incarnation to a client node if this would imply an overload of some of the links
  * in the path.
  */
 Weight compute_benefit_for_simple_greedy(Incarnation& inc, 
-		const vector<Vertex> clients, 
+		const set<Vertex> clients, 
 		const Graph& G,
 		const MyMap< Vertex, OptimalClientValues >& best_repo_map ,
 		const BestSrcMap& best_cache_map, 
@@ -631,39 +907,17 @@ Weight compute_benefit_for_simple_greedy(Incarnation& inc,
 		vector<Vertex>& out_potential_additional_clients,
 		const bool normalized, 
 		const Size single_storage,
-		const EdgeValues& edge_load_map
+		const EdgeValues& edge_load_map,
+		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities
 ){
 	MyMap< Vertex, MyMap<Vertex,Weight > > distances_dummy;
 	bool overload_possible = false;
 	return compute_benefit(inc,clients,G,distances_dummy,best_repo_map,best_cache_map, 
 		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
-		edge_load_map, overload_possible);
+		edge_load_map, overload_possible, link_capacity, sizes, utilities);
 }
 
 
-template <typename T>
-double compute_norm(const T& ic )
-{
-	double norm=0;
-	for (typename T::const_iterator it=ic.begin(); 
-			it!=ic.end(); ++it)
-	{
-		norm += (*it) * (*it);
-	}
-	return sqrt(norm);
-}
-
-
-template <typename T>
-void print_collection(const T& ic )
-{
-	for (typename T::const_iterator it=ic.begin(); 
-			it!=ic.end(); ++it)
-	{
-		cout<<*it<<" ";
-	}
-	cout<<endl;
-}
 
 #ifdef SEVERE_DEBUG
 void verify_cache(const MyMap<Vertex,Size>& cache_occupancy, const Size single_storage )
@@ -710,7 +964,8 @@ void print_occupancy(const MyMap<Vertex,Size>& cache_occupancy, const Size singl
 }
 
 Weight compute_per_req_gross_utility(const Incarnation& inc, Vertex cli,
-	const MyMap< Vertex, MyMap<Vertex,Weight > >& distances
+	const MyMap< Vertex, MyMap<Vertex,Weight > >& distances, const vector<Weight>& utilities,
+	const vector<Size>& sizes
 ){
 	Weight d = distances.at(inc.src).at(cli);
 	return utilities[inc.q] - sizes[inc.q] * d;
@@ -729,7 +984,8 @@ void add_load(EdgeValues& loads, const E e, const Weight load)
 // bottleneck of the path
 Requests compute_satisfiable(const EdgeValues& edge_load_map, 
 	const Graph& G, const MyMap<Vertex, vector<Vertex> >& predecessors_to_source, 
-	const Vertex src, const Vertex cli, const Quality q
+	const Vertex src, const Vertex cli, const Quality q, const Size link_capacity,
+	const vector<Size>& sizes
 ){
 	bool overload = false;
 	// Associates to each source a vector, having in the i-th position the predecessor of 
@@ -849,7 +1105,8 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	Weight& out_lagrangian_value,
 	const bool overload_possible,
 	const EdgeValues& edge_weight_map,
-	const MyMap<Vertex,Size>& cache_occupancy
+	const MyMap<Vertex,Size>& cache_occupancy,
+	const vector<Size>& sizes, const Size link_capacity, const vector<Weight> utilities
 ){
 	#ifdef SEVERE_DEBUG
 	struct Transmission{ Object o; Quality q; Requests satisfied; Weight load; };
@@ -911,7 +1168,7 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 				// Imposing this is useful to compute a feasible solution, but can be
 				// ignored when dealing with the relaxed solution
 				satisfied = compute_satisfiable(edge_load_map, 
-					G, predecessors_to_source, src, cli, q );
+					G, predecessors_to_source, src, cli, q, link_capacity, sizes );
 				if (satisfied>n) satisfied = n;
 			}else
 				satisfied = n;
@@ -1007,12 +1264,12 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
  * DO NOT USE DIRECTLY
  * It computes an allocation of incarnations based on the greedy principle of placing the 
  * incarnations that guarantee the largest benefit first. 
- * @param simple: if true, the benefit of an incarnation is its net utility and is non-null 
+ * @param simple: if true, the benefit of an incarnation is its pure utility and is non-null 
  *		only if its transmission does not imply exceeding any of the link capacity. If false,
  *		we are computing a "lagrangian" greedy, where the benefit of an incarnation is the 
- *		gross utility (net utility - penalization for bandwidth utilization) and we also admit
+ *		gross utility (pure utility - penalization for bandwidth utilization) and we also admit
  *		exceeding some of the link capacities.
- * @return tot_feasible_utility_cleaned net utility provided by placing the incarnations
+ * @return tot_feasible_utility_cleaned pure utility provided by placing the incarnations
  * 			such that the bandwidth constraints are not violated
  * @return lagrangian_value utility minus the cost of transmitting the objects
  * Computes the tot_feasible_utility. This is the utility 
@@ -1021,27 +1278,27 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	const vector<E>& edges, const Graph& G,
 	Weight& tot_feasible_utility_cleaned, Weight& lagrangian_value, 
 	const bool normalized, // Paramater of compute_benefit_for_lagrangian_greedy
-	Size single_storage, bool simple
+	Size single_storage, bool simple, const vector<Quality>& qualities,
+	const vector<Size>& sizes, const vector<Weight>& utilities, const vector<Vertex>& caches,
+	const vector<Vertex>& repositories, const Size link_capacity, const set<Vertex>& clients,
+	const set<Object>& objects
 ){
 
-	qualities = sizeof(utilities)/sizeof(Weight);
+
 	#ifdef SEVERE_DEBUG
-		if (qualities != sizeof(sizes)/sizeof(Size) )
-			throw std::invalid_argument("Sizes are badly specified");
+		if (qualities.size() != sizes.size() )
+		{
+			stringstream msg; msg<<"qualities.size()="<<qualities.size()<<"sizes.size()="<<
+				sizes.size();
+			throw std::invalid_argument(msg.str() );
+		}
 	#endif
 
 	//{ INITIALIZE DATA STRUCTURES
-	vector<Vertex> caches(caches_, caches_+
-		sizeof(caches_)/sizeof(Vertex) );
-	vector<Vertex> repositories(repositories_, repositories_+
-		sizeof(repositories_)/sizeof(Vertex) );
 	vector<Vertex> sources;
 	sources.reserve(caches.size()+repositories.size() );
 	sources.insert(sources.end(), caches.begin(), caches.end()); 
 	sources.insert(sources.end(), repositories.begin(), repositories.end());
-	vector<Vertex> clients;
-	vector<Object> objects;
-	fill_clients_and_objects(requests,clients,objects);
 
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
 	max_utility=0; for (const Weight& u: utilities)
@@ -1051,9 +1308,9 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 
 	IncarnationCollection available_incarnations, useless_incarnations;
 	MyMap<Vertex,Size> cache_occupancy;
-	for (vector<Vertex>::iterator it=caches.begin(); it!= caches.end(); ++it)
+	for (Vertex cache : caches)
 	{
-		Vertex cache = *it; cache_occupancy.emplace(cache,0);
+		cache_occupancy.emplace(cache,0);
 	}
 
 	// Associates to each object a map associating to each client the set of its optimal values
@@ -1084,7 +1341,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 
 	// Associates to each client, the best repository and the corresponding optimal information
 	MyMap< Vertex, OptimalClientValues > best_repo_map;
-	fill_best_repo_map(repositories, clients, distances, best_repo_map);
+	fill_best_repo_map(repositories, clients, distances, best_repo_map,qualities, sizes, utilities);
 
 
 	//{ INITIALIZE INCARNATIONS AND THEIR BENEFITS
@@ -1093,7 +1350,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	#endif
 	for(const Object o : objects)
 	for(const Vertex cache_node : caches)
-	for(Quality q=0; q<qualities; q++)
+	for(Quality q : qualities)
 	{
 		Incarnation inc; inc.o = o; inc.q = q; inc.src=cache_node;
 		vector<Vertex> potential_additional_clients; // I am not interested in this for the
@@ -1103,11 +1360,12 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		{
 			b= compute_benefit_for_simple_greedy(inc, clients, G, best_repo_map, 
 				best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage,
-				edge_load_map);
+				edge_load_map, link_capacity, sizes, utilities);
 		}else
 		{
 			b= compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, best_repo_map, 
-				best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage);
+				best_cache_map, cache_occupancy, potential_additional_clients, normalized, 
+				single_storage, link_capacity, sizes, utilities);
 		}
 		if (inc.benefit > 0)
 			available_incarnations.push_back(inc);
@@ -1122,8 +1380,8 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		if (!inc.valid) throw runtime_error("One available incarnation is not valid");
 	for (const Incarnation& inc : useless_incarnations)
 		if (!inc.valid) throw runtime_error("One available incarnation is not valid");
-	if (objects.size()==0 || caches.size()==0 || qualities==0)
-		throw ("objects.size()==0 || caches.size()==0 || qualities==0");
+	if (objects.size()==0 || caches.size()==0 || qualities.size()==0)
+		throw ("objects.size()==0 || caches.size()==0 || qualities.size()==0");
 	#endif
 
 	#ifdef VERBOSE
@@ -1220,8 +1478,10 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			// I retrieve the clients that experience an improvement from the addition of best_inc
 			// since only them change the associated source
 			vector<Vertex> changing_clients;
-			Weight b= compute_benefit_for_lagrangian_greedy(best_inc, clients, G, distances, best_repo_map, 
-				best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
+			Weight b= compute_benefit_for_lagrangian_greedy(best_inc, clients, G, distances, 
+				best_repo_map, 
+				best_cache_map, cache_occupancy, changing_clients, normalized, single_storage,
+				link_capacity, sizes, utilities);
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 			#ifdef VERBOSE
@@ -1255,7 +1515,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 				new_opt_val_to_cache.distance = distances.at(best_inc.src).at(cli);
 				new_opt_val_to_cache.q = best_inc.q;
 				new_opt_val_to_cache.per_req_gross_utility = 
-					compute_per_req_gross_utility(best_inc, cli, distances);
+					compute_per_req_gross_utility(best_inc, cli, distances, utilities, sizes);
 				best_cache_map[best_inc.o][cli] = new_opt_val_to_cache;
 				#ifdef VERBOSE
 				cout<<cli<<":";
@@ -1310,8 +1570,10 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			//{ RECOMPUTE THE BENEFITS
 			for (Incarnation& inc : available_incarnations)
 			{
-				inc.benefit = compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, best_repo_map, 
-					best_cache_map, cache_occupancy, changing_clients, normalized, single_storage);
+				inc.benefit = compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, 
+					best_repo_map, 
+					best_cache_map, cache_occupancy, changing_clients, normalized, single_storage,
+					link_capacity, sizes, utilities);
 			}
 			//} RECOMPUTE THE BENEFITS
 			
@@ -1369,7 +1631,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			tot_feasible_utility_tmp, lagrangian_value, 
 			overload_possible,
 			edge_weight_map,
-			cache_occupancy);
+			cache_occupancy, sizes, link_capacity, utilities);
 	//} COMPUTE THE LAGRANGIAN
 	#ifdef VERBOSE
 	print_mappings(edge_load_map, edge_weight_map, requests, G, best_repo_map,
@@ -1387,7 +1649,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			tot_feasible_utility_cleaned, lagrangian_value_tmp, 
 			overload_possible,
 			edge_weight_map,
-			cache_occupancy);
+			cache_occupancy, sizes, link_capacity, utilities);
 
 	#ifdef SEVERE_DEBUG
 	for (std::pair<EdgeDescriptor,Weight> p : edge_load_map_cleaned)
@@ -1467,6 +1729,27 @@ step_type parse_steps (string s)
 int main(int argc,char* argv[])
 {
 
+	RequestSet requests;
+	vector<Vertex> nodes;
+	Requests tot_requests;
+	vector<Vertex> repositories;
+	vector<Vertex> caches;
+	vector<Size> sizes;
+	Size single_storage; 	// The storage on a single node
+							// expressed as a multiple of the highest quality size
+	vector<E> edges;
+	vector<Weight> utilities;
+	set<Vertex> clients;
+	Size link_capacity;
+	set<Object> objects;
+	vector<Quality> qualities;
+	float c2ctlg;
+	const string cplex_filename_ = "/home/araldo/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/1server/cache-constrained/ctlg-100/c2ctlg-0.01/alpha-1/load-1/strategy-RepresentationAware/seed-1/scenario.dat";
+	parse_cplex_file(requests, tot_requests, nodes, repositories, caches, 
+		single_storage, sizes, utilities, clients, edges, link_capacity,cplex_filename_,
+		objects, qualities);
+
+	
 	//{ INPUT
 	input_type input;
 
@@ -1475,12 +1758,11 @@ int main(int argc,char* argv[])
 	double load;
 	unsigned num_iterations;
 	int slowdown;
-	string reqfilename = "";
-	Size single_storage; //As a multiple of the highest quality size
+	string cplex_filename = "";
 	step_type steps;
 	
 
-	if (argc==9)
+	if (argc==10)
 	{
 		// The demand is taken from the corresponding CPLEX run
 		input = automatic;
@@ -1490,30 +1772,32 @@ int main(int argc,char* argv[])
 		num_iterations = strtoul(argv[4], NULL, 0);
 		seed = strtoul(argv[5], NULL, 0);
 		slowdown = atoi(argv[6]);
-		single_storage = atof(argv[7]);
+		c2ctlg = atof(argv[7]);
 		steps = parse_steps (argv[8]);
+		string network = argv[9];
 
-		float c2ctlg = single_storage * ( float(sizeof(caches_) ) / sizeof(Vertex) ) / ctlg;
+		single_storage = (c2ctlg*ctlg)/caches.size();
+		float c2ctlg = (float) single_storage * caches.size() / ctlg;
 		
 
 		//{ REQUESTS
 		// Requests tot_requests = initialize_requests(requests);
 		// Requests tot_requests = generate_requests(requests, alpha, ctlg, load);
 		stringstream ssfilename;  ssfilename.str("");
-		ssfilename << "/home/araldo/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/abilene/cache-constrained/ctlg-"<< ctlg<<"/c2ctlg-"<< 
+		ssfilename << "/home/araldo/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/"<<network<<"/cache-constrained/ctlg-"<< ctlg<<"/c2ctlg-"<< 
 			c2ctlg <<
 			"/alpha-"<<alpha <<"/load-"<< load
 			<<"/strategy-RepresentationAware/seed-"<< seed <<"/req.dat";
-		reqfilename = ssfilename.str() ;
+		cplex_filename = ssfilename.str() ;
 
 		
-		std::cout<<__FILE__<<":"<<__LINE__<<": reqfilename = "<< reqfilename << std::endl;
+		std::cout<<__FILE__<<":"<<__LINE__<<": cplex_filename = "<< cplex_filename << std::endl;
 		//} REQUESTS
 	} else if(argc==5)
 	{
 		// The demand is taken from the input file
 		input = direct;
-		reqfilename = argv[1];
+		cplex_filename = argv[1];
 		num_iterations = strtoul(argv[2], NULL, 0);
 		slowdown = atoi(argv[3]);
 		single_storage = atof(argv[4]);
@@ -1521,7 +1805,7 @@ int main(int argc,char* argv[])
 		
 	}else
 	{
-		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown> <single_storage> <steps>\n or"<<endl;
+		cout<<"usage: "<<argv[0]<<" <alpha> <ctlg> <load> <iterations> <seed> <slowdown> <c2ctlg> <steps> <topology_name>\n or"<<endl;
 		cout<<"\t"<<argv[0]<<" <req_filename> <iterations> <slowdown> <single_storage> <steps>"<<endl;
 		exit(1);
 	}
@@ -1535,14 +1819,11 @@ int main(int argc,char* argv[])
 	// Parameter for the step update
 	unsigned M = num_iterations/(10);
 
-	Requests tot_requests = load_requests(requests, reqfilename );
 
 	//{ INITIALIZE INPUT DATA STRUCTURE
-	vector<E> edges(edges_, edges_+sizeof(edges_)/sizeof(E) );
-	vector<Size> tmp_sizevec(sizes, sizes+sizeof(sizes)/sizeof(Size)  );
-	double avg_size = compute_norm(tmp_sizevec );
+	double avg_size = compute_norm(sizes );
 	Weight init_w=0/(tot_requests*avg_size); // Initialization weight
-	vector<Weight>weights(sizeof(edges_)/sizeof(E), init_w);
+	vector<Weight>weights(edges.size() , init_w);
 	cout<<"weights: "; print_collection(weights);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
@@ -1554,7 +1835,7 @@ int main(int argc,char* argv[])
 		cout<<"new_weights "; print_collection(weights);
 
 		unsigned num_nodes = count_nodes(edges);
-		Graph G(edges_, edges_ + sizeof(edges_)/sizeof(E), weights.data(), num_nodes);
+		Graph G(&edges[0], &edges[0] + edges.size(), weights.data(), num_nodes);
 		EdgeValues edge_weight_map;
 		fill_weight_map(edge_weight_map, edges, weights, G);
 
@@ -1574,15 +1855,21 @@ int main(int argc,char* argv[])
 			// without normalization
 			normalized=false;
 			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
-				tot_feasible_utility_cleaned_without_normalization, lagrangian_value_without_normalization,
-				normalized, single_storage, simple_greedy
+				tot_feasible_utility_cleaned_without_normalization, 
+				lagrangian_value_without_normalization,
+				normalized, single_storage, simple_greedy, qualities, sizes, utilities,
+				caches, repositories,
+				link_capacity, clients, objects
 			);
 		}
 
 		normalized = true;
 		greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
-				tot_feasible_utility_cleaned_with_normalization, lagrangian_value_with_normalization,
-				normalized, single_storage, simple_greedy
+				tot_feasible_utility_cleaned_with_normalization, 
+				lagrangian_value_with_normalization,
+				normalized, single_storage, simple_greedy, qualities, sizes, utilities,
+				caches, repositories,
+				link_capacity, clients, objects
 			);
 
 
@@ -1670,6 +1957,14 @@ int main(int argc,char* argv[])
 		cout<<"current_avg_feasible_utility "<<tot_feasible_utility_cleaned/tot_requests<<endl;
 		cout<<"max_avg_feasible_utility "<<max_tot_feasible_utility / tot_requests<<endl;
 
+	#ifdef SEVERE_DEBUG
+		if (qualities.size() != sizes.size() )
+		{
+			stringstream msg; msg<<"qualities.size()="<<qualities.size()<<"sizes.size()="<<
+				sizes.size();
+			throw std::invalid_argument(msg.str() );
+		}
+	#endif
 
 		//Implement the tilde{psi} di math_paper
 	}

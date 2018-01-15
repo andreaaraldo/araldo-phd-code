@@ -1,0 +1,57 @@
+
+<<< setup
+
+
+<<< generate
+
+Found incumbent of value 0.000000 after 0.00 sec. (0.34 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 6907 rows and 5168 columns.
+MIP Presolve modified 495 coefficients.
+Aggregator did 1189 substitutions.
+Reduced MIP has 1587 rows, 2572 columns, and 6530 nonzeros.
+Reduced MIP has 507 binaries, 582 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.08 sec. (19.04 ticks)
+Probing time = 0.01 sec. (5.45 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 1587 rows, 2572 columns, and 6530 nonzeros.
+Reduced MIP has 507 binaries, 582 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (4.35 ticks)
+Probing time = 0.01 sec. (5.43 ticks)
+Clique table members: 62.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.07 sec. (13.06 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            0.0000        4.1152              --- 
+*     0+    0                            0.0053        4.1152              --- 
+*     0+    0                            0.0106        4.1152              --- 
+*     0+    0                            0.0160        4.1152              --- 
+*     0+    0                            0.0213        4.1152              --- 
+      0     0        0.6688    92        0.0213        0.6688      332     --- 
+*     0+    0                            0.6687        0.6688             0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.24 sec. (57.40 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.24 sec. (57.40 ticks)
+
+<<< solve
+
+
+OBJECTIVE: 0.66874
+avg_utility = 0.66874
+
+<<< post process
+
+
+<<< done
+

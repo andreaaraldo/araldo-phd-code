@@ -34,19 +34,19 @@ data.fixed_datas = [data.fixed_datas, fixed_data];
 
 
 
-data.seeds = 2:2;
+data.seeds = 1:1;
 
 data.cache_allocations = {"constrained"}; # constrained or free
-data.solutiongaps = [0.0001]; # default 0.0001
+data.solutiongaps = [0.01]; # default 0.0001
 data.timelimits = [100700]; # default 1e75
 data.catalog_sizes = [100];
-data.cache_to_ctlg_ratios = [11.0/100.0];	% fraction of catalog we could store in the overall cache space
+data.cache_to_ctlg_ratios = [1.0/100.0];	% fraction of catalog we could store in the overall cache space
 											% if all the objects were at maximum quality
 data.alphas = [1];
 data.customtypes = {"int"}; % float or int or veryfloat	
 %{ TOPOLOGY
 	data.arcss={""}; % You can specify explitly with opl model syntax
-	data.topofile="abilene";
+	data.topofile="1server"; % This file must be in path_base/topofiles
 	if ( strcmp(data.topofile,"") )
 		% You did not specify a file. You want to generate it
 		data.topology_size = 10;
@@ -70,12 +70,17 @@ data.customtypes = {"int"}; % float or int or veryfloat
 		end%if 
 		
 	else
-		data.edge_nodess = [11]; % Important only if the cache strategy is "edge"
+		data.edge_nodess = [3]; % Important only if the cache strategy is "edge"
 		data.user_distributions = {"specific"};
-		data.ASes_with_users =[5,6,7,1,10];
-		data.cache_distributions = {"ubiquitous"};
+		data.ASes_with_users =[3];
+		data.cache_distributions = {"specific"};
+		if ( strcmp(data.cache_distributions, "specific")  )
+			data.ases_with_storage = [2];
+		end
 		data.server_positions = {"specific"};
-		data.servers = [8];
+		if ( strcmp(data.server_positions, "specific")  )
+			data.servers = [1];
+		end
 		data.link_capacity = 490000;  % In Kbps
 	end%if
 %} TOPOLOGY
