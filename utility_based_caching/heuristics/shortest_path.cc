@@ -77,9 +77,9 @@ void print_requests(const RequestSet& reqs)
 
 
 void parse_cplex_file(RequestSet& requests, Requests& tot_requests, 
-	vector<Vertex> nodes, vector<Vertex> repositories, vector<Vertex>& caches, 
+	vector<Vertex>& nodes, vector<Vertex>& repositories, vector<Vertex>& caches, 
 	Size& single_storage, vector<Size>& sizes, vector<Weight>& utilities,
-	set<Vertex>& clients, vector<E>& edges,  Size& link_capacity,
+	set<Vertex>& clients, vector<E>& edges_,  Size& link_capacity,
 	const string cplex_filename, set<Object>& objects, vector<Quality>& qualities)
 {
 	#ifdef SEVERE_DEBUG
@@ -151,7 +151,7 @@ void parse_cplex_file(RequestSet& requests, Requests& tot_requests,
 				nodes.push_back(node_id);
 				if (ss.peek() == ',') ss.ignore();
 			}
-		}else if (line.rfind("Objects",0) ==0 )
+		}else if (line.rfind("Objects=",0) ==0 )
 		{
 			#ifdef SEVERE_DEBUG
 			objects_found = true;
@@ -191,9 +191,8 @@ void parse_cplex_file(RequestSet& requests, Requests& tot_requests,
 			#endif
 			qualities.erase(qualities.begin() ); // We remove the first quality, which is 0
 			
-		} else if (line.rfind("ObjectsPublishedByProducers",0) ==0 )
+		} else if (line.find("ObjectsPublishedByProducers=[",0) ==0 )
 		{
-			cout<<"\n\n\n\nI am here\n\n\n\n\n"<<endl;
 			#ifdef SEVERE_DEBUG
 			objects_published_by_producers_found=true;
 			#endif
@@ -339,7 +338,7 @@ void parse_cplex_file(RequestSet& requests, Requests& tot_requests,
 						exit(0);
 					}
 					link_capacity = this_link_capacity;
-					edges.push_back(E(from_node,to_node) );
+					edges_.push_back(E(from_node,to_node) );
 					
 				}
 				count++;
@@ -369,7 +368,7 @@ void parse_cplex_file(RequestSet& requests, Requests& tot_requests,
 	cout<<"Utilities are: "; print_collection(utilities);
 	cout<<"Clients are: "; print_collection(clients);
 	cout<<"Link capacity is: "<<link_capacity<<endl;
-	cout<<"Edges: "; print_collection(edges);
+	cout<<"Edges: "; print_collection(edges_);
 	cout<<"Qualities "; print_collection(qualities);
 
 	#ifdef SEVERE_DEBUG
@@ -386,6 +385,10 @@ void parse_cplex_file(RequestSet& requests, Requests& tot_requests,
 		<<endl;
 		exit(0);
 	}
+
+
+
+	if (repositories.empty() ) throw runtime_error("There are no repositories");
 	#endif
 }
 
@@ -423,9 +426,6 @@ Requests initialize_requests(RequestSet& requests)
 
 //{ DATA STRUCTURES
 
-	RequestSet requests;
-
-
 	// Associates to each source a vector, having in the i-th position the predecessor of 
 	// the i-th node toward that source
 	MyMap<Vertex, vector<Vertex> > predecessors_to_source; 
@@ -449,14 +449,14 @@ Size compute_tot_cache_occupancy(const MyMap<Vertex,Size>& cache_occupancy)
 	return tot_cache_occupancy;
 }
 
-unsigned count_nodes(vector<E> edges)
+unsigned count_nodes(vector<E> edges_)
 {
 	//Count the number of nodes
-	// The max number of nodes is the num of edges +1
+	// The max number of nodes is the num of edges_ +1
 	set<int> nodes;
-	for (int j=0; j < edges.size(); j++)
+	for (int j=0; j < edges_.size(); j++)
 	{
-		nodes.insert(edges[j].first); nodes.insert(edges[j].second);
+		nodes.insert(edges_[j].first); nodes.insert(edges_[j].second);
 	}
 	return nodes.size();
 }
@@ -471,6 +471,14 @@ void compute_paths_from_source(
 	IndexMap indexMap = boost::get(boost::vertex_index, G);
 	property_map<Graph, edge_weight_t>::type EdgeWeightMap = get(edge_weight, G);
 
+		cout<<"prova"<<endl;
+		boost::graph_traits<Graph>::edge_iterator edge_it, edge_it_end;
+		for ( boost::tie(edge_it, edge_it_end) = edges(G); edge_it != edge_it_end; ++edge_it )
+		{
+			cout<<"edge "<<*edge_it<<":"<< EdgeWeightMap[*edge_it] <<", ";
+		}
+
+		cout<<"fina prova"<<endl;
 
 		//it associates to each node its next node to the source
 		PredecessorMap predecessorMap(&out_predecessors[0], indexMap);
@@ -545,6 +553,11 @@ void fill_best_repo_map(
 		const vector<Quality>& qualities, const vector<Size>& sizes,
 		const vector<Weight>& utilities
 ){
+	#ifdef SEVERE_DEBUG
+	if (repositories.empty() )
+		throw runtime_error("There are no repositories");
+	#endif
+
 	// {FIND THE CLOSEST REPOS
 	// For each client, we compute its closest repo
 	MyMap<Vertex, pair<Vertex, Weight> > closest_repo;
@@ -585,7 +598,7 @@ void fill_best_repo_map(
 	// }FIND THE CLOSEST REPOS
 
 	//{ FIND THE BEST QUAL
-	// Now, for each client we compute the optimal quality at which it has to download its requested objects
+	// Now, for each client we compute the optimal quality at which it has to download its requested objects, i.e., the quality that guarantees the best gross utility.
 	for (MyMap<Vertex, pair<Vertex, Weight> >::iterator it = closest_repo.begin();
 		it != closest_repo.end();
 		++it)
@@ -649,7 +662,7 @@ void update_load(EdgeValues& edge_load_map,
 	graph_traits< Graph >::vertex_descriptor current;
 	for (current=cli; current!= src; current =  path[current] )
 	{
-		EdgeDescriptor e = edge(current,path[current],G).first;
+		EdgeDescriptor e = edge(path[current],current,G).first;
 		Weight old_load = 0;
 		EdgeValues::iterator it = edge_load_map.find(e) ;
 		if (it != edge_load_map.end() )
@@ -716,7 +729,8 @@ Weight compute_benefit(Incarnation& inc,
 		const Size single_storage,
 		const EdgeValues& edge_load_map,
 		const bool overload_possible,
-		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities
+		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities,
+		const RequestSet& requests
 ){
 	#ifdef SEVERE_DEBUG
 	if (!overload_possible)
@@ -881,13 +895,14 @@ Weight compute_benefit_for_lagrangian_greedy(Incarnation& inc,
 		vector<Vertex>& out_potential_additional_clients,
 		const bool normalized, 
 		const Size single_storage, const Size link_capacity,
-		const vector<Size>& sizes, const vector<Weight>& utilities
+		const vector<Size>& sizes, const vector<Weight>& utilities,
+		const RequestSet& requests
 ){
 	bool overload_possible = true;
-	EdgeValues edge_load_map_dummy ;
+	const EdgeValues edge_load_map_dummy ;
 	return compute_benefit(inc,clients,G,distances,best_repo_map,best_cache_map, 
 		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
-		edge_load_map_dummy,overload_possible, link_capacity, sizes, utilities);
+		edge_load_map_dummy,overload_possible, link_capacity, sizes, utilities, requests);
 }
 
 
@@ -908,13 +923,14 @@ Weight compute_benefit_for_simple_greedy(Incarnation& inc,
 		const bool normalized, 
 		const Size single_storage,
 		const EdgeValues& edge_load_map,
-		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities
+		const Size link_capacity, const vector<Size>& sizes, const vector<Weight>& utilities,
+		const RequestSet& requests
 ){
 	MyMap< Vertex, MyMap<Vertex,Weight > > distances_dummy;
 	bool overload_possible = false;
 	return compute_benefit(inc,clients,G,distances_dummy,best_repo_map,best_cache_map, 
 		cache_occupancy,out_potential_additional_clients,normalized,single_storage,
-		edge_load_map, overload_possible, link_capacity, sizes, utilities);
+		edge_load_map, overload_possible, link_capacity, sizes, utilities, requests);
 }
 
 
@@ -1097,7 +1113,7 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	const Graph& G,
 	const MyMap<Vertex, 	
 	vector<Vertex> >& predecessors_to_source, 
-	const vector<E>& edges, 
+	const vector<E>& edges_, 
 	const RequestSet& requests,
 	const MyMap< Vertex, OptimalClientValues >& best_repo_map, 
 	const BestSrcMap& best_cache_map,
@@ -1107,26 +1123,29 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	const EdgeValues& edge_weight_map,
 	const MyMap<Vertex,Size>& cache_occupancy,
 	const vector<Size>& sizes, const Size link_capacity, const vector<Weight> utilities
-){
+){	
 	#ifdef SEVERE_DEBUG
 	struct Transmission{ Object o; Quality q; Requests satisfied; Weight load; };
 	std::multimap<EdgeDescriptor,Transmission> transmissions; 
 	#endif
-
 	out_tot_feasible_utility=0;
 	out_lagrangian_value = 0;
 	edge_load_map.clear();
 
+	// I flip the map requests because I want to allocate resources for the largest flows first
 	multimap< Requests, pair<Vertex,Object> > requests_flipped = flip_map(requests);
-	// For each request
+	// For each request flow
 	for (multimap< Requests, pair<Vertex,Object> >::reverse_iterator r_it = requests_flipped.rbegin(); 
 		r_it != requests_flipped.rend() ; ++r_it
 	){
 		Vertex cli = r_it->second.first;
 		Object o = r_it->second.second;
 		Requests n = r_it->first; // How many times o is requested by cli
-		serving_type served = no;
-		OptimalClientValues ocv;
+		serving_type served = no; // It can be cache, server or no; It is intialized to no
+		OptimalClientValues ocv; // We will fill it with the information of the dowload:
+									// from which node the video is retrieved, at which quality,
+									// at which distance is the source and what is the gross 
+									// utility per request
 		BestSrcMap::const_iterator bcp_it = best_cache_map.find(o);
 		if ( // That object is cached somewhere
 			bcp_it != best_cache_map.end() && 
@@ -1258,7 +1277,7 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
 	}
 	#endif
 
-}
+} // End of compute_edge_load_map_and_feasible_utility(..)
 
 /**
  * DO NOT USE DIRECTLY
@@ -1275,13 +1294,13 @@ void compute_edge_load_map_and_feasible_utility(EdgeValues& edge_load_map,
  * Computes the tot_feasible_utility. This is the utility 
  */
 void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map, 
-	const vector<E>& edges, const Graph& G,
+	const vector<E>& edges_, const Graph& G,
 	Weight& tot_feasible_utility_cleaned, Weight& lagrangian_value, 
 	const bool normalized, // Paramater of compute_benefit_for_lagrangian_greedy
 	Size single_storage, bool simple, const vector<Quality>& qualities,
 	const vector<Size>& sizes, const vector<Weight>& utilities, const vector<Vertex>& caches,
 	const vector<Vertex>& repositories, const Size link_capacity, const set<Vertex>& clients,
-	const set<Object>& objects
+	const set<Object>& objects, const RequestSet& requests
 ){
 
 
@@ -1301,10 +1320,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	sources.insert(sources.end(), repositories.begin(), repositories.end());
 
 	max_size=0; for (const Size& s: sizes) if (s>max_size) max_size=s;
-	max_utility=0; for (const Weight& u: utilities)
-	{
-		 if (u>max_utility) max_utility=u;
-	}
+	max_utility=0; for (const Weight& u: utilities) if (u>max_utility) max_utility=u;
 
 	IncarnationCollection available_incarnations, useless_incarnations;
 	MyMap<Vertex,Size> cache_occupancy;
@@ -1359,13 +1375,14 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 		if (simple)
 		{
 			b= compute_benefit_for_simple_greedy(inc, clients, G, best_repo_map, 
-				best_cache_map, cache_occupancy, potential_additional_clients, normalized, single_storage,
-				edge_load_map, link_capacity, sizes, utilities);
+				best_cache_map, cache_occupancy, potential_additional_clients, normalized,
+				single_storage,
+				edge_load_map, link_capacity, sizes, utilities, requests);
 		}else
 		{
 			b= compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, best_repo_map, 
 				best_cache_map, cache_occupancy, potential_additional_clients, normalized, 
-				single_storage, link_capacity, sizes, utilities);
+				single_storage, link_capacity, sizes, utilities, requests);
 		}
 		if (inc.benefit > 0)
 			available_incarnations.push_back(inc);
@@ -1481,7 +1498,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			Weight b= compute_benefit_for_lagrangian_greedy(best_inc, clients, G, distances, 
 				best_repo_map, 
 				best_cache_map, cache_occupancy, changing_clients, normalized, single_storage,
-				link_capacity, sizes, utilities);
+				link_capacity, sizes, utilities, requests);
 			cache_occupancy[best_inc.src] = cache_occupancy[best_inc.src] + sizes[best_inc.q];
 
 			#ifdef VERBOSE
@@ -1573,7 +1590,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 				inc.benefit = compute_benefit_for_lagrangian_greedy(inc, clients, G, distances, 
 					best_repo_map, 
 					best_cache_map, cache_occupancy, changing_clients, normalized, single_storage,
-					link_capacity, sizes, utilities);
+					link_capacity, sizes, utilities, requests);
 			}
 			//} RECOMPUTE THE BENEFITS
 			
@@ -1618,15 +1635,14 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			#endif
 			//} PURGE USELESS INCARNATIONS
 		//{ UPDATE DATA AFTER SELECTION
-
-	}
+	} //while (available_incarnations.size()>0)
 
 	//{ COMPUTE THE LAGRANGIAN
 	bool overload_possible = true;
 	Weight tot_feasible_utility_tmp; // We will ignore it
 	compute_edge_load_map_and_feasible_utility(
 			edge_load_map, G,
-			predecessors_to_source, edges, 
+			predecessors_to_source, edges_, 
 			requests, best_repo_map, best_cache_map,
 			tot_feasible_utility_tmp, lagrangian_value, 
 			overload_possible,
@@ -1644,7 +1660,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	Weight lagrangian_value_tmp; // We will ignore it
 	compute_edge_load_map_and_feasible_utility(
 			edge_load_map_cleaned, G,
-			predecessors_to_source, edges, 
+			predecessors_to_source, edges_, 
 			requests, best_repo_map, best_cache_map,
 			tot_feasible_utility_cleaned, lagrangian_value_tmp, 
 			overload_possible,
@@ -1666,7 +1682,7 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 	#endif
 	//} COMPUTE THE FEASIBLE UTILITY
 	Requests tot_requests = 0;
-	for (RequestSet::iterator it = requests.begin(); it!=requests.end(); ++it)
+	for (RequestSet::const_iterator it = requests.begin(); it!=requests.end(); ++it)
 	{
 		tot_requests += it->second;
 	}
@@ -1692,15 +1708,16 @@ void greedy(EdgeValues& edge_load_map, const EdgeValues& edge_weight_map,
 			<<std::endl;
 		throw runtime_error(msg.str() );
 	}
+
 	#endif
-}
+} // End of greedy
 
 void fill_weight_map(EdgeValues& edge_weight_map, 
-	const vector<E>& edges, const vector<Weight>& weights, const Graph& G)
+	const vector<E>& edges_, const vector<Weight>& weights, const Graph& G)
 {
 	for (unsigned e_id=0; e_id<weights.size(); e_id++)
 	{
-		EdgeDescriptor ed = edge(edges.at(e_id).first, edges.at(e_id).second ,G).first;
+		EdgeDescriptor ed = edge(edges_.at(e_id).first, edges_.at(e_id).second ,G).first;
 		edge_weight_map[ed] = weights[e_id];
 	}
 }
@@ -1737,7 +1754,7 @@ int main(int argc,char* argv[])
 	vector<Size> sizes;
 	Size single_storage; 	// The storage on a single node
 							// expressed as a multiple of the highest quality size
-	vector<E> edges;
+	vector<E> edges_;
 	vector<Weight> utilities;
 	set<Vertex> clients;
 	Size link_capacity;
@@ -1745,8 +1762,9 @@ int main(int argc,char* argv[])
 	vector<Quality> qualities;
 	float c2ctlg;
 	const string cplex_filename_ = "/home/araldo/software/araldo-phd-code/utility_based_caching/examples/multi_as/gap_0.01/int/fixed-power4/1server/cache-constrained/ctlg-100/c2ctlg-0.01/alpha-1/load-1/strategy-RepresentationAware/seed-1/scenario.dat";
+	cout<<"cplex dat filename: "<<cplex_filename_<<endl;
 	parse_cplex_file(requests, tot_requests, nodes, repositories, caches, 
-		single_storage, sizes, utilities, clients, edges, link_capacity,cplex_filename_,
+		single_storage, sizes, utilities, clients, edges_, link_capacity,cplex_filename_,
 		objects, qualities);
 
 	
@@ -1823,7 +1841,7 @@ int main(int argc,char* argv[])
 	//{ INITIALIZE INPUT DATA STRUCTURE
 	double avg_size = compute_norm(sizes );
 	Weight init_w=0/(tot_requests*avg_size); // Initialization weight
-	vector<Weight>weights(edges.size() , init_w);
+	vector<Weight>weights(edges_.size() , init_w);
 	cout<<"weights: "; print_collection(weights);
 	//} INITIALIZE INPUT DATA STRUCTURE
 
@@ -1832,12 +1850,28 @@ int main(int argc,char* argv[])
 	for (unsigned k=1; k<=num_iterations; k++)
 	{
 		cout<<"\n\n################# ITER "<<k<<endl;
-		cout<<"new_weights "; print_collection(weights);
+		cout<<"new_weights "; print_collection(weights); cout<<" of edges "; print_collection(edges_);
 
-		unsigned num_nodes = count_nodes(edges);
-		Graph G(&edges[0], &edges[0] + edges.size(), weights.data(), num_nodes);
+		unsigned num_nodes = count_nodes(edges_);
+		// See http://www.boost.org/doc/libs/1_66_0/libs/graph/example/dijkstra-example.cpp
+		Graph G(&edges_[0], &edges_[0] + edges_.size(), weights.data(), num_nodes);
+
+		//{ INITIALIZE EDGE RELATED DATA STRUCTURES
 		EdgeValues edge_weight_map;
-		fill_weight_map(edge_weight_map, edges, weights, G);
+		fill_weight_map(edge_weight_map, edges_, weights, G);
+
+		EdgeValues edge_load_map, edge_load_map_with_normalization, 
+				edge_load_map_without_normalization;
+
+		boost::graph_traits<Graph>::edge_iterator edge_it, edge_it_end;
+		for ( boost::tie(edge_it, edge_it_end) = edges(G); edge_it != edge_it_end; ++edge_it )
+		{
+			edge_load_map[*edge_it] = 0;
+			edge_load_map_with_normalization[*edge_it] = 0;
+			edge_load_map_without_normalization[*edge_it] = 0;
+		}
+
+		//}
 
 		//{ COMPUTE THE UTILITY
 		Weight tot_feasible_utility_cleaned, lagrangian_value;
@@ -1846,32 +1880,34 @@ int main(int argc,char* argv[])
 		Weight tot_feasible_utility_cleaned_without_normalization = 0;
 		Weight lagrangian_value_without_normalization = 0;
 		bool normalized;
-		EdgeValues edge_load_map, edge_load_map_with_normalization, 
-				edge_load_map_without_normalization;
+
+
+		#ifdef SEVERE_DEBUG
+		if (repositories.empty() ) throw runtime_error("There are no repositories");
+		#endif
 
 		if (improved)
 		{	// I also compute the solution without normalization of the benefit
 			// In the improved version I take the best between the solution with and 
 			// without normalization
 			normalized=false;
-			greedy(edge_load_map_without_normalization, edge_weight_map, edges, G, 
+			greedy(edge_load_map_without_normalization, edge_weight_map, edges_, G, 
 				tot_feasible_utility_cleaned_without_normalization, 
 				lagrangian_value_without_normalization,
 				normalized, single_storage, simple_greedy, qualities, sizes, utilities,
 				caches, repositories,
-				link_capacity, clients, objects
+				link_capacity, clients, objects, requests
 			);
 		}
 
 		normalized = true;
-		greedy(edge_load_map_with_normalization, edge_weight_map, edges, G, 
+		greedy(edge_load_map_with_normalization, edge_weight_map, edges_, G, 
 				tot_feasible_utility_cleaned_with_normalization, 
 				lagrangian_value_with_normalization,
 				normalized, single_storage, simple_greedy, qualities, sizes, utilities,
 				caches, repositories,
-				link_capacity, clients, objects
+				link_capacity, clients, objects, requests
 			);
-
 
 		if (!improved || 
 			lagrangian_value_with_normalization >= lagrangian_value_without_normalization
@@ -1893,10 +1929,10 @@ int main(int argc,char* argv[])
 		cout<<"edge_load_map: "; 	print_edge_load_map(edge_load_map);
 
 		// Compute the violations
-		vector<Weight> violations; violations.reserve(edges.size());
-		for (unsigned eid=0; eid<edges.size(); eid++)
+		vector<Weight> violations; violations.reserve(edges_.size());
+		for (unsigned eid=0; eid<edges_.size(); eid++)
 		{
-			EdgeDescriptor e = edge(edges[eid].first, edges[eid].second ,G).first;
+			EdgeDescriptor e = edge(edges_[eid].first, edges_[eid].second ,G).first;
 			violations[eid] = edge_load_map[e] - link_capacity;
 			if (k==1) first_violation_norm += violations[eid]*violations[eid] ;
 		}
@@ -1931,10 +1967,10 @@ int main(int argc,char* argv[])
 		cout <<"step "<<step<<endl;
 		//} STEP SIZE
 
-		//{ VIOLATIONS
+		//{ TOT VIOLATION
 		Weight tot_violations=0;
 		cout<<"violations ";
-		for (unsigned eid=0; eid<edges.size(); eid++)
+		for (unsigned eid=0; eid<edges_.size(); eid++)
 		{
 			Weight single_violation = violations[eid];
 			if (single_violation > 0)

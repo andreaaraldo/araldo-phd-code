@@ -1,5 +1,5 @@
 #!/bin/bash
-ITERATIONS=1
+ITERATIONS=100
 
 
 ## This is the other type
@@ -18,7 +18,7 @@ DIR=~/local_archive/video/heuristic/slowdown-$SLOWDOWN/seed-$SEED/singlestorage-
 mkdir -p $DIR
 echo "running" $ARGS
 #nohup ./approx.o $ARGS > $DIR/log-load_$LOAD.log 2>&1 &
-gdb --args ./approx.o $ARGS
+./approx.o $ARGS
 done
 done
 done
