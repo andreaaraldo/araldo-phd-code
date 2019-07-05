@@ -1,4 +1,9 @@
 #! /usr/local/bin/octave -qf
+
+# To use this, just launch
+#	./mean_and_conf <files>
+# <files> is a list of file. You can specify it as myfile-*, if you have myfile-1, myfile-2, etc. All files must be identical matrices. It will create as input a matrix with two columns per each column of the original files: the first of the two columns is the average across files, the second is the 95-th percentile confidence interval
+
 addpath("~/software/araldo-phd-code/general/process_results" );
 
 
